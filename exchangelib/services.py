@@ -770,3 +770,35 @@ class ResolveNames(EWSAccountService):
         if not n:
             raise AttributeError('"unresolvedentries" must not be empty')
         return payload
+
+class ExportItems(EWSPooledService):
+    """
+    MSDN: https://msdn.microsoft.com/en-us/library/office/ff709523(v=exchg.150).aspx
+    """
+    CHUNKSIZE = 100
+    SERVICE_NAME = 'ExportItems'
+    element_container_name = "{%s}Data" % MNS
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.element_name = '{%s}Data' % TNS
+
+    def call(self, account, item_ids):
+        return self._pool_requests(
+            account=account, payload_func=self._get_payload, items=item_ids,
+            version=account.version
+        )
+
+    def _get_payload(self, items, version):
+        exportitems = create_element('m:%s' % self.SERVICE_NAME)
+        itemids = create_element('m:ItemIds')
+        exportitems.append(itemids)
+        for item_id in items:
+            itemids.append(item_id.to_xml(version))
+        return exportitems
+
+    # We need to override this since ExportItemsResponseMessage is formated a
+    #  little bit differently. Namely, all we want is the 64bit string in the
+    #  Data tag.
+    def _get_elements_in_container(self, container):
+        return [container.text]

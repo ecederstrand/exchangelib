@@ -5,6 +5,7 @@ from .credentials import DELEGATE, IMPERSONATION
 from .errors import ErrorFolderNotFound, ErrorAccessDenied
 from .folders import Root, Calendar, DeletedItems, Drafts, Inbox, Outbox, SentItems, JunkEmail, Tasks, Contacts, \
     RecoverableItemsRoot, RecoverableItemsDeletions, SHALLOW, DEEP, WELLKNOWN_FOLDERS
+from .services import ExportItems
 from .protocol import Protocol
 from .util import get_domain
 
@@ -43,6 +44,9 @@ class Account:
 
         assert isinstance(self.protocol, Protocol)
         log.debug('Added account: %s', self)
+
+    def export(self, ids):
+        return [(id_, export) for id_, export in zip(ids, ExportItems(self.protocol).call(self, ids))]
 
     @property
     def folders(self):
