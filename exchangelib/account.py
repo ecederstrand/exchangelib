@@ -4,8 +4,8 @@ from .autodiscover import discover
 from .credentials import DELEGATE, IMPERSONATION
 from .errors import ErrorFolderNotFound, ErrorAccessDenied
 from .folders import Root, Calendar, DeletedItems, Drafts, Inbox, Outbox, SentItems, JunkEmail, Tasks, Contacts, \
-    RecoverableItemsRoot, RecoverableItemsDeletions, SHALLOW, DEEP, WELLKNOWN_FOLDERS
-from .services import ExportItems
+    RecoverableItemsRoot, RecoverableItemsDeletions, SHALLOW, DEEP, WELLKNOWN_FOLDERS, ItemId
+from .services import ExportItems, UploadItems
 from .protocol import Protocol
 from .util import get_domain
 
@@ -47,6 +47,24 @@ class Account:
 
     def export(self, ids):
         return [(id_, export) for id_, export in zip(ids, ExportItems(self.protocol).call(self, ids))]
+
+    def upload(self, data, folders=None):
+        if folders is None:
+            # Assume folders is already alongside data already
+            upload_ids = UploadItems(self.protocol).call(self, data)
+
+        try:
+            # Try assuming folders are iterable, and pair them with the data
+            merged_data = ((folder, data_str) for folder, data_str in zip(folders, data))
+        except TypeError:
+            # If it raises a Type error it means we couldn't iterate over folders
+            # Assume we only have one folder that we are applying to all data
+            merged_data = ((folders, data_str) for data_str in data)
+            upload_ids = UploadItems(self.protocol).call(self, merged_data)
+        else:
+            upload_ids = UploadItems(self.protocol).call(self, merged_data)
+
+        return [ItemId(id=item_id, changekey=change_key) for item_id, change_key in upload_ids]
 
     @property
     def folders(self):

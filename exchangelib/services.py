@@ -779,10 +779,6 @@ class ExportItems(EWSPooledService):
     SERVICE_NAME = 'ExportItems'
     element_container_name = "{%s}Data" % MNS
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.element_name = '{%s}Data' % TNS
-
     def call(self, account, item_ids):
         return self._pool_requests(
             account=account, payload_func=self._get_payload, items=item_ids,
@@ -802,3 +798,40 @@ class ExportItems(EWSPooledService):
     #  Data tag.
     def _get_elements_in_container(self, container):
         return [container.text]
+
+class UploadItems(EWSPooledService):
+    """
+    MSDN: https://msdn.microsoft.com/en-us/library/office/ff709490(v=exchg.150).aspx
+    """
+    CHUNKSIZE = 100
+    SERVICE_NAME = 'UploadItems'
+    element_container_name = '{%s}ItemId' % MNS
+
+    def call(self, account, data):
+        """Upload given items to given account
+
+        data is an iterable of tuples where the first element is a Folder
+        instance representing the ParentFolder that the item will be placed in
+        and the second element is a Data string returned from an ExportItems
+        call.
+        """
+        return self._pool_requests(
+            account=account, payload_func=self._get_payload, items=data
+        )
+
+    def _get_payload(self, items):
+        uploaditems = create_element('m:%s' % self.SERVICE_NAME)
+        itemselement = create_element('m:Items')
+        uploaditems.append(itemselement)
+        for parent_folder, data_str in items:
+            item = create_element("t:Item", CreateAction="CreateNew")
+            parentfolderid = create_element('t:ParentFolderId')
+            parentfolderid.attrib['Id'] = parent_folder.folder_id
+            parentfolderid.attrib['ChangeKey'] = parent_folder.changekey
+            item.append(parentfolderid)
+            add_xml_child(item, 't:Data', data_str)
+            itemselement.append(item)
+        return uploaditems
+
+    def _get_elements_in_container(self, container):
+        return [(container.attrib['Id'], container.attrib['ChangeKey'])]
