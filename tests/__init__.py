@@ -18,7 +18,7 @@ from exchangelib.errors import RelativeRedirect, ErrorItemNotFound
 from exchangelib.ewsdatetime import EWSDateTime, EWSDate, EWSTimeZone, UTC, UTC_NOW
 from exchangelib.folders import CalendarItem, Attendee, Mailbox, Message, ExternId, Choice, Email, Contact, Task, \
     EmailAddress, PhysicalAddress, PhoneNumber, IndexedField, RoomList, Calendar, DeletedItems, Drafts, Inbox, Outbox, \
-    SentItems, JunkEmail, Tasks, Contacts, AnyURI, BodyType, ALL_OCCURRENCIES
+    SentItems, JunkEmail, Tasks, Contacts, AnyURI, BodyType, ALL_OCCURRENCIES, ItemId
 from exchangelib.queryset import QuerySet, DoesNotExist, MultipleObjectsReturned
 from exchangelib.restriction import Restriction, Q
 from exchangelib.services import GetServerTimeZones, GetRoomLists, GetRooms
@@ -1314,6 +1314,54 @@ class BaseItemTest(EWSTest):
         status = self.account.bulk_delete(ids=(i for i in wipe2_ids), affected_task_occurrences=ALL_OCCURRENCIES)
         self.assertEqual(status, [(True, None)])
 
+    def test_export_and_upload(self):
+        # 15 new items which we will attempt to export and re-upload
+        items = [self.get_test_item(self.test_folder).save() for _ in range(15)]
+        ids = [ItemId(i.item_id, i.changekey) for i in items]
+        # re-fetch items because there will be some extra fields added by the
+        #  server
+        items = self.test_folder.fetch(ids)
+
+        # Try exporting and making sure we get the right response
+        export_results = self.account.export(ids)
+        self.assertEqual(len(items), len(export_results))
+        for original_id, result in zip(ids, export_results):
+            self.assertEqual(original_id, result[0])
+            self.assertIsInstance(result[1], str)
+
+        # Try reuploading our results
+        upload_results = self.account.upload([data for _, data in export_results],
+                                             [self.test_folder for _ in export_results])
+        self.assertEqual(len(items), len(upload_results))
+        for result in upload_results:
+            # Must be a completely new ItemId
+            self.assertIsInstance(result, ItemId)
+            self.assertNotIn(result, ids)
+
+        # Check the items uploaded are the same as the original items
+        def to_dict(item):
+            dict_item = {}
+            # fieldnames is everything except the ID so we'll use it to
+            #  compare
+            for attribute in item.fieldnames():
+                # datetime_created and last_modified_time aren't copied, but
+                # instead are added to the new item after uploading
+                if attribute not in {'datetime_created', 'last_modified_time'}:
+                    dict_item[attribute] = getattr(item, attribute)
+            return dict_item
+
+        uploaded_items = self.test_folder.fetch(upload_results)
+        original_items = [to_dict(item) for item in items]
+        for item in uploaded_items:
+            dict_item = to_dict(item)
+            try:
+                original_items.remove(dict_item)
+            except ValueError:
+                raise AssertionError("Uploaded item: '%s' not equal to any of the items we originally inserted" % repr(item))
+
+        # Clean up after yourself
+        self.account.bulk_delete(ids=upload_results, affected_task_occurrences=ALL_OCCURRENCIES)
+        self.account.bulk_delete(ids=ids, affected_task_occurrences=ALL_OCCURRENCIES)
 
 class CalendarTest(BaseItemTest):
     TEST_FOLDER = 'calendar'
