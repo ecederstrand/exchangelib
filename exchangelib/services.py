@@ -733,7 +733,7 @@ class ResolveNames(EWSService):
             raise AttributeError('"unresolvedentries" must not be empty')
         return payload
 
-class ExportItems(EWSPooledService):
+class ExportItems(EWSPooledAccountService):
     """
     MSDN: https://msdn.microsoft.com/en-us/library/office/ff709523(v=exchg.150).aspx
     """
@@ -741,10 +741,9 @@ class ExportItems(EWSPooledService):
     SERVICE_NAME = 'ExportItems'
     element_container_name = "{%s}Data" % MNS
 
-    def call(self, account, item_ids):
+    def call(self, item_ids):
         return self._pool_requests(
-            account=account, payload_func=self._get_payload, items=item_ids,
-            version=account.version
+            payload_func=self._get_payload, items=item_ids, version=self.account.version
         )
 
     def _get_payload(self, items, version):
@@ -761,7 +760,7 @@ class ExportItems(EWSPooledService):
     def _get_elements_in_container(self, container):
         return [container.text]
 
-class UploadItems(EWSPooledService):
+class UploadItems(EWSPooledAccountService):
     """
     MSDN: https://msdn.microsoft.com/en-us/library/office/ff709490(v=exchg.150).aspx
     """
@@ -769,7 +768,7 @@ class UploadItems(EWSPooledService):
     SERVICE_NAME = 'UploadItems'
     element_container_name = '{%s}ItemId' % MNS
 
-    def call(self, account, data):
+    def call(self, data):
         """Upload given items to given account
 
         data is an iterable of tuples where the first element is a Folder
@@ -778,7 +777,7 @@ class UploadItems(EWSPooledService):
         call.
         """
         return self._pool_requests(
-            account=account, payload_func=self._get_payload, items=data
+            payload_func=self._get_payload, items=data
         )
 
     def _get_payload(self, items):
