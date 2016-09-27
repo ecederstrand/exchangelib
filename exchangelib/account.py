@@ -192,23 +192,37 @@ class Account:
         return get_domain(self.primary_smtp_address)
 
     def export(self, ids):
+        """
+        Return export strings of the given items
+
+        Arguments:
+        'ids' is an iterable containing ItemId objects for what we want to export
+
+        Returns:
+        A list of tuples with two elements:
+            0: An ItemId, the id of the object
+            1: A string, the exported representation of the object
+        """
         return [(id_, export) for id_, export in zip(ids, ExportItems(self).call(ids))]
 
-    def upload(self, data, folders=None):
-        if folders is None:
-            # Assume folders is already alongside data already
-            upload_ids = UploadItems(self).call(data)
+    def upload(self, data, folders):
+        """
+        Adds objects retrieved from export into the given folders
 
-        try:
-            # Try assuming folders are iterable, and pair them with the data
-            merged_data = ((folder, data_str) for folder, data_str in zip(folders, data))
-        except TypeError:
-            # If it raises a Type error it means we couldn't iterate over folders
-            # Assume we only have one folder that we are applying to all data
-            merged_data = ((folders, data_str) for data_str in data)
-            upload_ids = UploadItems(self).call(merged_data)
-        else:
-            upload_ids = UploadItems(self).call(merged_data)
+        Arguments:
+        'data' is an iterable containing the string outputs of exports
+        'folders' is an equal lengthed iterable containing the folder that each item is to be inserted in
+
+        Returns:
+        A list of ItemIds of the new items inserted
+
+        Example:
+        account.upload(["AABBCC...", "XXYYZZ...", "ABCXYZ..."],
+                       [account.inbox, account.inbox, account.calendar])
+        -> [ItemId(...), ItemId(...), ItemId(...)]
+        """
+        merged_data = ((folder, data_str) for folder, data_str in zip(folders, data))
+        upload_ids = UploadItems(self).call(merged_data)
 
         return [ItemId(id=item_id, changekey=change_key) for item_id, change_key in upload_ids]
 
