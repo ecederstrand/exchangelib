@@ -58,7 +58,7 @@ def test(calitems):
     t1 = datetime.now()
     ids = cal.bulk_create(items=calitems)
     t2 = datetime.now()
-    cal.bulk_delete(ids)
+    account.bulk_delete(ids)
     t3 = datetime.now()
 
     delta1 = t2 - t1

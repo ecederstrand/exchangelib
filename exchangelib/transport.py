@@ -117,8 +117,7 @@ def wrap(content, version, account, ewstimezone=None, encoding='utf-8'):
     body = create_element('s:Body')
     body.append(content)
     envelope.append(body)
-    return (b'<?xml version="1.0" encoding="' + encoding.encode(encoding)) + b'"?>' \
-           + tostring(envelope, encoding=encoding)
+    return ('<?xml version="1.0" encoding="%s"?>' % encoding).encode(encoding) + tostring(envelope, encoding=encoding)
 
 
 def get_auth_instance(credentials, auth_type):

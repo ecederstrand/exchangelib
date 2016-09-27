@@ -25,9 +25,9 @@ Here is a simple example that inserts, retrieves and deletes calendar items in a
 
 .. code-block:: python
 
-    from exchangelib import DELEGATE, IMPERSONATION, IdOnly, Account, Credentials, \
-        EWSDateTime, EWSTimeZone, Configuration, NTLM, Restriction, Q
-    from exchangelib.folders import Calendar, CalendarItem
+    from exchangelib import DELEGATE, IMPERSONATION, Account, Credentials, \
+        EWSDateTime, EWSTimeZone, Configuration, NTLM, CalendarItem, Q
+    from exchangelib.folders import Calendar
 
     year, month, day = 2016, 3, 20
     tz = EWSTimeZone.timezone('Europe/Copenhagen')
@@ -70,6 +70,8 @@ Here is a simple example that inserts, retrieves and deletes calendar items in a
 
     # Create the calendar items in the user's standard calendar.  If you want to access a
     # non-standard calendar, choose a different one from account.folders[Calendar]
+    #
+    # bulk_update() and bulk_delete() methods are also supported.
     res = account.calendar.bulk_create(calendar_items)
     print(res)
 
@@ -89,16 +91,17 @@ Here is a simple example that inserts, retrieves and deletes calendar items in a
     #
     # A large part of the Django QuerySet API is supported:
     #
-    # items = my_folder.filter(subject__contains='foo').exclude(categories__contains='bar')
-    # items = my_folder.all()
-    # items = my_folder.all().only('subject', 'start')
-    # items = my_folder.all().delete()
-    # items = my_folder.get(subject='unique_string')
-    # items = my_folder.all().order_by('subject')
+    # all_items = my_folder.all()
+    # filtered_items = my_folder.filter(subject__contains='foo').exclude(categories__contains='bar')
+    # sparse_items = my_folder.all().only('subject', 'start')
+    # status_report = my_folder.all().delete()
+    # items_for_2017 = my_calendar.filter(start__range=(EWSDateTime(2016, 1, 1), EWSDateTime(2017, 1, 1)))
+    # item = my_folder.get(subject='unique_string')
+    # ordered_items = my_folder.all().order_by('subject')
     # n = my_folder.all().count()
-    # is_empty = not my_folder.all().exists()
-    # ids = my_folder.all().values('item_id', 'changekey')
-    # ids = my_folder.all().values_list('item_id', 'changekey')
+    # folder_is_empty = not my_folder.all().exists()
+    # ids_as_dict = my_folder.all().values('item_id', 'changekey')
+    # ids_as_list = my_folder.all().values_list('item_id', 'changekey')
     # subjects = my_folder.all().values_list('subject', flat=True)
     #
     items = account.calendar.filter(
@@ -109,7 +112,7 @@ Here is a simple example that inserts, retrieves and deletes calendar items in a
     for item in items:
         print(item.start, item.end, item.subject, items.body, item.location)
 
-    # Delete the calendar items again
+    # Delete the calendar items we found
     res = items.delete()
     print(res)
 

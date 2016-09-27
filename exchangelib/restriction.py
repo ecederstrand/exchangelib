@@ -106,7 +106,7 @@ class Q:
                 self.children.append(Q(**{key: value}))
 
     @classmethod
-    def from_filter_args(cls, item_model, *args, **kwargs):
+    def from_filter_args(cls, folder_class, *args, **kwargs):
         # args and kwargs are Django-style q args and field lookups
         q = None
         if args:
@@ -114,7 +114,7 @@ class Q:
             for arg in args:
                 # Convert all search expressions to q objects
                 if isinstance(arg, str):
-                    q_args.append(Restriction.from_source(args[0], item_model=item_model).q)
+                    q_args.append(Restriction.from_source(args[0], folder_class=folder_class).q)
                 else:
                     if not isinstance(arg, Q):
                         raise ValueError("Non-keyword arg '%s' must be a Q object" % arg)
@@ -275,23 +275,23 @@ class Q:
                 expr = self.conn_type + ' (%s)' % expr
         return expr
 
-    def translate_fields(self, item_model):
+    def translate_fields(self, folder_class):
         # Recursively translate Python attribute names to EWS FieldURI values
         if self.translated:
             return self
         if self.field is not None:
-            self.field = item_model.fielduri_for_field(self.field)
+            self.field = folder_class.fielduri_for_field(self.field)
         for c in self.children:
-            c.translate_fields(item_model=item_model)
+            c.translate_fields(folder_class=folder_class)
         self.translated = True
         return self
 
-    def to_xml(self, item_model):
+    def to_xml(self, folder_class):
         # Translate this Q object to a valid Restriction XML tree
-        from .folders import Item
+        from .folders import Folder
         if not self.translated:
-            assert issubclass(item_model, Item)
-        self.translate_fields(item_model)
+            assert issubclass(folder_class, Folder)
+        self.translate_fields(folder_class=folder_class)
         elem = self.xml_elem()
         if elem is None:
             return None
@@ -400,21 +400,21 @@ class Restriction:
 
     @property
     def xml(self):
-        # item_model=None is OK since q has already been translated
-        return self.q.to_xml(item_model=None)
+        # folder=None is OK since q has already been translated
+        return self.q.to_xml(folder_class=None)
 
     @classmethod
-    def from_source(cls, source, item_model):
+    def from_source(cls, source, folder_class):
         """
         'source' is a search expression in Python syntax using Item attributes as labels.
-        'item_model' is the Item class the search expression is intended for.
+        'folder' is the Folder class the search expression is intended for.
         Example search expression for a CalendarItem:
 
             start > '2009-01-15T13:45:56Z' and not (subject == 'EWS Test' or subject == 'Foo')
 
         """
-        from .folders import Item
-        assert issubclass(item_model, Item)
+        from .folders import Folder
+        assert issubclass(folder_class, Folder)
         with _source_cache_lock:
             # Something within the parser module seems to be deadlocking. Wrap in lock
             if source not in _source_cache:
@@ -422,7 +422,7 @@ class Restriction:
                 log.debug('Parsing source: %s', source)
                 st = expr(source).tolist()
                 q = cls._parse_syntaxtree(st)
-                q.translate_fields(item_model=item_model)
+                q.translate_fields(folder_class=folder_class)
                 _source_cache[source] = q
         return cls(_source_cache[source])
 

@@ -4,10 +4,14 @@ from .autodiscover import discover
 from .credentials import DELEGATE, IMPERSONATION
 from .errors import ErrorFolderNotFound, ErrorAccessDenied
 from .folders import Root, Calendar, DeletedItems, Drafts, Inbox, Outbox, SentItems, JunkEmail, Tasks, Contacts, \
-    RecoverableItemsRoot, RecoverableItemsDeletions, SHALLOW, DEEP, WELLKNOWN_FOLDERS, ItemId
+    RecoverableItemsRoot, RecoverableItemsDeletions, Item, SHALLOW, DEEP, WELLKNOWN_FOLDERS, HARD_DELETE, \
+    AUTO_RESOLVE, SEND_TO_NONE, SAVE_ONLY, SPECIFIED_OCCURRENCE_ONLY, DELETE_TYPE_CHOICES, \
+    CONFLICT_RESOLUTION_CHOICES, SEND_MEETING_CANCELLATIONS_CHOICES, AFFECTED_TASK_OCCURRENCES_CHOICES, \
+    MESSAGE_DISPOSITION_CHOICES, SEND_MEETING_INVITATIONS_AND_CANCELLATIONS_CHOICES, ItemId
 from .services import ExportItems, UploadItems
 from .protocol import Protocol
-from .util import get_domain
+from .services import DeleteItem, UpdateItem
+from .util import get_domain, peek
 
 log = getLogger(__name__)
 
@@ -207,6 +211,78 @@ class Account:
     @property
     def domain(self):
         return get_domain(self.primary_smtp_address)
+
+    def bulk_update(self, items, conflict_resolution=AUTO_RESOLVE, message_disposition=SAVE_ONLY,
+                    send_meeting_invitations_or_cancellations=SEND_TO_NONE, suppress_read_receipts=True):
+        """
+        Updates items in the folder. 'items' is a dict containing:
+
+            Key: An Item object (calendar item, message, task or contact)
+            Value: a list of attributes that have changed on this object
+
+        'message_disposition' is only applicable to Message items.
+        'send_meeting_invitations_or_cancellations' is only applicable to CalendarItem items.
+        'suppress_read_receipts' is only supported from Exchange 2013.
+        """
+        assert conflict_resolution in CONFLICT_RESOLUTION_CHOICES
+        assert message_disposition in MESSAGE_DISPOSITION_CHOICES
+        assert send_meeting_invitations_or_cancellations in SEND_MEETING_INVITATIONS_AND_CANCELLATIONS_CHOICES
+        assert suppress_read_receipts in (True, False)
+        log.debug(
+            'Updating items for %s (conflict_resolution %s, message_disposition: %s, send_meeting_invitations: %s)',
+            self,
+            conflict_resolution,
+            message_disposition,
+            send_meeting_invitations_or_cancellations,
+        )
+        is_empty, items = peek(items)
+        if is_empty:
+            # We accept generators, so it's not always convenient for caller to know up-front if 'items' is empty. Allow
+            # empty 'items' and return early.
+            return []
+        return list(map(
+            Item.id_from_xml,
+            UpdateItem(account=self).call(
+                items=items,
+                conflict_resolution=conflict_resolution,
+                message_disposition=message_disposition,
+                send_meeting_invitations_or_cancellations=send_meeting_invitations_or_cancellations,
+                suppress_read_receipts=suppress_read_receipts,
+            )
+        ))
+
+    def bulk_delete(self, ids, delete_type=HARD_DELETE, send_meeting_cancellations=SEND_TO_NONE,
+                    affected_task_occurrences=SPECIFIED_OCCURRENCE_ONLY, suppress_read_receipts=True):
+        """
+        Deletes items.
+        'ids' is an iterable of either (item_id, changekey) tuples or Item objects.
+        'send_meeting_cancellations' is only applicable to CalendarItem items.
+        'affected_task_occurrences' is only applicable for recurring Task items.
+        'suppress_read_receipts' is only supported from Exchange 2013.
+        """
+        assert delete_type in DELETE_TYPE_CHOICES
+        assert send_meeting_cancellations in SEND_MEETING_CANCELLATIONS_CHOICES
+        assert affected_task_occurrences in AFFECTED_TASK_OCCURRENCES_CHOICES
+        assert suppress_read_receipts in (True, False)
+        log.debug(
+            'Deleting items for %s (delete_type: %s, send_meeting_invitations: %s, affected_task_occurences: %s)',
+            self,
+            delete_type,
+            send_meeting_cancellations,
+            affected_task_occurrences,
+        )
+        is_empty, ids = peek(ids)
+        if is_empty:
+            # We accept generators, so it's not always convenient for caller to know up-front if 'items' is empty. Allow
+            # empty 'items' and return early.
+            return []
+        return list(DeleteItem(account=self).call(
+            items=ids,
+            delete_type=delete_type,
+            send_meeting_cancellations=send_meeting_cancellations,
+            affected_task_occurrences=affected_task_occurrences,
+            suppress_read_receipts=suppress_read_receipts,
+        ))
 
     def __str__(self):
         txt = '%s' % self.primary_smtp_address

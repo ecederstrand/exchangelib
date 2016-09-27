@@ -2,7 +2,7 @@ import logging
 from copy import deepcopy
 
 from .restriction import Q
-from .services import IdOnly, AllProperties
+from .services import IdOnly
 
 log = logging.getLogger(__name__)
 
@@ -39,8 +39,15 @@ class QuerySet:
         self._cache = None
 
     def copy(self):
-        # TODO: should we support copy'ing QuerySet where the cache has been filled? What does that even mean?
-        assert self._cache is None
+        # When we copy a queryset where the cache has already been filled, we don't copy the cache. Thus, a copied
+        # queryset will fetch results from the server again.
+        #
+        # All other behaviour would be awkward:
+        #
+        # qs = QuerySet(f).filter(foo='bar')
+        # items = list(qs)
+        # new_qs = qs.exclude(bar='baz')  # This should work, and should fetch from the server
+        #
         assert isinstance(self.q, (type(None), Q))
         assert isinstance(self.only_fields, (type(None), tuple))
         assert isinstance(self.order_fields, (type(None), tuple))
@@ -56,7 +63,7 @@ class QuerySet:
         return new_qs
 
     def _check_fields(self, field_names):
-        allowed_field_names = set(self.folder.item_model.fieldnames()) | {'item_id', 'changekey'}
+        allowed_field_names = set(self.folder.allowed_field_names()) | {'item_id', 'changekey'}
         for f in field_names:
             if f not in allowed_field_names:
                 raise ValueError("Unknown fieldname '%s'" % f)
@@ -64,12 +71,12 @@ class QuerySet:
     def _query(self):
         if self.only_fields is None:
             # The list of fields was not restricted. Get all fields we support
-            additional_fields = self.folder.item_model.fieldnames()
+            additional_fields = self.folder.allowed_field_names()
         else:
             assert isinstance(self.only_fields, tuple)
             # Remove ItemId and ChangeKey. We get them unconditionally
             additional_fields = tuple(f for f in self.only_fields if f not in {'item_id', 'changekey'})
-        complex_fields_requested = bool(set(additional_fields) & set(self.folder.item_model.complex_fields()))
+        complex_fields_requested = bool(set(additional_fields) & set(self.folder.complex_field_names()))
         if self.order_fields:
             extra_order_fields = set(self.order_fields) - set(additional_fields)
         else:
@@ -125,6 +132,7 @@ class QuerySet:
         return len(self._cache)
 
     def __getitem__(self, key):
+        # Support indexing and slicing
         self.__iter__()  # Make sure cache is full
         return self._cache[key]
 
@@ -211,13 +219,13 @@ class QuerySet:
 
     def filter(self, *args, **kwargs):
         new_qs = self.copy()
-        q = Q.from_filter_args(self.folder.item_model, *args, **kwargs) or Q()
+        q = Q.from_filter_args(self.folder.__class__, *args, **kwargs) or Q()
         new_qs.q = q if new_qs.q is None else new_qs.q & q
         return new_qs
 
     def exclude(self, *args, **kwargs):
         new_qs = self.copy()
-        q = ~Q.from_filter_args(self.folder.item_model, *args, **kwargs) or Q()
+        q = ~Q.from_filter_args(self.folder.__class__, *args, **kwargs) or Q()
         new_qs.q = q if new_qs.q is None else new_qs.q & q
         return new_qs
 
@@ -290,7 +298,7 @@ class QuerySet:
         new_qs = self.copy()
         new_qs.only_fields = tuple()
         new_qs.order_fields = None
-        new_qs.reverse = False
+        new_qs.reversed = False
         return len(list(new_qs))
 
     def exists(self):
@@ -301,6 +309,6 @@ class QuerySet:
         new_qs = self.copy()
         new_qs.only_fields = tuple()
         new_qs.order_fields = None
-        new_qs.reverse = False
+        new_qs.reversed = False
         from .folders import ALL_OCCURRENCIES
-        return self.folder.bulk_delete(ids=new_qs, affected_task_occurrences=ALL_OCCURRENCIES)
+        return self.folder.account.bulk_delete(ids=new_qs, affected_task_occurrences=ALL_OCCURRENCIES)

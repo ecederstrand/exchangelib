@@ -95,7 +95,7 @@ def set_xml_value(elem, value, version):
         for v in value:
             if isinstance(v, EWSElement):
                 assert version
-                elem.append(v.to_xml(version))
+                elem.append(v.to_xml(version=version))
             elif isinstance(v, ElementType):
                 elem.append(v)
             elif isinstance(v, str):
@@ -104,7 +104,7 @@ def set_xml_value(elem, value, version):
                 raise AttributeError('Unsupported type %s for list value %s on elem %s' % (type(v), v, elem))
     elif isinstance(value, EWSElement):
         assert version
-        elem.append(value.to_xml(version))
+        elem.append(value.to_xml(version=version))
     elif isinstance(value, ElementType):
         elem.append(value)
     else:

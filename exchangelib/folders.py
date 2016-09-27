@@ -12,10 +12,10 @@ import warnings
 from .ewsdatetime import EWSDateTime, UTC_NOW
 from .queryset import QuerySet
 from .restriction import Restriction, Q
-from .services import TNS, FindItem, IdOnly, SHALLOW, DEEP, DeleteItem, CreateItem, UpdateItem, FindFolder, GetFolder, \
-    GetItem, MNS, ITEM_TRAVERSAL_CHOICES, FOLDER_TRAVERSAL_CHOICES, SHAPE_CHOICES
+from .services import TNS, FindItem, IdOnly, SHALLOW, DEEP, CreateItem, FindFolder, GetFolder, GetItem, \
+    MNS, ITEM_TRAVERSAL_CHOICES, FOLDER_TRAVERSAL_CHOICES, SHAPE_CHOICES
 from .util import create_element, add_xml_child, get_xml_attrs, get_xml_attr, set_xml_value, peek
-from .version import EXCHANGE_2010, EXCHANGE_2013
+from .version import EXCHANGE_2010
 
 log = getLogger(__name__)
 
@@ -585,7 +585,7 @@ class Item(EWSElement):
         if self.item_id:
             assert self.changekey
             update_kwargs = {k: getattr(self, k) for k in self.fieldnames() if k not in self.readonly_fields()}
-            return self.folder.bulk_update(
+            return self.folder.account.bulk_update(
                 items=[(self, update_kwargs)], message_disposition=message_disposition,
                 conflict_resolution=conflict_resolution,
                 send_meeting_invitations_or_cancellations=send_meeting_invitations)
@@ -595,31 +595,33 @@ class Item(EWSElement):
                 send_meeting_invitations=send_meeting_invitations)
 
     def move_to_trash(self, send_meeting_cancellations=SEND_TO_NONE,
-                      affected_task_occurrences=SPECIFIED_OCCURRENCE_ONLY):
+                      affected_task_occurrences=SPECIFIED_OCCURRENCE_ONLY, suppress_read_receipts=True):
         # Delete and move to the trash folder.
         self._delete(delete_type=MOVE_TO_DELETED_ITEMS, send_meeting_cancellations=send_meeting_cancellations,
-                     affected_task_occurrences=affected_task_occurrences)
+                     affected_task_occurrences=affected_task_occurrences, suppress_read_receipts=suppress_read_receipts)
         self.folder = self.folder.account.trash
         self.item_id, self.changekey, self.folder = None, None, None
 
-    def soft_delete(self, send_meeting_cancellations=SEND_TO_NONE, affected_task_occurrences=SPECIFIED_OCCURRENCE_ONLY):
+    def soft_delete(self, send_meeting_cancellations=SEND_TO_NONE, affected_task_occurrences=SPECIFIED_OCCURRENCE_ONLY,
+                    suppress_read_receipts=True):
         # Delete and move to the dumpster, if it is enabled.
         self._delete(delete_type=SOFT_DELETE, send_meeting_cancellations=send_meeting_cancellations,
-                     affected_task_occurrences=affected_task_occurrences)
+                     affected_task_occurrences=affected_task_occurrences, suppress_read_receipts=suppress_read_receipts)
         self.item_id, self.changekey, self.folder = None, None, None
 
-    def delete(self, send_meeting_cancellations=SEND_TO_NONE, affected_task_occurrences=SPECIFIED_OCCURRENCE_ONLY):
+    def delete(self, send_meeting_cancellations=SEND_TO_NONE, affected_task_occurrences=SPECIFIED_OCCURRENCE_ONLY,
+               suppress_read_receipts=True):
         # Remove the item permanently. No copies are stored anywhere.
         self._delete(delete_type=HARD_DELETE, send_meeting_cancellations=send_meeting_cancellations,
-                     affected_task_occurrences=affected_task_occurrences)
+                     affected_task_occurrences=affected_task_occurrences, suppress_read_receipts=suppress_read_receipts)
         self.item_id, self.changekey, self.folder = None, None, None
 
-    def _delete(self, delete_type, send_meeting_cancellations, affected_task_occurrences):
+    def _delete(self, delete_type, send_meeting_cancellations, affected_task_occurrences, suppress_read_receipts):
         if not self.folder:
             raise ValueError('Item must have a folder')
-        self.folder.bulk_delete(
+        self.folder.account.bulk_delete(
             ids=[self], delete_type=delete_type, send_meeting_cancellations=send_meeting_cancellations,
-            affected_task_occurrences=affected_task_occurrences)
+            affected_task_occurrences=affected_task_occurrences, suppress_read_receipts=suppress_read_receipts)
 
     @classmethod
     def fieldnames(cls):
@@ -686,19 +688,18 @@ class Item(EWSElement):
             raise ValueError("No type defined for fieldname '%s'" % fieldname)
 
     @classmethod
-    def additional_property_elems(cls, fieldnames):
+    def additional_property_elems(cls, fieldname):
         fields = []
-        for f in fieldnames:
-            field_uri = cls.fielduri_for_field(f)
-            if isinstance(field_uri, str):
-                fields.append(create_element('t:FieldURI', FieldURI=field_uri))
-            elif issubclass(field_uri, IndexedField):
-                for l in field_uri.LABELS:
-                    fields.append(field_uri.field_uri_xml(label=l))
-            elif issubclass(field_uri, ExtendedProperty):
-                fields.append(field_uri.field_uri_xml())
-            else:
-                assert False, 'Unknown field_uri type: %s' % field_uri
+        field_uri = cls.fielduri_for_field(fieldname)
+        if isinstance(field_uri, str):
+            fields.append(create_element('t:FieldURI', FieldURI=field_uri))
+        elif issubclass(field_uri, IndexedField):
+            for l in field_uri.LABELS:
+                fields.append(field_uri.field_uri_xml(label=l))
+        elif issubclass(field_uri, ExtendedProperty):
+            fields.append(field_uri.field_uri_xml())
+        else:
+            assert False, 'Unknown field_uri type: %s' % field_uri
         return fields
 
     @classmethod
@@ -781,297 +782,6 @@ class Item(EWSElement):
         )
 
 
-class Folder:
-    DISTINGUISHED_FOLDER_ID = None  # See https://msdn.microsoft.com/en-us/library/office/aa580808(v=exchg.150).aspx
-    CONTAINER_CLASS = None  # See http://msdn.microsoft.com/en-us/library/hh354773(v=exchg.80).aspx
-    item_model = Item
-    LOCALIZED_NAMES = dict()
-
-    def __init__(self, account, name=None, folder_class=None, folder_id=None, changekey=None):
-        self.account = account
-        self.name = name or self.DISTINGUISHED_FOLDER_ID
-        self.folder_class = folder_class
-        self.folder_id = folder_id
-        self.changekey = changekey
-        if not self.is_distinguished:
-            assert self.folder_id
-        if self.folder_id:
-            assert self.changekey
-        log.debug('%s created for %s', self.__class__.__name__, account)
-
-    @property
-    def is_distinguished(self):
-        return self.name.lower() == self.DISTINGUISHED_FOLDER_ID
-
-    @classmethod
-    def attr_to_fielduri(cls, fieldname):
-        return cls.item_model.fielduri_for_field(fieldname)
-
-    @classmethod
-    def attr_to_response_xml_elem(cls, fieldname):
-        return cls.item_model.response_xml_elem_for_field(fieldname)
-
-    def all(self):
-        return QuerySet(self).all()
-
-    def none(self):
-        return QuerySet(self).none()
-
-    def filter(self, *args, **kwargs):
-        return QuerySet(self).filter(*args, **kwargs)
-
-    def exclude(self, *args, **kwargs):
-        return QuerySet(self).exclude(*args, **kwargs)
-
-    def get(self, *args, **kwargs):
-        return QuerySet(self).get(*args, **kwargs)
-
-    def find_items(self, *args, **kwargs):
-        """
-        Finds items in the folder.
-
-        'shape' controls the exact fields returned are governed by. Be aware that complex elements can only be fetched
-        with fetch().
-
-        'depth' controls the whether to return soft-deleted items or not.
-
-        Non-keyword args may be a search expression as supported by Restriction.from_source(), or a list of Q instances.
-
-        Optional extra keyword arguments follow a Django-like QuerySet filter syntax (see
-           https://docs.djangoproject.com/en/1.10/ref/models/querysets/#field-lookups).
-
-        We don't support '__year' and other data-related lookups. We also don't support '__endswith' or '__iendswith'.
-
-        We support the additional '__not' lookup in place of Django's exclude() for simple cases. For more complicated
-        cases you need to create a Q object and use ~Q().
-
-        Examples:
-
-            my_account.inbox.filter(datetime_received__gt=EWSDateTime(2016, 1, 1))
-            my_account.calendar.filter(start__range=(EWSDateTime(2016, 1, 1), EWSDateTime(2017, 1, 1)))
-            my_account.tasks.filter(subject='Hi mom')
-            my_account.tasks.filter(subject__not='Hi mom')
-            my_account.tasks.filter(subject__contains='Foo')
-            my_account.tasks.filter(subject__icontains='foo')
-
-        """
-        # 'endswith' and 'iendswith' could be implemented by searching with 'contains' or 'icontains' and then
-        # post-processing items. Fetch the field in question with additional_fields and remove items where the search
-        # string is not a postfix.
-
-        shape = kwargs.pop('shape', IdOnly)
-        depth = kwargs.pop('depth', SHALLOW)
-        assert shape in SHAPE_CHOICES
-        assert depth in ITEM_TRAVERSAL_CHOICES
-
-        # Define the extra properties we want on the return objects
-        additional_fields = kwargs.pop('additional_fields', tuple())
-        if additional_fields:
-            allowed_field_names = set(self.item_model.fieldnames())
-            complex_field_names = set(self.item_model.complex_fields())
-            for f in additional_fields:
-                if f not in allowed_field_names:
-                    raise ValueError("'%s' is not a field on %s" % (f, self.item_model))
-                if f in complex_field_names:
-                    raise ValueError("find_items() does not support field '%s'. Use fetch() instead" % f)
-
-        # Build up any restrictions
-        q = Q.from_filter_args(self.item_model, *args, **kwargs)
-        if q and not q.is_empty():
-            restriction = Restriction(q.translate_fields(item_model=self.item_model))
-        else:
-            restriction = None
-        log.debug(
-            'Finding %s items for %s (shape: %s, depth: %s, additional_fields: %s, restriction: %s)',
-            self.DISTINGUISHED_FOLDER_ID,
-            self.account,
-            shape,
-            depth,
-            additional_fields,
-            restriction.q if restriction else None,
-        )
-        items = FindItem(self.account.protocol).call(folder=self, additional_fields=additional_fields,
-                                                     restriction=restriction, shape=shape, depth=depth)
-        log.debug('Found %s items', len(items))
-        if shape == IdOnly and additional_fields is None:
-            return map(self.item_model.id_from_xml, items)
-        return map(lambda i: self.item_model.from_xml(elem=i, folder=self), items)
-
-    def add_items(self, *args, **kwargs):
-        warnings.warn('add_items() is deprecated. Use bulk_create() instead', PendingDeprecationWarning)
-        return self.bulk_create(*args, **kwargs)
-
-    def bulk_create(self, items, message_disposition=SAVE_ONLY, send_meeting_invitations=SEND_TO_NONE):
-        """
-        Creates new items in the folder. 'items' is an iterable of Item objects. Returns a list of (id, changekey)
-        tuples in the same order as the input.
-        """
-        assert message_disposition in MESSAGE_DISPOSITION_CHOICES
-        assert send_meeting_invitations in SEND_MEETING_INVITATIONS_CHOICES
-        log.debug(
-            'Adding %s items for %s (message_disposition: %s, send_meeting_invitations: %s)',
-            self.DISTINGUISHED_FOLDER_ID,
-            self.account,
-            message_disposition,
-            send_meeting_invitations,
-        )
-        is_empty, items = peek(items)
-        if is_empty:
-            # We accept generators, so it's not always convenient for caller to know up-front if 'items' is empty. Allow
-            # empty 'items' and return early.
-            return []
-        return list(map(self.item_model.id_from_xml, CreateItem(self.account.protocol).call(
-            folder=self, items=items, message_disposition=message_disposition,
-            send_meeting_invitations=send_meeting_invitations)))
-
-    def delete_items(self, *args, **kwargs):
-        warnings.warn('delete_items() is deprecated. Use bulk_delete() instead', PendingDeprecationWarning)
-        return self.bulk_delete(*args, **kwargs)
-
-    def bulk_delete(self, ids, delete_type=HARD_DELETE, send_meeting_cancellations=SEND_TO_NONE,
-                    affected_task_occurrences=SPECIFIED_OCCURRENCE_ONLY):
-        """
-        Deletes items in the folder. 'ids' is an iterable of either (item_id, changekey) tuples or Item objects.
-        'affected_task_occurrences' is only applicable for recurring Task items.
-        """
-        assert delete_type in DELETE_TYPE_CHOICES
-        assert send_meeting_cancellations in SEND_MEETING_CANCELLATIONS_CHOICES
-        assert affected_task_occurrences in AFFECTED_TASK_OCCURRENCES_CHOICES
-        log.debug(
-            'Deleting %s items for %s (delete_type: %s, send_meeting_invitations: %s, affected_task_occurences: %s)',
-            self.DISTINGUISHED_FOLDER_ID,
-            self.account,
-            delete_type,
-            send_meeting_cancellations,
-            affected_task_occurrences,
-        )
-        is_empty, ids = peek(ids)
-        if is_empty:
-            # We accept generators, so it's not always convenient for caller to know up-front if 'items' is empty. Allow
-            # empty 'items' and return early.
-            return []
-        return DeleteItem(self.account.protocol).call(
-            folder=self, ids=ids, delete_type=delete_type, send_meeting_cancellations=send_meeting_cancellations,
-            affected_task_occurrences=affected_task_occurrences)
-
-    def update_items(self, *args, **kwargs):
-        warnings.warn('update_items() is deprecated. Use bulk_update() instead', PendingDeprecationWarning)
-        return self.bulk_update(*args, **kwargs)
-
-    def bulk_update(self, items, conflict_resolution=AUTO_RESOLVE, message_disposition=SAVE_ONLY,
-                    send_meeting_invitations_or_cancellations=SEND_TO_NONE):
-        """
-        Updates items in the folder. 'items' is an iterable of tuples containing two elements:
-
-            1. either an (item_id, changekey) tuple or an Item object
-            2. a dict containing the Item attributes to change
-
-        """
-        assert conflict_resolution in CONFLICT_RESOLUTION_CHOICES
-        assert message_disposition in MESSAGE_DISPOSITION_CHOICES
-        assert send_meeting_invitations_or_cancellations in SEND_MEETING_INVITATIONS_AND_CANCELLATIONS_CHOICES
-        log.debug(
-            'Updating %s items for %s (conflict_resolution %s, message_disposition: %s, send_meeting_invitations: %s)',
-            self.DISTINGUISHED_FOLDER_ID,
-            self.account,
-            conflict_resolution,
-            message_disposition,
-            send_meeting_invitations_or_cancellations,
-        )
-        is_empty, items = peek(items)
-        if is_empty:
-            # We accept generators, so it's not always convenient for caller to know up-front if 'items' is empty. Allow
-            # empty 'items' and return early.
-            return []
-        return list(map(self.item_model.id_from_xml, UpdateItem(self.account.protocol).call(
-            folder=self, items=items, conflict_resolution=conflict_resolution, message_disposition=message_disposition,
-            send_meeting_invitations_or_cancellations=send_meeting_invitations_or_cancellations)))
-
-    def get_items(self, *args, **kwargs):
-        warnings.warn('get_items() is deprecated. Use fetch() instead', PendingDeprecationWarning)
-        return self.fetch(*args, **kwargs)
-
-    def fetch(self, ids, only_fields=None):
-        # 'only_fields' specifies which fields to fetch, instead of all possible fields.
-        if hasattr(self, 'with_extra_fields'):
-            raise DeprecationWarning(
-                "'%(cls)s.with_extra_fields' is deprecated. Use 'fetch(ids, only_fields=[...])' instead"
-                % dict(cls=self.__class__.__name__))
-        is_empty, ids = peek(ids)
-        if is_empty:
-            # We accept generators, so it's not always convenient for caller to know up-front if 'items' is empty. Allow
-            # empty 'items' and return early.
-            return []
-        if only_fields:
-            allowed_field_names = self.item_model.fieldnames()
-            for f in only_fields:
-                assert f in allowed_field_names
-        else:
-            only_fields = self.item_model.fieldnames()
-        return list(map(
-            lambda i: self.item_model.from_xml(elem=i, folder=self),
-            GetItem(self.account.protocol).call(folder=self, ids=ids, additional_fields=only_fields)
-        ))
-
-    def test_access(self):
-        """
-        Does a simple FindItem to test (read) access to the folder. Maybe the account doesn't exist, maybe the
-        service user doesn't have access to the calendar. This will throw the most common errors.
-        """
-        self.filter(subject='DUMMY')
-        return True
-
-    def folderid_xml(self):
-        assert self.folder_id
-        assert self.changekey
-        return create_element('t:FolderId', Id=self.folder_id, ChangeKey=self.changekey)
-
-    @classmethod
-    def from_xml(cls, account, elem):
-        # fld_type = re.sub('{.*}', '', elem.tag)
-        fld_id_elem = elem.find('{%s}FolderId' % TNS)
-        fld_id = fld_id_elem.get('Id')
-        changekey = fld_id_elem.get('ChangeKey')
-        display_name = get_xml_attr(elem, '{%s}DisplayName' % TNS)
-        folder_class = get_xml_attr(elem, '{%s}FolderClass' % TNS)
-        return cls(account=account, name=display_name, folder_class=folder_class, folder_id=fld_id, changekey=changekey)
-
-    def get_folders(self, shape=IdOnly, depth=DEEP):
-        # 'depth' controls whether to return direct children or recurse into sub-folders
-        assert shape in SHAPE_CHOICES
-        assert depth in FOLDER_TRAVERSAL_CHOICES
-        folders = []
-        for elem in FindFolder(self.account.protocol).call(
-                folder=self,
-                additional_fields=('folder:DisplayName', 'folder:FolderClass'),
-                shape=shape,
-                depth=depth
-        ):
-            folders.append(self.from_xml(account=self.account, elem=elem))
-        return folders
-
-    @classmethod
-    def get_distinguished(cls, account, shape=IdOnly):
-        assert shape in SHAPE_CHOICES
-        folders = []
-        for elem in GetFolder(account.protocol).call(
-                account=account,
-                distinguished_folder_id=cls.DISTINGUISHED_FOLDER_ID,
-                additional_fields=('folder:DisplayName', 'folder:FolderClass'),
-                shape=shape
-        ):
-            folders.append(cls.from_xml(account=account, elem=elem))
-        assert len(folders) == 1
-        return folders[0]
-
-    def __repr__(self):
-        return self.__class__.__name__ + \
-               repr((self.account, self.name, self.folder_class, self.folder_id, self.changekey))
-
-    def __str__(self):
-        return '%s (%s)' % (self.__class__.__name__, self.name)
-
-
 class ItemMixIn(Item):
     def to_xml(self, version):
         # WARNING: The order of addition of XML elements is VERY important. Exchange expects XML elements in a
@@ -1150,10 +860,6 @@ class ItemMixIn(Item):
             return Item.type_for_field(fieldname)
 
 
-class Root(Folder):
-    DISTINGUISHED_FOLDER_ID = 'root'
-
-
 class CalendarItem(ItemMixIn):
     """
     Models a calendar item. Not all attributes are supported. See full list at
@@ -1209,20 +915,6 @@ class CalendarItem(ItemMixIn):
             i.append(create_element('t:StartTimeZone', Id=self.start.tzinfo.ms_id, Name=self.start.tzinfo.ms_name))
             i.append(create_element('t:EndTimeZone', Id=self.end.tzinfo.ms_id, Name=self.end.tzinfo.ms_name))
         return i
-
-
-class Calendar(Folder):
-    """
-    An interface for the Exchange calendar
-    """
-    DISTINGUISHED_FOLDER_ID = 'calendar'
-    CONTAINER_CLASS = 'IPF.Appointment'
-    item_model = CalendarItem
-
-    # These must be capitalized
-    LOCALIZED_NAMES = {
-        'da_DK': ('Kalender',)
-    }
 
 
 class Message(ItemMixIn):
@@ -1284,70 +976,6 @@ class Message(ItemMixIn):
             assert (self.item_id, self.changekey) == res[0]
         else:
             assert len(res) == 0
-
-
-class Messages(Folder):
-    CONTAINER_CLASS = 'IPF.Note'
-    item_model = Message
-
-
-class DeletedItems(Messages):
-    DISTINGUISHED_FOLDER_ID = 'deleteditems'
-
-    LOCALIZED_NAMES = {
-    }
-
-
-class Drafts(Messages):
-    DISTINGUISHED_FOLDER_ID = 'drafts'
-
-    LOCALIZED_NAMES = {
-    }
-
-
-class Inbox(Messages):
-    DISTINGUISHED_FOLDER_ID = 'inbox'
-
-    LOCALIZED_NAMES = {
-        'da_DK': ('Indbakke',)
-    }
-
-
-class Outbox(Messages):
-    DISTINGUISHED_FOLDER_ID = 'outbox'
-
-    LOCALIZED_NAMES = {
-    }
-
-
-class SentItems(Messages):
-    DISTINGUISHED_FOLDER_ID = 'sentitems'
-
-    LOCALIZED_NAMES = {
-    }
-
-
-class JunkEmail(Messages):
-    DISTINGUISHED_FOLDER_ID = 'junkemail'
-
-    LOCALIZED_NAMES = {
-    }
-
-
-class RecoverableItemsDeletions(Folder):
-    DISTINGUISHED_FOLDER_ID = 'recoverableitemsdeletions'
-    item_model = Item
-
-    LOCALIZED_NAMES = {
-    }
-
-
-class RecoverableItemsRoot(Folder):
-    DISTINGUISHED_FOLDER_ID = 'recoverableitemsroot'
-    item_model = Item
-
-    LOCALIZED_NAMES = {
-    }
 
 
 class Task(ItemMixIn):
@@ -1443,17 +1071,6 @@ class Task(ItemMixIn):
         super().__init__(**kwargs)
 
 
-class Tasks(Folder):
-    DISTINGUISHED_FOLDER_ID = 'tasks'
-    CONTAINER_CLASS = 'IPF.Task'
-    item_model = Task
-
-    # These must be capitalized
-    LOCALIZED_NAMES = {
-        'da_DK': ('Opgaver',)
-    }
-
-
 class Contact(ItemMixIn):
     # Supported attrs: see https://msdn.microsoft.com/en-us/library/office/aa581315(v=exchg.150).aspx
     ELEMENT_NAME = 'Contact'
@@ -1519,10 +1136,387 @@ class Contact(ItemMixIn):
         super().__init__(**kwargs)
 
 
+ITEM_CLASSES = (CalendarItem, Contact, Message, Task)
+
+
+class Folder:
+    DISTINGUISHED_FOLDER_ID = None  # See https://msdn.microsoft.com/en-us/library/office/aa580808(v=exchg.150).aspx
+    # CONTAINER_CLASS = None  # See http://msdn.microsoft.com/en-us/library/hh354773(v=exchg.80).aspx
+    supported_item_models = tuple()  # The Item types that this folder can contain
+    LOCALIZED_NAMES = dict()
+    ITEM_MODEL_MAP = {cls.response_tag(): cls for cls in ITEM_CLASSES}
+
+    def __init__(self, account, name=None, folder_class=None, folder_id=None, changekey=None):
+        self.account = account
+        self.name = name or self.DISTINGUISHED_FOLDER_ID
+        self.folder_class = folder_class
+        self.folder_id = folder_id
+        self.changekey = changekey
+        if not self.is_distinguished:
+            assert self.folder_id
+        if self.folder_id:
+            assert self.changekey
+        log.debug('%s created for %s', self.__class__.__name__, account)
+
+    @property
+    def is_distinguished(self):
+        return self.name.lower() == self.DISTINGUISHED_FOLDER_ID
+
+    @classmethod
+    def item_model_from_tag(cls, tag):
+        return cls.ITEM_MODEL_MAP[tag]
+
+    @classmethod
+    def allowed_field_names(cls):
+        field_names = set()
+        for item_model in cls.supported_item_models:
+            field_names.update(item_model.fieldnames())
+        return field_names
+
+    @classmethod
+    def complex_field_names(cls):
+        field_names = set()
+        for item_model in cls.supported_item_models:
+            field_names.update(item_model.complex_fields())
+        return field_names
+
+    @classmethod
+    def additional_property_elems(cls, fieldname):
+        for item_model in cls.supported_item_models:
+            try:
+                return item_model.additional_property_elems(fieldname=fieldname)
+            except ValueError:
+                pass
+        raise ValueError("No fielduri defined for fieldname '%s'" % fieldname)
+
+    @classmethod
+    def fielduri_for_field(cls, fieldname):
+        for item_model in cls.supported_item_models:
+            try:
+                return item_model.fielduri_for_field(fieldname=fieldname)
+            except ValueError:
+                pass
+        raise ValueError("No fielduri defined for fieldname '%s'" % fieldname)
+
+    def all(self):
+        return QuerySet(self).all()
+
+    def none(self):
+        return QuerySet(self).none()
+
+    def filter(self, *args, **kwargs):
+        return QuerySet(self).filter(*args, **kwargs)
+
+    def exclude(self, *args, **kwargs):
+        return QuerySet(self).exclude(*args, **kwargs)
+
+    def get(self, *args, **kwargs):
+        return QuerySet(self).get(*args, **kwargs)
+
+    def find_items(self, *args, **kwargs):
+        """
+        Finds items in the folder.
+
+        'shape' controls the exact fields returned are governed by. Be aware that complex elements can only be fetched
+        with fetch().
+
+        'depth' controls the whether to return soft-deleted items or not.
+
+        Non-keyword args may be a search expression as supported by Restriction.from_source(), or a list of Q instances.
+
+        Optional extra keyword arguments follow a Django-like QuerySet filter syntax (see
+           https://docs.djangoproject.com/en/1.10/ref/models/querysets/#field-lookups).
+
+        We don't support '__year' and other data-related lookups. We also don't support '__endswith' or '__iendswith'.
+
+        We support the additional '__not' lookup in place of Django's exclude() for simple cases. For more complicated
+        cases you need to create a Q object and use ~Q().
+
+        Examples:
+
+            my_account.inbox.filter(datetime_received__gt=EWSDateTime(2016, 1, 1))
+            my_account.calendar.filter(start__range=(EWSDateTime(2016, 1, 1), EWSDateTime(2017, 1, 1)))
+            my_account.tasks.filter(subject='Hi mom')
+            my_account.tasks.filter(subject__not='Hi mom')
+            my_account.tasks.filter(subject__contains='Foo')
+            my_account.tasks.filter(subject__icontains='foo')
+
+        """
+        # 'endswith' and 'iendswith' could be implemented by searching with 'contains' or 'icontains' and then
+        # post-processing items. Fetch the field in question with additional_fields and remove items where the search
+        # string is not a postfix.
+
+        shape = kwargs.pop('shape', IdOnly)
+        depth = kwargs.pop('depth', SHALLOW)
+        assert shape in SHAPE_CHOICES
+        assert depth in ITEM_TRAVERSAL_CHOICES
+
+        # Define the extra properties we want on the return objects
+        additional_fields = kwargs.pop('additional_fields', tuple())
+        if additional_fields:
+            allowed_field_names = self.allowed_field_names()
+            complex_field_names = self.complex_field_names()
+            for f in additional_fields:
+                if f not in allowed_field_names:
+                    raise ValueError("'%s' is not a field on %s" % (f, self.supported_item_models))
+                if f in complex_field_names:
+                    raise ValueError("find_items() does not support field '%s'. Use fetch() instead" % f)
+
+        # Build up any restrictions
+        q = Q.from_filter_args(self.__class__, *args, **kwargs)
+        if q and not q.is_empty():
+            restriction = Restriction(q.translate_fields(folder_class=self.__class__))
+        else:
+            restriction = None
+        log.debug(
+            'Finding %s items for %s (shape: %s, depth: %s, additional_fields: %s, restriction: %s)',
+            self.DISTINGUISHED_FOLDER_ID,
+            self.account,
+            shape,
+            depth,
+            additional_fields,
+            restriction.q if restriction else None,
+        )
+        items = FindItem(folder=self).call(
+            additional_fields=additional_fields,
+            restriction=restriction,
+            shape=shape,
+            depth=depth
+        )
+        if shape == IdOnly and additional_fields is None:
+            return map(Item.id_from_xml, items)
+        return map(
+            lambda i: self.item_model_from_tag(i.tag).from_xml(elem=i, folder=self),
+            items
+        )
+
+    def add_items(self, *args, **kwargs):
+        warnings.warn('add_items() is deprecated. Use bulk_create() instead', PendingDeprecationWarning)
+        return self.bulk_create(*args, **kwargs)
+
+    def bulk_create(self, items, message_disposition=SAVE_ONLY, send_meeting_invitations=SEND_TO_NONE):
+        """
+        Creates new items in the folder. 'items' is an iterable of Item objects. Returns a list of (id, changekey)
+        tuples in the same order as the input.
+        'message_disposition' is only applicable to Message items.
+        'send_meeting_invitations' is only applicable to CalendarItem items.
+        """
+        assert message_disposition in MESSAGE_DISPOSITION_CHOICES
+        assert send_meeting_invitations in SEND_MEETING_INVITATIONS_CHOICES
+        log.debug(
+            'Adding %s items for %s (message_disposition: %s, send_meeting_invitations: %s)',
+            self.DISTINGUISHED_FOLDER_ID,
+            self.account,
+            message_disposition,
+            send_meeting_invitations,
+        )
+        is_empty, items = peek(items)
+        if is_empty:
+            # We accept generators, so it's not always convenient for caller to know up-front if 'items' is empty. Allow
+            # empty 'items' and return early.
+            return []
+        return list(map(
+            Item.id_from_xml,
+            CreateItem(folder=self).call(
+                items=items,
+                message_disposition=message_disposition,
+                send_meeting_invitations=send_meeting_invitations,
+            )
+        ))
+
+    def delete_items(self, *args, **kwargs):
+        warnings.warn('delete_items() is deprecated. Use bulk_delete() instead', PendingDeprecationWarning)
+        return self.bulk_delete(*args, **kwargs)
+
+    def bulk_delete(self, *args, **kwargs):
+        return self.account.bulk_delete(*args, **kwargs)
+
+    def update_items(self, *args, **kwargs):
+        warnings.warn('update_items() is deprecated. Use bulk_update() instead', PendingDeprecationWarning)
+        return self.bulk_update(*args, **kwargs)
+
+    def bulk_update(self, *args, **kwargs):
+        return self.account.bulk_update(*args, **kwargs)
+
+
+    def get_items(self, *args, **kwargs):
+        warnings.warn('get_items() is deprecated. Use fetch() instead', PendingDeprecationWarning)
+        return self.fetch(*args, **kwargs)
+
+    def fetch(self, ids, only_fields=None):
+        # 'only_fields' specifies which fields to fetch, instead of all possible fields.
+        if hasattr(self, 'with_extra_fields'):
+            raise DeprecationWarning(
+                "'%(cls)s.with_extra_fields' is deprecated. Use 'fetch(ids, only_fields=[...])' instead"
+                % dict(cls=self.__class__.__name__))
+        is_empty, ids = peek(ids)
+        if is_empty:
+            # We accept generators, so it's not always convenient for caller to know up-front if 'items' is empty. Allow
+            # empty 'items' and return early.
+            return []
+        if only_fields:
+            allowed_field_names = self.allowed_field_names()
+            for f in only_fields:
+                assert f in allowed_field_names
+        else:
+            only_fields = self.allowed_field_names()
+        items = GetItem(folder=self).call(items=ids, additional_fields=only_fields)
+        return list(map(
+            lambda i: self.item_model_from_tag(i.tag).from_xml(elem=i, folder=self),
+            items
+        ))
+
+    def test_access(self):
+        """
+        Does a simple FindItem to test (read) access to the folder. Maybe the account doesn't exist, maybe the
+        service user doesn't have access to the calendar. This will throw the most common errors.
+        """
+        self.filter(subject='DUMMY')
+        return True
+
+    def folderid_xml(self):
+        assert self.folder_id
+        assert self.changekey
+        return create_element('t:FolderId', Id=self.folder_id, ChangeKey=self.changekey)
+
+    @classmethod
+    def from_xml(cls, account, elem):
+        # fld_type = re.sub('{.*}', '', elem.tag)
+        fld_id_elem = elem.find('{%s}FolderId' % TNS)
+        fld_id = fld_id_elem.get('Id')
+        changekey = fld_id_elem.get('ChangeKey')
+        display_name = get_xml_attr(elem, '{%s}DisplayName' % TNS)
+        folder_class = get_xml_attr(elem, '{%s}FolderClass' % TNS)
+        return cls(account=account, name=display_name, folder_class=folder_class, folder_id=fld_id, changekey=changekey)
+
+    def get_folders(self, shape=IdOnly, depth=DEEP):
+        # 'depth' controls whether to return direct children or recurse into sub-folders
+        assert shape in SHAPE_CHOICES
+        assert depth in FOLDER_TRAVERSAL_CHOICES
+        folders = []
+        for elem in FindFolder(folder=self).call(
+                additional_fields=('folder:DisplayName', 'folder:FolderClass'),
+                shape=shape,
+                depth=depth
+        ):
+            folders.append(self.from_xml(account=self.account, elem=elem))
+        return folders
+
+    @classmethod
+    def get_distinguished(cls, account, shape=IdOnly):
+        assert shape in SHAPE_CHOICES
+        folders = []
+        for elem in GetFolder(account=account).call(
+                distinguished_folder_id=cls.DISTINGUISHED_FOLDER_ID,
+                additional_fields=('folder:DisplayName', 'folder:FolderClass'),
+                shape=shape
+        ):
+            folders.append(cls.from_xml(account=account, elem=elem))
+        assert len(folders) == 1
+        return folders[0]
+
+    def __repr__(self):
+        return self.__class__.__name__ + \
+               repr((self.account, self.name, self.folder_class, self.folder_id, self.changekey))
+
+    def __str__(self):
+        return '%s (%s)' % (self.__class__.__name__, self.name)
+
+
+class Root(Folder):
+    DISTINGUISHED_FOLDER_ID = 'root'
+
+
+class Calendar(Folder):
+    """
+    An interface for the Exchange calendar
+    """
+    DISTINGUISHED_FOLDER_ID = 'calendar'
+    supported_item_models = (CalendarItem,)
+
+    # These must be capitalized
+    LOCALIZED_NAMES = {
+        'da_DK': ('Kalender',)
+    }
+
+
+class DeletedItems(Folder):
+    DISTINGUISHED_FOLDER_ID = 'deleteditems'
+    supported_item_models = ITEM_CLASSES
+
+    LOCALIZED_NAMES = {
+    }
+
+
+class Messages(Folder):
+    supported_item_models = (Message,)
+
+
+class Drafts(Messages):
+    DISTINGUISHED_FOLDER_ID = 'drafts'
+
+    LOCALIZED_NAMES = {
+    }
+
+
+class Inbox(Messages):
+    DISTINGUISHED_FOLDER_ID = 'inbox'
+
+    LOCALIZED_NAMES = {
+        'da_DK': ('Indbakke',)
+    }
+
+
+class Outbox(Messages):
+    DISTINGUISHED_FOLDER_ID = 'outbox'
+
+    LOCALIZED_NAMES = {
+    }
+
+
+class SentItems(Messages):
+    DISTINGUISHED_FOLDER_ID = 'sentitems'
+
+    LOCALIZED_NAMES = {
+    }
+
+
+class JunkEmail(Messages):
+    DISTINGUISHED_FOLDER_ID = 'junkemail'
+
+    LOCALIZED_NAMES = {
+    }
+
+
+class RecoverableItemsDeletions(Folder):
+    DISTINGUISHED_FOLDER_ID = 'recoverableitemsdeletions'
+    supported_item_models = ITEM_CLASSES
+
+    LOCALIZED_NAMES = {
+    }
+
+
+class RecoverableItemsRoot(Folder):
+    DISTINGUISHED_FOLDER_ID = 'recoverableitemsroot'
+    supported_item_models = ITEM_CLASSES
+
+    LOCALIZED_NAMES = {
+    }
+
+
+class Tasks(Folder):
+    DISTINGUISHED_FOLDER_ID = 'tasks'
+    supported_item_models = (Task,)
+
+    # These must be capitalized
+    LOCALIZED_NAMES = {
+        'da_DK': ('Opgaver',)
+    }
+
+
 class Contacts(Folder):
     DISTINGUISHED_FOLDER_ID = 'contacts'
-    CONTAINER_CLASS = 'IPF.Contact'
-    item_model = Contact
+    supported_item_models = (Contact,)
 
     # These must be capitalized
     LOCALIZED_NAMES = {

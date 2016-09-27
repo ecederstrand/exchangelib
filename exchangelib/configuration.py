@@ -12,7 +12,7 @@ class Configuration:
 
     If the server is not configured with autodiscover, the following should be sufficient:
 
-        config = Configuration(server='mail.example.com', credentials=Credentials('MYWINDOMAIN\myusername', 'topsecret'))
+        config = Configuration(server='example.com', credentials=Credentials('MYWINDOMAIN\myusername', 'topsecret'))
         account = Account(primary_smtp_address='john@example.com', config=config)
 
     You can also set the EWS service endpoint directly:
@@ -21,7 +21,7 @@ class Configuration:
 
     If you know which authentication type the server uses, you add that as a hint:
 
-        config = Configuration(service_endpoint='https://mail.example.com/EWS/Exchange.asmx', auth_type=NTLM, credentials=...)
+        config = Configuration(service_endpoint='https://example.com/EWS/Exchange.asmx', auth_type=NTLM, credentials=..)
 
     If you want to use autodiscover, don't use a Configuration object. Instead, set up an account like this:
 

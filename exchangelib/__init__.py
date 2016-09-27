@@ -3,8 +3,9 @@ from .autodiscover import discover
 from .configuration import Configuration
 from .credentials import DELEGATE, IMPERSONATION, Credentials
 from .ewsdatetime import EWSDateTime, EWSTimeZone
-from .restriction import Restriction, Q
-from .services import IdOnly, AllProperties, SHALLOW, DEEP
+from .folders import CalendarItem, Contact, Message, Task
+from .restriction import Q
+from .services import SHALLOW, DEEP
 from .transport import NTLM, DIGEST, BASIC
 
 

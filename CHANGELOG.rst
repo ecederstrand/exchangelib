@@ -2,6 +2,30 @@
 Change Log
 ==========
 
+
+HEAD
+----
+* Fix bug where fetching items from a folder that can contain multiple item types (e.g. the Deleted Items folder) would
+  only return one item type.
+* ``Folder.bulk_delete()`` was moved to ``Account.bulk_delete()``
+* ``Folder.bulk_update()`` was moved to ``Account.bulk_update()`` and changed to expect a map with ``Item`` instance as
+key and a list of changed fieldnames on each item as value. E.g.:
+
+  .. code-block:: python
+
+      items = []
+      for i in range(4):
+          item = Message(subject='Test %s' % i)
+          items.append(item)
+      account.sent.bulk_create(items=items)
+
+      item_changes = {}
+      for i, item in enumerate(items):
+          item.subject = 'Changed subject' % i
+          changed_items[item] = 'subject'
+      account.bulk_update(items=item_changes)
+
+
 1.7.0
 -----
 * Added the ``is_service_account`` flag to ``Credentials``. ``is_service_account=False`` disables the fault-tolerant error

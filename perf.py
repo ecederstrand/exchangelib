@@ -84,7 +84,7 @@ def perf_test(cbs, dbs, ps):
     delta = t4 - t3
     avg_fetch = avg(delta, n)
     print(('Time to fetch %s items: %s (%s / sec)' % (len(ids), delta, avg_fetch)))
-    result = cal.bulk_delete(ids)
+    result = account.bulk_delete(ids)
     for stat, msg in result:
         if not stat:
             print(('ERROR: %s' % msg))
