@@ -1363,6 +1363,26 @@ class BaseItemTest(EWSTest):
         self.account.bulk_delete(ids=upload_results, affected_task_occurrences=ALL_OCCURRENCIES)
         self.account.bulk_delete(ids=ids, affected_task_occurrences=ALL_OCCURRENCIES)
 
+    def test_export_with_error(self):
+        # 15 new items which we will attempt to export and re-upload
+        items = [self.get_test_item(self.test_folder).save() for _ in range(15)]
+        ids = [ItemId(i.item_id, i.changekey) for i in items]
+        # Delete one of the items, this will cause an error
+        items[3].delete(affected_task_occurrences=ALL_OCCURRENCIES)
+
+        export_results = self.account.export(ids)
+        self.assertEqual(len(items), len(export_results))
+        for idx, (original_ids, result) in enumerate(zip(ids, export_results)):
+            self.assertIsInstance(result, tuple)
+            self.assertEqual(original_ids, result[0])
+            if idx == 3:
+                # If it is the one returning the error
+                self.assertIsInstance(result[1], tuple)
+                self.assertEqual(result[1][0], False)
+                self.assertIsInstance(result[1][1], str)
+            else:
+                self.assertIsInstance(result[1], str)
+
 class CalendarTest(BaseItemTest):
     TEST_FOLDER = 'calendar'
     ITEM_CLASS = CalendarItem
