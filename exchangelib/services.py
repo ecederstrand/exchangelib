@@ -763,6 +763,10 @@ class ExportItems(EWSPooledAccountService):
 class UploadItems(EWSPooledAccountService):
     """
     MSDN: https://msdn.microsoft.com/en-us/library/office/ff709490(v=exchg.150).aspx
+
+    This currently has the existing limitation of only being able to upload
+    items that do not yet exist in the database. The full spec also allows
+    actions "Update" and "UpdateOrCreate".
     """
     CHUNKSIZE = 100
     SERVICE_NAME = 'UploadItems'
