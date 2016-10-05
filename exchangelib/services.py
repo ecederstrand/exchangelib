@@ -22,7 +22,7 @@ from .errors import EWSWarning, TransportError, SOAPError, ErrorTimeoutExpired, 
     ErrorInternalServerTransientError, ErrorNoRespondingCASInDestinationSite, ErrorImpersonationFailed, \
     ErrorMailboxMoveInProgress, ErrorAccessDenied, ErrorConnectionFailed, RateLimitError, ErrorServerBusy, \
     ErrorTooManyObjectsOpened, ErrorInvalidLicense, ErrorInvalidSchemaVersionForMailboxVersion, \
-    ErrorInvalidServerVersion, ErrorItemNotFound
+    ErrorInvalidServerVersion, ErrorItemNotFound, EWSError
 from .ewsdatetime import EWSDateTime
 from .transport import wrap, SOAPNS, TNS, MNS, ENS
 from .util import chunkify, create_element, add_xml_child, get_xml_attr, to_xml, post_ratelimited, ElementType, \
@@ -51,6 +51,7 @@ FOLDER_TRAVERSAL_CHOICES = (SHALLOW, DEEP, SOFT_DELETED)
 class EWSService:
     SERVICE_NAME = None  # The name of the SOAP service
     element_container_name = None  # The name of the XML element wrapping the collection of returned items
+    ERRORS_TO_CATCH_IN_RESPONSE = EWSWarning # Treat the following errors as warnings when contained in an element
 
     def __init__(self, protocol):
         self.protocol = protocol
@@ -231,7 +232,7 @@ class EWSService:
                     yield (container, None)
             except (ErrorTimeoutExpired, ErrorBatchProcessingStopped):
                 raise
-            except EWSWarning as e:
+            except self.ERRORS_TO_CATCH_IN_RESPONSE as e:
                 yield (False, '%s' % e.value)
 
     def _get_elements_in_container(self, container):
@@ -286,6 +287,10 @@ class PagingEWSMixIn(EWSService):
         log.debug('%s: Got page with next offset %s (last_page %s)', log_prefix, next_offset, is_last_page)
         return rootfolder, next_offset
 
+
+class ExpectResponseErrorsMixin(EWSService):
+    """Don't raise errors in the response, just return them as if they're warnings"""
+    ERRORS_TO_CATCH_IN_RESPONSE = EWSError
 
 class GetServerTimeZones(EWSService):
     """
@@ -733,7 +738,7 @@ class ResolveNames(EWSService):
             raise AttributeError('"unresolvedentries" must not be empty')
         return payload
 
-class ExportItems(EWSPooledAccountService):
+class ExportItems(EWSPooledAccountService, ExpectResponseErrorsMixin):
     """
     MSDN: https://msdn.microsoft.com/en-us/library/office/ff709523(v=exchg.150).aspx
     """
