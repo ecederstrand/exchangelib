@@ -1400,6 +1400,22 @@ class BaseItemTest(EWSTest):
             else:
                 self.assertIsInstance(result[1], str)
 
+    def test_export_with_tuple_not_id(self):
+        # 15 new items which we will attempt to export and re-upload
+        items = [self.get_test_item(self.test_folder).save() for _ in range(15)]
+        ids = [(i.item_id, i.changekey) for i in items]
+        # re-fetch items because there will be some extra fields added by the
+        #  server
+        items = self.test_folder.fetch(ids)
+
+        # Try exporting and making sure we get the right response
+        export_results = self.account.export(ids)
+        self.assertEqual(len(items), len(export_results))
+        for original_id, result in zip(ids, export_results):
+            self.assertEqual(original_id, result[0])
+            self.assertIsInstance(result[1], str)
+
+
 class CalendarTest(BaseItemTest):
     TEST_FOLDER = 'calendar'
     ITEM_CLASS = CalendarItem

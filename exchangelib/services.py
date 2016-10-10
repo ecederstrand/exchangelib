@@ -893,11 +893,20 @@ class ExportItems(EWSPooledAccountService, ExpectResponseErrorsMixin):
         )
 
     def _get_payload(self, items, version):
+        from .folders import ItemId
         exportitems = create_element('m:%s' % self.SERVICE_NAME)
         itemids = create_element('m:ItemIds')
         exportitems.append(itemids)
         for item_id in items:
-            itemids.append(item_id.to_xml(version))
+            if isinstance(item_id, ItemId):
+                itemids.append(item_id.to_xml(version))
+            else:
+                xml_id = create_element("t:ItemId")
+                # Use .set() to not fill up the create_element() cache with unique values
+                xml_id.set("Id", item_id[0])
+                xml_id.set("ChangeKey", item_id[1])
+                itemids.append(xml_id)
+
         return exportitems
 
     # We need to override this since ExportItemsResponseMessage is formated a
