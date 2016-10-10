@@ -1,5 +1,6 @@
 import logging
 from copy import deepcopy
+from operator import attrgetter
 
 from .restriction import Q
 from .services import IdOnly
@@ -98,7 +99,12 @@ class QuerySet:
             items = self.folder.find_items(self.q, additional_fields=additional_fields, shape=IdOnly)
         if self.order_fields:
             assert isinstance(self.order_fields, tuple)
-            items = sorted(items, key=lambda i: tuple(getattr(i, f) for f in self.order_fields))
+            # Sorting in Python is stable. Do a sort on each of the given fields in reverse order. Reverse the sort if
+            # the field is prefixed with '-'
+            for f in reversed(self.order_fields):
+                items = sorted(items, key=attrgetter(f.lstrip('-')), reverse=f.startswith('-'))
+            if self.reversed:
+                items = reversed(items)
             if extra_order_fields:
                 # Nullify the fields we only needed for sorting
                 def clean_item(i):
@@ -106,8 +112,6 @@ class QuerySet:
                         setattr(i, f, None)
                     return i
                 items = map(clean_item, items)
-        if self.reversed:
-            items = reversed(items)
         return items
 
     def __iter__(self):
@@ -239,9 +243,8 @@ class QuerySet:
         return new_qs
 
     def order_by(self, *args):
-        # TODO: support '-my_field' for reverse sort
         try:
-            self._check_fields(args)
+            self._check_fields(f.lstrip('-') for f in args)
         except ValueError as e:
             raise ValueError("%s in order_by()" % e.args[0])
         new_qs = self.copy()

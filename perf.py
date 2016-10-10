@@ -5,8 +5,7 @@ import os
 
 from yaml import load
 
-from exchangelib import DELEGATE, services, Credentials, Configuration, Account, EWSDateTime, EWSTimeZone
-from exchangelib.folders import CalendarItem
+from exchangelib import DELEGATE, services, Credentials, Configuration, Account, EWSDateTime, EWSTimeZone, CalendarItem
 
 logging.basicConfig(level=logging.WARNING)
 

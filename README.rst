@@ -84,14 +84,17 @@ Here is a simple example that inserts, retrieves and deletes calendar items in a
     #       "start < '2016-01-02T03:04:05T' and end > '2016-01-01T03:04:05T' and categories in ('foo', 'bar')"
     # )
     #
-    # filter() also support Q objects that are modeled after Django Q objects
+    # filter() also support Q objects that are modeled after Django Q objects.
     #
     # q = (Q(subject__iexact='foo') | Q(subject__contains='bar')) & ~Q(subject__startswith='baz')
     # items = my_folder.filter(q)
     #
-    # A large part of the Django QuerySet API is supported:
+    # A large part of the Django QuerySet API is supported. The QuerySet doesn't fetch anything before the QuerySet is
+    # iterated. The QuerySet returns an iterator, and results are cached when the QuerySet is iterated the first time.
+    # Examples:
     #
     # all_items = my_folder.all()
+    # all_items_without_caching = my_folder.all().iterator()
     # filtered_items = my_folder.filter(subject__contains='foo').exclude(categories__contains='bar')
     # sparse_items = my_folder.all().only('subject', 'start')
     # status_report = my_folder.all().delete()
@@ -102,7 +105,7 @@ Here is a simple example that inserts, retrieves and deletes calendar items in a
     # folder_is_empty = not my_folder.all().exists()
     # ids_as_dict = my_folder.all().values('item_id', 'changekey')
     # ids_as_list = my_folder.all().values_list('item_id', 'changekey')
-    # subjects = my_folder.all().values_list('subject', flat=True)
+    # all_subjects = my_folder.all().values_list('subject', flat=True)
     #
     items = account.calendar.filter(
         start__lt=tz.localize(EWSDateTime(year, month, day + 1)),
@@ -110,7 +113,7 @@ Here is a simple example that inserts, retrieves and deletes calendar items in a
         categories__contains=['foo', 'bar'],
     )
     for item in items:
-        print(item.start, item.end, item.subject, items.body, item.location)
+        print(item.start, item.end, item.subject, item.body, item.location)
 
     # Delete the calendar items we found
     res = items.delete()

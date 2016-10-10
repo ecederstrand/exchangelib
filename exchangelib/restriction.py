@@ -280,6 +280,8 @@ class Q:
         if self.translated:
             return self
         if self.field is not None:
+            if self.field in folder_class.complex_field_names():
+                raise ValueError("Complex field '%s' does not support filtering" % self.field)
             self.field = folder_class.fielduri_for_field(self.field)
         for c in self.children:
             c.translate_fields(folder_class=folder_class)
@@ -311,7 +313,9 @@ class Q:
             elem = self._op_to_xml(self.op)
             field = create_element('t:FieldURI', FieldURI=self.field)
             elem.append(field)
-            constant = create_element('t:Constant', Value=value_to_xml_text(self.value))
+            constant = create_element('t:Constant')
+            # Use .set() to not fill up the create_element() cache with unique values
+            constant.set('Value', value_to_xml_text(self.value))
             if self.op in self.CONTAINS_OPS:
                 elem.append(constant)
             else:

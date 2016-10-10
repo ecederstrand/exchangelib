@@ -1,0 +1,6 @@
+python-targets:
+  - 3
+
+ignore-paths:
+  - optimize.py
+  - perf.py

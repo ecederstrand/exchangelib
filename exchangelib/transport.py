@@ -261,4 +261,4 @@ def dummy_xml(version):
     # Used as a minimal, valid EWS request to force Exchange into accepting the request and returning EWS XML
     # containing server version info.
     from .services import ResolveNames  # Avoid circular import
-    return ResolveNames(protocol=None).payload(version=version, account=None, unresolvedentries=['DUMMY'])
+    return ResolveNames(protocol=None).payload(version=version, account=None, unresolved_entries=['DUMMY'])

@@ -433,7 +433,7 @@ class CommonTest(EWSTest):
         ids = self.account.calendar.filter(start__lt=end, end__gt=start, categories__contains=self.categories)\
             .values_list('item_id', 'changekey')
         self.assertEqual(len(ids), len(items))
-        items = self.account.calendar.fetch(return_ids)
+        items = self.account.fetch(return_ids)
         for i, item in enumerate(items):
             subject = 'Test Subject %s' % i
             self.assertEqual(item.start, start)
@@ -614,7 +614,7 @@ class BaseItemTest(EWSTest):
     def get_test_item(self, folder=None, categories=None):
         item_kwargs = self.get_random_insert_kwargs()
         item_kwargs['categories'] = categories or self.categories
-        return self.ITEM_CLASS(folder=folder or self.test_folder, **item_kwargs)
+        return self.ITEM_CLASS(account=self.account, folder=folder or self.test_folder, **item_kwargs)
 
     def test_magic(self):
         item = self.get_test_item()
@@ -624,7 +624,7 @@ class BaseItemTest(EWSTest):
     def test_empty_args(self):
         # We allow empty sequences for these methods
         self.assertEqual(self.test_folder.bulk_create(items=[]), [])
-        self.assertEqual(self.test_folder.fetch(ids=[]), [])
+        self.assertEqual(self.account.fetch(ids=[]), [])
         self.assertEqual(self.account.bulk_update(items=[]), [])
         self.assertEqual(self.account.bulk_delete(ids=[]), [])
 
@@ -1111,7 +1111,7 @@ class BaseItemTest(EWSTest):
         item = self.get_test_item()
         self.test_folder.bulk_create(items=[item, item])
         ids = self.test_folder.filter(categories__contains=item.categories)
-        items = self.test_folder.fetch(ids=ids)
+        items = self.account.fetch(ids=ids)
         for item in items:
             assert isinstance(item, self.ITEM_CLASS)
         self.assertEqual(len(items), 2)
@@ -1147,7 +1147,7 @@ class BaseItemTest(EWSTest):
     def test_save_and_delete(self):
         # Test that we can create, update and delete single items using methods directly on the item
         insert_kwargs = self.get_random_insert_kwargs()
-        item = self.ITEM_CLASS(folder=self.test_folder, **insert_kwargs)
+        item = self.ITEM_CLASS(account=self.account, folder=self.test_folder, **insert_kwargs)
         self.assertIsNone(item.item_id)
         self.assertIsNone(item.changekey)
 
@@ -1161,7 +1161,7 @@ class BaseItemTest(EWSTest):
         for k, v in update_kwargs.items():
             setattr(item, k, v)
         item.save()
-        updated_item = self.test_folder.fetch(ids=[item])[0]
+        updated_item = self.account.fetch(ids=[item])[0]
         for k, v in update_kwargs.items():
             self.assertEqual(getattr(updated_item, k), v, (k, getattr(updated_item, k), v))
 
@@ -1170,7 +1170,7 @@ class BaseItemTest(EWSTest):
         item.delete(affected_task_occurrences=ALL_OCCURRENCIES)
         with self.assertRaises(ErrorItemNotFound):
             # It's gone from the account
-            self.test_folder.fetch(ids=[item_id])
+            self.account.fetch(ids=[item_id])
             # Really gone, not just changed ItemId
             items = self.test_folder.filter(categories__contains=item.categories)
             self.assertEqual(len(items), 0)
@@ -1185,10 +1185,10 @@ class BaseItemTest(EWSTest):
         item.soft_delete(affected_task_occurrences=ALL_OCCURRENCIES)
         with self.assertRaises(ErrorItemNotFound):
             # It's gone from the test folder
-            self.test_folder.fetch(ids=[item_id])
+            self.account.fetch(ids=[item_id])
         with self.assertRaises(ErrorItemNotFound):
             # It's gone from the trash folder
-            self.account.trash.fetch(ids=[item_id])
+            self.account.fetch(ids=[item_id])
         # Really gone, not just changed ItemId
         self.assertEqual(len(self.test_folder.filter(categories__contains=item.categories)), 0)
         self.assertEqual(len(self.account.trash.filter(categories__contains=item.categories)), 0)
@@ -1204,15 +1204,32 @@ class BaseItemTest(EWSTest):
         item.move_to_trash(affected_task_occurrences=ALL_OCCURRENCIES)
         with self.assertRaises(ErrorItemNotFound):
             # Not in the test folder anymore
-            self.test_folder.fetch(ids=[item_id])
+            self.account.fetch(ids=[item_id])
         # Really gone, not just changed ItemId
         self.assertEqual(len(self.test_folder.filter(categories__contains=item.categories)), 0)
         # Test that the item moved to trash
-        # TODO: This only works for Messages. Maybe our support for trash can only handle Message objects?
         item = self.account.trash.get(categories__contains=item.categories)
-        moved_item = self.account.trash.fetch(ids=[item])[0]
+        moved_item = self.account.fetch(ids=[item])[0]
         # The item was copied, so the ItemId has changed. Let's compare the subject instead
         self.assertEqual(item.subject, moved_item.subject)
+
+    def test_move(self):
+        # First, empty trash bin
+        self.account.trash.all().delete()
+        item = self.get_test_item().save()
+        item_id = (item.item_id, item.changekey)
+        # Move to trash. We use trash because it can contain all item types. This changes the ItemId
+        item.move(to_folder=self.account.trash)
+        with self.assertRaises(ErrorItemNotFound):
+            # original item ID no longer exists
+            self.account.fetch(ids=[item_id])
+        # Test that the item moved to trash
+        self.assertEqual(len(self.test_folder.filter(categories__contains=item.categories)), 0)
+        moved_item = self.account.trash.get(categories__contains=item.categories)
+        self.assertEqual(item.item_id, moved_item.item_id)
+        self.assertEqual(item.changekey, moved_item.changekey)
+        # Test that the original item self.updated its ItemId
+        moved_item = self.account.fetch(ids=[item])[0]
 
     def test_item(self):
         # Test insert
@@ -1227,7 +1244,7 @@ class BaseItemTest(EWSTest):
         self.assertEqual(len(find_ids[0]), 2)
         self.assertEqual(insert_ids, list(find_ids))
         # Test with generator as argument
-        item = self.test_folder.fetch(ids=(i for i in find_ids))[0]
+        item = self.account.fetch(ids=(i for i in find_ids))[0]
         for f in self.ITEM_CLASS.fieldnames():
             if f in self.ITEM_CLASS.readonly_fields():
                 continue
@@ -1245,12 +1262,12 @@ class BaseItemTest(EWSTest):
         for k, v in update_kwargs.items():
             setattr(item, k, v)
         # Test with generator as argument
-        update_ids = self.account.bulk_update(items=(i for i in [(item, update_fieldnames), ]))
+        update_ids = self.account.bulk_update(items=(i for i in [(item, update_fieldnames)]))
         self.assertEqual(len(update_ids), 1)
         self.assertEqual(len(update_ids[0]), 2, update_ids)
         self.assertEqual(insert_ids[0][0], update_ids[0][0])  # ID should be the same
         self.assertNotEqual(insert_ids[0][1], update_ids[0][1])  # Changekey should not be the same when item is updated
-        item = self.test_folder.fetch(update_ids)[0]
+        item = self.account.fetch(update_ids)[0]
         for f in self.ITEM_CLASS.fieldnames():
             if f in self.ITEM_CLASS.readonly_fields():
                 continue
@@ -1289,7 +1306,7 @@ class BaseItemTest(EWSTest):
         self.assertEqual(len(wipe_ids[0]), 2, wipe_ids)
         self.assertEqual(insert_ids[0][0], wipe_ids[0][0])  # ID should be the same
         self.assertNotEqual(insert_ids[0][1], wipe_ids[0][1])  # Changekey should not be the same when item is updated
-        item = self.test_folder.fetch(wipe_ids)[0]
+        item = self.account.fetch(wipe_ids)[0]
         for f in self.ITEM_CLASS.fieldnames():
             if f in self.ITEM_CLASS.required_fields():
                 continue
@@ -1307,7 +1324,7 @@ class BaseItemTest(EWSTest):
         self.assertEqual(len(wipe2_ids[0]), 2, wipe2_ids)
         self.assertEqual(insert_ids[0][0], wipe2_ids[0][0])  # ID should be the same
         self.assertNotEqual(insert_ids[0][1], wipe2_ids[0][1])  # Changekey should not be the same when item is updated
-        item = self.test_folder.fetch(wipe2_ids)[0]
+        item = self.account.fetch(wipe2_ids)[0]
         self.assertEqual(item.extern_id, extern_id)
 
         # Remove test item. Test with generator as argument
@@ -1396,6 +1413,7 @@ class MessagesTest(BaseItemTest):
     def test_send(self):
         # Test that we can send (only) Message items
         item = self.get_test_item()
+        item.folder = None
         item.send()
         self.assertIsNone(item.item_id)
         self.assertIsNone(item.changekey)
@@ -1498,8 +1516,8 @@ def get_random_datetime_range():
 
 if __name__ == '__main__':
     import logging
-    # loglevel = logging.DEBUG
-    loglevel = logging.WARNING
+    loglevel = logging.DEBUG
+    # loglevel = logging.WARNING
     logging.basicConfig(level=loglevel)
     logging.getLogger('exchangelib').setLevel(loglevel)
     unittest.main()

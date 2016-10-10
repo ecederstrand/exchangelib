@@ -1,10 +1,14 @@
 .eggs
 .idea
+.coverage
+
+*.html
 *.pyc
+*.swp
+*.egg-info
+
 build
 dist
-*.egg-info
+
 settings.yml
-.coverage
-*.html
 scratch.py

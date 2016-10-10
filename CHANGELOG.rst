@@ -7,9 +7,16 @@ HEAD
 ----
 * Fix bug where fetching items from a folder that can contain multiple item types (e.g. the Deleted Items folder) would
   only return one item type.
+* Added ``Item.move(to_folder=...)`` that moves an item to another folder, and ``Item.refresh()`` that updates the
+  Item with data from EWS.
+* Support reverse sort on individual fields in ``order_by()``, e.g. ``my_folder.all().order_by('subject', '-start')``
+* ``Account.bulk_create()`` was added to create items that don't need a folder, e.g. ``Message.send()``
+* ``Account.fetch()`` was added to fetch items without knowing the containing folder.
+* Implemented ``SendItem`` service to send existing messages.
 * ``Folder.bulk_delete()`` was moved to ``Account.bulk_delete()``
-* ``Folder.bulk_update()`` was moved to ``Account.bulk_update()`` and changed to expect a map with ``Item`` instance as
-key and a list of changed fieldnames on each item as value. E.g.:
+* ``Folder.bulk_update()`` was moved to ``Account.bulk_update()`` and changed to expect a list of ``(Item, fieldnames)``
+  tuples where Item is e.g. a ``Message`` instance and ``fieldnames``is a list of attributes names that need updating.
+  E.g.:
 
   .. code-block:: python
 
@@ -19,10 +26,10 @@ key and a list of changed fieldnames on each item as value. E.g.:
           items.append(item)
       account.sent.bulk_create(items=items)
 
-      item_changes = {}
+      item_changes = []
       for i, item in enumerate(items):
           item.subject = 'Changed subject' % i
-          changed_items[item] = 'subject'
+          item_changes.append(item, ['subject'])
       account.bulk_update(items=item_changes)
 
 
