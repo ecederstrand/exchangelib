@@ -174,25 +174,24 @@ class Account:
         """
         return [(id_, export) for id_, export in zip(ids, ExportItems(self).call(ids))]
 
-    def upload(self, data, folders):
+    def upload(self, upload_data):
         """
         Adds objects retrieved from export into the given folders
 
         Arguments:
-        'data' is an iterable containing the string outputs of exports
-        'folders' is an equal lengthed iterable containing the folder that each item is to be inserted in
+        'upload_data' is an iterable of tuples containing the folder we want to upload the data to and the
+            string outputs of exports.
 
         Returns:
         A list of ItemIds of the new items inserted
 
         Example:
-        account.upload(["AABBCC...", "XXYYZZ...", "ABCXYZ..."],
-                       [account.inbox, account.inbox, account.calendar])
+        account.upload([(account.inbox, "AABBCC..."),
+                        (account.inbox, "XXYYZZ..."),
+                        (account.calendar, "ABCXYZ...")])
         -> [ItemId(...), ItemId(...), ItemId(...)]
         """
-        merged_data = ((folder, data_str) for folder, data_str in zip(folders, data))
-        upload_ids = UploadItems(self).call(merged_data)
-
+        upload_ids = UploadItems(self).call(upload_data)
         return [ItemId(id=item_id, changekey=change_key) for item_id, change_key in upload_ids]
 
     def bulk_create(self, folder, items, message_disposition=SAVE_ONLY, send_meeting_invitations=SEND_TO_NONE):

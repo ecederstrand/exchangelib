@@ -1347,8 +1347,7 @@ class BaseItemTest(EWSTest):
             self.assertIsInstance(result[1], str)
 
         # Try reuploading our results
-        upload_results = self.account.upload([data for _, data in export_results],
-                                             [self.test_folder for _ in export_results])
+        upload_results = self.account.upload([(self.test_folder, data) for _, data in export_results])
         self.assertEqual(len(items), len(upload_results))
         for result in upload_results:
             # Must be a completely new ItemId
