@@ -11,7 +11,7 @@ from .folders import Root, Calendar, DeletedItems, Drafts, Inbox, Outbox, SentIt
     AUTO_RESOLVE, SEND_TO_NONE, SAVE_ONLY, SEND_AND_SAVE_COPY, SEND_ONLY, SPECIFIED_OCCURRENCE_ONLY, \
     DELETE_TYPE_CHOICES, MESSAGE_DISPOSITION_CHOICES, CONFLICT_RESOLUTION_CHOICES, AFFECTED_TASK_OCCURRENCES_CHOICES, \
     SEND_MEETING_INVITATIONS_CHOICES, SEND_MEETING_INVITATIONS_AND_CANCELLATIONS_CHOICES, \
-    SEND_MEETING_CANCELLATIONS_CHOICES, ItemId
+    SEND_MEETING_CANCELLATIONS_CHOICES
 from .services import ExportItems, UploadItems
 from .protocol import Protocol
 from .services import GetItem, CreateItem, UpdateItem, DeleteItem, MoveItem, SendItem
@@ -160,19 +160,17 @@ class Account:
     def domain(self):
         return get_domain(self.primary_smtp_address)
 
-    def export(self, ids):
+    def export(self, items):
         """
         Return export strings of the given items
 
         Arguments:
-        'ids' is an iterable containing ItemId objects for what we want to export
+        'items' is an iterable containing the Items we want to export
 
         Returns:
-        A list of tuples with two elements:
-            0: An ItemId, the id of the object
-            1: A string, the exported representation of the object
+        A list strings, the exported representation of the object
         """
-        return [(id_, export) for id_, export in zip(ids, ExportItems(self).call(ids))]
+        return list(ExportItems(self).call(items))
 
     def upload(self, upload_data):
         """
@@ -183,16 +181,15 @@ class Account:
             string outputs of exports.
 
         Returns:
-        A list of ItemIds of the new items inserted
+        A list of tuples with the new ids and changekeys
 
         Example:
         account.upload([(account.inbox, "AABBCC..."),
                         (account.inbox, "XXYYZZ..."),
                         (account.calendar, "ABCXYZ...")])
-        -> [ItemId(...), ItemId(...), ItemId(...)]
+        -> [("idA", "changekey"), ("idB", "changekey"), ("idC", "changekey")]
         """
-        upload_ids = UploadItems(self).call(upload_data)
-        return [ItemId(id=item_id, changekey=change_key) for item_id, change_key in upload_ids]
+        return list(UploadItems(self).call(upload_data))
 
     def bulk_create(self, folder, items, message_disposition=SAVE_ONLY, send_meeting_invitations=SEND_TO_NONE):
         """

@@ -18,7 +18,7 @@ from exchangelib.errors import RelativeRedirect, ErrorItemNotFound
 from exchangelib.ewsdatetime import EWSDateTime, EWSDate, EWSTimeZone, UTC, UTC_NOW
 from exchangelib.folders import CalendarItem, Attendee, Mailbox, Message, ExternId, Choice, Email, Contact, Task, \
     EmailAddress, PhysicalAddress, PhoneNumber, IndexedField, RoomList, Calendar, DeletedItems, Drafts, Inbox, Outbox, \
-    SentItems, JunkEmail, Tasks, Contacts, AnyURI, BodyType, ALL_OCCURRENCIES, ItemId
+    SentItems, JunkEmail, Tasks, Contacts, AnyURI, BodyType, ALL_OCCURRENCIES
 from exchangelib.queryset import QuerySet, DoesNotExist, MultipleObjectsReturned
 from exchangelib.restriction import Restriction, Q
 from exchangelib.services import GetServerTimeZones, GetRoomLists, GetRooms
@@ -1334,24 +1334,23 @@ class BaseItemTest(EWSTest):
     def test_export_and_upload(self):
         # 15 new items which we will attempt to export and re-upload
         items = [self.get_test_item(self.test_folder).save() for _ in range(15)]
-        ids = [ItemId(i.item_id, i.changekey) for i in items]
+        ids = [(i.item_id, i.changekey) for i in items]
         # re-fetch items because there will be some extra fields added by the
         #  server
-        items = self.test_folder.fetch(ids)
+        items = self.test_folder.fetch(items)
 
         # Try exporting and making sure we get the right response
-        export_results = self.account.export(ids)
+        export_results = self.account.export(items)
         self.assertEqual(len(items), len(export_results))
-        for original_id, result in zip(ids, export_results):
-            self.assertEqual(original_id, result[0])
-            self.assertIsInstance(result[1], str)
+        for result in export_results:
+            self.assertIsInstance(result, str)
 
         # Try reuploading our results
-        upload_results = self.account.upload([(self.test_folder, data) for _, data in export_results])
+        upload_results = self.account.upload([(self.test_folder, data) for data in export_results])
         self.assertEqual(len(items), len(upload_results))
         for result in upload_results:
             # Must be a completely new ItemId
-            self.assertIsInstance(result, ItemId)
+            self.assertIsInstance(result, tuple)
             self.assertNotIn(result, ids)
 
         # Check the items uploaded are the same as the original items
@@ -1382,38 +1381,26 @@ class BaseItemTest(EWSTest):
     def test_export_with_error(self):
         # 15 new items which we will attempt to export and re-upload
         items = [self.get_test_item(self.test_folder).save() for _ in range(15)]
-        ids = [ItemId(i.item_id, i.changekey) for i in items]
+        # Use id tuples for export here because deleting an item clears it's
+        #  id.
+        ids = [(item.item_id, item.changekey) for item in items]
         # Delete one of the items, this will cause an error
         items[3].delete(affected_task_occurrences=ALL_OCCURRENCIES)
 
         export_results = self.account.export(ids)
         self.assertEqual(len(items), len(export_results))
-        for idx, (original_ids, result) in enumerate(zip(ids, export_results)):
-            self.assertIsInstance(result, tuple)
-            self.assertEqual(original_ids, result[0])
+        for idx, result in enumerate(export_results):
             if idx == 3:
                 # If it is the one returning the error
-                self.assertIsInstance(result[1], tuple)
-                self.assertEqual(result[1][0], False)
-                self.assertIsInstance(result[1][1], str)
-            else:
+                self.assertIsInstance(result, tuple)
+                self.assertEqual(result[0], False)
                 self.assertIsInstance(result[1], str)
+            else:
+                self.assertIsInstance(result, str)
 
-    def test_export_with_tuple_not_id(self):
-        # 15 new items which we will attempt to export and re-upload
-        items = [self.get_test_item(self.test_folder).save() for _ in range(15)]
-        ids = [(i.item_id, i.changekey) for i in items]
-        # re-fetch items because there will be some extra fields added by the
-        #  server
-        items = self.test_folder.fetch(ids)
-
-        # Try exporting and making sure we get the right response
-        export_results = self.account.export(ids)
-        self.assertEqual(len(items), len(export_results))
-        for original_id, result in zip(ids, export_results):
-            self.assertEqual(original_id, result[0])
-            self.assertIsInstance(result[1], str)
-
+        # Clean up after yourself
+        del ids[3]  # Sending the deleted one through will cause an error
+        self.account.bulk_delete(ids=ids, affected_task_occurrences=ALL_OCCURRENCIES)
 
 class CalendarTest(BaseItemTest):
     TEST_FOLDER = 'calendar'

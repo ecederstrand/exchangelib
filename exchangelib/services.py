@@ -897,15 +897,9 @@ class ExportItems(EWSPooledAccountService, ExpectResponseErrorsMixin):
         exportitems = create_element('m:%s' % self.SERVICE_NAME)
         itemids = create_element('m:ItemIds')
         exportitems.append(itemids)
-        for item_id in items:
-            if isinstance(item_id, ItemId):
-                itemids.append(item_id.to_xml(version))
-            else:
-                xml_id = create_element("t:ItemId")
-                # Use .set() to not fill up the create_element() cache with unique values
-                xml_id.set("Id", item_id[0])
-                xml_id.set("ChangeKey", item_id[1])
-                itemids.append(xml_id)
+        for item in items:
+            item_id = ItemId(*(item if isinstance(item, tuple) else (item.item_id, item.changekey)))
+            set_xml_value(itemids, item_id, self.account.version)
 
         return exportitems
 

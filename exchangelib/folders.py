@@ -117,12 +117,6 @@ class ItemId(EWSElement):
         self.id = id
         self.changekey = changekey
 
-    @property
-    def item_id(self):
-        # add item_id property so ItemId can be used in place of Item where
-        #  we use Item to retrieve ids
-        return self.id
-
     def to_xml(self, version):
         elem = create_element(self.request_tag())
         # Use .set() to not fill up the create_element() cache with unique values
