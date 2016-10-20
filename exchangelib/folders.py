@@ -1145,11 +1145,12 @@ class CalendarItem(ItemMixIn):
         'required_attendees': ('RequiredAttendees', [Attendee]),
         'optional_attendees': ('OptionalAttendees', [Attendee]),
         'resources': ('Resources', [Attendee]),
+        'is_all_day': ('IsAllDayEvent', bool),
     }
     ORDERED_FIELDS = (
         'subject', 'sensitivity', 'body', 'categories', 'importance', 'reminder_is_set', 'extern_id',
         'start', 'end',
-        'legacy_free_busy_status', 'location', 'required_attendees', 'optional_attendees', 'resources'
+        'legacy_free_busy_status', 'location', 'is_all_day', 'required_attendees', 'optional_attendees', 'resources'
     )
     REQUIRED_FIELDS = {'subject', 'start', 'end', 'legacy_free_busy_status'}
     READONLY_FIELDS = {'organizer'}
