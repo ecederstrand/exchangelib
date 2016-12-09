@@ -283,9 +283,9 @@ class PagingEWSMixIn(EWSService):
             if not next_offset:
                 break
             if next_offset != item_count:
-                # Guard against endless loop
-                log.warning('Unexpected next offset: %s -> %s', item_count, next_offset)
-                break
+                # Check paging offsets
+                raise TransportError(
+                    'Unexpected next offset: %s -> %s' % (last_offset, next_offset))
 
     def _get_page(self, response):
         assert len(response) == 1
