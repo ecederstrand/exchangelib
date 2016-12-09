@@ -256,7 +256,7 @@ class PagingEWSMixIn(EWSService):
     def _paged_call(self, **kwargs):
         account = self.account if isinstance(self, EWSAccountService) else None
         log_prefix = 'EWS %s, account %s, service %s' % (self.protocol.service_endpoint, account, self.SERVICE_NAME)
-        last_offset, next_offset = 0, 0
+        next_offset = 0
         calendar_view = kwargs.get('calendar_view')
         max_items = None if calendar_view is None else calendar_view.max_items  # Hack, see below
         item_count = 0
@@ -265,7 +265,6 @@ class PagingEWSMixIn(EWSService):
             kwargs['offset'] = next_offset
             payload = self._get_payload(**kwargs)
             response = self._get_response_xml(payload=payload)
-            last_offset = next_offset
             rootfolder, next_offset = self._get_page(response)
             if isinstance(rootfolder, ElementType):
                 container = rootfolder.find(self.element_container_name)
@@ -283,9 +282,9 @@ class PagingEWSMixIn(EWSService):
                     break
             if not next_offset:
                 break
-            if next_offset != last_offset + item_count:
+            if next_offset != item_count:
                 # Guard against endless loop
-                log.warning('Unexpected next offset: %s -> %s', last_offset, next_offset)
+                log.warning('Unexpected next offset: %s -> %s', item_count, next_offset)
                 break
 
     def _get_page(self, response):
