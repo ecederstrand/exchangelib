@@ -285,7 +285,7 @@ class PagingEWSMixIn(EWSService):
             if next_offset != item_count:
                 # Check paging offsets
                 raise TransportError(
-                    'Unexpected next offset: %s -> %s' % (last_offset, next_offset))
+                    'Unexpected next offset: %s -> %s' % (item_count, next_offset))
 
     def _get_page(self, response):
         assert len(response) == 1
