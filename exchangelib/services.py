@@ -283,7 +283,7 @@ class PagingEWSMixIn(EWSService):
                     break
             if not next_offset:
                 break
-            if next_offset != 1 + last_offset:
+            if next_offset != last_offset + item_count:
                 # Guard against endless loop
                 log.warning('Unexpected next offset: %s -> %s', last_offset, next_offset)
                 break
