@@ -29,7 +29,8 @@ Here are some examples of how `exchangelib` works:
     from exchangelib import DELEGATE, IMPERSONATION, Account, Credentials, \
         EWSDateTime, EWSTimeZone, Configuration, NTLM, CalendarItem, Message, \
         Mailbox, Q
-    from exchangelib.folders import Calendar
+    from exchangelib.folders import Calendar, ExtendedProperty, FileAttachment, ItemAttachment, \
+        HTMLBody
 
     year, month, day = 2016, 3, 20
     tz = EWSTimeZone.timezone('Europe/Copenhagen')
@@ -91,8 +92,9 @@ Here are some examples of how `exchangelib` works:
     # q = (Q(subject__iexact='foo') | Q(subject__contains='bar')) & ~Q(subject__startswith='baz')
     # items = my_folder.filter(q)
     #
-    # A large part of the Django QuerySet API is supported. The QuerySet doesn't fetch anything before the QuerySet is
-    # iterated. The QuerySet returns an iterator, and results are cached when the QuerySet is iterated the first time.
+    # A large part of the Django QuerySet API is supported. The QuerySet doesn't fetch anything before the 
+    # QuerySet is iterated. The QuerySet returns an iterator, and results are cached when the QuerySet is 
+    # iterated the first time.
     # Examples:
     #
     # all_items = my_folder.all()
@@ -140,7 +142,7 @@ Here are some examples of how `exchangelib` works:
     )
     m.send()
 
-    # Or, if you want a copy in the 'Sent' folder
+    # Or, if you want a copy in e.g. the 'Sent' folder
     m = Message(
         account=a,
         folder=a.sent,
@@ -149,5 +151,68 @@ Here are some examples of how `exchangelib` works:
         to_recipients=[Mailbox(email_address='anne@example.com')]
     )
     m.send_and_save()
+    
+    # EWS distinquishes between plain text and HTML body contents. If you want to send HTML body content, use 
+    # the HTMLBody helper. Clients will see this as HTML and display the body correctly:
+    item.body = HTMLBody('<html><body>Hello happy <blink>OWA user!</blink></body></html>')
+    
+    # The most common folders are available as account.calendar, account.trash, account.drafts, account.inbox,
+    # account.outbox, account.sent, account.junk, account.tasks, and account.contacts.
+    #
+    # If you want to access other folders, you can either traverse the account.folders dictionary, or find 
+    # the folder by name, starting at a direct or indirect parent of the folder you want to find. To search 
+    # the full folder hirarchy, start the search from account.root:
+    python_dev_mail_folder = account.root.get_folder_by_name('python-dev')
+    # If you have multiple folders with the same name in your folder hierarchy, start your search further down 
+    # the hierarchy:
+    foo1_folder = account.inbox.get_folder_by_name('foo')
+    foo2_folder = python_dev_mail_folder.get_folder_by_name('foo')
+    # For more advanced folder traversing, use some_folder.get_folders()
 
-    # There is also support for most item attributes, attachments, item export and upload, and extended properties
+    # If folder items have extended properties, you need to register them before you can access them. Create
+    # a subclass of ExtendedProperty and set your custom property_id: 
+    class LunchMenu(ExtendedProperty):
+        property_id = '12345678-1234-1234-1234-123456781234'
+        property_name = 'Catering from the cafeteria'
+        property_type = 'String'
+
+    # Register the property on the item type of your choice
+    CalendarItem.register('lunch_menu', LunchMenu)
+    # Now your property is available as the attribute 'lunch_menu', just like any other attribute
+    item = CalendarItem(..., lunch_menu='Foie gras et consommé de légumes')
+    item.save()
+    for i in account.calendar.all():
+        print(i.lunch_menu)
+    # If you change your mind, jsut remove the property again
+    CalendarItem.deregister('lunch_menu')
+
+    # It's possible to create, delete and get attachments connected to any item type:
+    # Process attachments on existing items
+    for item in my_folder.all():
+        for attachment in item.attachments:
+            local_path = os.path.join('/tmp', attachment.name)
+            with open(local_path, 'wb') as f:
+                f.write(attachment.content)
+                print('Saved attachment to', local_path)
+
+    # Create a new item with an attachment
+    item = Message(...)
+    binary_file_content = 'Hello from unicode æøå'.encode('utf-8')  # Or read from file, BytesIO etc.
+    my_file = FileAttachment(name='my_file.txt', content=binary_file_content)
+    item.attach(my_file)
+    my_calendar_item = CalendarItem(...)
+    my_appointment = ItemAttachment(name='my_appointment', item=my_calendar_item)
+    item.attach(my_appointment)
+    item.save()
+
+    # Add an attachment on an existing item
+    my_other_file = FileAttachment(name='my_other_file.txt', content=binary_file_content)
+    item.attach(my_other_file)
+
+    # Remove the attachment again
+    item.detach(my_file)
+
+    Be aware that adding and deleting attachments from items that are already created in Exchange (items that have an item_id) will update the changekey of the item.
+
+    
+    # 'exchangelib' has support for most (but not all) item attributes, and also item export and upload.
