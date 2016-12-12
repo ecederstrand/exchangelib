@@ -1,18 +1,29 @@
-import re
-from xml.etree.ElementTree import Element
-import logging
-import time
-from threading import get_ident
-from datetime import datetime
-from copy import deepcopy
+from __future__ import unicode_literals
+
 import itertools
+import logging
+import re
+import time
+from copy import deepcopy
+from datetime import datetime
 from decimal import Decimal
+from xml.etree.ElementTree import Element
+
+from future.moves.urllib.parse import urlparse
+from future.utils import PY3
+from future.utils import raise_from
+from six import text_type, string_types
 
 from .errors import TransportError, RateLimitError, RedirectError, RelativeRedirect
 
+if PY3:
+    from threading import get_ident
+else:
+    from thread import get_ident
 log = logging.getLogger(__name__)
-ElementType = type(Element('x'))  # Type is auto-generated inside cElementTree
 
+ElementType = type(Element('x'))  # Type is auto-generated inside cElementTree
+string_type = string_types[0]
 
 # Regex of UTF-8 control characters that are illegal in XML 1.0 (and XML 1.1)
 _illegal_xml_chars_RE = re.compile('[\x00-\x08\x0b\x0c\x0e-\x1F\uD800-\uDFFF\uFFFE\uFFFF]')
@@ -75,12 +86,12 @@ def get_xml_attrs(tree, name):
 
 def value_to_xml_text(value):
     from .ewsdatetime import EWSDateTime
-    if isinstance(value, str):
+    if isinstance(value, string_types):
         return safe_xml_value(value)
     if isinstance(value, bool):
         return '1' if value else '0'
     if isinstance(value, (int, Decimal)):
-        return str(value)
+        return text_type(value)
     if isinstance(value, EWSDateTime):
         return value.ewsformat()
     raise ValueError('Unsupported type: %s (%s)' % (type(value), value))
@@ -91,7 +102,7 @@ def xml_text_to_value(value, field_type):
         return None
     from .ewsdatetime import EWSDateTime
     from .folders import Choice, Email, AnyURI, Body, HTMLBody, MimeContent
-    if field_type in (str, Choice, Email, AnyURI, Body, HTMLBody, MimeContent):
+    if field_type in (string_type, Choice, Email, AnyURI, Body, HTMLBody, MimeContent):
         # Return string types unprocessed
         return value
     return {
@@ -105,7 +116,7 @@ def xml_text_to_value(value, field_type):
 def set_xml_value(elem, value, version):
     from .folders import EWSElement
     from .ewsdatetime import EWSDateTime
-    if isinstance(value, (str, bool, int, Decimal, EWSDateTime)):
+    if isinstance(value, (string_types + (bool, int, Decimal, EWSDateTime))):
         elem.text = value_to_xml_text(value)
     elif isinstance(value, (tuple, list)):
         for v in value:
@@ -114,7 +125,7 @@ def set_xml_value(elem, value, version):
                 elem.append(v.to_xml(version=version))
             elif isinstance(v, ElementType):
                 elem.append(v)
-            elif isinstance(v, str):
+            elif isinstance(v, string_types):
                 add_xml_child(elem, 't:String', v)
             else:
                 raise AttributeError('Unsupported type %s for list value %s on elem %s' % (type(v), v, elem))
@@ -129,7 +140,7 @@ def set_xml_value(elem, value, version):
 
 
 def safe_xml_value(value, replacement='?'):
-    return str(_illegal_xml_chars_RE.sub(replacement, value))
+    return text_type(_illegal_xml_chars_RE.sub(replacement, value))
 
 
 # Keeps a cache of Element objects to deepcopy
@@ -171,7 +182,7 @@ def to_xml(text, encoding):
             except IndexError:
                 offending_line = ''
             offending_excerpt = offending_line[max(0, col_no - 20):col_no + 20].decode('ascii', 'ignore')
-            raise ParseError('%s\nOffending text: [...]%s[...]' % (str(e), offending_excerpt)) from e
+            raise_from(ParseError('%s\nOffending text: [...]%s[...]' % (text_type(e), offending_excerpt)), e)
 
 
 def is_xml(text):
@@ -181,11 +192,11 @@ def is_xml(text):
     return text.lstrip(BOM)[0:5] == '<?xml'
 
 
-class DummyRequest:
+class DummyRequest(object):
     headers = {}
 
 
-class DummyResponse:
+class DummyResponse(object):
     status_code = 401
     headers = {}
     text = ''
@@ -196,12 +207,11 @@ def get_domain(email):
     try:
         return email.split('@')[1].lower().strip()
     except (IndexError, AttributeError) as e:
-        raise ValueError("'%s' is not a valid email" % email) from e
+        raise_from(ValueError("'%s' is not a valid email" % email), e)
 
 
 def split_url(url):
-    from urllib import parse
-    parsed_url = parse.urlparse(url)
+    parsed_url = urlparse(url)
     # Use netloc instead og hostname since hostname is None if URL is relative
     return parsed_url.scheme == 'https', parsed_url.netloc.lower(), parsed_url.path
 
@@ -291,7 +301,7 @@ Response headers: %(response_headers)s'''
             try:
                 r = session.post(url=url, headers=headers, data=data, allow_redirects=False, timeout=timeout,
                                  verify=verify)
-            except (requests.exceptions.ChunkedEncodingError, requests.exceptions.ConnectionError, ConnectionResetError,
+            except (requests.exceptions.ChunkedEncodingError, requests.exceptions.ConnectionError,
                     requests.exceptions.ReadTimeout, SocketTimeout):
                 log.debug(
                     'Session %(session_id)s thread %(thread_id)s: timeout or connection error POST\'ing to %(url)s',
@@ -300,7 +310,7 @@ Response headers: %(response_headers)s'''
                 r.request.headers = headers
                 r.headers = {'DummyResponseHeader': None}
             d2 = datetime.now()
-            log_vals['response_time'] = str(d2 - d1)
+            log_vals['response_time'] = text_type(d2 - d1)
             log_vals['status_code'] = r.status_code
             log_vals['request_headers'] = r.request.headers
             log_vals['response_headers'] = r.headers
@@ -361,7 +371,7 @@ Response headers: %(response_headers)s'''
         # Let higher layers handle this. Add data for better debugging.
         log_msg = '%(exc_cls)s: %(exc_msg)s\n' + log_msg
         log_vals['exc_cls'] = e.__class__.__name__
-        log_vals['exc_msg'] = str(e)
+        log_vals['exc_msg'] = text_type(e)
         log_msg += '\nRequest data: %(data)s'
         log_vals['data'] = data
         log_msg += '\nResponse data: %(text)s'
@@ -389,3 +399,11 @@ Response headers: %(response_headers)s'''
             raise TransportError('Unknown failure\n' + log_msg % log_vals)
     log.debug('Session %(session_id)s thread %(thread_id)s: Useful response from %(url)s', log_vals)
     return r, session
+
+
+def isanysubclass(cls, classinfos):
+    try:
+        iter(classinfos)
+        return any([issubclass(cls, c) for c in classinfos])
+    except TypeError:
+        return issubclass(cls, classinfos)

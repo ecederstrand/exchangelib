@@ -1,6 +1,11 @@
+from __future__ import unicode_literals
+
 import logging
 from copy import deepcopy
 from operator import attrgetter
+
+from future.utils import python_2_unicode_compatible
+from six import string_types
 
 from .restriction import Q
 from .services import IdOnly
@@ -16,7 +21,8 @@ class DoesNotExist(Exception):
     pass
 
 
-class QuerySet:
+@python_2_unicode_compatible
+class QuerySet(object):
     """
     A Django QuerySet-like class for querying items. Defers queries until the QuerySet is consumed. Supports chaining to
     build up complex queries.
@@ -68,7 +74,7 @@ class QuerySet:
     def _check_fields(self, field_names):
         allowed_field_names = set(self.folder.allowed_field_names()) | {'item_id', 'changekey'}
         for f in field_names:
-            if not isinstance(f, str):
+            if not isinstance(f, string_types):
                 raise ValueError("Fieldname '%s' must be a string" % f)
             if f not in allowed_field_names:
                 raise ValueError("Unknown fieldname '%s'" % f)
@@ -279,7 +285,7 @@ class QuerySet:
         new_qs.return_format = self.VALUES
         return new_qs
 
-    def values_list(self, *args, flat=False):
+    def values_list(self, flat=False, *args):
         try:
             self._check_fields(args)
         except ValueError as e:

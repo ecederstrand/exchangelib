@@ -1,9 +1,13 @@
+from __future__ import unicode_literals
+
 import logging
 from xml.etree.ElementTree import tostring
 
 import requests.sessions
+from future.utils import raise_from
 from requests.auth import HTTPBasicAuth, HTTPDigestAuth
 from requests_ntlm import HttpNtlmAuth
+from six import text_type
 
 from .credentials import IMPERSONATION
 from .errors import UnauthorizedError, TransportError, RedirectError, RelativeRedirect
@@ -64,7 +68,7 @@ def _test_service_credentials(protocol):
 def _test_response(auth, response):
     log.debug('Response headers: %s', response.headers)
     resp = response.text
-    log.debug('Response data: %s [...]', str(resp[:1000]))
+    log.debug('Response data: %s [...]', text_type(resp[:1000]))
     if is_xml(resp):
         log.debug('This is XML')
         # Assume that any XML response is good news
@@ -127,7 +131,7 @@ def get_auth_instance(credentials, auth_type):
     try:
         model = AUTH_TYPE_MAP[auth_type]
     except KeyError as e:
-        raise ValueError("Authentication type '%s' not supported" % auth_type) from e
+        raise_from(ValueError("Authentication type '%s' not supported" % auth_type), e)
     else:
         if model is None:
             return None
@@ -141,7 +145,7 @@ def get_auth_type(auth):
     try:
         return AUTH_CLASS_MAP[auth.__class__]
     except KeyError as e:
-        raise ValueError("Authentication model '%s' not supported" % auth.__class__) from e
+        raise_from(ValueError("Authentication model '%s' not supported" % auth.__class__), e)
 
 
 def get_autodiscover_authtype(service_endpoint, data, timeout, verify):

@@ -1,6 +1,11 @@
+# coding=utf-8
+from __future__ import unicode_literals
+
 import functools
 import logging
 from threading import Lock
+
+from future.utils import python_2_unicode_compatible
 
 from .ewsdatetime import EWSDateTime, UTC
 from .util import create_element, xml_to_str, value_to_xml_text
@@ -11,7 +16,8 @@ _source_cache = dict()
 _source_cache_lock = Lock()
 
 
-class Q:
+@python_2_unicode_compatible
+class Q(object):
     # Connection types
     AND = 'AND'
     OR = 'OR'
@@ -388,7 +394,8 @@ class Q:
         return self.__class__.__name__ + repr(tuple(self.children))
 
 
-class Restriction:
+@python_2_unicode_compatible
+class Restriction(object):
     """
     Implements an EWS Restriction type.
 

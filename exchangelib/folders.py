@@ -1,3 +1,4 @@
+# coding=utf-8
 """
 Implements a selection of the folders and folder items found in an Exchange account.
 
@@ -5,11 +6,16 @@ Exchange is very picky about things like the order of XML elements in SOAP reque
 automatically instead of taking advantage of Python SOAP libraries and the WSDL file.
 """
 
-from logging import getLogger
-from decimal import Decimal
-import warnings
-import mimetypes
+from __future__ import unicode_literals
+
 import base64
+import mimetypes
+import warnings
+from decimal import Decimal
+from logging import getLogger
+
+from future.utils import python_2_unicode_compatible
+from six import text_type, string_types
 
 from .ewsdatetime import EWSDateTime, UTC, UTC_NOW
 from .queryset import QuerySet
@@ -17,9 +23,10 @@ from .restriction import Restriction, Q
 from .services import TNS, IdOnly, SHALLOW, DEEP, FindFolder, GetFolder, FindItem, GetAttachment, CreateAttachment, \
     DeleteAttachment, MNS, ITEM_TRAVERSAL_CHOICES, FOLDER_TRAVERSAL_CHOICES, SHAPE_CHOICES
 from .util import create_element, add_xml_child, get_xml_attrs, get_xml_attr, set_xml_value, value_to_xml_text, \
-    xml_text_to_value
+    xml_text_to_value, isanysubclass
 from .version import EXCHANGE_2010
 
+string_type = string_types[0]
 log = getLogger(__name__)
 
 # MessageDisposition values. See https://msdn.microsoft.com/en-us/library/office/aa565209(v=exchg.150).aspx
@@ -59,23 +66,23 @@ MOVE_TO_DELETED_ITEMS = 'MoveToDeletedItems'
 DELETE_TYPE_CHOICES = (HARD_DELETE, SOFT_DELETE, MOVE_TO_DELETED_ITEMS)
 
 
-class Choice(str):
+class Choice(text_type):
     # A helper class used for string enums
     pass
 
 
-class Email(str):
+class Email(text_type):
     # A helper class used for email address string
     pass
 
 
-class AnyURI(str):
+class AnyURI(text_type):
     # Helper to mark strings that must conform to xsd:anyURI
     # If we want an URI validator, see http://stackoverflow.com/questions/14466585/is-this-regex-correct-for-xsdanyuri
     pass
 
 
-class Body(str):
+class Body(text_type):
     # Helper to mark the 'body' field as a complex attribute.
     # MSDN: https://msdn.microsoft.com/en-us/library/office/jj219983(v=exchg.150).aspx
     body_type = 'Text'
@@ -87,7 +94,7 @@ class HTMLBody(Body):
     body_type = 'HTML'
 
 
-class MimeContent(str):
+class MimeContent(text_type):
     # Helper to work with the base64 encoded MimeContent Message field
     def b64encode(self):
         return base64.b64encode(self).decode('ascii')
@@ -95,7 +102,8 @@ class MimeContent(str):
     def b64decode(self):
         return base64.b64decode(self)
 
-class EWSElement:
+
+class EWSElement(object):
     ELEMENT_NAME = None
 
     __slots__ = tuple()
@@ -142,9 +150,9 @@ class ItemId(EWSElement):
     __slots__ = ('id', 'changekey')
 
     def __init__(self, id, changekey):
-        if not isinstance(id, str) or not id:
+        if not isinstance(id, string_types) or not id:
             raise ValueError("id '%s' must be a non-empty string" % id)
-        if not isinstance(changekey, str) or not changekey:
+        if not isinstance(changekey, string_types) or not changekey:
             raise ValueError("changekey '%s' must be a non-empty string" % changekey)
         self.id = id
         self.changekey = changekey
@@ -212,12 +220,12 @@ class AttachmentId(EWSElement):
     __slots__ = ('id', 'root_id', 'root_changekey')
 
     def __init__(self, id, root_id=None, root_changekey=None):
-        if not isinstance(id, str) or not id:
+        if not isinstance(id, string_types) or not id:
             raise ValueError("id '%s' must be a non-empty string" % id)
         if root_id is not None or root_changekey is not None:
-            if root_id is not None and (not isinstance(root_id, str) or not root_id):
+            if root_id is not None and (not isinstance(root_id, string_types) or not root_id):
                 raise ValueError("root_id '%s' must be a non-empty string" % root_id)
-            if root_changekey is not None and (not isinstance(root_changekey, str) or not root_changekey):
+            if root_changekey is not None and (not isinstance(root_changekey, string_types) or not root_changekey):
                 raise ValueError("root_changekey '%s' must be a non-empty string" % root_changekey)
         self.id = id
         self.root_id = root_id
@@ -250,10 +258,10 @@ class Attachment(EWSElement):
     Parent class for FileAttachment and ItemAttachment
     """
     ATTACHMENT_FIELDS = {
-        'name': ('Name', str),
-        'content_type': ('ContentType', str),
+        'name': ('Name', string_type),
+        'content_type': ('ContentType', string_type),
         'attachment_id': (AttachmentId, AttachmentId),
-        'content_id': ('ContentId', str),
+        'content_id': ('ContentId', string_type),
         'content_location': ('ContentLocation', AnyURI),
         'size': ('Size', int),
         'last_modified_time': ('LastModifiedTime', EWSDateTime),
@@ -295,7 +303,7 @@ class Attachment(EWSElement):
             if val is None:
                 continue
             field_uri = self.ATTACHMENT_FIELDS[field_name][0]
-            if isinstance(field_uri, str):
+            if isinstance(field_uri, string_types):
                 add_xml_child(entry, 't:%s' % field_uri, val)
             elif issubclass(field_uri, EWSElement):
                 set_xml_value(entry, val, version)
@@ -410,7 +418,7 @@ class EmailAddress(IndexedField):
 
     def __init__(self, email, label='EmailAddress1'):
         assert label in self.LABELS, label
-        assert isinstance(email, str), email
+        assert isinstance(email, string_types), email
         self.label = label
         self.email = email
 
@@ -445,13 +453,13 @@ class PhoneNumber(IndexedField):
 
     def __init__(self, phone_number, label='PrimaryPhone'):
         assert label in self.LABELS, label
-        assert isinstance(phone_number, (int, str)), phone_number
+        assert isinstance(phone_number, (int, string_type)), phone_number
         self.label = label
         self.phone_number = phone_number
 
     def to_xml(self, version):
         entry = create_element(self.request_tag(), Key=self.label)
-        set_xml_value(entry, str(self.phone_number), version)
+        set_xml_value(entry, text_type(self.phone_number), version)
         return entry
 
     @classmethod
@@ -484,15 +492,15 @@ class PhysicalAddress(IndexedField):
     def __init__(self, street=None, city=None, state=None, country=None, zipcode=None, label='Business'):
         assert label in self.LABELS, label
         if street is not None:
-            assert isinstance(street, str), street
+            assert isinstance(street, string_types), street
         if city is not None:
-            assert isinstance(city, str), city
+            assert isinstance(city, string_types), city
         if state is not None:
-            assert isinstance(state, str), state
+            assert isinstance(state, string_types), state
         if country is not None:
-            assert isinstance(country, str), country
+            assert isinstance(country, string_types), country
         if zipcode is not None:
-            assert isinstance(zipcode, (str, int)), zipcode
+            assert isinstance(zipcode, (string_type, int)), zipcode
         self.label = label
         self.street = street  # Street *and* house number (and similar info)
         self.city = city
@@ -530,9 +538,9 @@ class Mailbox(EWSElement):
     def __init__(self, name=None, email_address=None, mailbox_type=None, item_id=None):
         # There's also the 'RoutingType' element, but it's optional and must have value "SMTP"
         if name is not None:
-            assert isinstance(name, str)
+            assert isinstance(name, string_types)
         if email_address is not None:
-            assert isinstance(email_address, str)
+            assert isinstance(email_address, string_types)
         if mailbox_type is not None:
             assert mailbox_type in self.MAILBOX_TYPES
         if item_id is not None:
@@ -680,7 +688,7 @@ class ExtendedProperty(EWSElement):
             'ApplicationTime': Decimal,
             'Binary': bytes,
             'Boolean': bool,
-            'CLSID': str,
+            'CLSID': string_type,
             'Currency': int,
             'Double': Decimal,
             'Float': Decimal,
@@ -688,7 +696,7 @@ class ExtendedProperty(EWSElement):
             'Long': int,
             'Short': int,
             # 'SystemTime': int,
-            'String': str,
+            'String': string_type,
         }[base_type]
 
     @classmethod
@@ -735,11 +743,11 @@ class ExtendedProperty(EWSElement):
                     extended_field_value = [
                         xml_text_to_value(value=val, field_type=python_type)
                         for val in get_xml_attrs(e, '{%s}Value' % TNS)
-                    ]
+                        ]
                 else:
                     extended_field_value = xml_text_to_value(
                         value=get_xml_attr(e, '{%s}Value' % TNS), field_type=python_type)
-                    if python_type == str and not extended_field_value:
+                    if python_type == string_type and not extended_field_value:
                         # For string types, we want to return the empty string instead of None if the element was
                         # actually found, but there was no XML value. For other types, it would be more problematic
                         # to make that distinction, e.g. return False for bool, 0 for int, etc.
@@ -820,22 +828,22 @@ class Item(EWSElement):
     # 'extern_id' is not a native EWS Item field. We use it for identification when item originates in an external
     # system. The field is implemented as an extended property on the Item.
     ITEM_FIELDS = {
-        'item_id': ('ItemId', str),
-        'changekey': ('ChangeKey', str),
+        'item_id': ('ItemId', string_type),
+        'changekey': ('ChangeKey', string_type),
         'mime_content': ('MimeContent', MimeContent),
         'sensitivity': ('Sensitivity', Choice),
         'importance': ('Importance', Choice),
         'is_draft': ('IsDraft', bool),
-        'subject': ('Subject', str),
+        'subject': ('Subject', string_type),
         'body': ('Body', Body),  # Or HTMLBody, which is a subclass of Body
         'attachments': ('Attachments', [Attachment]),  # ItemAttachment or FileAttachment
         'reminder_is_set': ('ReminderIsSet', bool),
-        'categories': ('Categories', [str]),
+        'categories': ('Categories', [string_type]),
         'extern_id': (ExternId, ExternId),
         'datetime_created': ('DateTimeCreated', EWSDateTime),
         'datetime_sent': ('DateTimeSent', EWSDateTime),
         'datetime_received': ('DateTimeReceived', EWSDateTime),
-        'last_modified_name': ('LastModifiedName', str),
+        'last_modified_name': ('LastModifiedName', string_type),
         'last_modified_time': ('LastModifiedTime', EWSDateTime),
     }
     # Possible values for string enums
@@ -884,10 +892,10 @@ class Item(EWSElement):
                         if not isinstance(item, elem_type):
                             raise TypeError('Field %s value "%s" must be of type %s' % (k, v, field_type))
                 else:
-                    if issubclass(field_type, ExtendedProperty):
+                    if isanysubclass(field_type, ExtendedProperty):
                         valid_field_types = (field_type, field_type.python_type())
                     elif field_type in (Body, HTMLBody, Choice, MimeContent):
-                        valid_field_types = (field_type, str)
+                        valid_field_types = (field_type, string_type)
                     else:
                         valid_field_types = (field_type,)
                     if not isinstance(v, valid_field_types):
@@ -904,7 +912,7 @@ class Item(EWSElement):
 
     def save(self, conflict_resolution=AUTO_RESOLVE, send_meeting_invitations=SEND_TO_NONE):
         item = self._save(message_disposition=SAVE_ONLY, conflict_resolution=conflict_resolution,
-                                        send_meeting_invitations=send_meeting_invitations)
+                          send_meeting_invitations=send_meeting_invitations)
         if self.item_id:
             # _save() returns tuple()
             item_id, changekey = item
@@ -1083,18 +1091,18 @@ class Item(EWSElement):
             uri = cls.uri_for_field(fieldname)
         except KeyError:
             raise ValueError("No fielduri defined for fieldname '%s'" % fieldname)
-        if isinstance(uri, str):
+        if isinstance(uri, string_types):
             return '%s:%s' % (cls.FIELDURI_PREFIX, uri)
         return uri
 
     @classmethod
     def elem_for_field(cls, fieldname):
-        assert isinstance(fieldname, str)
+        assert isinstance(fieldname, string_types)
         try:
             uri = cls.uri_for_field(fieldname)
         except KeyError:
             raise ValueError("No fielduri defined for fieldname '%s'" % fieldname)
-        assert isinstance(uri, str)
+        assert isinstance(uri, string_types)
         return create_element('t:%s' % uri)
 
     @classmethod
@@ -1103,7 +1111,7 @@ class Item(EWSElement):
             uri = cls.uri_for_field(fieldname)
         except KeyError:
             raise ValueError("No fielduri defined for fieldname '%s'" % fieldname)
-        if isinstance(uri, str):
+        if isinstance(uri, string_types):
             return '{%s}%s' % (TNS, uri)
         if issubclass(uri, IndexedField):
             return '{%s}%s' % (TNS, uri.PARENT_ELEMENT_NAME)
@@ -1129,8 +1137,9 @@ class Item(EWSElement):
         #   the first 255 characters by using a null-terminated Unicode string. It does not return any of the message
         #   body formats or the recipient lists.
         #
-        simple_types = (bool, int, str, [str], AnyURI, Choice, EWSDateTime)
-        return tuple(f for f in cls.fieldnames() if cls.type_for_field(f) not in simple_types) + ('item_id', 'changekey')
+        simple_types = (bool, int, string_type, [string_type], AnyURI, Choice, EWSDateTime)
+        return tuple(f for f in cls.fieldnames() if cls.type_for_field(f) not in simple_types) + (
+            'item_id', 'changekey')
 
     @classmethod
     def type_for_field(cls, fieldname):
@@ -1143,7 +1152,7 @@ class Item(EWSElement):
     def additional_property_elems(cls, fieldname):
         elems = []
         field_uri = cls.fielduri_for_field(fieldname)
-        if isinstance(field_uri, str):
+        if isinstance(field_uri, string_types):
             elems.append(create_element('t:FieldURI', FieldURI=field_uri))
         elif issubclass(field_uri, IndexedField):
             for l in field_uri.LABELS:
@@ -1173,7 +1182,8 @@ class Item(EWSElement):
         extended_properties = elem.findall(ExtendedProperty.response_tag())
         for fieldname in cls.fieldnames():
             field_type = cls.type_for_field(fieldname)
-            if field_type in (EWSDateTime, bool, int, Decimal, str, Choice, Email, AnyURI, Body, HTMLBody, MimeContent):
+            if field_type in (
+                    EWSDateTime, bool, int, Decimal, string_type, Choice, Email, AnyURI, Body, HTMLBody, MimeContent):
                 field_elem = elem.find(cls.response_xml_elem_for_field(fieldname))
                 val = None if field_elem is None else field_elem.text.strip() if field_elem.text else None
                 if val is not None:
@@ -1195,7 +1205,7 @@ class Item(EWSElement):
                     kwargs[fieldname] = val
             elif isinstance(field_type, list):
                 list_type = field_type[0]
-                if list_type == str:
+                if list_type == string_type:
                     iter_elem = elem.find(cls.response_xml_elem_for_field(fieldname))
                     if iter_elem is not None:
                         kwargs[fieldname] = get_xml_attrs(iter_elem, '{%s}String' % TNS)
@@ -1266,7 +1276,7 @@ class ItemMixIn(Item):
                 continue
             if isinstance(v, (tuple, list)) and not v:
                 continue
-            if isinstance(field_uri, str):
+            if isinstance(field_uri, string_types):
                 field_elem = self.elem_for_field(f)
                 if f == 'body':
                     body_type = HTMLBody.body_type if isinstance(v, HTMLBody) else Body.body_type
@@ -1317,7 +1327,7 @@ class ItemMixIn(Item):
             field_uri = cls.ITEM_FIELDS[fieldname][0]
         except KeyError:
             return Item.fielduri_for_field(fieldname)
-        if isinstance(field_uri, str):
+        if isinstance(field_uri, string_types):
             return '%s:%s' % (cls.FIELDURI_PREFIX, field_uri)
         return field_uri
 
@@ -1327,7 +1337,7 @@ class ItemMixIn(Item):
             uri = cls.uri_for_field(fieldname)
         except KeyError:
             return Item.elem_for_field(fieldname)
-        assert isinstance(uri, str)
+        assert isinstance(uri, string_types)
         return create_element('t:%s' % uri)
 
     @classmethod
@@ -1336,7 +1346,7 @@ class ItemMixIn(Item):
             uri = cls.uri_for_field(fieldname)
         except KeyError:
             return Item.response_xml_elem_for_field(fieldname)
-        if isinstance(uri, str):
+        if isinstance(uri, string_types):
             return '{%s}%s' % (TNS, uri)
         if issubclass(uri, IndexedField):
             return '{%s}%s' % (TNS, uri.PARENT_ELEMENT_NAME)
@@ -1369,6 +1379,7 @@ class ItemMixIn(Item):
             return Item.type_for_field(fieldname)
 
 
+@python_2_unicode_compatible
 class CalendarItem(ItemMixIn):
     """
     Models a calendar item. Not all attributes are supported. See full list at
@@ -1384,7 +1395,7 @@ class CalendarItem(ItemMixIn):
     ITEM_FIELDS = {
         'start': ('Start', EWSDateTime),
         'end': ('End', EWSDateTime),
-        'location': ('Location', str),
+        'location': ('Location', string_type),
         'organizer': ('Organizer', Mailbox),
         'legacy_free_busy_status': ('LegacyFreeBusyStatus', Choice),
         'required_attendees': ('RequiredAttendees', [Attendee]),
@@ -1414,12 +1425,12 @@ class CalendarItem(ItemMixIn):
             if field_type == Choice:
                 assert v is None or v in self.choices_for_field(k), (v, self.choices_for_field(k))
             setattr(self, k, v)
-        super().__init__(**kwargs)
+        super(CalendarItem, self).__init__(**kwargs)
 
     def to_xml(self, version):
         # WARNING: The order of addition of XML elements is VERY important. Exchange expects XML elements in a
         # specific, non-documented order and will fail with meaningless errors if the order is wrong.
-        i = super().to_xml(version=version)
+        i = super(CalendarItem, self).to_xml(version=version)
         if version.build < EXCHANGE_2010:
             i.append(create_element('t:MeetingTimeZone', TimeZoneName=self.start.tzinfo.ms_id))
         else:
@@ -1470,7 +1481,7 @@ class Message(ItemMixIn):
             if field_type == Choice:
                 assert v is None or v in self.choices_for_field(k), (v, self.choices_for_field(k))
             setattr(self, k, v)
-        super().__init__(**kwargs)
+        super(Message, self).__init__(**kwargs)
 
     def send(self, save_copy=True, copy_to_folder=None, conflict_resolution=AUTO_RESOLVE,
              send_meeting_invitations=SEND_TO_NONE):
@@ -1523,23 +1534,23 @@ class Task(ItemMixIn):
     ITEM_FIELDS = {
         'actual_work': ('ActualWork', int),
         'assigned_time': ('AssignedTime', EWSDateTime),
-        'billing_information': ('BillingInformation', str),
+        'billing_information': ('BillingInformation', string_type),
         'change_count': ('ChangeCount', int),
-        'companies': ('Companies', [str]),
-        'contacts': ('Contacts', [str]),
+        'companies': ('Companies', [string_type]),
+        'contacts': ('Contacts', [string_type]),
         'complete_date': ('CompleteDate', EWSDateTime),
         'is_complete': ('IsComplete', bool),
         'due_date': ('DueDate', EWSDateTime),
-        'delegator': ('Delegator', str),
+        'delegator': ('Delegator', string_type),
         'delegation_state': ('DelegationState', Choice),
         'is_recurring': ('IsRecurring', bool),
         'is_team_task': ('IsTeamTask', bool),
-        'mileage': ('Mileage', str),
-        'owner': ('Owner', str),
+        'mileage': ('Mileage', string_type),
+        'owner': ('Owner', string_type),
         'percent_complete': ('PercentComplete', Decimal),
         'start_date': ('StartDate', EWSDateTime),
         'status': ('Status', Choice),
-        'status_description': ('StatusDescription', str),
+        'status_description': ('StatusDescription', string_type),
         'total_work': ('TotalWork', int),
     }
     REQUIRED_FIELDS = {'subject', 'status'}
@@ -1601,7 +1612,7 @@ class Task(ItemMixIn):
                 log.warning("'percent_complete' must be 0 when 'status' is '%s' (%s). Resetting",
                             self.NOT_STARTED, self.percent_complete)
                 self.percent_complete = Decimal(0)
-        super().__init__(**kwargs)
+        super(Task, self).__init__(**kwargs)
 
 
 class Contact(ItemMixIn):
@@ -1618,32 +1629,32 @@ class Contact(ItemMixIn):
     }
     # TODO: This list is incomplete
     ITEM_FIELDS = {
-        'file_as': ('FileAs', str),
+        'file_as': ('FileAs', string_type),
         'file_as_mapping': ('FileAsMapping', Choice),
-        'display_name': ('DisplayName', str),
-        'given_name': ('GivenName', str),
-        'initials': ('Initials', str),
-        'middle_name': ('MiddleName', str),
-        'nickname': ('Nickname', str),
-        'company_name': ('CompanyName', str),
+        'display_name': ('DisplayName', string_type),
+        'given_name': ('GivenName', string_type),
+        'initials': ('Initials', string_type),
+        'middle_name': ('MiddleName', string_type),
+        'nickname': ('Nickname', string_type),
+        'company_name': ('CompanyName', string_type),
         'email_addresses': (EmailAddress, [EmailAddress]),
         'physical_addresses': (PhysicalAddress, [PhysicalAddress]),
         'phone_numbers': (PhoneNumber, [PhoneNumber]),
-        'assistant_name': ('AssistantName', str),
+        'assistant_name': ('AssistantName', string_type),
         'birthday': ('Birthday', EWSDateTime),
         'business_homepage': ('BusinessHomePage', AnyURI),
-        'companies': ('Companies', [str]),
-        'department': ('Department', str),
-        'generation': ('Generation', str),
+        'companies': ('Companies', [string_type]),
+        'department': ('Department', string_type),
+        'generation': ('Generation', string_type),
         # 'im_addresses': ('ImAddresses', [ImAddress]),
-        'job_title': ('JobTitle', str),
-        'manager': ('Manager', str),
-        'mileage': ('Mileage', str),
-        'office': ('OfficeLocation', str),
-        'profession': ('Profession', str),
-        'surname': ('Surname', str),
+        'job_title': ('JobTitle', string_type),
+        'manager': ('Manager', string_type),
+        'mileage': ('Mileage', string_type),
+        'office': ('OfficeLocation', string_type),
+        'profession': ('Profession', string_type),
+        'surname': ('Surname', string_type),
         # 'email_alias': ('Alias', Email),
-        # 'notes': ('Notes', str),  # Only available from Exchange 2010 SP2
+        # 'notes': ('Notes', string_type),  # Only available from Exchange 2010 SP2
     }
     REQUIRED_FIELDS = {'display_name'}
     EXTENDED_PROPERTIES = ['extern_id']
@@ -1651,8 +1662,8 @@ class Contact(ItemMixIn):
         'subject', 'sensitivity', 'body', 'attachments', 'categories', 'importance', 'reminder_is_set',
         EXTENDED_PROPERTIES,
         'file_as', 'file_as_mapping',
-        'display_name', 'given_name',  'initials', 'middle_name', 'nickname', 'company_name',
-        'email_addresses',  'physical_addresses',
+        'display_name', 'given_name', 'initials', 'middle_name', 'nickname', 'company_name',
+        'email_addresses', 'physical_addresses',
         'phone_numbers',
         'assistant_name', 'birthday', 'business_homepage', 'companies', 'department',
         'generation', 'job_title', 'manager', 'mileage', 'office', 'profession', 'surname',  # 'email_alias', 'notes',
@@ -1668,7 +1679,7 @@ class Contact(ItemMixIn):
             if field_type == Choice:
                 assert v is None or v in self.choices_for_field(k), (v, self.choices_for_field(k))
             setattr(self, k, v)
-        super().__init__(**kwargs)
+        super(Contact, self).__init__(**kwargs)
 
 
 class MeetingRequest(ItemMixIn):
@@ -1694,7 +1705,7 @@ class MeetingRequest(ItemMixIn):
             default = False if (k in self.required_fields() and field_type == bool) else None
             v = kwargs.pop(k, default)
             setattr(self, k, v)
-        super().__init__(**kwargs)
+        super(MeetingRequest, self).__init__(**kwargs)
 
 
 class MeetingResponse(ItemMixIn):
@@ -1720,7 +1731,7 @@ class MeetingResponse(ItemMixIn):
             default = False if (k in self.required_fields() and field_type == bool) else None
             v = kwargs.pop(k, default)
             setattr(self, k, v)
-        super().__init__(**kwargs)
+        super(MeetingResponse, self).__init__(**kwargs)
 
 
 class MeetingCancellation(ItemMixIn):
@@ -1746,7 +1757,7 @@ class MeetingCancellation(ItemMixIn):
             default = False if (k in self.required_fields() and field_type == bool) else None
             v = kwargs.pop(k, default)
             setattr(self, k, v)
-        super().__init__(**kwargs)
+        super(MeetingCancellation, self).__init__(**kwargs)
 
 
 class FileAttachment(Attachment):
@@ -1768,7 +1779,7 @@ class FileAttachment(Attachment):
     __slots__ = ('parent_item',) + tuple(ORDERED_FIELDS[:-1]) + ('_content',)
 
     def __init__(self, content=None, is_contact_photo=None, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super(FileAttachment, self).__init__(*args, **kwargs)
         self._content = content
         self.is_contact_photo = is_contact_photo
         for field_name, (_, field_type) in self.ATTACHMENT_FIELDS.items():
@@ -1818,7 +1829,7 @@ class ItemAttachment(Attachment):
     __slots__ = ('parent_item',) + tuple(ORDERED_FIELDS[:-1]) + ('_item',)
 
     def __init__(self, item=None, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super(ItemAttachment, self).__init__(*args, **kwargs)
         self._item = item
         for field_name, (_, field_type) in self.ATTACHMENT_FIELDS.items():
             if field_name == 'item':
@@ -1853,6 +1864,7 @@ class ItemAttachment(Attachment):
 ITEM_CLASSES = (CalendarItem, Contact, Message, Task, MeetingRequest, MeetingResponse, MeetingCancellation)
 
 
+@python_2_unicode_compatible
 class Folder(EWSElement):
     DISTINGUISHED_FOLDER_ID = None  # See https://msdn.microsoft.com/en-us/library/office/aa580808(v=exchg.150).aspx
     # Default item type for this folder. See http://msdn.microsoft.com/en-us/library/hh354773(v=exchg.80).aspx
@@ -2057,7 +2069,8 @@ class Folder(EWSElement):
         return self.bulk_delete(*args, **kwargs)
 
     def bulk_delete(self, *args, **kwargs):
-        warnings.warn('Folder.bulk_delete() is deprecated. Use Account.bulk_delete() instead', PendingDeprecationWarning)
+        warnings.warn('Folder.bulk_delete() is deprecated. Use Account.bulk_delete() instead',
+                      PendingDeprecationWarning)
         return self.account.bulk_delete(*args, **kwargs)
 
     def update_items(self, *args, **kwargs):
@@ -2065,7 +2078,8 @@ class Folder(EWSElement):
         return self.bulk_update(*args, **kwargs)
 
     def bulk_update(self, *args, **kwargs):
-        warnings.warn('Folder.bulk_update() is deprecated. Use Account.bulk_update() instead', PendingDeprecationWarning)
+        warnings.warn('Folder.bulk_update() is deprecated. Use Account.bulk_update() instead',
+                      PendingDeprecationWarning)
         return self.account.bulk_update(*args, **kwargs)
 
     def get_items(self, *args, **kwargs):
@@ -2128,7 +2142,8 @@ class Folder(EWSElement):
                 log.debug('Folder class %s matches localized folder name %s', folder_cls, dummy_fld.name)
             except KeyError:
                 folder_cls = self.folder_cls_from_container_class(dummy_fld.folder_class)
-                log.debug('Folder class %s matches container class %s (%s)', folder_cls, dummy_fld.folder_class, dummy_fld.name)
+                log.debug('Folder class %s matches container class %s (%s)', folder_cls, dummy_fld.folder_class,
+                          dummy_fld.name)
             folders.append(folder_cls(**dummy_fld.__dict__))
         return folders
 
@@ -2136,7 +2151,7 @@ class Folder(EWSElement):
         """Takes a case-sensitive folder name and returns an instance of that folder, if a folder with that name exists
         as a direct or indirect subfolder of this folder.
         """
-        assert isinstance(name, str)
+        assert isinstance(name, string_types)
         matching_folders = []
         for f in self.get_folders(depth=DEEP):
             if f.name == name:

@@ -4,20 +4,24 @@ A protocol is an endpoint for EWS service connections. It contains all necessary
 Protocols should be accessed through an Account, and are either created from a default Configuration or autodiscovered
 when creating an Account.
 """
-import socket
-import queue
-from multiprocessing.pool import ThreadPool
-import logging
-from threading import Lock
-import random
+from __future__ import unicode_literals
 
+import logging
+import random
+import socket
+from multiprocessing.pool import ThreadPool
+from threading import Lock
+
+import queue
+from future.utils import with_metaclass, python_2_unicode_compatible, raise_from
 from requests import adapters, Session
+from six import text_type
 
 from .credentials import Credentials
 from .errors import TransportError
 from .transport import get_auth_instance, get_service_authtype, get_docs_authtype, test_credentials, AUTH_TYPE_MAP
-from .version import Version, API_VERSIONS
 from .util import split_url
+from .version import Version, API_VERSIONS
 
 log = logging.getLogger(__name__)
 
@@ -31,7 +35,7 @@ def close_connections():
     CachingProtocol._protocol_cache.clear()
 
 
-class BaseProtocol:
+class BaseProtocol(object):
     # Base class for Protocol which implements the bare essentials
 
     # The maximum number of sessions (== TCP connections, see below) we will open to this service endpoint. Keep this
@@ -128,7 +132,7 @@ class BaseProtocol:
         try:
             socket.gethostbyname_ex(self.server)[2][0]
         except socket.gaierror as e:
-            raise TransportError("Server '%s' does not exist" % self.server) from e
+            raise_from(TransportError("Server '%s' does not exist" % self.server), e)
         return test_credentials(protocol=self)
 
     def __repr__(self):
@@ -159,15 +163,16 @@ class CachingProtocol(type):
             protocol = cls._protocol_cache.get(_protocol_cache_key)
             if protocol is None:
                 log.debug("Protocol __call__ cache miss. Adding key '%s'", str(_protocol_cache_key))
-                protocol = super().__call__(*args, **kwargs)
+                protocol = super(CachingProtocol, cls).__call__(*args, **kwargs)
                 cls._protocol_cache[_protocol_cache_key] = protocol
         log.debug('_protocol_cache_lock released')
         return protocol
 
 
-class Protocol(BaseProtocol, metaclass=CachingProtocol):
+@python_2_unicode_compatible
+class Protocol(with_metaclass(CachingProtocol, BaseProtocol)):
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super(Protocol, self).__init__(*args, **kwargs)
 
         scheme = 'https' if self.has_ssl else 'https'
         self.wsdl_url = '%s://%s/EWS/Services.wsdl' % (scheme, self.server)
@@ -216,7 +221,7 @@ class EWSSession(Session):
     def __init__(self, protocol):
         self.session_id = random.randint(1, 32767)  # Used for debugging messages in services
         self.protocol = protocol
-        super().__init__()
+        super(EWSSession, self).__init__()
 
     def close_socket(self, url):
         # Close underlying socket. This ensures we don't leave stray sockets around after program exit.
@@ -225,12 +230,12 @@ class EWSSession(Session):
         for i in range(pool.pool.qsize()):
             conn = pool._get_conn()
             if conn.sock:
-                log.debug('Closing socket %s', str(conn.sock.getsockname()))
+                log.debug('Closing socket %s', text_type(conn.sock.getsockname()))
                 conn.sock.shutdown(socket.SHUT_RDWR)
                 conn.sock.close()
 
     def __enter__(self):
-        return super().__enter__()
+        return super(EWSSession, self).__enter__()
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         if exc_type is None:

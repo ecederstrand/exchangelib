@@ -10,10 +10,15 @@ Exchange EWS references:
     - 2013: http://msdn.microsoft.com/en-us/library/bb409286(v=exchg.150).aspx
 """
 
-import logging
+from __future__ import unicode_literals
+
 import itertools
-from xml.parsers.expat import ExpatError
+import logging
 import traceback
+from xml.parsers.expat import ExpatError
+
+from future.utils import raise_from
+from six import text_type
 
 from . import errors
 from .errors import EWSWarning, TransportError, SOAPError, ErrorTimeoutExpired, ErrorBatchProcessingStopped, \
@@ -48,7 +53,7 @@ ITEM_TRAVERSAL_CHOICES = (SHALLOW, SOFT_DELETED, ASSOCIATED)
 FOLDER_TRAVERSAL_CHOICES = (SHALLOW, DEEP, SOFT_DELETED)
 
 
-class EWSService:
+class EWSService(object):
     SERVICE_NAME = None  # The name of the SOAP service
     element_container_name = None  # The name of the XML element wrapping the collection of returned items
     ERRORS_TO_CATCH_IN_RESPONSE = EWSWarning # Treat the following errors as warnings when contained in an element
@@ -119,7 +124,7 @@ class EWSService:
             try:
                 soap_response_payload = to_xml(r.text, encoding=r.encoding or 'utf-8')
             except ExpatError as e:
-                raise SOAPError('SOAP response is not XML: %s' % e) from e
+                raise_from(SOAPError('SOAP response is not XML: %s' % e), e)
             try:
                 res = self._get_soap_payload(soap_response=soap_response_payload)
             except (ErrorInvalidSchemaVersionForMailboxVersion, ErrorInvalidServerVersion):
@@ -204,7 +209,7 @@ class EWSService:
         try:
             return self._raise_errors(code=code, text=text, xml=xml)
         except ErrorBatchProcessingStopped as e:
-            raise EWSWarning(e.value) from e
+            raise_from(EWSWarning(e.value), e)
 
     @staticmethod
     def _raise_errors(code, text, xml):
@@ -218,8 +223,9 @@ class EWSService:
             raise vars(errors)[code](text)
         except KeyError as e:
             # Should not happen
-            raise TransportError('Unknown ResponseCode in ResponseMessage: %s (MessageText: %s, MessageXml: %s)' % (
-                code, text, xml)) from e
+            raise_from(
+                TransportError('Unknown ResponseCode in ResponseMessage: %s (MessageText: %s, MessageXml: %s)' % (
+                    code, text, xml)), e)
 
     def _get_elements_in_response(self, response):
         assert isinstance(response, list)
@@ -228,7 +234,8 @@ class EWSService:
             try:
                 container = self._get_element_container(message=msg, name=self.element_container_name)
                 if isinstance(container, ElementType):
-                    yield from self._get_elements_in_container(container=container)
+                    for c in self._get_elements_in_container(container=container):
+                        yield c
                 else:
                     yield (container, None)
             except (ErrorTimeoutExpired, ErrorBatchProcessingStopped):
@@ -243,13 +250,13 @@ class EWSService:
 class EWSAccountService(EWSService):
     def __init__(self, account):
         self.account = account
-        super().__init__(protocol=account.protocol)
+        super(EWSAccountService, self).__init__(protocol=account.protocol)
 
 
 class EWSFolderService(EWSAccountService):
     def __init__(self, folder):
         self.folder = folder
-        super().__init__(account=folder.account)
+        super(EWSFolderService, self).__init__(account=folder.account)
 
 
 class PagingEWSMixIn(EWSService):
@@ -317,7 +324,7 @@ class GetServerTimeZones(EWSService):
     def call(self, **kwargs):
         if self.protocol.version.build < EXCHANGE_2010:
             raise NotImplementedError('%s is only supported for Exchange 2010 servers and later' % self.SERVICE_NAME)
-        return list(super().call(**kwargs))
+        return list(super(GetServerTimeZones, self).call(**kwargs))
 
     def _get_payload(self, returnfulltimezonedata=False):
         return create_element(
@@ -344,7 +351,7 @@ class GetRoomLists(EWSService):
     def call(self, **kwargs):
         if self.protocol.version.build < EXCHANGE_2010:
             raise NotImplementedError('%s is only supported for Exchange 2010 servers and later' % self.SERVICE_NAME)
-        elements = super().call(**kwargs)
+        elements = super(GetRoomLists, self).call(**kwargs)
         from .folders import RoomList
         return [RoomList.from_xml(elem) for elem in elements]
 
@@ -362,7 +369,7 @@ class GetRooms(EWSService):
     def call(self, **kwargs):
         if self.protocol.version.build < EXCHANGE_2010:
             raise NotImplementedError('%s is only supported for Exchange 2010 servers and later' % self.SERVICE_NAME)
-        elements = super().call(**kwargs)
+        elements = super(GetRooms, self).call(**kwargs)
         from .folders import Room
         return [Room.from_xml(elem) for elem in elements]
 
@@ -718,7 +725,7 @@ class FindItem(EWSFolderService, PagingEWSMixIn):
             add_xml_child(itemshape, 't:AdditionalProperties', additional_property_elems)
         finditem.append(itemshape)
         if calendar_view is None:
-            view_type = create_element('m:IndexedPageItemView', Offset=str(offset), BasePoint='Beginning')
+            view_type = create_element('m:IndexedPageItemView', Offset=text_type(offset), BasePoint='Beginning')
         else:
             view_type = calendar_view.to_xml(version=self.account.version)
         finditem.append(view_type)
@@ -753,7 +760,8 @@ class FindFolder(EWSFolderService, PagingEWSMixIn):
             foldershape.append(additionalproperties)
         findfolder.append(foldershape)
         if self.account.version.build >= EXCHANGE_2010:
-            indexedpageviewitem = create_element('m:IndexedPageFolderView', Offset=str(offset), BasePoint='Beginning')
+            indexedpageviewitem = create_element('m:IndexedPageFolderView', Offset=text_type(offset),
+                                                 BasePoint='Beginning')
             findfolder.append(indexedpageviewitem)
         else:
             assert offset == 0, 'Offset is %s' % offset
@@ -878,7 +886,7 @@ class GetAttachment(EWSAccountService):
     def call(self, **kwargs):
         if self.protocol.version.build < EXCHANGE_2010:
             raise NotImplementedError('%s is only supported for Exchange 2010 servers and later' % self.SERVICE_NAME)
-        return super().call(**kwargs)
+        return super(GetAttachment, self).call(**kwargs)
 
     def _get_payload(self, items):
         from .folders import AttachmentId
@@ -909,7 +917,7 @@ class CreateAttachment(EWSAccountService):
     def call(self, **kwargs):
         if self.protocol.version.build < EXCHANGE_2010:
             raise NotImplementedError('%s is only supported for Exchange 2010 servers and later' % self.SERVICE_NAME)
-        return super().call(**kwargs)
+        return super(CreateAttachment, self).call(**kwargs)
 
     def _get_payload(self, parent_item, items):
         from .folders import ParentItemId
@@ -937,7 +945,7 @@ class DeleteAttachment(EWSAccountService):
     def _get_element_container(self, message, name=None):
         # DeleteAttachment returns RootItemIds directly beneath DeleteAttachmentResponseMessage. Collect the elements
         # and make our own fake container.
-        res = super()._get_element_container(message=message, name=name)
+        res = super(DeleteAttachment, self)._get_element_container(message=message, name=name)
         if not res:
             return res
         from .folders import RootItemId
@@ -946,11 +954,10 @@ class DeleteAttachment(EWSAccountService):
             fake_elem.append(elem)
         return fake_elem
 
-
     def call(self, **kwargs):
         if self.protocol.version.build < EXCHANGE_2010:
             raise NotImplementedError('%s is only supported for Exchange 2010 servers and later' % self.SERVICE_NAME)
-        return super().call(**kwargs)
+        return super(DeleteAttachment, self).call(**kwargs)
 
     def _get_payload(self, items):
         from .folders import AttachmentId

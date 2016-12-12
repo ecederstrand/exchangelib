@@ -1,12 +1,14 @@
-import os
-import unittest
+# coding=utf-8
 import datetime
+import os
 import random
 import string
-from decimal import Decimal
 import time
+import unittest
+from decimal import Decimal
 
 import requests
+from six import PY2, string_types, text_type
 from yaml import load
 
 from exchangelib import close_connections
@@ -22,10 +24,13 @@ from exchangelib.folders import CalendarItem, Attendee, Mailbox, Message, Extend
     ItemAttachment, Attachment, ALL_OCCURRENCIES, MimeContent
 from exchangelib.queryset import QuerySet, DoesNotExist, MultipleObjectsReturned
 from exchangelib.restriction import Restriction, Q
-from exchangelib.transport import NTLM
 from exchangelib.services import GetServerTimeZones, GetRoomLists, GetRooms
-from exchangelib.util import xml_to_str, chunkify, peek, get_redirect_url
+from exchangelib.transport import NTLM
+from exchangelib.util import xml_to_str, chunkify, peek, get_redirect_url, isanysubclass
 from exchangelib.version import Build
+
+if PY2:
+    FileNotFoundError = OSError
 
 
 class BuildTest(unittest.TestCase):
@@ -117,7 +122,8 @@ class RestrictionTest(unittest.TestCase):
         self.maxDiff = None
 
     def test_parse(self):
-        r = Restriction.from_source("start > '2016-01-15T13:45:56Z' and (not subject == 'EWS Test')", folder_class=Calendar)
+        r = Restriction.from_source("start > '2016-01-15T13:45:56Z' and (not subject == 'EWS Test')",
+                                    folder_class=Calendar)
         result = '''\
 <m:Restriction>
     <t:And>
@@ -299,13 +305,14 @@ class EWSTest(unittest.TestCase):
         self.config = Configuration(server=settings['server'],
                                     credentials=Credentials(settings['username'], settings['password']),
                                     verify_ssl=settings['verify_ssl'])
-        self.account = Account(primary_smtp_address=settings['account'], access_type=DELEGATE, config=self.config)
+        self.account = Account(primary_smtp_address=settings['account'], access_type=DELEGATE, config=self.config,
+                               locale='en_US')
         self.maxDiff = None
 
     def random_val(self, field_type):
-        if not isinstance(field_type, list) and issubclass(field_type, ExtendedProperty):
+        if not isinstance(field_type, list) and isanysubclass(field_type, ExtendedProperty):
             field_type = field_type.python_type()
-        if field_type == str:
+        if field_type == string_types[0]:
             return get_random_string(255)
         if field_type == Body:
             return get_random_string(255)
@@ -315,7 +322,7 @@ class EWSTest(unittest.TestCase):
             return get_random_string(255)
         if field_type == AnyURI:
             return get_random_url()
-        if field_type == [str]:
+        if field_type == [string_types[0]]:
             return [get_random_string(16) for _ in range(random.randint(1, 4))]
         if field_type == int:
             return get_random_int(0, 256)
@@ -415,7 +422,7 @@ class CommonTest(EWSTest):
             items.append(item)
         return_ids = self.account.calendar.bulk_create(items=items)
         self.assertEqual(len(return_ids), len(items))
-        ids = self.account.calendar.filter(start__lt=end, end__gt=start, categories__contains=self.categories)\
+        ids = self.account.calendar.filter(start__lt=end, end__gt=start, categories__contains=self.categories) \
             .values_list('item_id', 'changekey')
         self.assertEqual(len(ids), len(items))
         items = self.account.fetch(return_ids)
@@ -465,7 +472,10 @@ class CommonTest(EWSTest):
     def test_autodiscover_cache(self):
         from exchangelib.autodiscover import _autodiscover_cache
         # Empty the cache
-        _autodiscover_cache.clear()
+        if hasattr(_autodiscover_cache, "clear"):
+            _autodiscover_cache.attachments.clear()
+        else:
+            del _autodiscover_cache.attachments[:]
         cache_key = (self.account.domain, self.config.credentials, self.config.protocol.verify_ssl)
         # Not cached
         self.assertNotIn(cache_key, _autodiscover_cache)
@@ -490,9 +500,12 @@ class CommonTest(EWSTest):
 
     def test_autodiscover_from_account(self):
         from exchangelib.autodiscover import _autodiscover_cache
-        _autodiscover_cache.clear()
+        if hasattr(_autodiscover_cache, "clear"):
+            _autodiscover_cache.attachments.clear()
+        else:
+            del _autodiscover_cache.attachments[:]
         account = Account(primary_smtp_address=self.account.primary_smtp_address, credentials=self.config.credentials,
-                          autodiscover=True)
+                          autodiscover=True, locale='en_US')
         self.assertEqual(account.primary_smtp_address, self.account.primary_smtp_address)
         self.assertEqual(account.protocol.service_endpoint.lower(), self.config.protocol.service_endpoint.lower())
         self.assertEqual(account.protocol.version.build, self.config.protocol.version.build)
@@ -500,7 +513,7 @@ class CommonTest(EWSTest):
         self.assertTrue((account.domain, self.config.credentials, True) in _autodiscover_cache)
         # Test that autodiscover works with a full cache
         account = Account(primary_smtp_address=self.account.primary_smtp_address, credentials=self.config.credentials,
-                          autodiscover=True)
+                          autodiscover=True, locale='en_US')
         self.assertEqual(account.primary_smtp_address, self.account.primary_smtp_address)
         # Test cache manipulation
         key = (account.domain, self.config.credentials, True)
@@ -570,10 +583,10 @@ class BaseItemTest(EWSTest):
     def setUpClass(cls):
         if cls is BaseItemTest:
             raise unittest.SkipTest("Skip BaseItemTest, it's only for inheritance")
-        super().setUpClass()
+        super(BaseItemTest, cls).setUpClass()
 
     def setUp(self):
-        super().setUp()
+        super(BaseItemTest, self).setUp()
         self.test_folder = getattr(self.account, self.TEST_FOLDER)
         self.assertEqual(self.test_folder.DISTINGUISHED_FOLDER_ID, self.TEST_FOLDER)
         self.test_folder.filter(categories__contains=self.categories).delete()
@@ -609,7 +622,8 @@ class BaseItemTest(EWSTest):
                 # Start with an incomplete task
                 status = get_random_choice(Task.choices_for_field(f) - {Task.COMPLETED})
                 insert_kwargs[f] = status
-                insert_kwargs['percent_complete'] = Decimal(0) if status == Task.NOT_STARTED else get_random_decimal(0, 100)
+                insert_kwargs['percent_complete'] = Decimal(0) if status == Task.NOT_STARTED else get_random_decimal(0,
+                                                                                                                     100)
                 continue
             if f == 'percent_complete':
                 continue
@@ -666,7 +680,7 @@ class BaseItemTest(EWSTest):
                 continue
             field_type = self.ITEM_CLASS.type_for_field(f)
             if field_type == bool:
-                update_kwargs[f] = not(insert_kwargs[f])
+                update_kwargs[f] = not (insert_kwargs[f])
                 continue
             if field_type == Choice:
                 update_kwargs[f] = get_random_choice(self.ITEM_CLASS.choices_for_field(f))
@@ -1373,7 +1387,7 @@ class BaseItemTest(EWSTest):
         find_ids = self.test_folder.filter(categories__contains=item.categories).values_list('item_id', 'changekey')
         self.assertEqual(len(find_ids), 1)
         self.assertEqual(len(find_ids[0]), 2)
-        self.assertEqual(insert_ids, list(find_ids))
+        self.assertEqual(insert_ids, list(find_ids[0]))
         # Test with generator as argument
         item = self.account.fetch(ids=(i for i in find_ids))[0]
         for f in self.ITEM_CLASS.fieldnames():
@@ -1401,7 +1415,8 @@ class BaseItemTest(EWSTest):
         self.assertEqual(len(update_ids), 1)
         self.assertEqual(len(update_ids[0]), 2, update_ids)
         self.assertEqual(insert_ids[0].item_id, update_ids[0][0])  # ID should be the same
-        self.assertNotEqual(insert_ids[0].changekey, update_ids[0][1])  # Changekey should not be the same when item is updated
+        self.assertNotEqual(insert_ids[0].changekey,
+                            update_ids[0][1])  # Changekey should not be the same when item is updated
         item = self.account.fetch(update_ids)[0]
         for f in self.ITEM_CLASS.fieldnames():
             if f in self.ITEM_CLASS.readonly_fields():
@@ -1449,7 +1464,8 @@ class BaseItemTest(EWSTest):
         self.assertEqual(len(wipe_ids), 1)
         self.assertEqual(len(wipe_ids[0]), 2, wipe_ids)
         self.assertEqual(insert_ids[0].item_id, wipe_ids[0][0])  # ID should be the same
-        self.assertNotEqual(insert_ids[0].changekey, wipe_ids[0][1])  # Changekey should not be the same when item is updated
+        self.assertNotEqual(insert_ids[0].changekey,
+                            wipe_ids[0][1])  # Changekey should not be the same when item is updated
         item = self.account.fetch(wipe_ids)[0]
         for f in self.ITEM_CLASS.fieldnames():
             if f in self.ITEM_CLASS.required_fields():
@@ -1471,7 +1487,8 @@ class BaseItemTest(EWSTest):
         self.assertEqual(len(wipe2_ids), 1)
         self.assertEqual(len(wipe2_ids[0]), 2, wipe2_ids)
         self.assertEqual(insert_ids[0].item_id, wipe2_ids[0][0])  # ID should be the same
-        self.assertNotEqual(insert_ids[0].changekey, wipe2_ids[0][1])  # Changekey should not be the same when item is updated
+        self.assertNotEqual(insert_ids[0].changekey,
+                            wipe2_ids[0][1])  # Changekey should not be the same when item is updated
         item = self.account.fetch(wipe2_ids)[0]
         self.assertEqual(item.extern_id, extern_id)
 
@@ -1541,9 +1558,9 @@ class BaseItemTest(EWSTest):
                 # If it is the one returning the error
                 self.assertIsInstance(result, tuple)
                 self.assertEqual(result[0], False)
-                self.assertIsInstance(result[1], str)
+                self.assertIsInstance(result[1], text_type)
             else:
-                self.assertIsInstance(result, str)
+                self.assertIsInstance(result, text_type)
 
         # Clean up after yourself
         del ids[3]  # Sending the deleted one through will cause an error
@@ -1639,10 +1656,16 @@ class BaseItemTest(EWSTest):
 
     def test_item_attachments(self):
         item = self.get_test_item(folder=self.test_folder)
-        item.attachments.clear()
+        if hasattr(item.attachments, "clear"):
+            item.attachments.clear()
+        else:
+            del item.attachments[:]
 
         attached_item1 = self.get_test_item(folder=self.test_folder)
-        attached_item1.attachments.clear()
+        if hasattr(attached_item1.attachments, "clear"):
+            attached_item1.attachments.clear()
+        else:
+            del attached_item1.attachments[:]
         if hasattr(attached_item1, 'is_all_day'):
             attached_item1.is_all_day = False
         attached_item1.save()
@@ -1674,7 +1697,10 @@ class BaseItemTest(EWSTest):
 
         # Test attach on saved object
         attached_item2 = self.get_test_item(folder=self.test_folder)
-        attached_item2.attachments.clear()
+        if hasattr(attached_item2.attachments, "clear"):
+            attached_item2.attachments.clear()
+        else:
+            del attached_item2.attachments[:]
         if hasattr(attached_item2, 'is_all_day'):
             attached_item2.is_all_day = False
         attached_item2.save()
@@ -1745,7 +1771,10 @@ class BaseItemTest(EWSTest):
 
         # Test attach with non-saved item
         attached_item3 = self.get_test_item(folder=self.test_folder)
-        attached_item3.attachments.clear()
+        if hasattr(attached_item3.attachments, "clear"):
+            attached_item3.attachments.clear()
+        else:
+            del attached_item3.attachments[:]
         if hasattr(attached_item3, 'is_all_day'):
             attached_item3.is_all_day = False
         attachment3 = ItemAttachment(name='attachment2', item=attached_item3)
@@ -1838,7 +1867,7 @@ class MessagesTest(BaseItemTest):
         item.item_id, item.changekey = ids[0]
         item.delete()
 
-    # TODO: test if we can update existing, non-draft items in the test folder
+        # TODO: test if we can update existing, non-draft items in the test folder
 
 
 class TasksTest(BaseItemTest):
@@ -1853,6 +1882,7 @@ class ContactsTest(BaseItemTest):
     def test_paging(self):
         # TODO: This test throws random ErrorIrresolvableConflict errors on item creation for some reason.
         pass
+
 
 def get_random_bool():
     return bool(random.randint(0, 1))
@@ -1915,19 +1945,20 @@ def get_random_datetime(start_date=datetime.date(1900, 1, 1), end_date=datetime.
     # Create a random datetime with minute precision
     random_date = get_random_date(start_date=start_date, end_date=end_date)
     random_datetime = datetime.datetime.combine(random_date, datetime.time.min) \
-                      + datetime.timedelta(minutes=random.randint(0, 60*24))
+                      + datetime.timedelta(minutes=random.randint(0, 60 * 24))
     return UTC.localize(EWSDateTime.from_datetime(random_datetime))
 
 
 def get_random_datetime_range():
     # Create two random datetimes. Calendar items raise ErrorCalendarDurationIsTooLong if duration is > 5 years.
     dt1 = get_random_datetime()
-    dt2 = dt1 + datetime.timedelta(minutes=random.randint(0, 60*24*365*5))
+    dt2 = dt1 + datetime.timedelta(minutes=random.randint(0, 60 * 24 * 365 * 5))
     return dt1, dt2
 
 
 if __name__ == '__main__':
     import logging
+
     loglevel = logging.DEBUG
     # loglevel = logging.WARNING
     logging.basicConfig(level=loglevel)

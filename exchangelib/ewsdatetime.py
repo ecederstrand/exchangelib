@@ -1,6 +1,9 @@
+from __future__ import unicode_literals
+
 import datetime
 
 import pytz
+from future.utils import raise_from
 
 
 class EWSDate(datetime.date):
@@ -27,7 +30,7 @@ class EWSDateTime(datetime.datetime):
         if 'tzinfo' in kwargs:
             # Creating
             raise ValueError('Do not set tzinfo directly. Use EWSTimeZone.localize() instead')
-        self = super().__new__(cls, *args, **kwargs)
+        self = super(EWSDateTime, cls).__new__(cls, *args, **kwargs)
         return self
 
     def ewsformat(self):
@@ -49,15 +52,15 @@ class EWSDateTime(datetime.datetime):
         return dt
 
     def astimezone(self, tz=None):
-        t = super().astimezone(tz=tz)
+        t = super(EWSDateTime, self).astimezone(tz=tz)
         return self.from_datetime(t)  # We want to return EWSDateTime objects
 
     def __add__(self, other):
-        t = super().__add__(other)
+        t = super(EWSDateTime, self).__add__(other)
         return self.from_datetime(t)  # We want to return EWSDateTime objects
 
     def __sub__(self, other):
-        t = super().__sub__(other)
+        t = super(EWSDateTime, self).__sub__(other)
         if isinstance(t, datetime.timedelta):
             return t
         return self.from_datetime(t)  # We want to return EWSDateTime objects
@@ -65,17 +68,17 @@ class EWSDateTime(datetime.datetime):
     @classmethod
     def from_string(cls, date_string):
         # Assume UTC and return timezone-aware EWSDateTime objects
-        local_dt = super().strptime(date_string, '%Y-%m-%dT%H:%M:%SZ')
+        local_dt = super(EWSDateTime, cls).strptime(date_string, '%Y-%m-%dT%H:%M:%SZ')
         return EWSTimeZone.from_pytz(pytz.utc).localize(cls.from_datetime(local_dt))
 
     @classmethod
     def now(cls, tz=None):
         # We want to return EWSDateTime objects
-        t = super().now(tz=tz)
+        t = super(EWSDateTime, cls).now(tz=tz)
         return cls.from_datetime(t)
 
 
-class EWSTimeZone:
+class EWSTimeZone(object):
     """
     Represents a timezone as expected by the EWS TimezoneContext / TimezoneDefinition XML element, and returned by
     services.GetServerTimeZones.
@@ -89,7 +92,7 @@ class EWSTimeZone:
         try:
             self_cls.ms_id = cls.PYTZ_TO_MS_MAP[tz.zone]
         except KeyError as e:
-            raise ValueError('Please add an entry for "%s" in PYTZ_TO_MS_TZMAP' % tz.zone) from e
+            raise_from(ValueError('Please add an entry for "%s" in PYTZ_TO_MS_TZMAP' % tz.zone), e)
         self_cls.ms_name = cls.MS_TIMEZONE_DEFINITIONS[self_cls.ms_id]
         self = self_cls()
         for k, v in tz.__dict__.items():
@@ -104,12 +107,12 @@ class EWSTimeZone:
 
     def normalize(self, dt):
         # super() returns a dt.tzinfo of class pytz.tzinfo.FooBar. We need to return type EWSTimeZone
-        res = super().normalize(dt)
+        res = super(EWSTimeZone, self).normalize(dt)
         return res.replace(tzinfo=self.from_pytz(res.tzinfo))
 
     def localize(self, dt):
         # super() returns a dt.tzinfo of class pytz.tzinfo.FooBar. We need to return type EWSTimeZone
-        res = super().localize(dt)
+        res = super(EWSTimeZone, self).localize(dt)
         return res.replace(tzinfo=self.from_pytz(res.tzinfo))
 
     # Manually maintained translation between pytz location / timezone name and MS timezone IDs
