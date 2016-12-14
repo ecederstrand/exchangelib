@@ -1,4 +1,3 @@
-# coding=utf-8
 from __future__ import unicode_literals
 
 import itertools
@@ -27,6 +26,7 @@ try:
 except NameError:  # Python 2, so define backported exceptions
     class ConnectionResetError(OSError):
         pass
+
 log = logging.getLogger(__name__)
 
 ElementType = type(Element('x'))  # Type is auto-generated inside cElementTree
@@ -308,8 +308,8 @@ Response headers: %(response_headers)s'''
             try:
                 r = session.post(url=url, headers=headers, data=data, allow_redirects=False, timeout=timeout,
                                  verify=verify)
-            except (requests.exceptions.ChunkedEncodingError, requests.exceptions.ConnectionError,
-                    requests.exceptions.ReadTimeout, SocketTimeout, ConnectionResetError):
+            except (requests.exceptions.ChunkedEncodingError, requests.exceptions.ConnectionError, ConnectionResetError,
+                    requests.exceptions.ReadTimeout, SocketTimeout):
                 log.debug(
                     'Session %(session_id)s thread %(thread_id)s: timeout or connection error POST\'ing to %(url)s',
                     log_vals)

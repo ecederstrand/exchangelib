@@ -917,7 +917,7 @@ class Item(EWSElement):
 
     def save(self, conflict_resolution=AUTO_RESOLVE, send_meeting_invitations=SEND_TO_NONE):
         item = self._save(message_disposition=SAVE_ONLY, conflict_resolution=conflict_resolution,
-                          send_meeting_invitations=send_meeting_invitations)
+                                        send_meeting_invitations=send_meeting_invitations)
         if self.item_id:
             # _save() returns tuple()
             item_id, changekey = item
@@ -1143,8 +1143,7 @@ class Item(EWSElement):
         #   body formats or the recipient lists.
         #
         simple_types = (bool, int, string_type, [string_type], AnyURI, Choice, EWSDateTime)
-        return tuple(f for f in cls.fieldnames() if cls.type_for_field(f) not in simple_types) + (
-            'item_id', 'changekey')
+        return tuple(f for f in cls.fieldnames() if cls.type_for_field(f) not in simple_types) + ('item_id', 'changekey')
 
     @classmethod
     def type_for_field(cls, fieldname):
@@ -1187,8 +1186,7 @@ class Item(EWSElement):
         extended_properties = elem.findall(ExtendedProperty.response_tag())
         for fieldname in cls.fieldnames():
             field_type = cls.type_for_field(fieldname)
-            if field_type in (
-                    EWSDateTime, bool, int, Decimal, string_type, Choice, Email, AnyURI, Body, HTMLBody, MimeContent):
+            if field_type in (EWSDateTime, bool, int, Decimal, string_type, Choice, Email, AnyURI, Body, HTMLBody, MimeContent):
                 field_elem = elem.find(cls.response_xml_elem_for_field(fieldname))
                 val = None if field_elem is None else field_elem.text.strip() if field_elem.text else None
                 if val is not None:
@@ -2077,8 +2075,7 @@ class Folder(EWSElement):
         return self.bulk_delete(*args, **kwargs)
 
     def bulk_delete(self, *args, **kwargs):
-        warnings.warn('Folder.bulk_delete() is deprecated. Use Account.bulk_delete() instead',
-                      PendingDeprecationWarning)
+        warnings.warn('Folder.bulk_delete() is deprecated. Use Account.bulk_delete() instead', PendingDeprecationWarning)
         return self.account.bulk_delete(*args, **kwargs)
 
     def update_items(self, *args, **kwargs):
@@ -2086,8 +2083,7 @@ class Folder(EWSElement):
         return self.bulk_update(*args, **kwargs)
 
     def bulk_update(self, *args, **kwargs):
-        warnings.warn('Folder.bulk_update() is deprecated. Use Account.bulk_update() instead',
-                      PendingDeprecationWarning)
+        warnings.warn('Folder.bulk_update() is deprecated. Use Account.bulk_update() instead', PendingDeprecationWarning)
         return self.account.bulk_update(*args, **kwargs)
 
     def get_items(self, *args, **kwargs):

@@ -6,7 +6,6 @@ import string
 import time
 import unittest
 from decimal import Decimal
-from locale import getlocale
 
 import requests
 from six import PY2, string_types, text_type
@@ -32,10 +31,6 @@ from exchangelib.version import Build
 
 if PY2:
     FileNotFoundError = OSError
-# To ease testing non secure ews connections
-VERIFY_SSL = False
-LOCALE = getlocale()[0]
-IS_SERVICE_ACCOUNT = True
 
 
 class BuildTest(unittest.TestCase):
@@ -289,8 +284,7 @@ class UtilTest(unittest.TestCase):
             r = requests.get('https://httpbin.org/redirect-to?url=/example', allow_redirects=False)
             get_redirect_url(r, allow_relative=False)
 
-    @staticmethod
-    def test_close_connections():
+    def test_close_connections(self):
         close_connections()
 
 
@@ -309,11 +303,9 @@ class EWSTest(unittest.TestCase):
         self.tz = EWSTimeZone.timezone('Europe/Copenhagen')
         self.categories = ['Test']
         self.config = Configuration(server=settings['server'],
-                                    credentials=Credentials(settings['username'], settings['password'],
-                                                            is_service_account=IS_SERVICE_ACCOUNT),
+                                    credentials=Credentials(settings['username'], settings['password']),
                                     verify_ssl=settings['verify_ssl'])
-        self.account = Account(primary_smtp_address=settings['account'], access_type=DELEGATE, config=self.config,
-                               locale=LOCALE, verify_ssl=VERIFY_SSL)
+        self.account = Account(primary_smtp_address=settings['account'], access_type=DELEGATE, config=self.config)
         self.maxDiff = None
 
     def random_val(self, field_type):
@@ -463,17 +455,15 @@ class CommonTest(EWSTest):
 
     def test_configuration(self):
         with self.assertRaises(AttributeError):
-            Configuration(
-                credentials=Credentials(username='foo', password='bar', is_service_account=IS_SERVICE_ACCOUNT))
+            Configuration(credentials=Credentials(username='foo', password='bar'))
         with self.assertRaises(AttributeError):
-            Configuration(
-                credentials=Credentials(username='foo', password='bar', is_service_account=IS_SERVICE_ACCOUNT),
-                service_endpoint='http://example.com/svc',
-                auth_type='XXX')
+            Configuration(credentials=Credentials(username='foo', password='bar'),
+                          service_endpoint='http://example.com/svc',
+                          auth_type='XXX')
 
     def test_autodiscover(self):
         primary_smtp_address, protocol = discover(email=self.account.primary_smtp_address,
-                                                  credentials=self.config.credentials, verify_ssl=VERIFY_SSL)
+                                                  credentials=self.config.credentials)
         self.assertEqual(primary_smtp_address, self.account.primary_smtp_address)
         self.assertEqual(protocol.service_endpoint.lower(), self.config.protocol.service_endpoint.lower())
         self.assertEqual(protocol.version.build, self.config.protocol.version.build)
@@ -481,43 +471,34 @@ class CommonTest(EWSTest):
     def test_autodiscover_cache(self):
         from exchangelib.autodiscover import _autodiscover_cache
         # Empty the cache
-        if hasattr(_autodiscover_cache, "attachments"):
-            if hasattr(_autodiscover_cache.attachments, "clear"):
-                _autodiscover_cache.attachments.clear()
-            else:
-                del _autodiscover_cache.attachments[:]
+        _autodiscover_cache.clear()
         cache_key = (self.account.domain, self.config.credentials, self.config.protocol.verify_ssl)
         # Not cached
         self.assertNotIn(cache_key, _autodiscover_cache)
-        discover(email=self.account.primary_smtp_address, credentials=self.config.credentials, verify_ssl=VERIFY_SSL)
+        discover(email=self.account.primary_smtp_address, credentials=self.config.credentials)
         # Now it's cached
         self.assertIn(cache_key, _autodiscover_cache)
         # Make sure the cache can be looked by value, not by id(). This is important for multi-threading/processing
         self.assertIn((
             self.account.primary_smtp_address.split('@')[1],
-            Credentials(self.config.credentials.username, self.config.credentials.password,
-                        is_service_account=IS_SERVICE_ACCOUNT),
+            Credentials(self.config.credentials.username, self.config.credentials.password),
             True
         ), _autodiscover_cache)
         # Poison the cache. discover() must survive and rebuild the cache
         _autodiscover_cache[cache_key] = AutodiscoverProtocol(
             service_endpoint='https://example.com/blackhole.asmx',
-            credentials=Credentials('leet_user', 'cannaguess', is_service_account=IS_SERVICE_ACCOUNT),
+            credentials=Credentials('leet_user', 'cannaguess', is_service_account=False),
             auth_type=NTLM,
             verify_ssl=True
         )
-        discover(email=self.account.primary_smtp_address, credentials=self.config.credentials, verify_ssl=VERIFY_SSL)
+        discover(email=self.account.primary_smtp_address, credentials=self.config.credentials)
         self.assertIn(cache_key, _autodiscover_cache)
 
     def test_autodiscover_from_account(self):
         from exchangelib.autodiscover import _autodiscover_cache
-        if hasattr(_autodiscover_cache, "attachments"):
-            if hasattr(_autodiscover_cache.attachments, "clear"):
-                _autodiscover_cache.attachments.clear()
-            else:
-                del _autodiscover_cache.attachments[:]
+        _autodiscover_cache.clear()
         account = Account(primary_smtp_address=self.account.primary_smtp_address, credentials=self.config.credentials,
-                          autodiscover=True, locale=LOCALE, verify_ssl=VERIFY_SSL)
+                          autodiscover=True)
         self.assertEqual(account.primary_smtp_address, self.account.primary_smtp_address)
         self.assertEqual(account.protocol.service_endpoint.lower(), self.config.protocol.service_endpoint.lower())
         self.assertEqual(account.protocol.version.build, self.config.protocol.version.build)
@@ -525,7 +506,7 @@ class CommonTest(EWSTest):
         self.assertTrue((account.domain, self.config.credentials, True) in _autodiscover_cache)
         # Test that autodiscover works with a full cache
         account = Account(primary_smtp_address=self.account.primary_smtp_address, credentials=self.config.credentials,
-                          autodiscover=True, locale=LOCALE, verify_ssl=VERIFY_SSL)
+                          autodiscover=True)
         self.assertEqual(account.primary_smtp_address, self.account.primary_smtp_address)
         # Test cache manipulation
         key = (account.domain, self.config.credentials, True)
@@ -1427,8 +1408,7 @@ class BaseItemTest(EWSTest):
         self.assertEqual(len(update_ids), 1)
         self.assertEqual(len(update_ids[0]), 2, update_ids)
         self.assertEqual(insert_ids[0].item_id, update_ids[0][0])  # ID should be the same
-        self.assertNotEqual(insert_ids[0].changekey,
-                            update_ids[0][1])  # Changekey should not be the same when item is updated
+        self.assertNotEqual(insert_ids[0].changekey, update_ids[0][1])  # Changekey should not be the same when item is updated
         item = self.account.fetch(update_ids)[0]
         for f in self.ITEM_CLASS.fieldnames():
             if f in self.ITEM_CLASS.readonly_fields():
@@ -1499,8 +1479,7 @@ class BaseItemTest(EWSTest):
         self.assertEqual(len(wipe2_ids), 1)
         self.assertEqual(len(wipe2_ids[0]), 2, wipe2_ids)
         self.assertEqual(insert_ids[0].item_id, wipe2_ids[0][0])  # ID should be the same
-        self.assertNotEqual(insert_ids[0].changekey,
-                            wipe2_ids[0][1])  # Changekey should not be the same when item is updated
+        self.assertNotEqual(insert_ids[0].changekey, wipe2_ids[0][1])  # Changekey should not be the same when item is updated
         item = self.account.fetch(wipe2_ids)[0]
         self.assertEqual(item.extern_id, extern_id)
 
@@ -1668,18 +1647,10 @@ class BaseItemTest(EWSTest):
 
     def test_item_attachments(self):
         item = self.get_test_item(folder=self.test_folder)
-        if hasattr(item, "attachments"):
-            if hasattr(item.attachments, "clear"):
-                item.attachments.clear()
-            else:
-                del item.attachments[:]
+        item.attachments.clear()
 
         attached_item1 = self.get_test_item(folder=self.test_folder)
-        if hasattr(attached_item1, "attachments"):
-            if hasattr(attached_item1.attachments, "clear"):
-                attached_item1.attachments.clear()
-            else:
-                del attached_item1.attachments[:]
+        attached_item1.attachments.clear()
         if hasattr(attached_item1, 'is_all_day'):
             attached_item1.is_all_day = False
         attached_item1.save()
@@ -1711,11 +1682,7 @@ class BaseItemTest(EWSTest):
 
         # Test attach on saved object
         attached_item2 = self.get_test_item(folder=self.test_folder)
-        if hasattr(attached_item2, "attachments"):
-            if hasattr(attached_item2.attachments, "clear"):
-                attached_item2.attachments.clear()
-            else:
-                del attached_item2.attachments[:]
+        attached_item2.attachments.clear()
         if hasattr(attached_item2, 'is_all_day'):
             attached_item2.is_all_day = False
         attached_item2.save()
@@ -1786,11 +1753,7 @@ class BaseItemTest(EWSTest):
 
         # Test attach with non-saved item
         attached_item3 = self.get_test_item(folder=self.test_folder)
-        if hasattr(attached_item3, "attachments"):
-            if hasattr(attached_item3.attachments, "clear"):
-                attached_item3.attachments.clear()
-            else:
-                del attached_item3.attachments[:]
+        attached_item3.attachments.clear()
         if hasattr(attached_item3, 'is_all_day'):
             attached_item3.is_all_day = False
         attachment3 = ItemAttachment(name='attachment2', item=attached_item3)
@@ -1883,7 +1846,7 @@ class MessagesTest(BaseItemTest):
         item.item_id, item.changekey = ids[0]
         item.delete()
 
-        # TODO: test if we can update existing, non-draft items in the test folder
+    # TODO: test if we can update existing, non-draft items in the test folder
 
 
 class TasksTest(BaseItemTest):
