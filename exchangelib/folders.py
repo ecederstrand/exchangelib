@@ -743,7 +743,7 @@ class ExtendedProperty(EWSElement):
                     extended_field_value = [
                         xml_text_to_value(value=val, field_type=python_type)
                         for val in get_xml_attrs(e, '{%s}Value' % TNS)
-                        ]
+                    ]
                 else:
                     extended_field_value = xml_text_to_value(
                         value=get_xml_attr(e, '{%s}Value' % TNS), field_type=python_type)
@@ -870,11 +870,6 @@ class Item(EWSElement):
     __slots__ = ('account', 'folder') + tuple(ITEM_FIELDS)
 
     def __init__(self, **kwargs):
-        self.is_draft = None
-        self.account = None
-        self.attachments = None
-        self.item_id = None
-        self.changekey = None
         for k in Item.__slots__:
             default = False if k == 'reminder_is_set' else [] if k == 'attachments' else None
             v = kwargs.pop(k, default)
@@ -1577,7 +1572,6 @@ class Task(ItemMixIn):
     __slots__ = tuple(ITEM_FIELDS) + tuple(Item.ITEM_FIELDS)
 
     def __init__(self, **kwargs):
-        self.start_date = None
         for k in self.ITEM_FIELDS:
             field_type = self.ITEM_FIELDS[k][1]
             default = False if (k in self.required_fields() and field_type == bool) else None
@@ -1865,7 +1859,7 @@ class ItemAttachment(Attachment):
         self._item = value
 
 
-ITEM_CLASSES = (CalendarItem, Contact, Message, Task, Item, MeetingRequest, MeetingResponse, MeetingCancellation)
+ITEM_CLASSES = (CalendarItem, Contact, Message, Task, MeetingRequest, MeetingResponse, MeetingCancellation)
 
 
 @python_2_unicode_compatible
@@ -1916,8 +1910,6 @@ class Folder(EWSElement):
 
     @classmethod
     def item_model_from_tag(cls, tag):
-        if "Item" in tag:
-            pass
         return cls.ITEM_MODEL_MAP[tag]
 
     @classmethod
@@ -2146,8 +2138,7 @@ class Folder(EWSElement):
                 log.debug('Folder class %s matches localized folder name %s', folder_cls, dummy_fld.name)
             except KeyError:
                 folder_cls = self.folder_cls_from_container_class(dummy_fld.folder_class)
-                log.debug('Folder class %s matches container class %s (%s)', folder_cls, dummy_fld.folder_class,
-                          dummy_fld.name)
+                log.debug('Folder class %s matches container class %s (%s)', folder_cls, dummy_fld.folder_class, dummy_fld.name)
             folders.append(folder_cls(**dummy_fld.__dict__))
         return folders
 
