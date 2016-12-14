@@ -243,4 +243,4 @@ class EWSSession(Session):
             self.protocol.release_session(self)
         else:
             self.protocol.retire_session(self)
-            # return super().__exit__()  # We want to close the session socket explicitly
+        # return super().__exit__()  # We want to close the session socket explicitly

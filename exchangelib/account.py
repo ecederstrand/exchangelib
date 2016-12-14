@@ -214,15 +214,15 @@ class Account(object):
             # We accept generators, so it's not always convenient for caller to know up-front if 'items' is empty. Allow
             # empty 'items' and return early.
             return []
-        items = CreateItem(account=self).call(
+        return list(map(
+            lambda i: folder.item_model_from_tag(i.tag).from_xml(elem=i, account=self, folder=folder),
+            CreateItem(account=self).call(
                 items=items,
                 folder=folder,
                 message_disposition=message_disposition,
                 send_meeting_invitations=send_meeting_invitations,
             )
-        item_list = [folder.item_model_from_tag(item.tag).from_xml(elem=item, account=self, folder=folder) for item in
-                     items if type(item) is not tuple]
-        return item_list
+        ))
 
     def bulk_update(self, items, conflict_resolution=AUTO_RESOLVE, message_disposition=SAVE_ONLY,
                     send_meeting_invitations_or_cancellations=SEND_TO_NONE, suppress_read_receipts=True):
@@ -331,10 +331,10 @@ class Account(object):
         else:
             only_fields = validation_folder.allowed_field_names()
         items = GetItem(account=self).call(items=ids, folder=validation_folder, additional_fields=only_fields)
-        # Added check for item. Item with tuple has None value
-        item_list = [validation_folder.item_model_from_tag(item.tag).from_xml(elem=item, account=self, folder=folder)
-                     for item in items if type(item) is not tuple]
-        return item_list
+        return list(map(
+            lambda i: validation_folder.item_model_from_tag(i.tag).from_xml(elem=i, account=self, folder=folder),
+            items
+        ))
 
     def __str__(self):
         txt = '%s' % self.primary_smtp_address

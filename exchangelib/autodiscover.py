@@ -189,7 +189,7 @@ def discover(email, credentials, verify_ssl=True):
                 # Autodiscover no longer works with this domain. Clear cache and try again
                 del _autodiscover_cache[autodiscover_key]
                 return discover(email=e.redirect_email, credentials=credentials, verify_ssl=verify_ssl)
-                # This is unreachable
+        # This is unreachable
 
     log.debug('Waiting for _autodiscover_cache_lock')
     with _autodiscover_cache_lock:
@@ -289,7 +289,8 @@ def _autodiscover_hostname(hostname, credentials, email, has_ssl, verify, auth_t
         redirect_url, redirect_hostname, redirect_has_ssl = get_redirect_url(r)
         log.debug('We were redirected to %s', redirect_url)
         # Don't raise RedirectError here because we need to pass the ssl and auth_type data
-        return _autodiscover_hostname(redirect_hostname, credentials, email, has_ssl=redirect_has_ssl, verify=verify)
+        return _autodiscover_hostname(redirect_hostname, credentials, email, has_ssl=redirect_has_ssl, verify=verify,
+                                      auth_type=None)
     domain = get_domain(email)
     try:
         server, has_ssl, ews_url, ews_auth_type, primary_smtp_address = _parse_response(r.text)
@@ -419,7 +420,7 @@ def _parse_response(response, encoding='utf-8'):
     # There are three possible protocol types: EXCH, EXPR and WEB. EXPR is for EWS. See
     # http://blogs.technet.com/b/exchange/archive/2008/09/26/3406344.aspx
     for protocol in protocols:
-        if get_xml_attr(protocol, '{%s}Type' % RESPONSE_NS) not in ('EXCH', 'EXPR'):
+        if get_xml_attr(protocol, '{%s}Type' % RESPONSE_NS) != 'EXPR':
             continue
         server = get_xml_attr(protocol, '{%s}Server' % RESPONSE_NS)
         has_ssl = True if get_xml_attr(protocol, '{%s}SSL' % RESPONSE_NS) == 'On' else False
