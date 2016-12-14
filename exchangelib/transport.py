@@ -1,3 +1,4 @@
+# coding=utf-8
 from __future__ import unicode_literals
 
 import logging
@@ -163,9 +164,8 @@ def get_autodiscover_authtype(service_endpoint, data, timeout, verify):
                 # We were redirected to a different domain or sheme. Raise RedirectError so higher-level code can
                 # try again on this new domain or scheme.
                 raise RedirectError(url=e.value)
-            # Some MS servers are masters of messing up HTTP, issuing 302 to an error page with zero content. Give this
-            # URL a chance with a POST request.
-            # raise TransportError('Circular redirect')
+                # Some MS servers are masters of messing up HTTP, issuing 302 to an error page with zero content.
+                # Give this URL a chance with a POST request. raise TransportError('Circular redirect')
         r = s.post(url=service_endpoint, headers=headers, data=data, timeout=timeout, allow_redirects=False,
                    verify=verify)
     return _get_auth_method_from_response(response=r)

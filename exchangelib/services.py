@@ -1,3 +1,4 @@
+# coding=utf-8
 """
 Implement a selection of EWS services.
 
@@ -36,7 +37,6 @@ from .version import EXCHANGE_2010, EXCHANGE_2013
 
 log = logging.getLogger(__name__)
 
-
 # Shape enums
 IdOnly = 'IdOnly'
 # AllProperties doesn't actually get all properties in FindItem, just the "first-class" ones. See
@@ -56,7 +56,7 @@ FOLDER_TRAVERSAL_CHOICES = (SHALLOW, DEEP, SOFT_DELETED)
 class EWSService(object):
     SERVICE_NAME = None  # The name of the SOAP service
     element_container_name = None  # The name of the XML element wrapping the collection of returned items
-    ERRORS_TO_CATCH_IN_RESPONSE = EWSWarning # Treat the following errors as warnings when contained in an element
+    ERRORS_TO_CATCH_IN_RESPONSE = EWSWarning  # Treat the following errors as warnings when contained in an element
 
     def __init__(self, protocol):
         self.protocol = protocol
@@ -110,17 +110,12 @@ class EWSService(object):
         for api_version in api_versions:
             session = self.protocol.get_session()
             soap_payload = wrap(content=payload, version=api_version, account=account)
-            r, session = post_ratelimited(
-                protocol=self.protocol,
-                session=session,
-                url=self.protocol.service_endpoint,
-                headers=None,
-                data=soap_payload,
-                timeout=self.protocol.TIMEOUT,
-                verify=self.protocol.verify_ssl,
-                allow_redirects=False)
+            r, session = post_ratelimited(protocol=self.protocol, session=session, url=self.protocol.service_endpoint,
+                                          headers=None, data=soap_payload, timeout=self.protocol.TIMEOUT,
+                                          verify=self.protocol.verify_ssl)
             self.protocol.release_session(session)
             log.debug('Trying API version %s for account %s', api_version, account)
+            soap_response_payload = None
             try:
                 soap_response_payload = to_xml(r.text, encoding=r.encoding or 'utf-8')
             except ExpatError as e:
@@ -203,6 +198,10 @@ class EWSService(object):
         if response_class == 'Warning':
             return self._raise_warnings(code=response_code, text=msg_text, xml=msg_xml)
         # rspclass == 'Error', or 'Success' and not 'NoError'
+        # Error handling to continue with execution, while logging elements with error and returning non error elements
+        if response_class == 'Error':
+            log.error("Error while getting element container - [%s] - %s for \n%s", response_code, msg_text, message)
+            return None
         return self._raise_errors(code=response_code, text=msg_text, xml=msg_xml)
 
     def _raise_warnings(self, code, text, xml):
@@ -248,6 +247,9 @@ class EWSService(object):
 
 
 class EWSAccountService(EWSService):
+    def _get_payload(self, *args, **kwargs):
+        pass
+
     def __init__(self, account):
         self.account = account
         super(EWSAccountService, self).__init__(protocol=account.protocol)
@@ -260,6 +262,9 @@ class EWSFolderService(EWSAccountService):
 
 
 class PagingEWSMixIn(EWSService):
+    def _get_payload(self, *args, **kwargs):
+        pass
+
     def _paged_call(self, **kwargs):
         account = self.account if isinstance(self, EWSAccountService) else None
         log_prefix = 'EWS %s, account %s, service %s' % (self.protocol.service_endpoint, account, self.SERVICE_NAME)
@@ -312,7 +317,12 @@ class PagingEWSMixIn(EWSService):
 
 class ExpectResponseErrorsMixin(EWSService):
     """Don't raise errors in the response, just return them as if they're warnings"""
+
+    def _get_payload(self, *args, **kwargs):
+        pass
+
     ERRORS_TO_CATCH_IN_RESPONSE = EWSError
+
 
 class GetServerTimeZones(EWSService):
     """
@@ -380,6 +390,9 @@ class GetRooms(EWSService):
 
 
 class EWSPooledMixIn(EWSService):
+    def _get_payload(self, *args, **kwargs):
+        pass
+
     CHUNKSIZE = None
 
     def call(self, **kwargs):
@@ -492,7 +505,8 @@ class UpdateItem(EWSPooledAccountService):
     SERVICE_NAME = 'UpdateItem'
     element_container_name = '{%s}Items' % MNS
 
-    def _add_delete_item_elem(self, item_model, parent_elem, fieldname, fielduri):
+    @staticmethod
+    def _add_delete_item_elem(item_model, parent_elem, fieldname, fielduri):
         if fieldname in item_model.required_fields():
             log.warning('%s is a required field and may not be deleted. Skipping', fieldname)
             return

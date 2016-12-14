@@ -1,3 +1,4 @@
+# coding=utf-8
 from __future__ import unicode_literals
 
 import itertools
@@ -20,6 +21,12 @@ if PY3:
     from threading import get_ident
 else:
     from thread import get_ident
+
+try:
+    ConnectionResetError = ConnectionResetError
+except NameError:  # Python 2, so define backported exceptions
+    class ConnectionResetError(OSError):
+        pass
 log = logging.getLogger(__name__)
 
 ElementType = type(Element('x'))  # Type is auto-generated inside cElementTree
@@ -302,7 +309,7 @@ Response headers: %(response_headers)s'''
                 r = session.post(url=url, headers=headers, data=data, allow_redirects=False, timeout=timeout,
                                  verify=verify)
             except (requests.exceptions.ChunkedEncodingError, requests.exceptions.ConnectionError,
-                    requests.exceptions.ReadTimeout, SocketTimeout):
+                    requests.exceptions.ReadTimeout, SocketTimeout, ConnectionResetError):
                 log.debug(
                     'Session %(session_id)s thread %(thread_id)s: timeout or connection error POST\'ing to %(url)s',
                     log_vals)
@@ -323,7 +330,7 @@ Response headers: %(response_headers)s'''
             if (r.status_code == 401) \
                     or (r.headers.get('connection') == 'close') \
                     or (r.status_code == 302 and r.headers.get('location').lower() ==
-                        '/ews/genericerrorpage.htm?aspxerrorpath=/ews/exchange.asmx')\
+                        '/ews/genericerrorpage.htm?aspxerrorpath=/ews/exchange.asmx') \
                     or (r.status_code == 503):
                 # Maybe stale session. Get brand new one. But wait a bit, since the server may be rate-limiting us.
                 # This can be 302 redirect to error page, 401 authentication error or 503 service unavailable

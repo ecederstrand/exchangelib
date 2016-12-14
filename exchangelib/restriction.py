@@ -400,6 +400,7 @@ class Restriction(object):
     Implements an EWS Restriction type.
 
     """
+
     def __init__(self, q):
         if not isinstance(q, Q):
             raise ValueError("'q' must be a Q object (%s)", type(q))

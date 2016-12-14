@@ -1,3 +1,4 @@
+# coding=utf-8
 from __future__ import unicode_literals
 
 import logging
@@ -124,6 +125,7 @@ class QuerySet(object):
                     for f in extra_order_fields:
                         setattr(i, f, None)
                     return i
+
                 items = map(clean_item, items)
         return items
 
