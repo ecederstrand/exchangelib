@@ -2,8 +2,8 @@
 Change Log
 ==========
 
-HEAD
-----
+1.7.3
+-----
 * Implement attachments support. It's now possible to create, delete and get attachments connected to any item type:
 
   .. code-block:: python
@@ -37,6 +37,9 @@ HEAD
 
   Be aware that adding and deleting attachments from items that are already created in Exchange (items that have an
   `item_id`) will update the `changekey` of the item.
+
+* Implement `Item.headers` which contains custom Internet message headers. Primarily useful for `Message` objects.
+  Read-only for now.
 
 
 1.7.2

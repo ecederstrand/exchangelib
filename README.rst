@@ -212,7 +212,8 @@ Here are some examples of how `exchangelib` works:
     # Remove the attachment again
     item.detach(my_file)
 
-    Be aware that adding and deleting attachments from items that are already created in Exchange (items that have an item_id) will update the changekey of the item.
+    # Be aware that adding and deleting attachments from items that are already created in Exchange 
+    # (items that have an item_id) will update the changekey of the item.
 
     
     # 'exchangelib' has support for most (but not all) item attributes, and also item export and upload.

@@ -10,6 +10,7 @@ from decimal import Decimal
 import requests
 from six import PY2, string_types, text_type
 from yaml import load
+from xml.etree.ElementTree import ParseError
 
 from exchangelib import close_connections
 from exchangelib.account import Account
@@ -21,12 +22,12 @@ from exchangelib.ewsdatetime import EWSDateTime, EWSDate, EWSTimeZone, UTC, UTC_
 from exchangelib.folders import CalendarItem, Attendee, Mailbox, Message, ExtendedProperty, Choice, Email, Contact, \
     Task, EmailAddress, PhysicalAddress, PhoneNumber, IndexedField, RoomList, Calendar, DeletedItems, Drafts, Inbox, \
     Outbox, SentItems, JunkEmail, Messages, Tasks, Contacts, Item, AnyURI, Body, HTMLBody, FileAttachment, \
-    ItemAttachment, Attachment, ALL_OCCURRENCIES, MimeContent
+    ItemAttachment, Attachment, ALL_OCCURRENCIES, MimeContent, MessageHeader
 from exchangelib.queryset import QuerySet, DoesNotExist, MultipleObjectsReturned
 from exchangelib.restriction import Restriction, Q
 from exchangelib.services import GetServerTimeZones, GetRoomLists, GetRooms
 from exchangelib.transport import NTLM
-from exchangelib.util import xml_to_str, chunkify, peek, get_redirect_url, isanysubclass
+from exchangelib.util import xml_to_str, chunkify, peek, get_redirect_url, isanysubclass, to_xml, BOM
 from exchangelib.version import Build
 
 if PY2:
@@ -287,6 +288,13 @@ class UtilTest(unittest.TestCase):
     def test_close_connections(self):
         close_connections()
 
+    def test_to_xml(self):
+        to_xml('<?xml version="1.0" encoding="UTF-8"?><foo></foo>', encoding='ascii')
+        to_xml(BOM+'<?xml version="1.0" encoding="UTF-8"?><foo></foo>', encoding='ascii')
+        to_xml(BOM+'<?xml version="1.0" encoding="UTF-8"?><foo>&broken</foo>', encoding='ascii')
+        with self.assertRaises(ParseError):
+            to_xml('foo', encoding='ascii')
+
 
 class EWSTest(unittest.TestCase):
     def setUp(self):
@@ -305,7 +313,7 @@ class EWSTest(unittest.TestCase):
         self.config = Configuration(server=settings['server'],
                                     credentials=Credentials(settings['username'], settings['password']),
                                     verify_ssl=settings['verify_ssl'])
-        self.account = Account(primary_smtp_address=settings['account'], access_type=DELEGATE, config=self.config)
+        self.account = Account(primary_smtp_address=settings['account'], access_type=DELEGATE, config=self.config, locale='da_DK')
         self.maxDiff = None
 
     def random_val(self, field_type):
@@ -333,6 +341,10 @@ class EWSTest(unittest.TestCase):
             return get_random_datetime()
         if field_type == Email:
             return get_random_email()
+        if field_type == MessageHeader:
+            return MessageHeader(name=get_random_string(10), value=get_random_string(255))
+        if field_type == [MessageHeader]:
+            return [self.random_val(MessageHeader) for _ in range(random.randint(1, 4))]
         if field_type == Attachment:
             return FileAttachment(name='my_file.txt', content=b'test_content')
         if field_type == [Attachment]:
@@ -498,7 +510,7 @@ class CommonTest(EWSTest):
         from exchangelib.autodiscover import _autodiscover_cache
         _autodiscover_cache.clear()
         account = Account(primary_smtp_address=self.account.primary_smtp_address, credentials=self.config.credentials,
-                          autodiscover=True)
+                          autodiscover=True, locale='da_DK')
         self.assertEqual(account.primary_smtp_address, self.account.primary_smtp_address)
         self.assertEqual(account.protocol.service_endpoint.lower(), self.config.protocol.service_endpoint.lower())
         self.assertEqual(account.protocol.version.build, self.config.protocol.version.build)
@@ -506,7 +518,7 @@ class CommonTest(EWSTest):
         self.assertTrue((account.domain, self.config.credentials, True) in _autodiscover_cache)
         # Test that autodiscover works with a full cache
         account = Account(primary_smtp_address=self.account.primary_smtp_address, credentials=self.config.credentials,
-                          autodiscover=True)
+                          autodiscover=True, locale='da_DK')
         self.assertEqual(account.primary_smtp_address, self.account.primary_smtp_address)
         # Test cache manipulation
         key = (account.domain, self.config.credentials, True)
