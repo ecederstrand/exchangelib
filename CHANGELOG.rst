@@ -2,6 +2,10 @@
 Change Log
 ==========
 
+1.7.4
+-----
+* Add Python2 support
+
 1.7.3
 -----
 * Implement attachments support. It's now possible to create, delete and get attachments connected to any item type:
