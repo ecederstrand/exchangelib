@@ -233,14 +233,14 @@ class Version(object):
     @classmethod
     def _get_version_from_service(cls, protocol, api_version):
         assert api_version
-        header = None
         xml = dummy_xml(version=api_version)
         # Create a minimal, valid EWS request to force Exchange into accepting the request and returning EWS xml
         # containing server version info. Some servers will only reply with their version if a valid POST is sent.
         session = protocol.get_session()
         log.debug('Test if service API version is %s using auth %s', api_version, session.auth.__class__.__name__)
         r, session = post_ratelimited(protocol=protocol, session=session, url=protocol.service_endpoint, headers=None,
-                                      data=xml, timeout=protocol.TIMEOUT, verify=protocol.verify_ssl)
+                                      data=xml, timeout=protocol.TIMEOUT, verify=protocol.verify_ssl,
+                                      allow_redirects=False)
         protocol.release_session(session)
 
         if r.status_code == 401:
@@ -264,7 +264,7 @@ class Version(object):
         log.debug('Response data: %s', r.text)
         try:
             header = to_xml(r.text, encoding=r.encoding).find('{%s}Header' % SOAPNS)
-            if len(header) < 1:
+            if header is None:
                 raise ParseError()
         except ParseError as e:
             raise_from(EWSWarning('Unknown XML response from %s (response: %s)' % (protocol.service_endpoint,
@@ -279,10 +279,9 @@ class Version(object):
 
     @classmethod
     def from_response(cls, requested_api_version, response):
-        header = None
         try:
             header = to_xml(response.text, encoding=response.encoding).find('{%s}Header' % SOAPNS)
-            if len(header) < 1:
+            if header is None:
                 raise ParseError()
         except ParseError as e:
             raise_from(EWSWarning('Unknown XML response from %s (response: %s)' % (response, response.text)), e)
