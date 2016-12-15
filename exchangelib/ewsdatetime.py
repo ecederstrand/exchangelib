@@ -12,6 +12,8 @@ class EWSDate(datetime.date):
     Extends the normal date implementation to satisfy EWS
     """
 
+    __slots__ = '_year', '_month', '_day', '_hashcode'
+
     def ewsformat(self):
         """
         ISO 8601 format to satisfy xs:date as interpreted by EWS. Example: 2009-01-15
@@ -23,6 +25,8 @@ class EWSDateTime(datetime.datetime):
     """
     Extends the normal datetime implementation to satisfy EWS
     """
+
+    __slots__ = '_year', '_month', '_day', '_hour', '_minute', '_second', '_microsecond', '_tzinfo', '_hashcode'
 
     def __new__(cls, *args, **kwargs):
         """
@@ -84,7 +88,6 @@ class EWSTimeZone(object):
     Represents a timezone as expected by the EWS TimezoneContext / TimezoneDefinition XML element, and returned by
     services.GetServerTimeZones.
     """
-
     @classmethod
     def from_pytz(cls, tz):
         # pytz timezones are dynamically generated. Subclass the tz.__class__ and add the extra Microsoft timezone
@@ -94,7 +97,10 @@ class EWSTimeZone(object):
             self_cls.ms_id = cls.PYTZ_TO_MS_MAP[tz.zone]
         except KeyError as e:
             raise_from(ValueError('Please add an entry for "%s" in PYTZ_TO_MS_TZMAP' % tz.zone), e)
-        self_cls.ms_name = cls.MS_TIMEZONE_DEFINITIONS[self_cls.ms_id]
+        try:
+            self_cls.ms_name = cls.MS_TIMEZONE_DEFINITIONS[self_cls.ms_id]
+        except KeyError as e:
+            raise ValueError('PYTZ_TO_MS_MAP value %s must be a key in MS_TIMEZONE_DEFINITIONS' % self_cls.ms_id) from e
         self = self_cls()
         for k, v in tz.__dict__.items():
             setattr(self, k, v)
@@ -126,7 +132,7 @@ class EWSTimeZone(object):
     }
 
     # This is a somewhat authoritative list of the timezones available on an Exchange server. Format is (id, name).
-    # For a full list supported by the target server, call services.GetServerTimeZones.
+    # For a full list supported by the target server, see output of services.GetServerTimeZones(account.protocol).call()
     MS_TIMEZONE_DEFINITIONS = dict([
         ('Dateline Standard Time', '(UTC-12:00) International Date Line West'),
         ('UTC-11', '(UTC-11:00) Coordinated Universal Time-11'),

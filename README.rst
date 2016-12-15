@@ -15,8 +15,8 @@ and contact items.
 .. image:: https://secure.travis-ci.org/ecederstrand/exchangelib.png
     :target: http://travis-ci.org/ecederstrand/exchangelib
 
-.. image:: https://coveralls.io/repos/github/ecederstrand/exchangelib/badge.svg?branch=
-    :target: https://coveralls.io/github/ecederstrand/exchangelib?branch=
+.. image:: https://coveralls.io/repos/github/ecederstrand/exchangelib/badge.svg?branch=master
+    :target: https://coveralls.io/github/ecederstrand/exchangelib?branch=master
 
 
 Usage

@@ -147,12 +147,10 @@ class QuerySet(object):
         }[self.return_format]()
 
     def __len__(self):
-        if self._cache is None:
-            # This queryset has no cache yet. Call the optimized counting implementation
-            return self.count()
-        else:
-            self.__iter__()
+        if self._cache is not None:
             return len(self._cache)
+        # This queryset has no cache yet. Call the optimized counting implementation
+        return self.count()
 
     def __getitem__(self, key):
         # Support indexing and slicing
@@ -231,12 +229,10 @@ class QuerySet(object):
     def all(self):
         # Invalidate cache and return all objects
         new_qs = self.copy()
-        new_qs._cache = None
         return new_qs
 
     def none(self):
         new_qs = self.copy()
-        new_qs._cache = None
         new_qs.q = None
         return new_qs
 
@@ -303,12 +299,18 @@ class QuerySet(object):
     #
     ###########################
     def iterator(self):
+        if self._cache is not None:
+            return self._cache
         # Return an iterator that doesn't bother with caching
         return self._query()
 
     def get(self, *args, **kwargs):
-        new_qs = self.filter(*args, **kwargs)
-        items = list(new_qs)
+        if self._cache is not None and not args and not kwargs:
+            # We cn only safely use the cache if get() is called without args
+            items = self._cache
+        else:
+            new_qs = self.filter(*args, **kwargs)
+            items = list(new_qs)
         if len(items) == 0:
             raise DoesNotExist()
         if len(items) != 1:
@@ -317,6 +319,8 @@ class QuerySet(object):
 
     def count(self):
         # Get the item count with as little effort as possible
+        if self._cache is not None:
+            return len(self._cache)
         new_qs = self.copy()
         new_qs.only_fields = tuple()
         new_qs.order_fields = None
@@ -329,10 +333,12 @@ class QuerySet(object):
 
     def delete(self):
         # Delete the items with as little effort as possible
+        from .folders import ALL_OCCURRENCIES
+        if self._cache is not None:
+            return self.folder.account.bulk_delete(ids=self._cache, affected_task_occurrences=ALL_OCCURRENCIES)
         new_qs = self.copy()
         new_qs.only_fields = tuple()
         new_qs.order_fields = None
         new_qs.reversed = False
         new_qs.return_format = self.NONE
-        from .folders import ALL_OCCURRENCIES
         return self.folder.account.bulk_delete(ids=new_qs, affected_task_occurrences=ALL_OCCURRENCIES)

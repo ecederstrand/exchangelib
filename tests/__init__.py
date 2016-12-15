@@ -17,12 +17,14 @@ from exchangelib.account import Account
 from exchangelib.autodiscover import AutodiscoverProtocol, discover
 from exchangelib.configuration import Configuration
 from exchangelib.credentials import DELEGATE, Credentials
-from exchangelib.errors import RelativeRedirect, ErrorItemNotFound, ErrorInvalidOperation
+from exchangelib.errors import RelativeRedirect, ErrorItemNotFound, ErrorInvalidOperation, AutoDiscoverRedirect, \
+    AutoDiscoverCircularRedirect, AutoDiscoverFailed, ErrorNonExistentMailbox
 from exchangelib.ewsdatetime import EWSDateTime, EWSDate, EWSTimeZone, UTC, UTC_NOW
 from exchangelib.folders import CalendarItem, Attendee, Mailbox, Message, ExtendedProperty, Choice, Email, Contact, \
     Task, EmailAddress, PhysicalAddress, PhoneNumber, IndexedField, RoomList, Calendar, DeletedItems, Drafts, Inbox, \
     Outbox, SentItems, JunkEmail, Messages, Tasks, Contacts, Item, AnyURI, Body, HTMLBody, FileAttachment, \
     ItemAttachment, Attachment, ALL_OCCURRENCIES, MimeContent, MessageHeader
+from exchangelib.protocol import BaseProtocol
 from exchangelib.queryset import QuerySet, DoesNotExist, MultipleObjectsReturned
 from exchangelib.restriction import Restriction, Q
 from exchangelib.services import GetServerTimeZones, GetRoomLists, GetRooms
@@ -32,6 +34,9 @@ from exchangelib.version import Build
 
 if PY2:
     FileNotFoundError = OSError
+
+    # Travis runs tests in parallel. Limit the connection pool to not overload the test server
+BaseProtocol.SESSION_POOLSIZE = 2
 
 
 class BuildTest(unittest.TestCase):
@@ -285,9 +290,6 @@ class UtilTest(unittest.TestCase):
             r = requests.get('https://httpbin.org/redirect-to?url=/example', allow_redirects=False)
             get_redirect_url(r, allow_relative=False)
 
-    def test_close_connections(self):
-        close_connections()
-
     def test_to_xml(self):
         to_xml('<?xml version="1.0" encoding="UTF-8"?><foo></foo>', encoding='ascii')
         to_xml(BOM+'<?xml version="1.0" encoding="UTF-8"?><foo></foo>', encoding='ascii')
@@ -299,8 +301,10 @@ class UtilTest(unittest.TestCase):
 class EWSTest(unittest.TestCase):
     def setUp(self):
         # There's no official Exchange server we can test against, and we can't really provide credentials for our
-        # own test server to anyone on the Internet. You need to create your own settings.yml with credentials for
-        # your own test server. 'settings.yml.sample' is provided as a template.
+        # own test server to everyone on the Internet. Travis-CI uses the encrypted settings.yml.enc for testing.
+        #
+        # If you want to test against your own server and account, create your own settings.yml with credentials for
+        # that server. 'settings.yml.sample' is provided as a template.
         try:
             with open(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'settings.yml')) as f:
                 settings = load(f)
@@ -309,12 +313,15 @@ class EWSTest(unittest.TestCase):
             print('Copy settings.yml.sample to settings.yml and enter values for your test server')
             raise unittest.SkipTest('Skipping %s - no settings.yml file found' % self.__class__.__name__)
         self.tz = EWSTimeZone.timezone('Europe/Copenhagen')
-        self.categories = ['Test']
+        self.categories = [get_random_string(length=10, spaces=False, special=False)]
         self.config = Configuration(server=settings['server'],
                                     credentials=Credentials(settings['username'], settings['password']),
                                     verify_ssl=settings['verify_ssl'])
         self.account = Account(primary_smtp_address=settings['account'], access_type=DELEGATE, config=self.config, locale='da_DK')
         self.maxDiff = None
+
+    def test_poolsize(self):
+        self.assertEqual(self.config.protocol.SESSION_POOLSIZE, 2)
 
     def random_val(self, field_type):
         if not isinstance(field_type, list) and isanysubclass(field_type, ExtendedProperty):
@@ -473,12 +480,34 @@ class CommonTest(EWSTest):
                           service_endpoint='http://example.com/svc',
                           auth_type='XXX')
 
+
+class AutodiscoverTest(EWSTest):
+    def test_magic(self):
+        from exchangelib.autodiscover import _autodiscover_cache
+        # Just test we don't fail
+        discover(email=self.account.primary_smtp_address, credentials=self.config.credentials)
+        str(_autodiscover_cache)
+        repr(_autodiscover_cache)
+        for protocol in _autodiscover_cache._protocols.values():
+            str(protocol)
+            repr(protocol)
+
     def test_autodiscover(self):
         primary_smtp_address, protocol = discover(email=self.account.primary_smtp_address,
                                                   credentials=self.config.credentials)
         self.assertEqual(primary_smtp_address, self.account.primary_smtp_address)
         self.assertEqual(protocol.service_endpoint.lower(), self.config.protocol.service_endpoint.lower())
         self.assertEqual(protocol.version.build, self.config.protocol.version.build)
+
+    def test_close_autodiscover_connections(self):
+        discover(email=self.account.primary_smtp_address, credentials=self.config.credentials)
+        close_connections()
+
+    def test_autodiscover_gc(self):
+        from exchangelib.autodiscover import _autodiscover_cache
+        # This is what Python garbage collection does
+        discover(email=self.account.primary_smtp_address, credentials=self.config.credentials)
+        del _autodiscover_cache
 
     def test_autodiscover_cache(self):
         from exchangelib.autodiscover import _autodiscover_cache
@@ -505,6 +534,23 @@ class CommonTest(EWSTest):
         )
         discover(email=self.account.primary_smtp_address, credentials=self.config.credentials)
         self.assertIn(cache_key, _autodiscover_cache)
+        # Make sure that the cache is actually used on the second call to discover()
+        import exchangelib.autodiscover
+        _orig = exchangelib.autodiscover._try_autodiscover
+        def _mock(*args, **kwargs):
+            raise NotImplementedError()
+        exchangelib.autodiscover._try_autodiscover = _mock
+        discover(email=self.account.primary_smtp_address, credentials=self.config.credentials)
+        # Fake that another thread added the cache entry into the persistent storage but we don't have it in our
+        # in-memory cache. The cache should work anyway.
+        _autodiscover_cache._protocols.clear()
+        discover(email=self.account.primary_smtp_address, credentials=self.config.credentials)
+        exchangelib.autodiscover._try_autodiscover = _orig
+	# Make sure we can delete cache entries even though we don't have it in our in-memory cache
+        _autodiscover_cache._protocols.clear()
+        del _autodiscover_cache[cache_key]
+        # This should also work if the cache does not contain the entry anymore
+        del _autodiscover_cache[cache_key]
 
     def test_autodiscover_from_account(self):
         from exchangelib.autodiscover import _autodiscover_cache
@@ -527,6 +573,72 @@ class CommonTest(EWSTest):
         self.assertFalse(key in _autodiscover_cache)
         del _autodiscover_cache
 
+    def test_autodiscover_redirect(self):
+        # Prime the cache
+        email, p = discover(email=self.account.primary_smtp_address, credentials=self.config.credentials)
+        # Test that we can get another address back than the address we're looking up
+        import exchangelib.autodiscover
+        _orig = exchangelib.autodiscover._autodiscover_quick
+        def _mock1(credentials, email, protocol):
+            return 'john@example.com', p
+        exchangelib.autodiscover._autodiscover_quick = _mock1
+        test_email, p = discover(email=self.account.primary_smtp_address, credentials=self.config.credentials)
+        self.assertEqual(test_email, 'john@example.com')
+        # Test that we can survive being asked to lookup with another address
+        def _mock2(credentials, email, protocol):
+            if email == 'xxxxxx@'+self.account.domain:
+                raise ErrorNonExistentMailbox(email)
+            raise AutoDiscoverRedirect(redirect_email='xxxxxx@'+self.account.domain)
+        exchangelib.autodiscover._autodiscover_quick = _mock2
+        with self.assertRaises(ErrorNonExistentMailbox):
+            discover(email=self.account.primary_smtp_address, credentials=self.config.credentials)
+        # Test that we catch circular redirects
+        def _mock3(credentials, email, protocol):
+            raise AutoDiscoverRedirect(redirect_email=self.account.primary_smtp_address)
+        exchangelib.autodiscover._autodiscover_quick = _mock3
+        with self.assertRaises(AutoDiscoverCircularRedirect):
+            discover(email=self.account.primary_smtp_address, credentials=self.config.credentials)
+        exchangelib.autodiscover._autodiscover_quick = _orig
+
+    def test_canonical_lookup(self):
+        from exchangelib.autodiscover import _get_canonical_name
+        self.assertEqual(_get_canonical_name('example.com'), None)
+        self.assertEqual(_get_canonical_name('example.com.'), 'example.com')
+        self.assertEqual(_get_canonical_name('example.XXXXX.'), None)
+
+    def test_srv(self):
+        from exchangelib.autodiscover import _get_hostname_from_srv
+        with self.assertRaises(AutoDiscoverFailed):
+            # Unknown doomain
+            _get_hostname_from_srv('example.XXXXX.')
+        with self.assertRaises(AutoDiscoverFailed):
+            # No SRV record
+            _get_hostname_from_srv('example.com.')
+        # Finding a real server that has a correct SRV record is not easy. Mock it
+        import dns.resolver
+        _orig = dns.resolver.Resolver
+        class _Mock1:
+            def query(self, hostname, cat):
+                class A:
+                    def to_text(self):
+                        # Return a valid record
+                        return '1 2 3 example.com.'
+                return [A()]
+        dns.resolver.Resolver = _Mock1
+        # Test a valid record
+        self.assertEqual(_get_hostname_from_srv('example.com.'), 'example.com')
+        class _Mock2:
+            def query(self, hostname, cat):
+                class A:
+                    def to_text(self):
+                        # Return malformed data
+                        return 'XXXXXXX'
+                return [A()]
+        dns.resolver.Resolver = _Mock2
+        # Test an invalid record
+        with self.assertRaises(AutoDiscoverFailed):
+            _get_hostname_from_srv('example.com.')
+        dns.resolver.Resolver = _orig
 
 class FolderTest(EWSTest):
     def test_folders(self):
@@ -805,9 +917,10 @@ class BaseItemTest(EWSTest):
             test_items.append(item)
         self.test_folder.bulk_create(items=test_items)
         qs = QuerySet(self.test_folder).filter(categories__contains=self.categories)
+        test_cat = self.categories[0]
         self.assertEqual(
             set((i.subject, i.categories[0]) for i in qs),
-            {('Item 0', 'Test'), ('Item 1', 'Test'), ('Item 2', 'Test'), ('Item 3', 'Test')}
+            {('Item 0', test_cat), ('Item 1', test_cat), ('Item 2', test_cat), ('Item 3', test_cat)}
         )
         self.assertEqual(
             [(i.subject, i.categories[0]) for i in qs.none()],
@@ -815,11 +928,11 @@ class BaseItemTest(EWSTest):
         )
         self.assertEqual(
             [(i.subject, i.categories[0]) for i in qs.filter(subject__startswith='Item 2')],
-            [('Item 2', 'Test')]
+            [('Item 2', test_cat)]
         )
         self.assertEqual(
             set((i.subject, i.categories[0]) for i in qs.exclude(subject__startswith='Item 2')),
-            {('Item 0', 'Test'), ('Item 1', 'Test'), ('Item 3', 'Test')}
+            {('Item 0', test_cat), ('Item 1', test_cat), ('Item 3', test_cat)}
         )
         self.assertEqual(
             set((i.subject, i.categories) for i in qs.only('subject')),
@@ -827,19 +940,19 @@ class BaseItemTest(EWSTest):
         )
         self.assertEqual(
             [(i.subject, i.categories[0]) for i in qs.order_by('subject')],
-            [('Item 0', 'Test'), ('Item 1', 'Test'), ('Item 2', 'Test'), ('Item 3', 'Test')]
+            [('Item 0', test_cat), ('Item 1', test_cat), ('Item 2', test_cat), ('Item 3', test_cat)]
         )
         self.assertEqual(  # Test '-some_field' syntax for reverse sorting
             [(i.subject, i.categories[0]) for i in qs.order_by('-subject')],
-            [('Item 3', 'Test'), ('Item 2', 'Test'), ('Item 1', 'Test'), ('Item 0', 'Test')]
+            [('Item 3', test_cat), ('Item 2', test_cat), ('Item 1', test_cat), ('Item 0', test_cat)]
         )
         self.assertEqual(  # Test ordering on a field that we don't need to fetch
             [(i.subject, i.categories[0]) for i in qs.order_by('-subject').only('categories')],
-            [(None, 'Test'), (None, 'Test'), (None, 'Test'), (None, 'Test')]
+            [(None, test_cat), (None, test_cat), (None, test_cat), (None, test_cat)]
         )
         self.assertEqual(
             [(i.subject, i.categories[0]) for i in qs.order_by('subject').reverse()],
-            [('Item 3', 'Test'), ('Item 2', 'Test'), ('Item 1', 'Test'), ('Item 0', 'Test')]
+            [('Item 3', test_cat), ('Item 2', test_cat), ('Item 1', test_cat), ('Item 0', test_cat)]
         )
         self.assertEqual(
             [i for i in qs.order_by('subject').values('subject')],
@@ -859,16 +972,16 @@ class BaseItemTest(EWSTest):
         )
         self.assertEqual(
             set((i.subject, i.categories[0]) for i in qs.exclude(subject__startswith='Item 2')),
-            {('Item 0', 'Test'), ('Item 1', 'Test'), ('Item 3', 'Test')}
+            {('Item 0', test_cat), ('Item 1', test_cat), ('Item 3', test_cat)}
         )
         # Test that we can sort on a field that we don't want
         self.assertEqual(
             [i.categories[0] for i in qs.only('categories').order_by('subject')],
-            ['Test', 'Test', 'Test', 'Test']
+            [test_cat, test_cat, test_cat, test_cat]
         )
         self.assertEqual(
             set((i.subject, i.categories[0]) for i in qs.iterator()),
-            {('Item 0', 'Test'), ('Item 1', 'Test'), ('Item 2', 'Test'), ('Item 3', 'Test')}
+            {('Item 0', test_cat), ('Item 1', test_cat), ('Item 2', test_cat), ('Item 3', test_cat)}
         )
         self.assertEqual(qs.get(subject='Item 3').subject, 'Item 3')
         with self.assertRaises(DoesNotExist):
@@ -1343,7 +1456,7 @@ class BaseItemTest(EWSTest):
 
     def test_move_to_trash(self):
         # First, empty trash bin
-        self.account.trash.all().delete()
+        self.account.trash.filter(categories__contains=self.categories).delete()
         item = self.get_test_item().save()
         item_id = (item.item_id, item.changekey)
         # Move to trash
@@ -1361,7 +1474,7 @@ class BaseItemTest(EWSTest):
 
     def test_move(self):
         # First, empty trash bin
-        self.account.trash.all().delete()
+        self.account.trash.filter(categories__contains=self.categories).delete()
         item = self.get_test_item().save()
         item_id = (item.item_id, item.changekey)
         # Move to trash. We use trash because it can contain all item types. This changes the ItemId
@@ -1809,25 +1922,28 @@ class CalendarTest(BaseItemTest):
         with self.assertRaises(ValueError):
             self.test_folder.view(start=item1.start, end=item1.end, max_items=0)
 
+        def match_cat(i):
+            return set(i.categories) == set(self.categories)
+
         # Test dates
-        self.assertEqual(len(self.test_folder.view(start=item1.start, end=item1.end)), 1)
-        self.assertEqual(len(self.test_folder.view(start=item1.start, end=item2.end)), 2)
+        self.assertEqual(len([i for i in self.test_folder.view(start=item1.start, end=item1.end) if match_cat(i)]), 1)
+        self.assertEqual(len([i for i in self.test_folder.view(start=item1.start, end=item2.end) if match_cat(i)]), 2)
         # Edge cases. Get view from end of item1 to start of item2. Should logically return 0 items, but Exchange wants
         # it differently and returns item1 even though there is no overlap.
-        self.assertEqual(len(self.test_folder.view(start=item1.end, end=item2.start)), 1)
-        self.assertEqual(len(self.test_folder.view(start=item1.start, end=item2.start)), 1)
+        self.assertEqual(len([i for i in self.test_folder.view(start=item1.end, end=item2.start) if match_cat(i)]), 1)
+        self.assertEqual(len([i for i in self.test_folder.view(start=item1.start, end=item2.start) if match_cat(i)]), 1)
 
         # Test max_items
-        self.assertEqual(len(self.test_folder.view(start=item1.start, end=item2.end, max_items=10)), 2)
+        self.assertEqual(len([i for i in self.test_folder.view(start=item1.start, end=item2.end, max_items=10) if match_cat(i)]), 2)
         self.assertEqual(len(self.test_folder.view(start=item1.start, end=item2.end, max_items=1)), 1)
 
         # Test chaining
         qs = self.test_folder.view(start=item1.start, end=item2.end)
-        self.assertEqual(qs.count(), 2)
+        self.assertTrue(qs.count() >= 2)
         with self.assertRaises(ErrorInvalidOperation):
             qs.filter(subject=item1.subject).count()  # EWS does not allow restrictions
         self.assertListEqual(
-            [i for i in qs.order_by('subject').values('subject')],
+            [i for i in qs.order_by('subject').values('subject') if i['subject'] in (item1.subject, item2.subject)],
             [{'subject': item1.subject}, {'subject': item2.subject}]
         )
 

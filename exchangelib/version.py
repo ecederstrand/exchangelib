@@ -90,6 +90,7 @@ class Build(object):
             if v is None:
                 raise ValueError()
             vals.append(int(v))  # Also raises ValueError
+        elem.clear()
         return cls(*vals)
 
     def api_version(self):

@@ -61,7 +61,7 @@ else:
 class AutodiscoverCache(object):
     # Stores the translation from (email domain, credentials) -> AutodiscoverProtocol object so we can re-use TCP
     # connections to an autodiscover server within the same process. Also persists the email domain -> (autodiscover
-    # endpoint URL, auth_type) translation to the filesystem.
+    # endpoint URL, auth_type) translation to the filesystem so the cache can be shared between multiple processes.
 
     # According to Microsoft, we may forever cache the (email domain -> autodiscover endpoint URL) mapping, or until
     # it stops responding. My previous experience with Exchange products in mind, I'm not sure if I should trust that
@@ -72,8 +72,7 @@ class AutodiscoverCache(object):
 
     # If an autodiscover lookup fails for any reason, the corresponding cache entry must be purged.
 
-    # SqliteDict is supposedly thread-safe and process-safe and does a lookup to the storage every time, which suits our
-    # needs.
+    # 'shelve' is supposedly thread-safe and process-safe, which suits our needs.
     def __init__(self):
         self._protocols = {}  # Mapping from (domain, credentials) to AutodiscoverProtocol
 
@@ -108,23 +107,29 @@ class AutodiscoverCache(object):
         return protocol
 
     def __setitem__(self, key, protocol):
+        # Populate both local and persistent cache
         domain, credentials, verify_ssl = key
         with shelve_open(self._storage_file) as db:
             db[domain] = (protocol.service_endpoint, protocol.auth_type)
         self._protocols[key] = protocol
 
     def __delitem__(self, key):
+        # Empty both local and persistent cache. Don't fail on non-existing entries because we could end here
+        # multiple times due to race conditions.
         domain, credentials, verify_ssl = key
         with shelve_open(self._storage_file) as db:
-            del db[domain]
+            try:
+                del db[domain]
+            except KeyError:
+                pass
         try:
             del self._protocols[key]
         except KeyError:
             pass
 
     def close(self):
-        for key, protocol in self._protocols.items():
-            domain, credentials, verify_ssl = key
+        # Close all open connections
+        for (domain, _, _), protocol in self._protocols.items():
             log.debug('Domain %s: Closing sessions', domain)
             protocol.close()
             del protocol
