@@ -126,8 +126,8 @@ class EWSTimeZone(object):
             for e in fromstring(r.content).find('windowsZones').find('mapTimezones').findall('mapZone'):
                 db[e.get('type')] = e.get('other')
             # Add some missing but helpful translations
-            db['UTC'] = 'UTC'
-            db['GMT'] = 'GMT Standard Time'
+            db[b'UTC'] = b'UTC'
+            db[b'GMT'] = b'GMT Standard Time'
         PYTZ_TO_MS_MAP = dict(db)
 
     @classmethod
