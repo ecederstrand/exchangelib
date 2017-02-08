@@ -1,8 +1,13 @@
-from logging import getLogger
-from locale import getlocale
+# coding=utf-8
+from __future__ import unicode_literals
+
 from collections import defaultdict
+from locale import getlocale
+from logging import getLogger
 
 from cached_property import threaded_cached_property
+from future.utils import raise_from, python_2_unicode_compatible
+from six import text_type, string_types
 
 from .autodiscover import discover
 from .credentials import DELEGATE, IMPERSONATION
@@ -13,26 +18,29 @@ from .folders import Root, Calendar, DeletedItems, Drafts, Inbox, Outbox, SentIt
     DELETE_TYPE_CHOICES, MESSAGE_DISPOSITION_CHOICES, CONFLICT_RESOLUTION_CHOICES, AFFECTED_TASK_OCCURRENCES_CHOICES, \
     SEND_MEETING_INVITATIONS_CHOICES, SEND_MEETING_INVITATIONS_AND_CANCELLATIONS_CHOICES, \
     SEND_MEETING_CANCELLATIONS_CHOICES
-from .services import ExportItems, UploadItems
 from .protocol import Protocol
-from .services import GetItem, CreateItem, UpdateItem, DeleteItem, MoveItem, SendItem
+from .queryset import QuerySet
+from .services import ExportItems, UploadItems, GetItem, CreateItem, UpdateItem, DeleteItem, MoveItem, SendItem
 from .util import get_domain, peek
 
 log = getLogger(__name__)
 
 
-class Account:
+@python_2_unicode_compatible
+class Account(object):
     """
     Models an Exchange server user account. The primary key for an account is its PrimarySMTPAddress
     """
+
     def __init__(self, primary_smtp_address, fullname=None, access_type=None, autodiscover=False, credentials=None,
                  config=None, verify_ssl=True, locale=None):
         if '@' not in primary_smtp_address:
             raise ValueError("primary_smtp_address '%s' is not an email address" % primary_smtp_address)
         self.primary_smtp_address = primary_smtp_address
         self.fullname = fullname
-        self.locale = locale or getlocale()[0]
-        assert isinstance(self.locale, str)
+        self.locale = locale or getlocale()[0] or None  # get_locale() might not be able to determine the locale
+        if self.locale is not None:
+            assert isinstance(self.locale, string_types)
         # Assume delegate access if individual credentials are provided. Else, assume service user with impersonation
         self.access_type = access_type or (DELEGATE if credentials else IMPERSONATION)
         assert self.access_type in (DELEGATE, IMPERSONATION)
@@ -89,9 +97,9 @@ class Account:
             log.debug('Searching default %s folder in full folder list', fld_class.__name__)
             flds = self.folders[fld_class]
             if not flds:
-                raise ErrorFolderNotFound('No useable default %s folders' % fld_class.__name__) from e
+                raise_from(ErrorFolderNotFound('No useable default %s folders' % fld_class.__name__), e)
             assert len(flds) == 1, 'Multiple possible default %s folders: %s' % (
-                fld_class.__name__, [str(f) for f in flds])
+                fld_class.__name__, [text_type(f) for f in flds])
             return flds[0]
 
     @threaded_cached_property
@@ -155,6 +163,11 @@ class Account:
         Returns:
         A list strings, the exported representation of the object
         """
+        is_empty, items = peek(items)
+        if is_empty:
+            # We accept generators, so it's not always convenient for caller to know up-front if 'items' is empty. Allow
+            # empty 'items' and return early.
+            return []
         return list(ExportItems(self).call(items))
 
     def upload(self, upload_data):
@@ -174,12 +187,18 @@ class Account:
                         (account.calendar, "ABCXYZ...")])
         -> [("idA", "changekey"), ("idB", "changekey"), ("idC", "changekey")]
         """
+        is_empty, upload_data = peek(upload_data)
+        if is_empty:
+            # We accept generators, so it's not always convenient for caller to know up-front if 'upload_data' is empty.
+            # Allow empty 'upload_data' and return early.
+            return []
         return list(UploadItems(self).call(upload_data))
 
     def bulk_create(self, folder, items, message_disposition=SAVE_ONLY, send_meeting_invitations=SEND_TO_NONE):
         """
-        Creates new items in the folder. 'items' is an iterable of Item objects. Returns a list of (id, changekey)
-        tuples in the same order as the input.
+        Creates new items in 'folder'. 'items' is an iterable of Item objects. Returns a list of Item objects
+        in the same order as the input. The returned Item objects only contain item_id and changekey of the created
+        item, and item_id on any attachments that were also created.
         'message_disposition' is only applicable to Message items.
         'send_meeting_invitations' is only applicable to CalendarItem items.
         """
@@ -195,6 +214,8 @@ class Account:
             folder = self.sent  # 'Sent' is default EWS behaviour
         if message_disposition == SEND_ONLY and folder is not None:
             raise AttributeError("Folder must be None in send-ony mode")
+        # bulk_create() on a queryset does not make sense because it returns items that have already been created
+        assert not isinstance(items, QuerySet)
         log.debug(
             'Adding items for %s (folder %s, message_disposition: %s, send_meeting_invitations: %s)',
             self,
@@ -207,15 +228,15 @@ class Account:
             # We accept generators, so it's not always convenient for caller to know up-front if 'items' is empty. Allow
             # empty 'items' and return early.
             return []
-        return list(map(
-            Item.id_from_xml,
-            CreateItem(account=self).call(
+        return list(
+            folder.item_model_from_tag(i.tag).from_xml(elem=i, account=self, folder=folder)
+            for i in CreateItem(account=self).call(
                 items=items,
                 folder=folder,
                 message_disposition=message_disposition,
                 send_meeting_invitations=send_meeting_invitations,
             )
-        ))
+        )
 
     def bulk_update(self, items, conflict_resolution=AUTO_RESOLVE, message_disposition=SAVE_ONLY,
                     send_meeting_invitations_or_cancellations=SEND_TO_NONE, suppress_read_receipts=True):
@@ -235,6 +256,10 @@ class Account:
         assert suppress_read_receipts in (True, False)
         if message_disposition == SEND_ONLY:
             raise ValueError('Cannot send-only existing objects. Use SendItem service instead')
+        # bulk_update() on a queryset does not make sense because there would be no opportunity to alter the items. In
+        # fact, it could be dangerous if the queryset is contains an '.only()'. This would wipe out certain fields
+        # entirely.
+        assert not isinstance(items, QuerySet)
         log.debug(
             'Updating items for %s (conflict_resolution %s, message_disposition: %s, send_meeting_invitations: %s)',
             self,
@@ -247,16 +272,16 @@ class Account:
             # We accept generators, so it's not always convenient for caller to know up-front if 'items' is empty. Allow
             # empty 'items' and return early.
             return []
-        return list(map(
-            Item.id_from_xml,
-            UpdateItem(account=self).call(
+        return list(
+            Item.id_from_xml(i)
+            for i in UpdateItem(account=self).call(
                 items=items,
                 conflict_resolution=conflict_resolution,
                 message_disposition=message_disposition,
                 send_meeting_invitations_or_cancellations=send_meeting_invitations_or_cancellations,
                 suppress_read_receipts=suppress_read_receipts,
             )
-        ))
+        )
 
     def bulk_delete(self, ids, delete_type=HARD_DELETE, send_meeting_cancellations=SEND_TO_NONE,
                     affected_task_occurrences=SPECIFIED_OCCURRENCE_ONLY, suppress_read_receipts=True):
@@ -278,10 +303,15 @@ class Account:
             send_meeting_cancellations,
             affected_task_occurrences,
         )
+        # 'ids' could be an unevaluated QuerySet, e.g. if we ended up here via `some_folder.filter(...).delete()`. In
+        # that case, we want to use its iterator. Otherwise, peek() will start a count() which is wasteful because we
+        # need the item IDs immediately afterwards. iterator() will only do the bare minimum.
+        if isinstance(ids, QuerySet):
+            ids = ids.iterator()
         is_empty, ids = peek(ids)
         if is_empty:
-            # We accept generators, so it's not always convenient for caller to know up-front if 'items' is empty. Allow
-            # empty 'items' and return early.
+            # We accept generators, so it's not always convenient for caller to know up-front if 'ids' is empty. Allow
+            # empty 'ids' and return early.
             return []
         return list(DeleteItem(account=self).call(
             items=ids,
@@ -297,37 +327,59 @@ class Account:
             raise AttributeError("'save_copy' must be True when 'copy_to_folder' is set")
         if save_copy and not copy_to_folder:
             copy_to_folder = self.sent  # 'Sent' is default EWS behaviour
+        # 'ids' could be an unevaluated QuerySet, e.g. if we ended up here via `bulk_send(some_folder.filter(...))`. In
+        # that case, we want to use its iterator. Otherwise, peek() will start a count() which is wasteful because we
+        # need the item IDs immediately afterwards. iterator() will only do the bare minimum.
+        if isinstance(ids, QuerySet):
+            ids = ids.iterator()
+        is_empty, ids = peek(ids)
+        if is_empty:
+            # We accept generators, so it's not always convenient for caller to know up-front if 'ids' is empty. Allow
+            # empty 'ids' and return early.
+            return []
         return list(SendItem(account=self).call(items=ids, save_item_to_folder=save_copy,
                                                 saved_item_folder=copy_to_folder))
 
     def bulk_move(self, ids, to_folder):
         # Move items to another folder. Returns new IDs for the items that were moved
         assert isinstance(to_folder, Folder)
-        return list(map(
-            Item.id_from_xml,
-            MoveItem(account=self).call(items=ids, to_folder=to_folder)
-        ))
+        # 'ids' could be an unevaluated QuerySet, e.g. if we ended up here via `bulk_move(some_folder.filter(...))`. In
+        # that case, we want to use its iterator. Otherwise, peek() will start a count() which is wasteful because we
+        # need the item IDs immediately afterwards. iterator() will only do the bare minimum.
+        if isinstance(ids, QuerySet):
+            ids = ids.iterator()
+        is_empty, ids = peek(ids)
+        if is_empty:
+            # We accept generators, so it's not always convenient for caller to know up-front if 'ids' is empty. Allow
+            # empty 'ids' and return early.
+            return []
+        return list(
+            Item.id_from_xml(i)
+            for i in MoveItem(account=self).call(items=ids, to_folder=to_folder)
+        )
 
     def fetch(self, ids, folder=None, only_fields=None):
         # 'folder' is used for validating only_fields
         # 'only_fields' specifies which fields to fetch, instead of all possible fields.
-        validation_folder = folder or Folder  # Use a folder type that supports all item types
+        validation_folder = folder or Folder  # Default to a folder type that supports all item types
+        # 'ids' could be an unevaluated QuerySet, e.g. if we ended up here via `fetch(ids=some_folder.filter(...))`. In
+        # that case, we want to use its iterator. Otherwise, peek() will start a count() which is wasteful because we
+        # need the item IDs immediately afterwards. iterator() will only do the bare minimum.
+        if isinstance(ids, QuerySet):
+            ids = ids.iterator()
         is_empty, ids = peek(ids)
         if is_empty:
-            # We accept generators, so it's not always convenient for caller to know up-front if 'items' is empty. Allow
-            # empty 'items' and return early.
-            return []
+            # We accept generators, so it's not always convenient for caller to know up-front if 'ids' is empty. Allow
+            # empty 'ids' and return early.
+            return
         if only_fields:
             allowed_field_names = validation_folder.allowed_field_names()
             for f in only_fields:
                 assert f in allowed_field_names
         else:
             only_fields = validation_folder.allowed_field_names()
-        items = GetItem(account=self).call(items=ids, folder=validation_folder, additional_fields=only_fields)
-        return list(map(
-            lambda i: validation_folder.item_model_from_tag(i.tag).from_xml(elem=i, account=self, folder=folder),
-            items
-        ))
+        for i in GetItem(account=self).call(items=ids, folder=validation_folder, additional_fields=only_fields):
+            yield validation_folder.item_model_from_tag(i.tag).from_xml(elem=i, account=self, folder=folder)
 
     def __str__(self):
         txt = '%s' % self.primary_smtp_address

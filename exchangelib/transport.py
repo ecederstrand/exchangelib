@@ -1,9 +1,14 @@
+# coding=utf-8
+from __future__ import unicode_literals
+
 import logging
 from xml.etree.ElementTree import tostring
 
+from future.utils import raise_from
+from six import text_type
 import requests.sessions
-from requests.auth import HTTPBasicAuth, HTTPDigestAuth
-from requests_ntlm import HttpNtlmAuth
+import requests.auth
+import requests_ntlm
 
 from .credentials import IMPERSONATION
 from .errors import UnauthorizedError, TransportError, RedirectError, RelativeRedirect
@@ -25,9 +30,9 @@ DIGEST = 'digest'
 UNKNOWN = 'unknown'
 
 AUTH_TYPE_MAP = {
-    NTLM: HttpNtlmAuth,
-    BASIC: HTTPBasicAuth,
-    DIGEST: HTTPDigestAuth,
+    NTLM: requests_ntlm.HttpNtlmAuth,
+    BASIC: requests.auth.HTTPBasicAuth,
+    DIGEST: requests.auth.HTTPDigestAuth,
     NOAUTH: None,
 }
 
@@ -64,7 +69,7 @@ def _test_service_credentials(protocol):
 def _test_response(auth, response):
     log.debug('Response headers: %s', response.headers)
     resp = response.text
-    log.debug('Response data: %s [...]', str(resp[:1000]))
+    log.debug('Response data: %s [...]', text_type(resp[:1000]))
     if is_xml(resp):
         log.debug('This is XML')
         # Assume that any XML response is good news
@@ -127,7 +132,7 @@ def get_auth_instance(credentials, auth_type):
     try:
         model = AUTH_TYPE_MAP[auth_type]
     except KeyError as e:
-        raise ValueError("Authentication type '%s' not supported" % auth_type) from e
+        raise_from(ValueError("Authentication type '%s' not supported" % auth_type), e)
     else:
         if model is None:
             return None
@@ -141,7 +146,7 @@ def get_auth_type(auth):
     try:
         return AUTH_CLASS_MAP[auth.__class__]
     except KeyError as e:
-        raise ValueError("Authentication model '%s' not supported" % auth.__class__) from e
+        raise_from(ValueError("Authentication model '%s' not supported" % auth.__class__), e)
 
 
 def get_autodiscover_authtype(service_endpoint, data, timeout, verify):
@@ -159,9 +164,8 @@ def get_autodiscover_authtype(service_endpoint, data, timeout, verify):
                 # We were redirected to a different domain or sheme. Raise RedirectError so higher-level code can
                 # try again on this new domain or scheme.
                 raise RedirectError(url=e.value)
-            # Some MS servers are masters of messing up HTTP, issuing 302 to an error page with zero content. Give this
-            # URL a chance with a POST request.
-            # raise TransportError('Circular redirect')
+            # Some MS servers are masters of messing up HTTP, issuing 302 to an error page with zero content.
+            # Give this URL a chance with a POST request.
         r = s.post(url=service_endpoint, headers=headers, data=data, timeout=timeout, allow_redirects=False,
                    verify=verify)
     return _get_auth_method_from_response(response=r)

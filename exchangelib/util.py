@@ -1,18 +1,34 @@
-import re
-from xml.etree.ElementTree import Element
-import logging
-import time
-from threading import get_ident
-from datetime import datetime
-from copy import deepcopy
+from __future__ import unicode_literals
+
 import itertools
+import logging
+import re
+import time
+from copy import deepcopy
+from datetime import datetime
 from decimal import Decimal
+from xml.etree.ElementTree import Element
+
+from future.moves.urllib.parse import urlparse
+from future.utils import PY2
+from future.utils import raise_from
+from six import text_type, string_types
 
 from .errors import TransportError, RateLimitError, RedirectError, RelativeRedirect
 
-log = logging.getLogger(__name__)
-ElementType = type(Element('x'))  # Type is auto-generated inside cElementTree
+if PY2:
+    from thread import get_ident
 
+    class ConnectionResetError(OSError):
+        pass
+else:
+    from threading import get_ident
+
+
+log = logging.getLogger(__name__)
+
+ElementType = type(Element('x'))  # Type is auto-generated inside cElementTree
+string_type = string_types[0]
 
 # Regex of UTF-8 control characters that are illegal in XML 1.0 (and XML 1.1)
 _illegal_xml_chars_RE = re.compile('[\x00-\x08\x0b\x0c\x0e-\x1F\uD800-\uDFFF\uFFFE\uFFFF]')
@@ -24,12 +40,13 @@ def chunkify(iterable, chunksize):
     """
     Splits an iterable into chunks of size ``chunksize``. The last chunk may be smaller than ``chunksize``.
     """
-    if hasattr(iterable, '__getitem__'):
-        # list, tuple
+    from .queryset import QuerySet
+    if hasattr(iterable, '__getitem__') and not isinstance(iterable, QuerySet):
+        # list, tuple. QuerySet has __getitem__ but that evaluates the entire query greedily. We don't want that here.
         for i in range(0, len(iterable), chunksize):
             yield iterable[i:i + chunksize]
     else:
-        # generator, set, map
+        # generator, set, map, QuerySet
         chunk = []
         for i in iterable:
             chunk.append(i)
@@ -42,15 +59,22 @@ def chunkify(iterable, chunksize):
 
 def peek(iterable):
     """
-    Checks if an iterable or iterator is empty and returns status and the rewinded iterable or iterator
+    Checks if an iterable is empty and returns status and the rewinded iterable
     """
+    from .queryset import QuerySet
+    assert not isinstance(iterable, QuerySet)
+    # QuerySet has __len__ but that evaluates the entire query greedily. We don't want that here. Instead, peek() should
+    # be called on QuerySet.iterator()
     if hasattr(iterable, '__len__'):
+        # list, tuple, set
         return len(iterable) == 0, iterable
     else:
+        # generator
         try:
             first = next(iterable)
         except StopIteration:
             return True, iterable
+        # We can't rewind a generator. Instead, chain the first element and the rest of the generator
         return False, itertools.chain([first], iterable)
 
 
@@ -64,32 +88,60 @@ def xml_to_str(tree, encoding='utf-8'):
 
 def get_xml_attr(tree, name):
     elem = tree.find(name)
-    if elem is not None and elem.text:  # Must compare with None, see XML docs
-        return elem.text.strip() or None
-    return None
+    if elem is None:  # Must compare with None, see XML docs
+        return None
+    return  elem.text or None
 
 
 def get_xml_attrs(tree, name):
-    return [elem.text.strip() for elem in tree.findall(name) if elem.text is not None]
+    return [elem.text for elem in tree.findall(name) if elem.text is not None]
 
 
 def value_to_xml_text(value):
     from .ewsdatetime import EWSDateTime
-    if isinstance(value, str):
+    from .folders import Attendee, Mailbox, EmailAddress, PhoneNumber
+    if isinstance(value, string_types):
         return safe_xml_value(value)
     if isinstance(value, bool):
         return '1' if value else '0'
     if isinstance(value, (int, Decimal)):
-        return str(value)
+        return text_type(value)
     if isinstance(value, EWSDateTime):
         return value.ewsformat()
+    if isinstance(value, PhoneNumber):
+        return value.phone_number
+    if isinstance(value, EmailAddress):
+        return value.email
+    if isinstance(value, Mailbox):
+        return value.email_address
+    if isinstance(value, Attendee):
+        return value.mailbox.email_address
     raise ValueError('Unsupported type: %s (%s)' % (type(value), value))
+
+
+def xml_text_to_value(value, field_type):
+    if value is None:
+        return None
+    from .ewsdatetime import EWSDateTime
+    from .folders import Choice, Email, AnyURI, Body, HTMLBody, MimeContent
+    if field_type == string_type:
+        # Return builtin str unprocessed
+        return value
+    if field_type in (Choice, Email, AnyURI, Body, HTMLBody, MimeContent):
+        # Cast string-like values to their intended class
+        return field_type(value)
+    return {
+        bool: lambda v: True if v == 'true' else False if v == 'false' else None,
+        int: lambda v: int(v),
+        Decimal: lambda v: Decimal(v),
+        EWSDateTime: lambda v: EWSDateTime.from_string(v),
+    }[field_type](value)
 
 
 def set_xml_value(elem, value, version):
     from .folders import EWSElement
     from .ewsdatetime import EWSDateTime
-    if isinstance(value, (str, bool, int, Decimal, EWSDateTime)):
+    if isinstance(value, (string_types + (bool, int, Decimal, EWSDateTime))):
         elem.text = value_to_xml_text(value)
     elif isinstance(value, (tuple, list)):
         for v in value:
@@ -98,7 +150,7 @@ def set_xml_value(elem, value, version):
                 elem.append(v.to_xml(version=version))
             elif isinstance(v, ElementType):
                 elem.append(v)
-            elif isinstance(v, str):
+            elif isinstance(v, string_types):
                 add_xml_child(elem, 't:String', v)
             else:
                 raise AttributeError('Unsupported type %s for list value %s on elem %s' % (type(v), v, elem))
@@ -113,7 +165,7 @@ def set_xml_value(elem, value, version):
 
 
 def safe_xml_value(value, replacement='?'):
-    return str(_illegal_xml_chars_RE.sub(replacement, value))
+    return text_type(_illegal_xml_chars_RE.sub(replacement, value))
 
 
 # Keeps a cache of Element objects to deepcopy
@@ -140,12 +192,12 @@ def to_xml(text, encoding):
     try:
         return fromstring(processed)
     except ParseError:
-        from io import StringIO
+        from io import BytesIO
         from lxml.etree import XMLParser, parse, tostring
         # Exchange servers may spit out the weirdest XML. lxml is pretty good at recovering from errors
         log.warning('Fallback to lxml processing of faulty XML')
         magical_parser = XMLParser(encoding=encoding or 'utf-8', recover=True)
-        root = parse(StringIO(processed), magical_parser)
+        root = parse(BytesIO(processed), magical_parser)
         try:
             return fromstring(tostring(root))
         except ParseError as e:
@@ -155,7 +207,9 @@ def to_xml(text, encoding):
             except IndexError:
                 offending_line = ''
             offending_excerpt = offending_line[max(0, col_no - 20):col_no + 20].decode('ascii', 'ignore')
-            raise ParseError('%s\nOffending text: [...]%s[...]' % (str(e), offending_excerpt)) from e
+            raise_from(ParseError('%s\nOffending text: [...]%s[...]' % (text_type(e), offending_excerpt)), e)
+        except  TypeError:
+            raise ParseError('This is not XML: %s' % text)
 
 
 def is_xml(text):
@@ -165,11 +219,11 @@ def is_xml(text):
     return text.lstrip(BOM)[0:5] == '<?xml'
 
 
-class DummyRequest:
+class DummyRequest(object):
     headers = {}
 
 
-class DummyResponse:
+class DummyResponse(object):
     status_code = 401
     headers = {}
     text = ''
@@ -178,14 +232,13 @@ class DummyResponse:
 
 def get_domain(email):
     try:
-        return email.split('@')[1].lower().strip()
+        return email.split('@')[1].lower()
     except (IndexError, AttributeError) as e:
-        raise ValueError("'%s' is not a valid email" % email) from e
+        raise_from(ValueError("'%s' is not a valid email" % email), e)
 
 
 def split_url(url):
-    from urllib import parse
-    parsed_url = parse.urlparse(url)
+    parsed_url = urlparse(url)
     # Use netloc instead og hostname since hostname is None if URL is relative
     return parsed_url.scheme == 'https', parsed_url.netloc.lower(), parsed_url.path
 
@@ -284,7 +337,7 @@ Response headers: %(response_headers)s'''
                 r.request.headers = headers
                 r.headers = {'DummyResponseHeader': None}
             d2 = datetime.now()
-            log_vals['response_time'] = str(d2 - d1)
+            log_vals['response_time'] = text_type(d2 - d1)
             log_vals['status_code'] = r.status_code
             log_vals['request_headers'] = r.request.headers
             log_vals['response_headers'] = r.headers
@@ -297,7 +350,7 @@ Response headers: %(response_headers)s'''
             if (r.status_code == 401) \
                     or (r.headers.get('connection') == 'close') \
                     or (r.status_code == 302 and r.headers.get('location').lower() ==
-                        '/ews/genericerrorpage.htm?aspxerrorpath=/ews/exchange.asmx')\
+                        '/ews/genericerrorpage.htm?aspxerrorpath=/ews/exchange.asmx') \
                     or (r.status_code == 503):
                 # Maybe stale session. Get brand new one. But wait a bit, since the server may be rate-limiting us.
                 # This can be 302 redirect to error page, 401 authentication error or 503 service unavailable
@@ -345,7 +398,7 @@ Response headers: %(response_headers)s'''
         # Let higher layers handle this. Add data for better debugging.
         log_msg = '%(exc_cls)s: %(exc_msg)s\n' + log_msg
         log_vals['exc_cls'] = e.__class__.__name__
-        log_vals['exc_msg'] = str(e)
+        log_vals['exc_msg'] = text_type(e)
         log_msg += '\nRequest data: %(data)s'
         log_vals['data'] = data
         log_msg += '\nResponse data: %(text)s'
@@ -373,3 +426,11 @@ Response headers: %(response_headers)s'''
             raise TransportError('Unknown failure\n' + log_msg % log_vals)
     log.debug('Session %(session_id)s thread %(thread_id)s: Useful response from %(url)s', log_vals)
     return r, session
+
+
+def isanysubclass(cls, classinfos):
+    try:
+        iter(classinfos)
+        return any([issubclass(cls, c) for c in classinfos])
+    except TypeError:
+        return issubclass(cls, classinfos)

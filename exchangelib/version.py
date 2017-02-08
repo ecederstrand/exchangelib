@@ -1,8 +1,12 @@
+# coding=utf-8
+from __future__ import unicode_literals
+
 import logging
 from xml.etree.ElementTree import ParseError
 
 import requests.sessions
-import requests.adapters
+from future.utils import raise_from, python_2_unicode_compatible
+from six import text_type
 
 from .errors import UnauthorizedError, TransportError, EWSWarning
 from .transport import TNS, SOAPNS, dummy_xml, get_auth_instance
@@ -40,7 +44,8 @@ VERSIONS = {
 API_VERSIONS = sorted({v[0] for v in VERSIONS.values()}, reverse=True)
 
 
-class Build:
+@python_2_unicode_compatible
+class Build(object):
     """
     Holds methods for working with build numbers
     """
@@ -73,7 +78,7 @@ class Build:
         self.major_build = major_build
         self.minor_build = minor_build
         if major_version < 8:
-            raise ValueError("Exchange major versions below 8 don't support EWS (%s)", str(self))
+            raise ValueError("Exchange major versions below 8 don't support EWS (%s)", text_type(self))
 
     @classmethod
     def from_xml(cls, elem):
@@ -84,6 +89,7 @@ class Build:
             if v is None:
                 raise ValueError()
             vals.append(int(v))  # Also raises ValueError
+        elem.clear()
         return cls(*vals)
 
     def api_version(self):
@@ -136,7 +142,8 @@ EXCHANGE_2010 = Build(14, 0)
 EXCHANGE_2013 = Build(15, 0)
 
 
-class Version:
+@python_2_unicode_compatible
+class Version(object):
     """
     Holds information about the server version
     """
@@ -173,7 +180,7 @@ class Version:
                                                      verify_ssl=protocol.verify_ssl)
             log.debug('Shortname according to %s: %s', protocol.types_url, shortname)
         except (TransportError, UnauthorizedError) as e:
-            log.info(str(e))
+            log.info(text_type(e))
             shortname = None
         api_version = VERSIONS[shortname][0] if shortname else None
         return cls._guess_version_from_service(protocol=protocol, hint=api_version)
@@ -246,7 +253,7 @@ class Version:
         if r.status_code == 400:
             raise EWSWarning('Bad request')
         if r.status_code == 500 and ('The specified server version is invalid' in r.text or
-                                     'ErrorInvalidSchemaVersionForMailboxVersion' in r.text):
+                                             'ErrorInvalidSchemaVersionForMailboxVersion' in r.text):
             raise EWSWarning('Invalid server version')
         if r.status_code != 200:
             if 'The referenced account is currently locked out' in r.text:
@@ -256,10 +263,11 @@ class Version:
         log.debug('Response data: %s', r.text)
         try:
             header = to_xml(r.text, encoding=r.encoding).find('{%s}Header' % SOAPNS)
-            if not header:
+            if header is None:
                 raise ParseError()
         except ParseError as e:
-            raise EWSWarning('Unknown XML response from %s (response: %s)' % (protocol.service_endpoint, r.text)) from e
+            raise_from(EWSWarning('Unknown XML response from %s (response: %s)' % (protocol.service_endpoint,
+                                                                                   r.text)), e)
         info = header.find('{%s}ServerVersionInfo' % TNS)
         if info is None:
             raise TransportError('No ServerVersionInfo in response: %s' % r.text)
@@ -272,10 +280,10 @@ class Version:
     def from_response(cls, requested_api_version, response):
         try:
             header = to_xml(response.text, encoding=response.encoding).find('{%s}Header' % SOAPNS)
-            if not header:
+            if header is None:
                 raise ParseError()
         except ParseError as e:
-            raise EWSWarning('Unknown XML response from %s (response: %s)' % (response, response.text)) from e
+            raise_from(EWSWarning('Unknown XML response from %s (response: %s)' % (response, response.text)), e)
         info = header.find('{%s}ServerVersionInfo' % TNS)
         if info is None:
             raise TransportError('No ServerVersionInfo in response: %s' % response.text)

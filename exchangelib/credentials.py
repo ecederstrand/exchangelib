@@ -1,10 +1,15 @@
+# coding=utf-8
 """
 Implements an Exchange user object and access types. Exchange provides two different ways of granting access for a
 login to a specific account. Impersonation is used mainly for service accounts that connect via EWS. Delegate is used
 for ad-hoc access e.g. granted manually by the user.
 See http://blogs.msdn.com/b/exchangedev/archive/2009/06/15/exchange-impersonation-vs-delegate-access.aspx
 """
+from __future__ import unicode_literals
+
 import logging
+
+from future.utils import python_2_unicode_compatible
 
 log = logging.getLogger(__name__)
 
@@ -12,7 +17,8 @@ IMPERSONATION = 'impersonation'
 DELEGATE = 'delegate'
 
 
-class Credentials:
+@python_2_unicode_compatible
+class Credentials(object):
     # Keeps login info the way Exchange likes it. Usernames for authentication are of one of these forms:
     #
     #    * PrimarySMTPAddress

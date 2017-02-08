@@ -1,6 +1,12 @@
 python-targets:
+  - 2
   - 3
 
 ignore-paths:
   - optimize.py
   - perf.py
+  - notifier.py
+
+pylint:
+  disable:
+    - cyclic-import

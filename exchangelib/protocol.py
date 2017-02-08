@@ -1,23 +1,34 @@
+# coding=utf-8
 """
 A protocol is an endpoint for EWS service connections. It contains all necessary information to make HTTPS connections.
 
 Protocols should be accessed through an Account, and are either created from a default Configuration or autodiscovered
 when creating an Account.
 """
-import socket
-import queue
-from multiprocessing.pool import ThreadPool
-import logging
-from threading import Lock
-import random
+from __future__ import unicode_literals
 
-from requests import adapters, Session
+import logging
+import random
+import socket
+from multiprocessing.pool import ThreadPool
+from threading import Lock
+
+from future.utils import with_metaclass, python_2_unicode_compatible, raise_from
+import requests.adapters
+import requests.sessions
+from six import text_type, PY2
 
 from .credentials import Credentials
 from .errors import TransportError
+from .services import GetServerTimeZones, GetRoomLists, GetRooms, ResolveNames
 from .transport import get_auth_instance, get_service_authtype, get_docs_authtype, test_credentials, AUTH_TYPE_MAP
-from .version import Version, API_VERSIONS
 from .util import split_url
+from .version import Version, API_VERSIONS
+
+if PY2:
+    import Queue as queue
+else:
+    import queue
 
 log = logging.getLogger(__name__)
 
@@ -31,7 +42,7 @@ def close_connections():
     CachingProtocol._protocol_cache.clear()
 
 
-class BaseProtocol:
+class BaseProtocol(object):
     # Base class for Protocol which implements the bare essentials
 
     # The maximum number of sessions (== TCP connections, see below) we will open to this service endpoint. Keep this
@@ -58,14 +69,18 @@ class BaseProtocol:
         self._session_pool = None  # Consumers need to fill the session pool themselves
 
     def __del__(self):
-        self.close()
+        try:
+            self.close()
+        except:
+            # __del__ should never fail
+            pass
 
     def close(self):
         log.debug('Server %s: Closing sessions', self.server)
         while True:
             try:
                 self._session_pool.get(block=False).close_socket(self.service_endpoint)
-            except (queue.Empty, ReferenceError):
+            except (queue.Empty, ReferenceError, AttributeError):
                 break
 
     def get_session(self):
@@ -110,7 +125,7 @@ class BaseProtocol:
         session.headers.update(headers)
         scheme = 'https' if self.has_ssl else 'http'
         # We want just one connection per session. No retries, since we wrap all requests in our own retry handler
-        session.mount('%s://' % scheme, adapters.HTTPAdapter(
+        session.mount('%s://' % scheme, requests.adapters.HTTPAdapter(
             pool_block=True,
             pool_connections=self.CONNECTIONS_PER_SESSION,
             pool_maxsize=self.CONNECTIONS_PER_SESSION,
@@ -124,7 +139,7 @@ class BaseProtocol:
         try:
             socket.gethostbyname_ex(self.server)[2][0]
         except socket.gaierror as e:
-            raise TransportError("Server '%s' does not exist" % self.server) from e
+            raise_from(TransportError("Server '%s' does not exist" % self.server), e)
         return test_credentials(protocol=self)
 
     def __repr__(self):
@@ -155,15 +170,16 @@ class CachingProtocol(type):
             protocol = cls._protocol_cache.get(_protocol_cache_key)
             if protocol is None:
                 log.debug("Protocol __call__ cache miss. Adding key '%s'", str(_protocol_cache_key))
-                protocol = super().__call__(*args, **kwargs)
+                protocol = super(CachingProtocol, cls).__call__(*args, **kwargs)
                 cls._protocol_cache[_protocol_cache_key] = protocol
         log.debug('_protocol_cache_lock released')
         return protocol
 
 
-class Protocol(BaseProtocol, metaclass=CachingProtocol):
+@python_2_unicode_compatible
+class Protocol(with_metaclass(CachingProtocol, BaseProtocol)):
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super(Protocol, self).__init__(*args, **kwargs)
 
         scheme = 'https' if self.has_ssl else 'https'
         self.wsdl_url = '%s://%s/EWS/Services.wsdl' % (scheme, self.server)
@@ -190,6 +206,16 @@ class Protocol(BaseProtocol, metaclass=CachingProtocol):
         # Needs auth objects and a working session pool
         self.version = Version.guess(self)
 
+    def get_timezones(self):
+        return GetServerTimeZones(protocol=self).call()
+
+    def get_roomlists(self):
+        return GetRoomLists(protocol=self).call()
+
+    def get_rooms(self, roomlist):
+        from .folders import RoomList
+        return GetRooms(protocol=self).call(roomlist=RoomList(email_address=roomlist))
+
     def __str__(self):
         return '''\
 EWS url: %s
@@ -207,12 +233,12 @@ XSD auth: %s''' % (
         )
 
 
-class EWSSession(Session):
+class EWSSession(requests.sessions.Session):
     # A requests Session object that closes the underlying socket when we need it
     def __init__(self, protocol):
         self.session_id = random.randint(1, 32767)  # Used for debugging messages in services
         self.protocol = protocol
-        super().__init__()
+        super(EWSSession, self).__init__()
 
     def close_socket(self, url):
         # Close underlying socket. This ensures we don't leave stray sockets around after program exit.
@@ -221,12 +247,12 @@ class EWSSession(Session):
         for i in range(pool.pool.qsize()):
             conn = pool._get_conn()
             if conn.sock:
-                log.debug('Closing socket %s', str(conn.sock.getsockname()))
+                log.debug('Closing socket %s', text_type(conn.sock.getsockname()))
                 conn.sock.shutdown(socket.SHUT_RDWR)
                 conn.sock.close()
 
     def __enter__(self):
-        return super().__enter__()
+        return super(EWSSession, self).__enter__()
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         if exc_type is None:

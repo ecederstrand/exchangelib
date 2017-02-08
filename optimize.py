@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 # Tries to get optimal values for concurrent sessions and payload size for deletes and creates
 import copy

@@ -1,20 +1,27 @@
+# coding=utf-8
 """
 Stores errors specific to exchangelib, and mirrors all the possible errors that EWS can return.
 """
-from urllib import parse
+from __future__ import unicode_literals
+
+from future.moves.urllib.parse import urlparse
+from future.utils import python_2_unicode_compatible
+from six import text_type
 
 
+@python_2_unicode_compatible
 class EWSError(Exception):
     """
     Global error type within this module.
 
     """
+
     def __init__(self, value):
-        super().__init__(value)
+        super(EWSError, self).__init__(value)
         self.value = value
 
     def __str__(self):
-        return str(self.value)
+        return text_type(self.value)
 
 
 # Warnings
@@ -39,13 +46,14 @@ class UnauthorizedError(EWSError):
     pass
 
 
+@python_2_unicode_compatible
 class RedirectError(TransportError):
     def __init__(self, url):
-        parsed_url = parse.urlparse(url)
+        parsed_url = urlparse(url)
         self.url = url
         self.server = parsed_url.hostname.lower()
         self.has_ssl = parsed_url.scheme == 'https'
-        super().__init__(str(self))
+        super(RedirectError, self).__init__(text_type(self))
 
     def __str__(self):
         return 'We were redirected to %s' % self.url
@@ -67,13 +75,18 @@ class AutoDiscoverCircularRedirect(AutoDiscoverError):
     pass
 
 
+@python_2_unicode_compatible
 class AutoDiscoverRedirect(AutoDiscoverError):
     def __init__(self, redirect_email):
         self.redirect_email = redirect_email
-        super().__init__(str(self))
+        super(AutoDiscoverRedirect, self).__init__(text_type(self))
 
     def __str__(self):
         return 'AutoDiscover redirects to %s' % self.redirect_email
+
+
+class UnknownTimeZone(EWSError):
+    pass
 
 
 class ResponseMessageError(TransportError):

@@ -1,6 +1,12 @@
+# coding=utf-8
+from __future__ import unicode_literals
+
 import functools
 import logging
 from threading import Lock
+
+from six import string_types
+from future.utils import python_2_unicode_compatible
 
 from .ewsdatetime import EWSDateTime, UTC
 from .util import create_element, xml_to_str, value_to_xml_text
@@ -11,7 +17,8 @@ _source_cache = dict()
 _source_cache_lock = Lock()
 
 
-class Q:
+@python_2_unicode_compatible
+class Q(object):
     # Connection types
     AND = 'AND'
     OR = 'OR'
@@ -74,11 +81,15 @@ class Q:
                 self.children.append(q)
 
         for key, value in kwargs.items():
+            if value is None:
+                raise ValueError('Value for Q kwarg "%s" cannot be None' % key)
             if '__' in key:
                 field, lookup = key.rsplit('__')
                 if lookup == self.LOOKUP_RANGE:
                     # EWS doesn't have a 'range' operator. Emulate 'foo__range=(1, 2)' as 'foo__gte=1 and foo__lte=2'
                     # (both values inclusive).
+                    if len(value) != 2:
+                        raise ValueError("Value of kwarg '%s' must have exactly 2 elements" % key)
                     self.children.append(self.__class__(**{'%s__gte' % field: value[0]}))
                     self.children.append(self.__class__(**{'%s__lte' % field: value[1]}))
                     continue
@@ -93,12 +104,19 @@ class Q:
                     op = self._lookup_to_op(lookup)
             else:
                 field, op = key, self.EQ
+
             assert op in self.OP_TYPES
+            try:
+                value_to_xml_text(value)
+            except ValueError:
+                raise ValueError('Value "%s" for filter kwarg "%s" is unsupported' % (value, key))
             if len(args) == 0 and len(kwargs) == 1:
                 self.field = field
                 self.op = op
                 if isinstance(value, EWSDateTime):
                     # We want to convert all values to UTC
+                    if not getattr(value, 'tzinfo'):
+                        raise ValueError("'%s' must be timezone aware" % field)
                     self.value = value.astimezone(UTC)
                 else:
                     self.value = value
@@ -124,10 +142,13 @@ class Q:
         if kwargs:
             kwargs_q = q or Q()
             for key, value in kwargs.items():
+                if value is None:
+                    raise ValueError('Value for filter kwarg "%s" cannot be None' % key)
                 if '__' in key:
                     field, lookup = key.rsplit('__')
                 else:
                     field, lookup = key, None
+                cls._validate_field(field, folder_class)
                 # Filtering by category is a bit quirky. The only lookup type I have found to work is:
                 #
                 #     item:Categories == 'foo' AND item:Categories == 'bar' AND ...
@@ -144,22 +165,30 @@ class Q:
                 # Exact matching of categories (i.e. match ['a', 'b'] but not ['a', 'b', 'c']) could be implemented by
                 # post-processing items. Fetch 'item:Categories' with additional_fields and remove the items that don't
                 # have an exact match, after the call to FindItems.
-                if field == 'categories':
+                field_type = folder_class.field_type_for_field(field)
+                if isinstance(field_type, list):
                     if lookup not in (Q.LOOKUP_CONTAINS, Q.LOOKUP_IN):
                         raise ValueError(
-                            "Categories can only be filtered using 'categories__contains=['a', 'b', ...]' and "
-                            "'categories__in=['a', 'b', ...]'")
-                    if isinstance(value, str):
-                        kwargs_q &= Q(categories=value)
-                    else:
-                        children = [Q(categories=v) for v in value]
+                            "Field '%(field)s' can only be filtered using '%(field)s__contains=['a', 'b', ...]' and "
+                            "'%(field)s__in=['a', 'b', ...]'" % dict(field=field))
+                    if isinstance(value, (list, tuple, set)):
+                        children = [Q(**{field: v}) for v in value]
                         if lookup == Q.LOOKUP_CONTAINS:
                             kwargs_q &= Q(*children, conn_type=Q.AND)
                         elif lookup == Q.LOOKUP_IN:
                             kwargs_q &= Q(*children, conn_type=Q.OR)
                         else:
                             assert False
+                    else:
+                        kwargs_q &= Q(**{field: value})
                     continue
+                if lookup == Q.LOOKUP_IN and isinstance(value, (list, tuple, set)):
+                    # Allow '__in' lookup on non-list field types, specifying a list or a simple value
+                    children = [Q(**{field: v}) for v in value]
+                    kwargs_q &= Q(*children, conn_type=Q.OR)
+                    continue
+                if isinstance(value, (list, tuple, set)) and lookup != Q.LOOKUP_RANGE:
+                    raise ValueError('Value for filter kwarg "%s" must be a single value' % key)
                 kwargs_q &= Q(**{key: value})
             q = kwargs_q
         return q
@@ -251,6 +280,7 @@ class Q:
         return self.is_leaf() and self.field is None
 
     def expr(self):
+        from .folders import EWSElement
         if self.is_empty():
             return None
         if self.is_leaf():
@@ -263,7 +293,10 @@ class Q:
             # Sort children by field name so we get stable output (for easier testing). Children should never be empty.
             expr = (' %s ' % (self.AND if self.conn_type == self.NOT else self.conn_type)).join(
                 (c.expr() if c.is_leaf() or c.conn_type == self.NOT else '(%s)' % c.expr())
-                for c in sorted(self.children, key=lambda i: i.field or '')
+                for c in sorted(
+                    self.children,
+                    key=lambda i: i.field if isinstance(i.field, string_types) else '' if i.field is None else i.field.ELEMENT_NAME
+                )
             )
         if not expr:
             return None  # Should not be necessary, but play safe
@@ -280,13 +313,24 @@ class Q:
         if self.translated:
             return self
         if self.field is not None:
-            if self.field in folder_class.complex_field_names():
-                raise ValueError("Complex field '%s' does not support filtering" % self.field)
+            self._validate_field(self.field, folder_class)
             self.field = folder_class.fielduri_for_field(self.field)
         for c in self.children:
             c.translate_fields(folder_class=folder_class)
         self.translated = True
         return self
+
+    @staticmethod
+    def _validate_field(field, folder_class):
+        from .folders import Attachment, Mailbox, Attendee, PhysicalAddress
+        if field not in folder_class.allowed_field_names():
+            raise ValueError("'%s' is not a valid field when filtering on %s" % (field, folder_class.__name__))
+        if field in ('status', 'companies'):
+            raise ValueError("EWS does not support filtering on field '%s'" % field)
+        field_type = folder_class.field_type_for_field(field)
+        if field_type in ([Attachment], [Mailbox], [Attendee], [PhysicalAddress]):
+            raise ValueError(
+                "EWS does not support filtering on %s (non-searchable field type [%s])" % (field, field_type.__name__))
 
     def to_xml(self, folder_class):
         # Translate this Q object to a valid Restriction XML tree
@@ -299,19 +343,26 @@ class Q:
             return None
         from xml.etree.ElementTree import ElementTree
         restriction = create_element('m:Restriction')
-        restriction.append(self.xml_elem())
+        restriction.append(elem)
         return ElementTree(restriction).getroot()
 
     def xml_elem(self):
         # Return an XML tree structure of this Q object. First, remove any empty children. If conn_type is AND or OR and
         # there is exactly one child, ignore the AND/OR and treat this node as a leaf. If this is an empty leaf
         # (equivalent of Q()), return None.
+        from .folders import IndexedField, ExtendedProperty, EWSElement
         if self.is_empty():
             return None
         if self.is_leaf():
             assert self.field and self.op and self.value is not None
             elem = self._op_to_xml(self.op)
-            field = create_element('t:FieldURI', FieldURI=self.field)
+            if isinstance(self.field, string_types):
+                field = create_element('t:FieldURI', FieldURI=self.field)
+            elif issubclass(self.field, IndexedField):
+                field = self.field.field_uri_xml(label=self.value.label)
+            else:
+                assert issubclass(self.field, ExtendedProperty)
+                field = self.field.field_uri_xml()
             elem.append(field)
             constant = create_element('t:Constant')
             # Use .set() to not fill up the create_element() cache with unique values
@@ -329,7 +380,10 @@ class Q:
             # We have multiple children. If conn_type is NOT, then group children with AND. We'll add the NOT later
             elem = self._conn_to_xml(self.AND if self.conn_type == self.NOT else self.conn_type)
             # Sort children by field name so we get stable output (for easier testing). Children should never be empty
-            for c in sorted(self.children, key=lambda i: i.field or ''):
+            for c in sorted(
+                    self.children,
+                    key=lambda i: i.field if isinstance(i.field, string_types) else '' if i.field is None else i.field.ELEMENT_NAME
+                ):
                 elem.append(c.xml_elem())
         if elem is None:
             return None  # Should not be necessary, but play safe
@@ -388,11 +442,13 @@ class Q:
         return self.__class__.__name__ + repr(tuple(self.children))
 
 
-class Restriction:
+@python_2_unicode_compatible
+class Restriction(object):
     """
     Implements an EWS Restriction type.
 
     """
+
     def __init__(self, q):
         if not isinstance(q, Q):
             raise ValueError("'q' must be a Q object (%s)", type(q))

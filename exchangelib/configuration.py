@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 import logging
 
 from .protocol import Protocol
@@ -6,7 +8,7 @@ from .transport import AUTH_TYPE_MAP
 log = logging.getLogger(__name__)
 
 
-class Configuration:
+class Configuration(object):
     """
     Assembles a connection protocol when autodiscover is not used.
 
@@ -29,6 +31,7 @@ class Configuration:
         account = Account(primary_smtp_address='john@example.com', credentials=credentials, autodiscover=True)
 
     """
+
     def __init__(self, credentials, server=None, has_ssl=True, service_endpoint=None, auth_type=None,
                  verify_ssl=True, **kwargs):
         if kwargs:

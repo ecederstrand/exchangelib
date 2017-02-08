@@ -1,12 +1,13 @@
-from .account import Account
-from .autodiscover import discover
-from .configuration import Configuration
-from .credentials import DELEGATE, IMPERSONATION, Credentials
-from .ewsdatetime import EWSDateTime, EWSTimeZone
-from .folders import CalendarItem, Contact, Message, Task, Mailbox, Attendee
-from .restriction import Q
-from .services import SHALLOW, DEEP
-from .transport import NTLM, DIGEST, BASIC
+# Add noqa on top-level convenience imports
+from .account import Account  # noqa
+from .autodiscover import discover  # noqa
+from .configuration import Configuration  # noqa
+from .credentials import DELEGATE, IMPERSONATION, Credentials  # noqa
+from .ewsdatetime import EWSDateTime, EWSTimeZone  # noqa
+from .folders import CalendarItem, Contact, Message, Task, Mailbox, Attendee, Body, HTMLBody  # noqa
+from .restriction import Q  # noqa
+from .services import SHALLOW, DEEP  # noqa
+from .transport import NTLM, DIGEST, BASIC  # noqa
 
 
 def close_connections():
