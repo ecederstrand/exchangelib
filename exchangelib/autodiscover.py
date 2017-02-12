@@ -14,6 +14,7 @@ from __future__ import unicode_literals
 import logging
 import os
 import shelve
+from socket import timeout as SocketTimeout
 import tempfile
 from threading import Lock
 
@@ -32,6 +33,9 @@ from .util import create_element, get_xml_attr, add_xml_child, to_xml, is_xml, p
 
 if PY2:
     import Queue as queue
+
+    class ConnectionResetError(OSError):
+        pass
 else:
     import queue
 
@@ -342,8 +346,8 @@ def _get_autodiscover_auth_type(url, email, verify, encoding='utf-8'):
         data = _get_autodiscover_payload(email=email, encoding=encoding)
         return transport.get_autodiscover_authtype(service_endpoint=url, data=data, timeout=TIMEOUT,
                                                    verify=verify)
-    except (TransportError, requests.exceptions.ConnectionError, requests.exceptions.Timeout,
-            requests.exceptions.SSLError) as e:
+    except (TransportError, requests.exceptions.ChunkedEncodingError, requests.exceptions.ConnectionError,
+            ConnectionResetError, requests.exceptions.Timeout, SocketTimeout, requests.exceptions.SSLError) as e:
         if isinstance(e, RedirectError):
             raise
         log.debug('Error guessing auth type: %s', e)

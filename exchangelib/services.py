@@ -646,8 +646,6 @@ class UpdateItem(EWSPooledAccountService):
                         field_elem=item_model.elem_for_field(fieldname), items=val, version=self.account.version)
                 if isinstance(field_uri, text_type):
                     fielduri = create_element('t:FieldURI', FieldURI=field_uri)
-                elif issubclass(field_uri, ExtendedProperty):
-                    fielduri = field_uri.field_uri_xml()
                 elif issubclass(field_uri, IndexedField):
                     # TODO: Maybe the set/delete logic should extend into each attribute of a complex type like e.g.
                     # PhysicalAddress and not just the whole item.
@@ -684,7 +682,8 @@ class UpdateItem(EWSPooledAccountService):
                                     value=wrapped_v, meeting_timezone_added=meeting_timezone_added)
                     continue
                 else:
-                    assert False, 'Unknown field_uri type: %s' % field_uri
+                    assert issubclass(field_uri, ExtendedProperty)
+                    fielduri = field_uri.field_uri_xml()
                 if val is None or isinstance(val, (tuple, list)) and not len(val):
                     # A value of None or [] means we want to remove this field from the item
                     self._add_delete_item_elem(
@@ -755,11 +754,12 @@ class FindItem(EWSFolderService, PagingEWSMixIn):
     """
     SERVICE_NAME = 'FindItem'
     element_container_name = '{%s}Items' % TNS
+    CHUNKSIZE = 100
 
     def call(self, **kwargs):
         return self._paged_call(**kwargs)
 
-    def _get_payload(self, additional_fields, restriction, shape, depth, calendar_view, page_size, offset=0):
+    def _get_payload(self, additional_fields, restriction, order, shape, depth, calendar_view, page_size, offset=0):
         finditem = create_element('m:%s' % self.SERVICE_NAME, Traversal=depth)
         itemshape = create_element('m:ItemShape')
         add_xml_child(itemshape, 't:BaseShape', shape)
@@ -768,13 +768,29 @@ class FindItem(EWSFolderService, PagingEWSMixIn):
             add_xml_child(itemshape, 't:AdditionalProperties', additional_property_elems)
         finditem.append(itemshape)
         if calendar_view is None:
-            view_type = create_element('m:IndexedPageItemView', MaxEntriesReturned=text_type(page_size),
-                                       Offset=text_type(offset), BasePoint='Beginning')
+            view_type = create_element('m:IndexedPageItemView',
+                                       MaxEntriesReturned=text_type(page_size),
+                                       Offset=text_type(offset),
+                                       BasePoint='Beginning')
         else:
             view_type = calendar_view.to_xml(version=self.account.version)
         finditem.append(view_type)
         if restriction:
             finditem.append(restriction.xml)
+        if order:
+            from .queryset import OrderField
+            assert isinstance(order, OrderField)
+            from .folders import IndexedField, ExtendedProperty
+            field_order = create_element('t:FieldOrder', Order='Descending' if order.reverse else 'Ascending')
+            field_uri = self.folder.fielduri_for_field(order.field)
+            if isinstance(field_uri, string_types):
+                field_order.append(create_element('t:FieldURI', FieldURI=field_uri))
+            elif issubclass(field_uri, IndexedField):
+                field_order.append(field_uri.field_uri_xml(label=order.label, subfield=order.subfield))
+            else:
+                assert issubclass(field_uri, ExtendedProperty)
+                field_order.append(field_uri.field_uri_xml())
+            add_xml_child(finditem, 'm:SortOrder', field_order)
         parentfolderids = create_element('m:ParentFolderIds')
         parentfolderids.append(self.folder.to_xml(version=self.account.version))
         finditem.append(parentfolderids)

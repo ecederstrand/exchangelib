@@ -446,8 +446,14 @@ class IndexedField(EWSElement):
     SUB_FIELD_ELEMENT_NAMES = {}
 
     @classmethod
-    def field_uri_xml(cls, label):
+    def field_uri_xml(cls, label, subfield=None):
         if cls.SUB_FIELD_ELEMENT_NAMES:
+            if subfield:
+                return create_element(
+                    't:IndexedFieldURI',
+                    FieldURI='%s:%s' % (cls.FIELD_URI, cls.SUB_FIELD_ELEMENT_NAMES[subfield]),
+                    FieldIndex=label,
+                )
             return [create_element(
                 't:IndexedFieldURI',
                 FieldURI='%s:%s' % (cls.FIELD_URI, field),
@@ -1247,10 +1253,9 @@ class Item(EWSElement):
                     elems.extend(field_uri_xml)
                 else:
                     elems.append(field_uri_xml)
-        elif issubclass(field_uri, ExtendedProperty):
-            elems.append(field_uri.field_uri_xml())
         else:
-            assert False, 'Unknown field_uri type: %s' % field_uri
+            assert issubclass(field_uri, ExtendedProperty)
+            elems.append(field_uri.field_uri_xml())
         return elems
 
     @classmethod
@@ -1555,27 +1560,27 @@ class Message(ItemMixIn):
         'is_delivery_receipt_requested': ('IsDeliveryReceiptRequested', bool),
         'is_read_receipt_requested': ('IsReadReceiptRequested', bool),
         'is_response_requested': ('IsResponseRequested', bool),
-        'from': ('From', Mailbox),
+        'author': ('From', Mailbox),  # We can't use fieldname 'from' since it's a Python keyword
         'sender': ('Sender', Mailbox),
         'reply_to': ('ReplyTo', [Mailbox]),
         'to_recipients': ('ToRecipients', [Mailbox]),
         'cc_recipients': ('CcRecipients', [Mailbox]),
         'bcc_recipients': ('BccRecipients', [Mailbox]),
+        'message_id': ('InternetMessageId', string_type),
     }
     EXTENDED_PROPERTIES = ['extern_id']
     ORDERED_FIELDS = (
         'subject', 'sensitivity', 'body', 'attachments', 'categories', 'importance', 'reminder_is_set',
         EXTENDED_PROPERTIES,
-        # 'sender',
         'to_recipients', 'cc_recipients', 'bcc_recipients',
         'is_read_receipt_requested', 'is_delivery_receipt_requested',
-        'from', 'is_read', 'is_response_requested', 'reply_to',
+        'author', 'is_read', 'is_response_requested', 'reply_to',
     )
     REQUIRED_FIELDS = {'subject', 'is_read', 'is_delivery_receipt_requested', 'is_read_receipt_requested',
                        'is_response_requested'}
-    READONLY_FIELDS = {'sender'}
-    READONLY_AFTER_SEND_FIELDS = {'is_read_receipt_requested', 'is_delivery_receipt_requested', 'from', 'sender',
-                                  'reply_to', 'to_recipients', 'cc_recipients', 'bcc_recipients'}
+    READONLY_FIELDS = {'sender', 'message_id'}
+    READONLY_AFTER_SEND_FIELDS = {'is_read_receipt_requested', 'is_delivery_receipt_requested', 'author', 'sender',
+                                  'reply_to', 'to_recipients', 'cc_recipients', 'bcc_recipients', 'message_id'}
 
     __slots__ = tuple(ITEM_FIELDS) + tuple(Item.ITEM_FIELDS)
 
@@ -1798,10 +1803,10 @@ class MeetingRequest(ItemMixIn):
     }
     EXTENDED_PROPERTIES = []
     ORDERED_FIELDS = (
-        'subject', EXTENDED_PROPERTIES, 'from', 'is_read', 'start', 'end'
+        'subject', EXTENDED_PROPERTIES, 'author', 'is_read', 'start', 'end'
     )
     REQUIRED_FIELDS = {'subject'}
-    READONLY_FIELDS = {'from'}
+    READONLY_FIELDS = {'author'}
 
     __slots__ = tuple(ITEM_FIELDS) + tuple(Item.ITEM_FIELDS)
 
@@ -1824,10 +1829,10 @@ class MeetingResponse(ItemMixIn):
     }
     EXTENDED_PROPERTIES = []
     ORDERED_FIELDS = (
-        'subject', EXTENDED_PROPERTIES, 'from', 'is_read', 'start', 'end'
+        'subject', EXTENDED_PROPERTIES, 'author', 'is_read', 'start', 'end'
     )
     REQUIRED_FIELDS = {'subject'}
-    READONLY_FIELDS = {'from'}
+    READONLY_FIELDS = {'author'}
 
     __slots__ = tuple(ITEM_FIELDS) + tuple(Item.ITEM_FIELDS)
 
@@ -1850,10 +1855,10 @@ class MeetingCancellation(ItemMixIn):
     }
     EXTENDED_PROPERTIES = []
     ORDERED_FIELDS = (
-        'subject', EXTENDED_PROPERTIES, 'from', 'is_read', 'start', 'end'
+        'subject', EXTENDED_PROPERTIES, 'author', 'is_read', 'start', 'end'
     )
     REQUIRED_FIELDS = {'subject'}
-    READONLY_FIELDS = {'from'}
+    READONLY_FIELDS = {'author'}
 
     __slots__ = tuple(ITEM_FIELDS) + tuple(Item.ITEM_FIELDS)
 
@@ -2147,11 +2152,14 @@ class Folder(EWSElement):
                 if f in complex_field_names:
                     raise ValueError("find_items() does not support field '%s'. Use fetch() instead" % f)
 
+        # Get the SortOrder field, if any
+        order = kwargs.pop('order', None)
+
         # Get the CalendarView, if any
         calendar_view = kwargs.pop('calendar_view', None)
 
-        # Get the requested number of items per page. Default to 100 and disallow None
-        page_size = kwargs.pop('page_size', None) or 100
+        # Get the requested number of items per page. Set a sane default and disallow None
+        page_size = kwargs.pop('page_size', None) or FindItem.CHUNKSIZE
 
         # Build up any restrictions
         q = Q.from_filter_args(self.__class__, *args, **kwargs)
@@ -2171,6 +2179,7 @@ class Folder(EWSElement):
         items = FindItem(folder=self).call(
             additional_fields=additional_fields,
             restriction=restriction,
+            order=order,
             shape=shape,
             depth=depth,
             calendar_view=calendar_view,

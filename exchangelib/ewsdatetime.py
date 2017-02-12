@@ -3,16 +3,13 @@ from __future__ import unicode_literals
 
 import datetime
 import logging
-import os
 import shelve
-import tempfile
-from xml.etree.ElementTree import fromstring
 
 import pytz
-import requests
 from future.utils import raise_from, PY2
 
 from .errors import UnknownTimeZone
+from .winzone import PYTZ_TO_MS_TIMEZONE_MAP
 
 if PY2:
     from contextlib import contextmanager
@@ -106,55 +103,12 @@ class EWSDateTime(datetime.datetime):
         return cls.from_datetime(t)
 
 
-CLDR_WINZONE_URL = 'http://unicode.org/repos/cldr/trunk/common/supplemental/windowsZones.xml'
-PYTZ_TO_MS_MAP_PERSISTENT_STORAGE = os.path.join(tempfile.gettempdir(), 'exchangelib.winzone.cache')
-
-
-def _get_pytz_to_ms_map():
-    # Translation map between pytz location / timezone name and Windows timezone ID. This is contained in the CLDR
-    # database and exposed by the 'babel' package, but we can't use it until this issue is fixed:
-    #    https://github.com/python-babel/babel/issues/464
-    #
-    # This is a rudimentary implementation that downloads and parses the relevant supplemental CLDR database directly
-    # and caches the map on-disk instead of downloading the database every time.
-    with shelve_open(PYTZ_TO_MS_MAP_PERSISTENT_STORAGE) as db:
-        if not len(db):
-            log.debug('Building cached tz map from URL: %s', CLDR_WINZONE_URL)
-            r = requests.get(CLDR_WINZONE_URL)
-            assert r.status_code == 200
-            for e in fromstring(r.content).find('windowsZones').find('mapTimezones').findall('mapZone'):
-                db[e.get('type')] = e.get('other')
-            # Add some missing but helpful translations
-            db['UTC'] = str('UTC')
-            db['GMT'] = str('GMT Standard Time')
-        else:
-            log.debug('Loading cached tz map from shelve: %s.db', PYTZ_TO_MS_MAP_PERSISTENT_STORAGE)
-        return dict(db)
-
-
-def _reset_pytz_to_ms_map():
-    try:
-        os.remove(PYTZ_TO_MS_MAP_PERSISTENT_STORAGE + '.db')
-    except OSError:
-        pass  # The file was never created
-
-
 class EWSTimeZone(object):
     """
     Represents a timezone as expected by the EWS TimezoneContext / TimezoneDefinition XML element, and returned by
     services.GetServerTimeZones.
     """
-    try:
-        PYTZ_TO_MS_MAP = _get_pytz_to_ms_map()
-    except Exception as e:
-        log.warning('Failed to load cached tz map from shelve. Resetting (%r)' % e)
-        _reset_pytz_to_ms_map()
-        PYTZ_TO_MS_MAP = _get_pytz_to_ms_map()
-
-    @classmethod
-    def reset_cache(cls):
-        _reset_pytz_to_ms_map()
-        cls.PYTZ_TO_MS_MAP = _get_pytz_to_ms_map()
+    PYTZ_TO_MS_MAP = PYTZ_TO_MS_TIMEZONE_MAP
 
     @classmethod
     def from_pytz(cls, tz):

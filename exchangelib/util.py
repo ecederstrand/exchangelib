@@ -329,7 +329,7 @@ Response headers: %(response_headers)s'''
                 r = session.post(url=url, headers=headers, data=data, allow_redirects=False, timeout=timeout,
                                  verify=verify)
             except (requests.exceptions.ChunkedEncodingError, requests.exceptions.ConnectionError, ConnectionResetError,
-                    requests.exceptions.ReadTimeout, SocketTimeout):
+                    requests.exceptions.Timeout, SocketTimeout):
                 log.debug(
                     'Session %(session_id)s thread %(thread_id)s: timeout or connection error POST\'ing to %(url)s',
                     log_vals)
