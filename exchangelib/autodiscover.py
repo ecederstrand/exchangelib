@@ -412,7 +412,7 @@ def _parse_response(response, encoding='utf-8'):
     # There are three possible protocol types: EXCH, EXPR and WEB. EXPR is for EWS. See
     # http://blogs.technet.com/b/exchange/archive/2008/09/26/3406344.aspx
     for protocol in protocols:
-        if get_xml_attr(protocol, '{%s}Type' % RESPONSE_NS) != 'EXPR':
+        if get_xml_attr(protocol, '{%s}Type' % RESPONSE_NS) not in ('EXCH', 'EXPR'):
             continue
         server = get_xml_attr(protocol, '{%s}Server' % RESPONSE_NS)
         has_ssl = True if get_xml_attr(protocol, '{%s}SSL' % RESPONSE_NS) == 'On' else False
