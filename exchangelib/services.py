@@ -27,7 +27,7 @@ from .errors import EWSWarning, TransportError, SOAPError, ErrorTimeoutExpired, 
     ErrorMailboxMoveInProgress, ErrorAccessDenied, ErrorConnectionFailed, RateLimitError, ErrorServerBusy, \
     ErrorTooManyObjectsOpened, ErrorInvalidLicense, ErrorInvalidSchemaVersionForMailboxVersion, \
     ErrorInvalidServerVersion, ErrorItemNotFound, ErrorADUnavailable, ResponseMessageError, ErrorInvalidChangeKey, \
-    ErrorItemSave, ErrorInvalidIdMalformed
+    ErrorItemSave, ErrorInvalidIdMalformed, ErrorMessageSizeExceeded
 from .ewsdatetime import EWSDateTime, UTC
 from .transport import wrap, SOAPNS, TNS, MNS, ENS
 from .util import chunkify, create_element, add_xml_child, get_xml_attr, to_xml, post_ratelimited, ElementType, \
@@ -57,7 +57,7 @@ class EWSService(object):
     element_container_name = None  # The name of the XML element wrapping the collection of returned items
     # Return exception instance instead of raising exceptions for the following errors when contained in an element
     ERRORS_TO_CATCH_IN_RESPONSE = (EWSWarning, ErrorCannotDeleteObject, ErrorInvalidChangeKey, ErrorItemNotFound,
-                                   ErrorItemSave, ErrorInvalidIdMalformed)
+                                   ErrorItemSave, ErrorInvalidIdMalformed, ErrorMessageSizeExceeded)
     # Similarly, define the erors we want to return unraised
     WARNINGS_TO_CATCH_IN_RESPONSE = ErrorBatchProcessingStopped
 
