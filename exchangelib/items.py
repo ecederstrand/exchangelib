@@ -621,43 +621,46 @@ class Contact(Item):
     ]
 
 
-class MeetingRequest(Item):
+class MeetingRequest(Message):
     # Supported attrs: https://msdn.microsoft.com/en-us/library/office/aa565229(v=exchg.150).aspx
     # TODO: Untested and unfinished. Only the bare minimum supported to allow reading a folder that contains meeting
     # requests.
+    # BUGFIX: To ensure query-set compatibility with mailboxes, this now has a
+    # class inheritance from Message and expressly adds to its fields.
+    # Overlapping fields have also been deleted. Fix is temporary pending the
+    # addition of a specific MeetingMessage class
     ELEMENT_NAME = 'MeetingRequest'
-    FIELDS = [
-        TextField('subject', field_uri='item:Subject', max_length=255, is_required=True, is_read_only=True),
-        MailboxField('author', field_uri='message:From', is_read_only=True),
-        BooleanField('is_read', field_uri='message:IsRead', is_read_only=True),
+    FIELDS = Message.FIELDS + [
         DateTimeField('start', field_uri='calendar:Start', is_read_only=True, supported_from=EXCHANGE_2010),
         DateTimeField('end', field_uri='calendar:End', is_read_only=True, supported_from=EXCHANGE_2010),
     ]
 
 
-class MeetingResponse(Item):
+class MeetingResponse(Message):
     # Supported attrs: https://msdn.microsoft.com/en-us/library/office/aa564337(v=exchg.150).aspx
     # TODO: Untested and unfinished. Only the bare minimum supported to allow reading a folder that contains meeting
     # responses.
+    # BUGFIX: To ensure query-set compatibility with mailboxes, this now has a
+    # class inheritance from Message and expressly adds to its fields.
+    # Overlapping fields have also been deleted. Fix is temporary pending the
+    # addition of a specific MeetingMessage class
     ELEMENT_NAME = 'MeetingResponse'
-    FIELDS = [
-        TextField('subject', field_uri='item:Subject', max_length=255, is_required=True, is_read_only=True),
-        MailboxField('author', field_uri='message:From', is_read_only=True),
-        BooleanField('is_read', field_uri='message:IsRead', is_read_only=True),
+    FIELDS = Message.FIELDS + [
         DateTimeField('start', field_uri='calendar:Start', is_read_only=True, supported_from=EXCHANGE_2010),
         DateTimeField('end', field_uri='calendar:End', is_read_only=True, supported_from=EXCHANGE_2010),
     ]
 
 
-class MeetingCancellation(Item):
+class MeetingCancellation(Message):
     # Supported attrs: https://msdn.microsoft.com/en-us/library/office/aa564685(v=exchg.150).aspx
     # TODO: Untested and unfinished. Only the bare minimum supported to allow reading a folder that contains meeting
     # cancellations.
+    # BUGFIX: To ensure query-set compatibility with mailboxes, this now has a
+    # class inheritance from Message and expressly adds to its fields.
+    # Overlapping fields have also been deleted. Fix is temporary pending the
+    # addition of a specific MeetingMessage class
     ELEMENT_NAME = 'MeetingCancellation'
-    FIELDS = [
-        TextField('subject', field_uri='item:Subject', max_length=255, is_required=True, is_read_only=True),
-        MailboxField('author', field_uri='message:From', is_read_only=True),
-        BooleanField('is_read', field_uri='message:IsRead', is_read_only=True),
+    FIELDS = Message.FIELDS + [
         DateTimeField('start', field_uri='calendar:Start', is_read_only=True, supported_from=EXCHANGE_2010),
         DateTimeField('end', field_uri='calendar:End', is_read_only=True, supported_from=EXCHANGE_2010),
     ]
