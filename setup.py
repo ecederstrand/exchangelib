@@ -3,13 +3,14 @@
 To upload to PyPI:
    python setup.py sdist bdist_wheel upload
 """
+import io
 import os
 
 from setuptools import setup
 
 
 def read(fname):
-    with open(os.path.join(os.path.dirname(__file__), fname)) as f:
+    with io.open(os.path.join(os.path.dirname(__file__), fname), encoding='utf-8') as f:
         return f.read()
 
 setup(
