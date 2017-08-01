@@ -457,3 +457,7 @@ class QuerySet(object):
         new_qs.return_format = self.NONE
         new_qs.page_size = page_size
         return self.folder.account.bulk_delete(ids=new_qs, affected_task_occurrences=ALL_OCCURRENCIES)
+
+    def __str__(self):
+        """Return a human-readable string representation of a QuerySet."""
+        return "QuerySet(len={}, folder={})".format(len(self), self.folder)
