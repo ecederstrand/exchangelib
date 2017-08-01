@@ -460,4 +460,13 @@ class QuerySet(object):
 
     def __str__(self):
         """Return a human-readable string representation of a QuerySet."""
-        return "QuerySet(len={}, folder={})".format(len(self), self.folder)
+        query = "'{}'".format(self.q)
+        if hasattr(self, 'cache') and self.cache is not None:
+            return ("QuerySet(q={q}, folder='{folder}', len={len})"
+                    .format(q=query,
+                            len=len(self),
+                            folder=self.folder))
+        else:
+            return ("QuerySet(q={q}, folder='{folder}')"
+                    .format(q=query,
+                            folder=self.folder))

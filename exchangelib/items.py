@@ -531,6 +531,19 @@ class Message(Item):
             )
         assert res is None
 
+    def __str__(self):
+        """Return a human-readable string representation of a Message."""
+        if hasattr(self, 'item_id'):
+            item_id = "'{}'".format(self.item_id)
+        else:
+            item_id = 'None'
+        if hasattr(self, 'subject'):
+            subject = "'{}'".format(self.subject)
+        else:
+            subject = 'None'
+
+        return "Message(id={}, subject={})".format(item_id, subject)
+
 
 class Task(Item):
     ELEMENT_NAME = 'Task'
