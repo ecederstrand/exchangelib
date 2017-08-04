@@ -483,3 +483,8 @@ PYTZ_TO_MS_TIMEZONE_MAP = {
     'Pacific/Wallis': 'UTC+12',
     'UTC': 'UTC',
 }
+
+# Add some timezone names used by pytz but not found in the CLDR
+PYTZ_TO_MS_TIMEZONE_MAP.update({
+    'Asia/Kolkata': 'India Standard Time',
+})
