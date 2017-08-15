@@ -238,7 +238,7 @@ class Mailbox(EWSElement):
 
     def clean(self, version=None):
         super(Mailbox, self).clean(version=version)
-        if not self.email_address and not self.item_id:
+        if not self.email_address or not self.item_id:
             # See "Remarks" section of https://msdn.microsoft.com/en-us/library/office/aa565036(v=exchg.150).aspx
             raise ValueError("Mailbox must have either 'email_address' or 'item_id' set")
 
