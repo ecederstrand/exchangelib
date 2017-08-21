@@ -116,7 +116,7 @@ Folders
     #
     # If you want to access other folders, you can either traverse the account.folders dictionary, or find
     # the folder by name, starting at a direct or indirect parent of the folder you want to find. To search
-    # the full folder hirarchy, start the search from account.root:
+    # the full folder hierarchy, start the search from account.root:
     python_dev_mail_folder = account.root.get_folder_by_name('python-dev')
     # If you have multiple folders with the same name in your folder hierarchy, start your search further down
     # the hierarchy:
@@ -137,7 +137,7 @@ Creating, updating, deleting, sending and moving
 
 .. code-block:: python
 
-    # Here's an example of creatnig a calendar item in the user's standard calendar.  If you want to 
+    # Here's an example of creating a calendar item in the user's standard calendar.  If you want to 
     # access a non-standard calendar, choose a different one from account.folders[Calendar].
     #
     # You can create, update and delete single items:
@@ -462,7 +462,7 @@ Most class definitions have a docstring containing at least a URL to the MSDN  p
 Notes
 ^^^^^
 
-Most, but not all, item attributes are supported. Addeing more attributes is usually uncomplicated. Feel
+Most, but not all, item attributes are supported. Adding more attributes is usually uncomplicated. Feel
 free to open a PR or an issue.
 
 Item export and upload is supported, for efficient backup, restore and migration.
