@@ -418,6 +418,23 @@ Attachments
     # (items that have an item_id) will update the changekey of the item.
 
 
+Timestamps
+^^^^^^^^^^
+
+Each email has four timestamps associated with it:
+
+* `datetime_created`
+* `datetime_sent`
+* `datetime_received`
+* `last_modified_time`
+
+All these fields are read-only in exchangelib. These fields are not modifiable
+via EWS. All of those fields are of the type
+`exchangelib.ewsdatetime.EWSDateTime`.
+
+The `datetime_sent` can be before `datetime_created`.
+
+
 Troubleshooting
 ^^^^^^^^^^^^^^^
 If you are having trouble using this library, the first thing to try is to enable debug logging. This will output a huge
