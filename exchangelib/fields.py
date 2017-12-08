@@ -512,10 +512,11 @@ class TimeZoneField(FieldURIField):
         field_elem = elem.find(self.response_tag())
         if field_elem is not None:
             ms_id = field_elem.get('Id')
+            ms_name = field_elem.get('Name')
             try:
-                return self.value_cls.from_ms_id(ms_id)
+                return self.value_cls.from_ms_id(ms_id or ms_name)
             except UnknownTimeZone:
-                log.warning("Cannot convert value '%s' on field '%s' to type %s (unknown timezone ID)", ms_id,
+                log.warning("Cannot convert value '%s' on field '%s' to type %s (unknown timezone ID)", (ms_id or ms_name),
                             self.name, self.value_cls)
                 return None
         return self.default
