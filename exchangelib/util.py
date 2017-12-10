@@ -457,18 +457,21 @@ Response data: %(xml_response)s
                 r = DummyResponse(url=url, headers={}, request_headers=headers)
                 raise
             finally:
-                # Try to convert the content based on the declared charset
-                # to avoid https://stackoverflow.com/questions/21129020
-                _, headers = cgi.parse_header(r.headers['content-type'])
-                charset = headers.get('charset')
-                content = r.content.decode(charset) or r.content
-                log_vals = dict(
-                    retry=retry, wait=wait, timeout=protocol.TIMEOUT, session_id=session.session_id, thread_id=thread_id,
-                    auth=session.auth, url=r.url, adapter=session.get_adapter(url), allow_redirects=allow_redirects,
-                    response_time=time_func() - d_start, status_code=r.status_code, request_headers=r.request.headers,
-                    response_headers=r.headers, xml_request=data, xml_response=content,
-                )
-            log.debug(log_msg, log_vals)
+                def log_vals(vals=[]):
+                    if not vals:
+                        # Try to convert the content based on the declared charset
+                        # to avoid https://stackoverflow.com/questions/21129020
+                        _, headers = cgi.parse_header(r.headers['content-type'])
+                        charset = headers.get('charset')
+                        content = r.content.decode(charset) or r.content
+                        vals.append(dict(
+                            retry=retry, wait=wait, timeout=protocol.TIMEOUT, session_id=session.session_id, thread_id=thread_id,
+                            auth=session.auth, url=r.url, adapter=session.get_adapter(url), allow_redirects=allow_redirects,
+                            response_time=time_func() - d_start, status_code=r.status_code, request_headers=r.request.headers,
+                            response_headers=r.headers, xml_request=data, xml_response=content,
+                        ))
+                    return vals[0]
+            log.debug(log_msg, log_vals())
             if _may_retry_on_error(r, protocol, wait):
                 log.info("Session %s thread %s: Connection error on URL %s (code %s). Cool down %s secs",
                          session.session_id, thread_id, r.url, r.status_code, wait)
@@ -487,7 +490,7 @@ Response data: %(xml_response)s
         raise
     except Exception as e:
         # Let higher layers handle this. Add full context for better debugging.
-        log.error('%s: %s\n%s', e.__class__.__name__, text_type(e), log_msg % log_vals)
+        log.error('%s: %s\n%s', e.__class__.__name__, text_type(e), log_msg % log_vals())
         protocol.retire_session(session)
         raise
     if r.status_code == 500 and r.text and is_xml(r.text):
@@ -495,7 +498,7 @@ Response data: %(xml_response)s
         log.debug('Got status code %s but trying to parse content anyway', r.status_code)
     elif r.status_code != 200:
         protocol.retire_session(session)
-        _raise_response_errors(r, protocol, log_msg, log_vals)  # Always raises an exception
+        _raise_response_errors(r, protocol, log_msg, log_vals())  # Always raises an exception
     log.debug('Session %s thread %s: Useful response from %s', session.session_id, thread_id, url)
     return r, session
 
