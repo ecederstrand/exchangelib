@@ -9,7 +9,6 @@ from multiprocessing import Lock
 import re
 import socket
 import time
-import cgi
 from xml.etree.ElementTree import Element, fromstring, ParseError
 
 from lxml.etree import XMLParser, parse, tostring
@@ -457,16 +456,11 @@ Response data: %(xml_response)s
                 r = DummyResponse(url=url, headers={}, request_headers=headers)
                 raise
             finally:
-                # Try to convert the content based on the declared charset
-                # to avoid https://stackoverflow.com/questions/21129020
-                _, headers = cgi.parse_header(r.headers['content-type'])
-                charset = headers.get('charset')
-                content = r.content.decode(charset) or r.content
                 log_vals = dict(
                     retry=retry, wait=wait, timeout=protocol.TIMEOUT, session_id=session.session_id, thread_id=thread_id,
                     auth=session.auth, url=r.url, adapter=session.get_adapter(url), allow_redirects=allow_redirects,
                     response_time=time_func() - d_start, status_code=r.status_code, request_headers=r.request.headers,
-                    response_headers=r.headers, xml_request=data, xml_response=content,
+                    response_headers=r.headers, xml_request=data, xml_response=r.content,
                 )
             log.debug(log_msg, log_vals)
             if _may_retry_on_error(r, protocol, wait):
