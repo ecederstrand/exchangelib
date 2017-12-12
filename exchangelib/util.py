@@ -461,7 +461,7 @@ Response data: %(xml_response)s
             finally:
                 log_vals = dict(
                     retry=retry, wait=wait, timeout=protocol.TIMEOUT, session_id=session.session_id, thread_id=thread_id,
-                    auth=session.auth, url=r.url, adapter=session.get_adapter(url), allow_redirects=allow_redirects,
+                    auth=session.auth, url=str(r.url), adapter=session.get_adapter(url), allow_redirects=allow_redirects,
                     response_time=time_func() - d_start, status_code=r.status_code, request_headers=r.request.headers,
                     response_headers=r.headers, xml_request=data, xml_response=r.content,
                 )
