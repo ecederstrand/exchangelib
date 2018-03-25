@@ -939,7 +939,8 @@ class MeetingRequest(Message):
         #                      Choice('Decline'), Choice('NoResponseReceived')}, default='Unknown'),
         # ChoiceField('meeting_request_type', field_uri='meetingRequest:MeetingRequestType',
         #             choices={Choice('FullUpdate'), Choice('InformationalUpdate'), Choice('NewMeetingRequest'),
-        #                      Choice('None'), Choice('Outdated'), Choice('PrincipalWantsCopy'), Choice('SilentUpdate')},
+        #                      Choice('None'), Choice('Outdated'), Choice('PrincipalWantsCopy'),
+        #                      Choice('SilentUpdate')},
         #             default='None'),
         # ChoiceField('intended_free_busy_status', field_uri='meetingRequest:IntendedFreeBusyStatus', choices={
         #             Choice('Free'), Choice('Tentative'), Choice('Busy'), Choice('OOF'), Choice('NoData')},
@@ -1096,13 +1097,12 @@ class BaseMeetingReply(Item):
                     # Make sure the account from kwargs matches the folder account
                     assert self.account == self.folder.account
                 self.account = self.folder.account
-        super(Item, self).__init__(**kwargs)
+        super(BaseMeetingReply, self).__init__(**kwargs)
 
     def send(self, message_disposition=SEND_ONLY, send_meeting_invitations=SEND_TO_NONE):
-        if not self.account:
-            raise ValueError('Item must have an account')
-        # bulk_create() returns an Item because we want to return item_id on both main item *and* attachments
-        """
+        """send method
+
+        TODO check whether it makes sense to return the response messages (or just True/False)
         Successful response
         <m:ResponseMessages>
             <m:CreateItemResponseMessage ResponseClass="Success">
@@ -1118,6 +1118,10 @@ class BaseMeetingReply(Item):
             </m:CreateItemResponseMessage>
         </m:ResponseMessages>
         """
+
+        if not self.account:
+            raise ValueError('Item must have an account')
+        # bulk_create() returns an Item because we want to return item_id on both main item *and* attachments
 
         try:
             res = self.account.bulk_create(
