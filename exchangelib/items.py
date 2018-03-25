@@ -6,6 +6,7 @@ from decimal import Decimal
 from future.utils import python_2_unicode_compatible
 from six import string_types
 
+from .errors import ErrorCalendarMeetingRequestIsOutOfDate
 from .ewsdatetime import UTC_NOW
 from .extended_properties import ExtendedProperty
 from .fields import BooleanField, IntegerField, DecimalField, Base64Field, TextField, CharListField, ChoiceField, \
@@ -888,62 +889,33 @@ class PostItem(Item):
     ]
 
 
-class MeetingCancellation(Message):
-    """
-    MSDN: https://msdn.microsoft.com/en-us/library/office/aa564685(v=exchg.150).aspx
-    Types Schema: https://msdn.microsoft.com/en-us/library/hh354700(v=exchg.80).aspx
-    """
-    # TODO: Untested and unfinished. Only the bare minimum supported to allow reading a folder that contains meeting
-    # cancellations.
-    ELEMENT_NAME = 'MeetingCancellation'
-    FIELDS = Message.FIELDS + [
-        # Placeholder for AssociatedCalendarItemId
-        # TODO meeting:AssociatedCalendarItemId
-        # https://msdn.microsoft.com/en-us/library/office/aa581060(v=exchg.150).aspx
-
-        BooleanField('is_delegated', field_uri='meeting:IsDelegated', is_read_only=True, default=False),
-        BooleanField('is_out_of_date', field_uri='meeting:IsOutOfDate', is_read_only=True, default=False),
-        BooleanField('has_been_processed', field_uri='meeting:HasBeenProcessed', is_read_only=True, default=False),
-        ChoiceField('response_type', field_uri='meeting:ResponseType',
-                    choices={Choice('Unknown'), Choice('Organizer'), Choice('Tentative'), Choice('Accept'),
-                             Choice('Decline'), Choice('NoResponseReceived')}, is_required=True, default='Unknown'),
-    ]
-
-    # MeetingCancellation does not have the following child elements (TODO should they be removed?!)
-    # - ReceivedBy
-    # - ReceivedRepresenting
-    # - ReminderMessageData (currently not implemented in class Message anyway)
-    FIELDS.remove(MailboxField('received_by', field_uri='message:ReceivedBy', is_read_only=True))
-    FIELDS.remove(MailboxField('received_representing', field_uri='message:ReceivedRepresenting', is_read_only=True))
-
-
-class MeetingMessage(Message):
-    """
-    MSDN: https://msdn.microsoft.com/en-us/library/office/aa565359(v=exchg.150).aspx
-    """
-    # TODO: Untested and unfinished. Only the bare minimum supported to allow reading a folder that contains meeting
-    # cancellations.
-    ELEMENT_NAME = 'MeetingMessage'
-    FIELDS = Message.FIELDS + [
-        # Placeholder for AssociatedCalendarItemId
-        # TODO meeting:AssociatedCalendarItemId
-        # https://msdn.microsoft.com/en-us/library/office/aa581060(v=exchg.150).aspx
-
-        BooleanField('is_delegated', field_uri='meeting:IsDelegated', is_read_only=True, default=False),
-        BooleanField('is_out_of_date', field_uri='meeting:IsOutOfDate', is_read_only=True, default=False),
-        BooleanField('has_been_processed', field_uri='meeting:HasBeenProcessed', is_read_only=True, default=False),
-        ChoiceField('response_type', field_uri='meeting:ResponseType',
-                    choices={Choice('FullUpdate'), Choice('InformationalUpdate'), Choice('NewMeetingRequest'),
-                             Choice('None'), Choice('Outdated'), Choice('PrincipalWantsCopy'), Choice('SilentUpdate')},
-                    is_required=True, default='Unknown'),
-    ]
-
-    # MeetingMessage does not have the following child elements (TODO should they be removed?!)
-    # - ReceivedBy
-    # - ReceivedRepresenting
-    # - ReminderMessageData (currently not implemented in class Message anyway)
-    FIELDS.remove(MailboxField('received_by', field_uri='message:ReceivedBy', is_read_only=True))
-    FIELDS.remove(MailboxField('received_representing', field_uri='message:ReceivedRepresenting', is_read_only=True))
+# class MeetingMessage(Message):
+#     """
+#     MSDN: https://msdn.microsoft.com/en-us/library/office/aa565359(v=exchg.150).aspx
+#     """
+#     # TODO: Untested and unfinished. Only the bare minimum supported to allow reading a folder that contains meeting
+#     # cancellations.
+#     ELEMENT_NAME = 'MeetingMessage'
+#     FIELDS = Message.FIELDS + [
+#         # Placeholder for AssociatedCalendarItemId
+#         # TODO meeting:AssociatedCalendarItemId
+#         # https://msdn.microsoft.com/en-us/library/office/aa581060(v=exchg.150).aspx
+#
+#         BooleanField('is_delegated', field_uri='meeting:IsDelegated', is_read_only=True, default=False),
+#         BooleanField('is_out_of_date', field_uri='meeting:IsOutOfDate', is_read_only=True, default=False),
+#         BooleanField('has_been_processed', field_uri='meeting:HasBeenProcessed', is_read_only=True, default=False),
+#         ChoiceField('response_type', field_uri='meeting:ResponseType',
+#                     choices={Choice('FullUpdate'), Choice('InformationalUpdate'), Choice('NewMeetingRequest'),
+#                              Choice('None'), Choice('Outdated'), Choice('PrincipalWantsCopy'), Choice('SilentUpdate')},
+#                     is_required=True, default='Unknown'),
+#     ]
+#
+#     # MeetingMessage does not have the following child elements (TODO should they be removed?!)
+#     # - ReceivedBy
+#     # - ReceivedRepresenting
+#     # - ReminderMessageData (currently not implemented in class Message anyway)
+#     FIELDS.remove(MailboxField('received_by', field_uri='message:ReceivedBy', is_read_only=True))
+#     FIELDS.remove(MailboxField('received_representing', field_uri='message:ReceivedRepresenting', is_read_only=True))
 
 
 class MeetingRequest(Message):
@@ -962,23 +934,26 @@ class MeetingRequest(Message):
         BooleanField('is_delegated', field_uri='meeting:IsDelegated', is_read_only=True, default=False),
         BooleanField('is_out_of_date', field_uri='meeting:IsOutOfDate', is_read_only=True, default=False),
         BooleanField('has_been_processed', field_uri='meeting:HasBeenProcessed', is_read_only=True, default=False),
-        ChoiceField('meeting_request_type', field_uri='meetingRequest:MeetingRequestType',
-                    choices={Choice('Unknown'), Choice('Organizer'), Choice('Tentative'), Choice('Accept'),
-                             Choice('Decline'), Choice('NoResponseReceived')}, is_required=True,
-                    default='Unknown'),
-        ChoiceField('intended_free_busy_status', field_uri='meetingRequest:IntendedFreeBusyStatus', choices={
-            Choice('Free'), Choice('Tentative'), Choice('Busy'), Choice('OOF'), Choice('NoData')}, is_required=True,
-                    default='Busy'),
+        # ChoiceField('response_type', field_uri='meeting:ResponseType',
+        #             choices={Choice('Unknown'), Choice('Organizer'), Choice('Tentative'), Choice('Accept'),
+        #                      Choice('Decline'), Choice('NoResponseReceived')}, default='Unknown'),
+        # ChoiceField('meeting_request_type', field_uri='meetingRequest:MeetingRequestType',
+        #             choices={Choice('FullUpdate'), Choice('InformationalUpdate'), Choice('NewMeetingRequest'),
+        #                      Choice('None'), Choice('Outdated'), Choice('PrincipalWantsCopy'), Choice('SilentUpdate')},
+        #             default='None'),
+        # ChoiceField('intended_free_busy_status', field_uri='meetingRequest:IntendedFreeBusyStatus', choices={
+        #             Choice('Free'), Choice('Tentative'), Choice('Busy'), Choice('OOF'), Choice('NoData')},
+        #             is_required=True, default='Busy'),
         DateTimeField('start', field_uri='calendar:Start', is_read_only=True, supported_from=EXCHANGE_2010),
         DateTimeField('end', field_uri='calendar:End', is_read_only=True, supported_from=EXCHANGE_2010),
         DateTimeField('original_start', field_uri='calendar:OriginalStart', is_read_only=True),
-        BooleanField('is_all_day', field_uri='calendar:IsAllDayEvent', is_required=True, default=False),
-        ChoiceField('legacy_free_busy_status', field_uri='calendar:LegacyFreeBusyStatus', choices={
-            Choice('Free'), Choice('Tentative'), Choice('Busy'), Choice('OOF'), Choice('NoData'),
-            Choice('WorkingElsewhere', supported_from=EXCHANGE_2013)
-        }, is_required=True, default='Busy'),
-        TextField('location', field_uri='calendar:Location'),
-        TextField('when', field_uri='calendar:When'),
+        # BooleanField('is_all_day', field_uri='calendar:IsAllDayEvent', is_required=True, default=False),
+        # ChoiceField('legacy_free_busy_status', field_uri='calendar:LegacyFreeBusyStatus', choices={
+        #     Choice('Free'), Choice('Tentative'), Choice('Busy'), Choice('OOF'), Choice('NoData'),
+        #     Choice('WorkingElsewhere', supported_from=EXCHANGE_2013)
+        # }, is_required=True, default='Busy'),
+        # TextField('location', field_uri='calendar:Location'),
+        # TextField('when', field_uri='calendar:When'),
         BooleanField('is_meeting', field_uri='calendar:IsMeeting', is_read_only=True),
         BooleanField('is_cancelled', field_uri='calendar:IsCancelled', is_read_only=True),
         BooleanField('is_recurring', field_uri='calendar:IsRecurring', is_read_only=True),
@@ -991,9 +966,9 @@ class MeetingRequest(Message):
             Choice(c) for c in Attendee.RESPONSE_TYPES
         }, is_read_only=True),
         MailboxField('organizer', field_uri='calendar:Organizer', is_read_only=True),
-        AttendeesField('required_attendees', field_uri='calendar:RequiredAttendees', is_searchable=False),
-        AttendeesField('optional_attendees', field_uri='calendar:OptionalAttendees', is_searchable=False),
-        AttendeesField('resources', field_uri='calendar:Resources', is_searchable=False),
+        # AttendeesField('required_attendees', field_uri='calendar:RequiredAttendees', is_searchable=False),
+        # AttendeesField('optional_attendees', field_uri='calendar:OptionalAttendees', is_searchable=False),
+        # AttendeesField('resources', field_uri='calendar:Resources', is_searchable=False),
         IntegerField('conflicting_meeting_count', field_uri='calendar:ConflictingMeetingCount', is_read_only=True),
         IntegerField('adjacent_meeting_count', field_uri='calendar:AdjacentMeetingCount', is_read_only=True),
         # Placeholder for ConflictingMeetings
@@ -1006,7 +981,7 @@ class MeetingRequest(Message):
         # AppointmentState is an EnumListField-like field, but with bitmask values:
         #    https://msdn.microsoft.com/en-us/library/office/aa564700(v=exchg.150).aspx
         # We could probably subclass EnumListField to implement this field.
-        RecurrenceField('recurrence', field_uri='calendar:Recurrence', is_searchable=False),
+        # RecurrenceField('recurrence', field_uri='calendar:Recurrence', is_searchable=False),
         OccurrenceField('first_occurrence', field_uri='calendar:FirstOccurrence', value_cls=FirstOccurrence,
                         is_read_only=True),
         OccurrenceField('last_occurrence', field_uri='calendar:LastOccurrence', value_cls=LastOccurrence,
@@ -1027,8 +1002,8 @@ class MeetingRequest(Message):
                      is_required_after_save=True, is_searchable=False),
         BooleanField('is_online_meeting', field_uri='calendar:IsOnlineMeeting', default=None,
                      is_required_after_save=True),
-        URIField('meeting_workspace_url', field_uri='calendar:MeetingWorkspaceUrl'),
-        URIField('net_show_url', field_uri='calendar:NetShowUrl'),
+        # URIField('meeting_workspace_url', field_uri='calendar:MeetingWorkspaceUrl'),
+        # URIField('net_show_url', field_uri='calendar:NetShowUrl'),
     ]
 
     # MeetingRequest does not have the following child elements (TODO should they be removed?!)
@@ -1062,6 +1037,35 @@ class MeetingResponse(Message):
         DateTimeField('start', field_uri='calendar:Start', is_read_only=True, supported_from=EXCHANGE_2010),
         DateTimeField('end', field_uri='calendar:End', is_read_only=True, supported_from=EXCHANGE_2010),
     ]
+
+
+class MeetingCancellation(Message):
+    """
+    MSDN: https://msdn.microsoft.com/en-us/library/office/aa564685(v=exchg.150).aspx
+    Types Schema: https://msdn.microsoft.com/en-us/library/hh354700(v=exchg.80).aspx
+    """
+    # TODO: Untested and unfinished. Only the bare minimum supported to allow reading a folder that contains meeting
+    # cancellations.
+    ELEMENT_NAME = 'MeetingCancellation'
+    FIELDS = Message.FIELDS + [
+        # Placeholder for AssociatedCalendarItemId
+        # TODO meeting:AssociatedCalendarItemId
+        # https://msdn.microsoft.com/en-us/library/office/aa581060(v=exchg.150).aspx
+
+        BooleanField('is_delegated', field_uri='meeting:IsDelegated', is_read_only=True, default=False),
+        BooleanField('is_out_of_date', field_uri='meeting:IsOutOfDate', is_read_only=True, default=False),
+        BooleanField('has_been_processed', field_uri='meeting:HasBeenProcessed', is_read_only=True, default=False),
+        ChoiceField('response_type', field_uri='meeting:ResponseType',
+                    choices={Choice('Unknown'), Choice('Organizer'), Choice('Tentative'), Choice('Accept'),
+                             Choice('Decline'), Choice('NoResponseReceived')}, is_required=True, default='Unknown'),
+    ]
+
+    # MeetingCancellation does not have the following child elements (TODO should they be removed?!)
+    # - ReceivedBy
+    # - ReceivedRepresenting
+    # - ReminderMessageData (currently not implemented in class Message anyway)
+    FIELDS.remove(MailboxField('received_by', field_uri='message:ReceivedBy', is_read_only=True))
+    FIELDS.remove(MailboxField('received_representing', field_uri='message:ReceivedRepresenting', is_read_only=True))
 
 
 class AcceptItem(Item):
@@ -1116,6 +1120,44 @@ class AcceptItem(Item):
                     assert self.account == self.folder.account
                 self.account = self.folder.account
         super(Item, self).__init__(**kwargs)
+
+    def accept(self, message_disposition=SEND_ONLY, send_meeting_invitations=SEND_TO_NONE):
+        if not self.account:
+            raise ValueError('Item must have an account')
+        # bulk_create() returns an Item because we want to return item_id on both main item *and* attachments
+        """
+        Successful response
+        <m:ResponseMessages>
+            <m:CreateItemResponseMessage ResponseClass="Success">
+                <m:ResponseCode>NoError</m:ResponseCode>
+                <m:Items>
+                    <t:CalendarItem>
+                        <t:ItemId Id="AAM..." ChangeKey="Dw..."/>
+                    </t:CalendarItem>
+                    <t:MeetingRequest>
+                        <t:ItemId Id="AAk..." ChangeKey="Cw..."/>
+                    </t:MeetingRequest>
+                </m:Items>
+            </m:CreateItemResponseMessage>
+        </m:ResponseMessages>
+        """
+
+        try:
+            res = self.account.bulk_create(
+                items=[self], folder=self.folder, message_disposition=message_disposition,
+                send_meeting_invitations=send_meeting_invitations)
+        except ErrorCalendarMeetingRequestIsOutOfDate:
+            print("out of date")
+            return None
+
+        # if message_disposition in (SEND_ONLY, SEND_AND_SAVE_COPY):
+        #     assert len(res) == 0
+        #     return None
+
+        assert len(res) == 2, res
+        if isinstance(res[0], Exception):
+            raise res[0]
+        return res
 
 
 class BaseReplyItem(EWSElement):
