@@ -1068,31 +1068,8 @@ class MeetingCancellation(Message):
     FIELDS.remove(MailboxField('received_representing', field_uri='message:ReceivedRepresenting', is_read_only=True))
 
 
-class AcceptItem(Item):
-    """
-    MSDN: https://msdn.microsoft.com/en-us/library/aa562964(v=exchg.150).aspx
-
-    <AcceptItem>
-       <ItemClass/>
-       <Sensitivity/>
-       <Body/>
-       <Attachments/>
-       <InternetMessageHeaders/>
-       <Sender/>
-       <ToRecipients/>
-       <CcRecipients/>
-       <BccRecipients/>
-       <IsReadReceiptRequested/>
-       <IsDeliveryReceiptRequested/>
-       <ReferenceItemId/>
-       <ReceivedBy/>
-       <ReceivedRepresenting/>
-       <ProposedStart/>
-       <ProposedEnd/>
-    </AcceptItem>
-
-    """
-    ELEMENT_NAME = 'AcceptItem'
+class BaseMeetingReply(Item):
+    ELEMENT_NAME = 'BaseMeetingReply'
 
     FIELDS = [
         ChoiceField('sensitivity', field_uri='item:Sensitivity', choices={
@@ -1121,7 +1098,7 @@ class AcceptItem(Item):
                 self.account = self.folder.account
         super(Item, self).__init__(**kwargs)
 
-    def accept(self, message_disposition=SEND_ONLY, send_meeting_invitations=SEND_TO_NONE):
+    def send(self, message_disposition=SEND_ONLY, send_meeting_invitations=SEND_TO_NONE):
         if not self.account:
             raise ValueError('Item must have an account')
         # bulk_create() returns an Item because we want to return item_id on both main item *and* attachments
@@ -1158,6 +1135,27 @@ class AcceptItem(Item):
         if isinstance(res[0], Exception):
             raise res[0]
         return res
+
+
+class AcceptItem(BaseMeetingReply):
+    """
+    MSDN: https://msdn.microsoft.com/en-us/library/aa562964(v=exchg.150).aspx
+    """
+    ELEMENT_NAME = 'AcceptItem'
+
+
+class TentativelyAcceptItem(BaseMeetingReply):
+    """
+    MSDN: https://msdn.microsoft.com/en-us/library/aa565438(v=exchg.150).aspx
+    """
+    ELEMENT_NAME = 'TentativelyAcceptItem'
+
+
+class DeclineItem(BaseMeetingReply):
+    """
+    MSDN: https://msdn.microsoft.com/en-us/library/aa579729(v=exchg.150).aspx
+    """
+    ELEMENT_NAME = 'DeclineItem'
 
 
 class BaseReplyItem(EWSElement):
