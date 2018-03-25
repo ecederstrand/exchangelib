@@ -803,6 +803,18 @@ class RecurrenceField(EWSElementField):
         return value.to_xml(version=version)
 
 
+class ReferenceItemIdField(EWSElementField):
+    is_complex = True
+
+    def __init__(self, *args, **kwargs):
+        from .properties import ReferenceItemId
+        kwargs['value_cls'] = ReferenceItemId
+        super(ReferenceItemIdField, self).__init__(*args, **kwargs)
+
+    def to_xml(self, value, version):
+        return value.to_xml(version=version)
+
+
 class OccurrenceField(EWSElementField):
     is_complex = True
 

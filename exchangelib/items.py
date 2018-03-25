@@ -13,7 +13,7 @@ from .fields import BooleanField, IntegerField, DecimalField, Base64Field, TextF
     PhysicalAddressField, ExtendedPropertyField, AttachmentField, RecurrenceField, MailboxField, MailboxListField, \
     AttendeesField, Choice, OccurrenceField, OccurrenceListField, MemberListField, EWSElementField, \
     EffectiveRightsField, TimeZoneField, CultureField, IdField, CharField, TextListField, EnumAsIntField, \
-    EmailAddressField, FreeBusyStatusField
+    EmailAddressField, FreeBusyStatusField, ReferenceItemIdField
 from .properties import EWSElement, ItemId, ConversationId, ParentFolderId, Attendee, ReferenceItemId, PersonaId
 from .recurrence import FirstOccurrence, LastOccurrence, Occurrence, DeletedOccurrence
 from .util import is_iterable
@@ -1062,6 +1062,60 @@ class MeetingResponse(Message):
         DateTimeField('start', field_uri='calendar:Start', is_read_only=True, supported_from=EXCHANGE_2010),
         DateTimeField('end', field_uri='calendar:End', is_read_only=True, supported_from=EXCHANGE_2010),
     ]
+
+
+class AcceptItem(Item):
+    """
+    MSDN: https://msdn.microsoft.com/en-us/library/aa562964(v=exchg.150).aspx
+
+    <AcceptItem>
+       <ItemClass/>
+       <Sensitivity/>
+       <Body/>
+       <Attachments/>
+       <InternetMessageHeaders/>
+       <Sender/>
+       <ToRecipients/>
+       <CcRecipients/>
+       <BccRecipients/>
+       <IsReadReceiptRequested/>
+       <IsDeliveryReceiptRequested/>
+       <ReferenceItemId/>
+       <ReceivedBy/>
+       <ReceivedRepresenting/>
+       <ProposedStart/>
+       <ProposedEnd/>
+    </AcceptItem>
+
+    """
+    ELEMENT_NAME = 'AcceptItem'
+
+    FIELDS = [
+        ChoiceField('sensitivity', field_uri='item:Sensitivity', choices={
+            Choice('Normal'), Choice('Personal'), Choice('Private'), Choice('Confidential')
+        }, is_required=True, default='Normal'),
+        BodyField('body', field_uri='item:Body'),  # Accepts and returns Body or HTMLBody instances
+        ReferenceItemIdField('reference_item_id', field_uri='item:ReferenceItemId', value_cls=ReferenceItemId),
+    ]
+
+    def __init__(self, **kwargs):
+        # 'account' is optional but allows calling 'send()' and 'delete()'
+        # 'folder' is optional but allows calling 'save()'. If 'folder' has an account, and 'account' is not set,
+        # we use folder.account.
+        from .folders import Folder
+        from .account import Account
+        self.account = kwargs.pop('account', None)
+        if self.account is not None:
+            assert isinstance(self.account, Account)
+        self.folder = kwargs.pop('folder', None)
+        if self.folder is not None:
+            assert isinstance(self.folder, Folder)
+            if self.folder.account is not None:
+                if self.account is not None:
+                    # Make sure the account from kwargs matches the folder account
+                    assert self.account == self.folder.account
+                self.account = self.folder.account
+        super(Item, self).__init__(**kwargs)
 
 
 class BaseReplyItem(EWSElement):
