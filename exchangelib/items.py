@@ -906,7 +906,8 @@ class PostItem(Item):
 #         BooleanField('has_been_processed', field_uri='meeting:HasBeenProcessed', is_read_only=True, default=False),
 #         ChoiceField('response_type', field_uri='meeting:ResponseType',
 #                     choices={Choice('FullUpdate'), Choice('InformationalUpdate'), Choice('NewMeetingRequest'),
-#                              Choice('None'), Choice('Outdated'), Choice('PrincipalWantsCopy'), Choice('SilentUpdate')},
+#                              Choice('None'), Choice('Outdated'), Choice('PrincipalWantsCopy'),
+#                              Choice('SilentUpdate')},
 #                     is_required=True, default='Unknown'),
 #     ]
 #
@@ -1088,14 +1089,17 @@ class BaseMeetingReply(Item):
         from .account import Account
         self.account = kwargs.pop('account', None)
         if self.account is not None:
-            assert isinstance(self.account, Account)
+            if not isinstance(self.account, Account):
+                raise ValueError('This is not an account object')
         self.folder = kwargs.pop('folder', None)
         if self.folder is not None:
-            assert isinstance(self.folder, Folder)
+            if not isinstance(self.folder, Folder):
+                raise ValueError('This is not an folder object')
             if self.folder.account is not None:
                 if self.account is not None:
                     # Make sure the account from kwargs matches the folder account
-                    assert self.account == self.folder.account
+                    if not self.account == self.folder.account:
+                        raise ValueError('account and folder account do not match')
                 self.account = self.folder.account
         super(BaseMeetingReply, self).__init__(**kwargs)
 
@@ -1131,13 +1135,9 @@ class BaseMeetingReply(Item):
             print("out of date")
             return None
 
-        # if message_disposition in (SEND_ONLY, SEND_AND_SAVE_COPY):
-        #     assert len(res) == 0
-        #     return None
-
-        assert len(res) == 2, res
-        if isinstance(res[0], Exception):
-            raise res[0]
+        if not len(res) == 2:
+            if isinstance(res[0], Exception):
+                raise res[0]
         return res
 
 
