@@ -1094,7 +1094,7 @@ class BaseMeetingReply(Item):
         self.folder = kwargs.pop('folder', None)
         if self.folder is not None:
             if not isinstance(self.folder, Folder):
-                raise ValueError('This is not an folder object')
+                raise ValueError('This is not a folder object')
             if self.folder.account is not None:
                 if self.account is not None:
                     # Make sure the account from kwargs matches the folder account
