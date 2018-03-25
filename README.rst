@@ -698,7 +698,7 @@ Non-account methods
 Troubleshooting
 ^^^^^^^^^^^^^^^
 If you are having trouble using this library, the first thing to try is to enable debug logging. This will output a huge
-amount of information about what is going on, most notable the actual XML documents that are doing over the wite. This
+amount of information about what is going on, most notable the actual XML documents that are going over the wire. This
 can be really handy to see which fields are being sent and received.
 
 .. code-block:: python
