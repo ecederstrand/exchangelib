@@ -218,14 +218,6 @@ class ParentItemId(ItemId):
     __slots__ = ItemId.__slots__
 
 
-class ReferenceItemId(ItemId):
-    # MSDN: https://msdn.microsoft.com/en-us/library/aa564031(v=exchg.150).aspx
-    ELEMENT_NAME = 'ReferenceItemId'
-    NAMESPACE = TNS
-
-    __slots__ = ItemId.__slots__
-
-
 class RootItemId(ItemId):
     # MSDN: https://msdn.microsoft.com/en-us/library/office/bb204277(v=exchg.150).aspx
     ELEMENT_NAME = 'RootItemId'
