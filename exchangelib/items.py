@@ -1041,7 +1041,7 @@ class MeetingCancellation(BaseMeetingItem):
 
 
 class BaseMeetingReplyItem(Item):
-    # A base class for meeting request replies items that share the same fields (Accept, TentativelyAccept, Decline)
+    # A base class for meeting request reply items that share the same fields (Accept, TentativelyAccept, Decline)
     FIELDS = [
         CharField('item_class', field_uri='item:ItemClass', is_read_only=True),
         ChoiceField('sensitivity', field_uri='item:Sensitivity', choices={
@@ -1069,27 +1069,7 @@ class BaseMeetingReplyItem(Item):
 
     ]
 
-    def __init__(self, **kwargs):
-        # 'account' is optional but allows calling 'send()' and 'delete()'
-        # 'folder' is optional but allows calling 'save()'. If 'folder' has an account, and 'account' is not set,
-        # we use folder.account.
-        from .folders import Folder
-        from .account import Account
-        self.account = kwargs.pop('account', None)
-        if self.account is not None:
-            if not isinstance(self.account, Account):
-                raise ValueError('This is not an account object')
-        self.folder = kwargs.pop('folder', None)
-        if self.folder is not None:
-            if not isinstance(self.folder, Folder):
-                raise ValueError('This is not a folder object')
-            if self.folder.account is not None:
-                if self.account is not None:
-                    # Make sure the account from kwargs matches the folder account
-                    if not self.account == self.folder.account:
-                        raise ValueError('account and folder account do not match')
-                self.account = self.folder.account
-        super(BaseMeetingReplyItem, self).__init__(**kwargs)
+    # TODO not sure whether it makes sense to override __init__ here..?!
 
     def send(self, message_disposition=SEND_ONLY, send_meeting_invitations=SEND_TO_NONE):
         """send method
