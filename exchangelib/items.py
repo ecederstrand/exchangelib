@@ -893,11 +893,7 @@ class PostItem(Item):
 
 
 class BaseMeetingItem(Item):
-    """
-    Common base for MeetingMessage, MeetingResponse, MeetingCancellation (but not MeetingRequest)
-    """
-
-    ELEMENT_NAME = 'BaseMeetingItem'
+    # A base class for meeting requests that share the same fields (Message, Request, Response, Cancellation)
     FIELDS = Item.FIELDS + [
         MailboxField('sender', field_uri='message:Sender', is_read_only=True, is_read_only_after_send=True),
         MailboxListField('to_recipients', field_uri='message:ToRecipients', is_read_only_after_send=True,
@@ -951,14 +947,14 @@ class MeetingRequest(BaseMeetingItem):
     # requests.
     ELEMENT_NAME = 'MeetingRequest'
     FIELDS = Message.FIELDS + [
-        # ChoiceField('meeting_request_type', field_uri='meetingRequest:MeetingRequestType',
-        #             choices={Choice('FullUpdate'), Choice('InformationalUpdate'), Choice('NewMeetingRequest'),
-        #                      Choice('None'), Choice('Outdated'), Choice('PrincipalWantsCopy'),
-        #                      Choice('SilentUpdate')},
-        #             default='None'),
-        # ChoiceField('intended_free_busy_status', field_uri='meetingRequest:IntendedFreeBusyStatus', choices={
-        #             Choice('Free'), Choice('Tentative'), Choice('Busy'), Choice('OOF'), Choice('NoData')},
-        #             is_required=True, default='Busy'),
+        ChoiceField('meeting_request_type', field_uri='meetingRequest:MeetingRequestType',
+                    choices={Choice('FullUpdate'), Choice('InformationalUpdate'), Choice('NewMeetingRequest'),
+                             Choice('None'), Choice('Outdated'), Choice('PrincipalWantsCopy'),
+                             Choice('SilentUpdate')},
+                    default='None'),
+        ChoiceField('intended_free_busy_status', field_uri='meetingRequest:IntendedFreeBusyStatus', choices={
+                    Choice('Free'), Choice('Tentative'), Choice('Busy'), Choice('OOF'), Choice('NoData')},
+                    is_required=True, default='Busy'),
         DateTimeField('start', field_uri='calendar:Start', is_read_only=True, supported_from=EXCHANGE_2010),
         DateTimeField('end', field_uri='calendar:End', is_read_only=True, supported_from=EXCHANGE_2010),
         DateTimeField('original_start', field_uri='calendar:OriginalStart', is_read_only=True),
@@ -1045,14 +1041,32 @@ class MeetingCancellation(BaseMeetingItem):
 
 
 class BaseMeetingReplyItem(Item):
-    ELEMENT_NAME = 'BaseMeetingReply'
-
+    # A base class for meeting request replies items that share the same fields (Accept, TentativelyAccept, Decline)
     FIELDS = [
+        CharField('item_class', field_uri='item:ItemClass', is_read_only=True),
         ChoiceField('sensitivity', field_uri='item:Sensitivity', choices={
             Choice('Normal'), Choice('Personal'), Choice('Private'), Choice('Confidential')
         }, is_required=True, default='Normal'),
         BodyField('body', field_uri='item:Body'),  # Accepts and returns Body or HTMLBody instances
+        AttachmentField('attachments', field_uri='item:Attachments'),  # ItemAttachment or FileAttachment
+        MessageHeaderField('headers', field_uri='item:InternetMessageHeaders', is_read_only=True),
+        MailboxField('sender', field_uri='message:Sender', is_read_only=True, is_read_only_after_send=True),
+        MailboxListField('to_recipients', field_uri='message:ToRecipients', is_read_only_after_send=True,
+                         is_searchable=False),
+        MailboxListField('cc_recipients', field_uri='message:CcRecipients', is_read_only_after_send=True,
+                         is_searchable=False),
+        MailboxListField('bcc_recipients', field_uri='message:BccRecipients', is_read_only_after_send=True,
+                         is_searchable=False),
+        BooleanField('is_read_receipt_requested', field_uri='message:IsReadReceiptRequested',
+                     is_required=True, default=False, is_read_only_after_send=True),
+        BooleanField('is_delivery_receipt_requested', field_uri='message:IsDeliveryReceiptRequested',
+                     is_required=True, default=False, is_read_only_after_send=True),
         ReferenceItemIdField('reference_item_id', field_uri='item:ReferenceItemId', value_cls=ReferenceItemId),
+        MailboxField('received_by', field_uri='message:ReceivedBy', is_read_only=True),
+        MailboxField('received_representing', field_uri='message:ReceivedRepresenting', is_read_only=True),
+        # Placeholder meeting:ProposedStart
+        # Placeholder meeting:ProposedEnd
+
     ]
 
     def __init__(self, **kwargs):
