@@ -14,8 +14,9 @@ from .fields import BooleanField, IntegerField, DecimalField, Base64Field, TextF
     PhysicalAddressField, ExtendedPropertyField, AttachmentField, RecurrenceField, MailboxField, MailboxListField, \
     AttendeesField, Choice, OccurrenceField, OccurrenceListField, MemberListField, EWSElementField, \
     EffectiveRightsField, TimeZoneField, CultureField, IdField, CharField, TextListField, EnumAsIntField, \
-    EmailAddressField, FreeBusyStatusField, ReferenceItemIdField
-from .properties import EWSElement, ItemId, ConversationId, ParentFolderId, Attendee, ReferenceItemId, PersonaId
+    EmailAddressField, FreeBusyStatusField, ReferenceItemIdField, AssociatedCalendarItemIdField
+from .properties import EWSElement, ItemId, ConversationId, ParentFolderId, Attendee, ReferenceItemId, \
+    AssociatedCalendarItemId, PersonaId
 from .recurrence import FirstOccurrence, LastOccurrence, Occurrence, DeletedOccurrence
 from .util import is_iterable
 from .version import EXCHANGE_2007_SP1, EXCHANGE_2010, EXCHANGE_2013
@@ -915,11 +916,8 @@ class BaseMeetingItem(Item):
         BooleanField('is_response_requested', field_uri='message:IsResponseRequested', default=False, is_required=True),
         TextField('references', field_uri='message:References'),
         MailboxField('reply_to', field_uri='message:ReplyTo', is_read_only_after_send=True, is_searchable=False),
-
-        # Placeholder for AssociatedCalendarItemId
-        # TODO meeting:AssociatedCalendarItemId
-        #    https://msdn.microsoft.com/en-us/library/office/aa581060(v=exchg.150).aspx
-
+        AssociatedCalendarItemIdField('associated_calendar_item_id', field_uri='meeting:AssociatedCalendarItemId',
+                                      value_cls=AssociatedCalendarItemId),
         BooleanField('is_delegated', field_uri='meeting:IsDelegated', is_read_only=True, default=False),
         BooleanField('is_out_of_date', field_uri='meeting:IsOutOfDate', is_read_only=True, default=False),
         BooleanField('has_been_processed', field_uri='meeting:HasBeenProcessed', is_read_only=True, default=False),

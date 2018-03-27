@@ -791,6 +791,18 @@ class EWSElementListField(EWSElementField):
     is_complex = True
 
 
+class AssociatedCalendarItemIdField(EWSElementField):
+    is_complex = True
+
+    def __init__(self, *args, **kwargs):
+        from .properties import AssociatedCalendarItemId
+        kwargs['value_cls'] = AssociatedCalendarItemId
+        super(AssociatedCalendarItemIdField, self).__init__(*args, **kwargs)
+
+    def to_xml(self, value, version):
+        return value.to_xml(version=version)
+
+
 class RecurrenceField(EWSElementField):
     is_complex = True
 

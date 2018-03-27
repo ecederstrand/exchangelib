@@ -233,6 +233,13 @@ class RootItemId(ItemId):
     __slots__ = ItemId.__slots__
 
 
+class AssociatedCalendarItemId(ItemId):
+    # MSDN: https://msdn.microsoft.com/en-us/library/office/aa581060(v=exchg.150).aspx
+    ELEMENT_NAME = 'AssociatedCalendarItemId'
+
+    __slots__ = ItemId.__slots__
+
+
 class ConversationId(ItemId):
     # MSDN: https://msdn.microsoft.com/en-us/library/office/dd899527(v=exchg.150).aspx
     ELEMENT_NAME = 'ConversationId'
