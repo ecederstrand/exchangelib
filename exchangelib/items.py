@@ -935,7 +935,7 @@ class MeetingMessage(BaseMeetingItem):
     MSDN: https://msdn.microsoft.com/en-us/library/office/aa565359(v=exchg.150).aspx
     """
     # TODO: Untested and unfinished. Only the bare minimum supported to allow reading a folder that contains meeting
-    # cancellations.
+    # messages.
     ELEMENT_NAME = 'MeetingMessage'
 
 
