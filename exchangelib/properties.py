@@ -52,7 +52,11 @@ class EWSElement(object):
 
     def __init__(self, **kwargs):
         for f in self.FIELDS:
+            #try:
             setattr(self, f.name, kwargs.pop(f.name, None))
+            #except AttributeError as e:
+            #    print(e)
+            #    print(kwargs)
         if kwargs:
             raise AttributeError("%s are invalid kwargs for this class" % ', '.join("'%s'" % k for k in kwargs))
 

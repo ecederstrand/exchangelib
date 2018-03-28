@@ -577,6 +577,15 @@ Attachments
     # Be aware that adding and deleting attachments from items that are already created in Exchange
     # (items that have an item_id) will update the changekey of the item.
 
+SearchableMailboxes
+^^^^^^^^^^^^^^^^^^^
+
+Work in progress.
+
+    #returns the list of all mailboxes, filter not implemented for now.
+    mbox = GetSearchableMailboxes(protocol=config.protocol)
+
+
 
 Recurring calendar items
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -721,5 +730,4 @@ Most class definitions have a docstring containing at least a URL to the MSDN  p
 
 Notes
 ^^^^^
-
 Almost all item fields are supported. The remaining ones are tracked in https://github.com/ecederstrand/exchangelib/issues/203.
