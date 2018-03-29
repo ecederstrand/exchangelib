@@ -10,7 +10,7 @@ from .ewsdatetime import EWSDate, EWSDateTime, EWSTimeZone, UTC, UTC_NOW
 from .extended_properties import ExtendedProperty, ExternId
 from .folders import Folder, FolderCollection, SHALLOW, DEEP
 from .items import AcceptItem, TentativelyAcceptItem, DeclineItem
-from .items import CalendarItem, Contact, DistributionList, Message, PostItem, Task
+from .items import CalendarItem, CancelCalendarItem, Contact, DistributionList, Message, PostItem, Task
 from .properties import Body, HTMLBody, ItemId, Mailbox, Attendee, Room, RoomList
 from .restriction import Q
 from .transport import BASIC, DIGEST, NTLM
@@ -25,7 +25,7 @@ __all__ = [
     'EWSDate', 'EWSDateTime', 'EWSTimeZone', 'UTC', 'UTC_NOW',
     'ExtendedProperty',
     'AcceptItem', 'TentativelyAcceptItem', 'DeclineItem',
-    'CalendarItem', 'Contact', 'DistributionList', 'Message', 'PostItem', 'Task',
+    'CalendarItem', 'CancelCalendarItem', 'Contact', 'DistributionList', 'Message', 'PostItem', 'Task',
     'ItemId', 'Mailbox', 'Attendee', 'Room', 'RoomList', 'Body', 'HTMLBody',
     'OofSettings',
     'Q',
