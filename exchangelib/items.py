@@ -6,7 +6,7 @@ from decimal import Decimal
 from future.utils import python_2_unicode_compatible
 from six import string_types
 
-from .errors import ErrorCalendarMeetingRequestIsOutOfDate
+from .errors import ErrorCalendarMeetingRequestIsOutOfDate, ErrorCalendarIsNotOrganizer
 from .ewsdatetime import UTC_NOW
 from .extended_properties import ExtendedProperty
 from .fields import BooleanField, IntegerField, DecimalField, Base64Field, TextField, CharListField, ChoiceField, \
@@ -576,8 +576,13 @@ class CalendarItem(Item):
                                                             changekey=self.changekey), **kwargs).send()
 
     def cancel(self, **kwargs):
-        # TODO
-        pass
+        try:
+            return CancelCalendarItem(account=self.account,
+                                      reference_item_id=ReferenceItemId(id=self.item_id, changekey=self.changekey),
+                                      **kwargs).send()
+        except ErrorCalendarIsNotOrganizer as e:  # TODO(frennkie) should I catch any errors?!
+            print('this account is not the organizer of this CalendarItem')
+            raise e
 
     def decline(self, **kwargs):
         return DeclineItem(reference_item_id=ReferenceItemId(id=self.item_id,
@@ -909,9 +914,24 @@ class PostItem(Item):
     ]
 
 
+class PostReplyItem(Item):
+    """
+    MSDN: https://msdn.microsoft.com/en-us/library/bb891896(v=exchg.150).aspx
+    """
+    # TODO: Untested and unfinished.
+    ELEMENT_NAME = 'PostReplyItem'
+
+
 class BaseMeetingItem(EWSElement):
     """
     A base class for meeting requests that share the same fields (Message, Request, Response, Cancellation)
+
+    MSDN: https://msdn.microsoft.com/en-us/library/aa580757(v=exchg.150).aspx
+        Certain types are created as a side effect of doing something else. Meeting messages, for example, are created
+        when you send a calendar item to attendees; they are not explicitly created.
+
+    Therefore BaseMeetingItem inherits from  EWSElement has no save() or send() method
+
     """
     item_id = None
     changekey = None
@@ -1002,14 +1022,6 @@ class BaseMeetingItem(EWSElement):
 
     # Used to register extended properties
     INSERT_AFTER_FIELD = 'has_attachments'
-
-    """
-    MSDN: https://msdn.microsoft.com/en-us/library/aa580757(v=exchg.150).aspx
-        Certain types are created as a side effect of doing something else. Meeting messages, for example, are created
-        when you send a calendar item to attendees; they are not explicitly created.
-
-    Therefore the subclasses (Message, Request, Response, Cancellation) overwrite save() or send() method
-    """
 
     def __init__(self, **kwargs):
         # 'account' is optional but allows calling 'send()'
@@ -1124,15 +1136,18 @@ class MeetingRequest(BaseMeetingItem):
     ]
 
     def accept(self, **kwargs):
-        return AcceptItem(reference_item_id=ReferenceItemId(id=self.item_id, changekey=self.changekey),
+        return AcceptItem(account=self.account,
+                          reference_item_id=ReferenceItemId(id=self.item_id, changekey=self.changekey),
                           **kwargs).send()
 
     def decline(self, **kwargs):
-        return DeclineItem(reference_item_id=ReferenceItemId(id=self.item_id, changekey=self.changekey),
+        return DeclineItem(account=self.account,
+                           reference_item_id=ReferenceItemId(id=self.item_id, changekey=self.changekey),
                            **kwargs).send()
 
     def tentatively_accept(self, **kwargs):
-        return TentativelyAcceptItem(reference_item_id=ReferenceItemId(id=self.item_id, changekey=self.changekey),
+        return TentativelyAcceptItem(account=self.account,
+                                     reference_item_id=ReferenceItemId(id=self.item_id, changekey=self.changekey),
                                      **kwargs).send()
 
 
@@ -1192,44 +1207,25 @@ class BaseMeetingReplyItem(Item):
         DateTimeField('proposed_end', field_uri='meeting:ProposedEnd', supported_from=EXCHANGE_2013),
     ]
 
-    # TODO not sure whether it makes sense to override __init__ here..?!
-
-    def send(self, message_disposition=SEND_ONLY, send_meeting_invitations=SEND_TO_NONE):
-        """send method
-
-        TODO check whether it makes sense to return the response messages (or just True/False)
-        Successful response
-        <m:ResponseMessages>
-            <m:CreateItemResponseMessage ResponseClass="Success">
-                <m:ResponseCode>NoError</m:ResponseCode>
-                <m:Items>
-                    <t:CalendarItem>
-                        <t:ItemId Id="AAM..." ChangeKey="Dw..."/>
-                    </t:CalendarItem>
-                    <t:MeetingRequest>
-                        <t:ItemId Id="AAk..." ChangeKey="Cw..."/>
-                    </t:MeetingRequest>
-                </m:Items>
-            </m:CreateItemResponseMessage>
-        </m:ResponseMessages>
-        """
-
+    def send(self, message_disposition=SEND_AND_SAVE_COPY):
         if not self.account:
             raise ValueError('Item must have an account')
-        # bulk_create() returns an Item because we want to return item_id on both main item *and* attachments
 
         try:
-            res = self.account.bulk_create(
-                items=[self], folder=self.folder, message_disposition=message_disposition,
-                send_meeting_invitations=send_meeting_invitations)
-        except ErrorCalendarMeetingRequestIsOutOfDate:
-            print("out of date")
+            res = self.account.bulk_create(items=[self], folder=self.folder, message_disposition=message_disposition)
+        except ErrorCalendarMeetingRequestIsOutOfDate:  # TODO(frennkie) should I catch any errors?!
+            print('out of date')
             return None
 
-        if not len(res) == 2:
-            if isinstance(res[0], Exception):
-                raise res[0]
-        return res
+        if len(res) == 2:
+            if isinstance(res[0], BulkCreateResult) and isinstance(res[0], BulkCreateResult):
+                return res  # return list of two BulkCreateResult (with item_id and changekey each)
+            else:
+                raise ValueError('Unexpected response')
+
+        if isinstance(res[0], Exception):
+            raise res[0]
+        raise ValueError('Unexpected response')
 
 
 class AcceptItem(BaseMeetingReplyItem):
@@ -1314,25 +1310,8 @@ class ForwardItem(BaseReplyItem):
 class CancelCalendarItem(BaseReplyItem):
     """
     MSDN: https://msdn.microsoft.com/en-us/library/aa564482(v=exchg.150).aspx
-
-    TODO
-
-    <CancelCalendarItem>
-       <Subject/>
-       <Body/>
-       <ToRecipients/>
-       <CcRecipients/>
-       <BccRecipients/>
-       <IsReadReceiptRequested/>
-       <IsDeliveryReceiptRequested/>
-       <ReferenceItemId/>
-       <NewBodyContent/>
-       <ReceivedBy/>
-       <ReceivedRepresenting/>
-    </CancelCalendarItem>
-
     """
-    pass
+    ELEMENT_NAME = 'CancelCalendarItem'
 
 
 class Persona(EWSElement):
@@ -1374,4 +1353,4 @@ class Persona(EWSElement):
 
 
 ITEM_CLASSES = (CalendarItem, Contact, DistributionList, Message, PostItem, Task, MeetingRequest, MeetingResponse,
-                MeetingCancellation)
+                MeetingCancellation)  # TODO(frennkie) do I need to add sth here?!
