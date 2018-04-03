@@ -576,13 +576,9 @@ class CalendarItem(Item):
                                                             changekey=self.changekey), **kwargs).send()
 
     def cancel(self, **kwargs):
-        try:
-            return CancelCalendarItem(account=self.account,
-                                      reference_item_id=ReferenceItemId(id=self.item_id, changekey=self.changekey),
-                                      **kwargs).send()
-        except ErrorCalendarIsNotOrganizer as e:  # TODO(frennkie) should I catch any errors?!
-            print('this account is not the organizer of this CalendarItem')
-            raise e
+        return CancelCalendarItem(account=self.account,
+                                  reference_item_id=ReferenceItemId(id=self.item_id, changekey=self.changekey),
+                                  **kwargs).send()
 
     def decline(self, **kwargs):
         return DeclineItem(reference_item_id=ReferenceItemId(id=self.item_id,
@@ -1207,11 +1203,7 @@ class BaseMeetingReplyItem(Item):
         if not self.account:
             raise ValueError('Item must have an account')
 
-        try:
-            res = self.account.bulk_create(items=[self], folder=self.folder, message_disposition=message_disposition)
-        except ErrorCalendarMeetingRequestIsOutOfDate:  # TODO(frennkie) should I catch any errors?!
-            print('out of date')
-            return None
+        res = self.account.bulk_create(items=[self], folder=self.folder, message_disposition=message_disposition)
 
         if len(res) == 2:
             if isinstance(res[0], BulkCreateResult) and isinstance(res[0], BulkCreateResult):
@@ -1349,4 +1341,4 @@ class Persona(EWSElement):
 
 
 ITEM_CLASSES = (CalendarItem, Contact, DistributionList, Message, PostItem, Task, MeetingRequest, MeetingResponse,
-                MeetingCancellation)  # TODO(frennkie) do I need to add sth here?!
+                MeetingCancellation)
