@@ -600,7 +600,7 @@ class CalendarItem(Item):
         return TentativelyAcceptItem(reference_item_id=ReferenceItemId(id=self.item_id,
                                                                        changekey=self.changekey), **kwargs).send()
 
-      def _update_fieldnames(self):
+    def _update_fieldnames(self):
         update_fields = super(CalendarItem, self)._update_fieldnames()
         if self.type == OCCURRENCE:
             # Some CalendarItem fields cannot be updated when the item is an occurrence. The values are empty when we
@@ -939,7 +939,7 @@ class PostReplyItem(Item):
     ELEMENT_NAME = 'PostReplyItem'
 
 
-class BaseMeetingItem(EWSElement):
+class BaseMeetingItem(Item):
     """
     A base class for meeting requests that share the same fields (Message, Request, Response, Cancellation)
 
@@ -1036,47 +1036,11 @@ class BaseMeetingItem(EWSElement):
     # Used to register extended properties
     INSERT_AFTER_FIELD = 'has_attachments'
 
-    def __init__(self, **kwargs):
-        # 'account' is optional but allows calling 'send()'
-        from .account import Account
-        self.account = kwargs.pop('account', None)
-        if self.account is not None and not isinstance(self.account, Account):
-            raise ValueError("'account' %r must be an Account instance" % self.account)
-        super(BaseMeetingItem, self).__init__(**kwargs)
-
-    @classmethod
-    def id_from_xml(cls, elem):
-        id_elem = elem.find(ItemId.response_tag())
-        if id_elem is None:
-            return None, None
-        return id_elem.get(ItemId.ID_ATTR), id_elem.get(ItemId.CHANGEKEY_ATTR)
-
-    @classmethod
-    def from_xml(cls, elem, account):
-        if elem.tag != cls.response_tag():
-            raise ValueError('Unexpected element tag in class %s: %s vs %s' % (cls, elem.tag, cls.response_tag()))
-        item_id, changekey = cls.id_from_xml(elem=elem)
-        kwargs = {f.name: f.from_xml(elem=elem, account=account) for f in cls.supported_fields()}
-        elem.clear()
-        return cls(account=account, item_id=item_id, changekey=changekey, **kwargs)
-
-    def __eq__(self, other):
-        if isinstance(other, tuple):
-            return hash((self.item_id, self.changekey)) == hash(other)
-        return super(BaseMeetingItem, self).__eq__(other)
-
-    def __hash__(self):
-        # If we have an item_id and changekey, use that as key. Else return a hash of all attributes
-        if self.item_id:
-            return hash((self.item_id, self.changekey))
-        return super(BaseMeetingItem, self).__hash__()
-
 
 class MeetingRequest(BaseMeetingItem):
     """
     MSDN: https://msdn.microsoft.com/en-us/library/office/aa565229(v=exchg.150).aspx
     """
-    # TODO: Untested and unfinished.
     ELEMENT_NAME = 'MeetingRequest'
     FIELDS = Message.FIELDS + [
         ChoiceField('meeting_request_type', field_uri='meetingRequest:MeetingRequestType',
@@ -1168,7 +1132,7 @@ class MeetingMessage(BaseMeetingItem):
     """
     MSDN: https://msdn.microsoft.com/en-us/library/office/aa565359(v=exchg.150).aspx
     """
-    # TODO: Untested
+    # TODO: Untested - not sure if this is ever used
     ELEMENT_NAME = 'MeetingMessage'
 
 
@@ -1176,7 +1140,6 @@ class MeetingResponse(BaseMeetingItem):
     """
     MSDN: https://msdn.microsoft.com/en-us/library/office/aa564337(v=exchg.150).aspx
     """
-    # TODO: Untested
     ELEMENT_NAME = 'MeetingResponse'
     FIELDS = Message.FIELDS + [
         MailboxField('received_by', field_uri='message:ReceivedBy', is_read_only=True),
@@ -1188,7 +1151,6 @@ class MeetingCancellation(BaseMeetingItem):
     """
     MSDN: https://msdn.microsoft.com/en-us/library/office/aa564685(v=exchg.150).aspx
     """
-    # TODO: Untested
     ELEMENT_NAME = 'MeetingCancellation'
 
 
