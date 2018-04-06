@@ -447,6 +447,40 @@ Here are some examples of using the API:
     FolderCollection(account=account, folders=[account.inbox, account.calendar]).filter(subject='foo')
 
 
+Meetings
+^^^^^^^^
+
+The CalendarItem class allows you send out requests for meetings that you initiate or to cancel meetings that you
+already set up before. It is also possible to process ``MeetingRequest`` messages that are received. You can reply to
+these messages using the ``AcceptItem``, ``TentativelyAcceptItem`` and ``DeclineItem`` classes. If you receive a
+cancellation for a meeting (class ``MeetingCancellation``) that you already accepted then you can also process these
+by removing the entry from the calendar.
+
+.. code-block:: python
+
+    # create a meeting request and send it out
+    calendar_item = CalendarItem(
+        account=account,
+        folder=account.calendar,
+        start=tz.localize(EWSDateTime(year, month, day, hour, minute)),
+        end=tz.localize(EWSDateTime(year, month, day, hour, minute)),
+        subject="Subject of Meeting",
+        body="Please come to my meeting",
+        required_attendees=['anne@example.com', 'bob@example.com']
+    )
+    item.save(send_meeting_invitations=SEND_TO_ALL_AND_SAVE_COPY)
+
+    # cancel a meeting that was already sent out using the CalendarItem class
+    calendar_item.cancel()
+
+    # processing an incoming MeetingRequest
+    TODO
+
+    # processing an incoming MeetingCancellation
+    TODO
+
+
+
 Searching contacts
 ^^^^^^^^^^^^^^^^^^
 Fetching personas from a contact folderis supported using the same syntax as folders. Just start your query with

@@ -6,7 +6,6 @@ from decimal import Decimal
 from future.utils import python_2_unicode_compatible
 from six import string_types
 
-from .errors import ErrorCalendarMeetingRequestIsOutOfDate, ErrorCalendarIsNotOrganizer
 from .ewsdatetime import UTC_NOW
 from .extended_properties import ExtendedProperty
 from .fields import BooleanField, IntegerField, DecimalField, Base64Field, TextField, CharListField, ChoiceField, \
