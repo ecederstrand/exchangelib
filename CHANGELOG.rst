@@ -4,11 +4,11 @@ Change Log
 
 HEAD
 ----
-* Added ``CancelCalendarItem`` and ``cancel`` to ``CalendarItem`` to allow cancelling meetings that were set up
+* Added ``cancel`` to ``CalendarItem`` and ``CancelCalendarItem`` class to allow cancelling meetings that were set up
 * Added ``accept``, ``decline`` and ``tentatively_accept`` to ``CalendarItem`` as wrapper methods
 * Added ``accept``, ``decline`` and ``tentatively_accept`` to ``MeetingRequest`` to respond to incoming invitations
-* Added ``BaseMeetingItem`` being used as base for MeetingCancellation, MeetingMessage, MeetingRequest,
-  MeetingResponse and ; inheriting from ``Item``
+* Added ``BaseMeetingItem`` (inheriting from ``Item``) being used as base for MeetingCancellation, MeetingMessage,
+  MeetingRequest and MeetingResponse
 * Added ``AssociatedCalendarItemId`` (property), ``AssociatedCalendarItemIdField`` and ``ReferenceItemIdField``
 * Added ``PostReplyItem``
 * Removed ``Folder.get_folder_by_name()`` which has been deprecated since version ``1.10.2``.
