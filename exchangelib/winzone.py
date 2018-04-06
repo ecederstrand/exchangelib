@@ -223,7 +223,7 @@ CLDR_TO_MS_TIMEZONE_MAP = {
     'America/Winnipeg': 'Central Standard Time',
     'America/Yakutat': 'Alaskan Standard Time',
     'America/Yellowknife': 'Mountain Standard Time',
-    'Antarctica/Casey': 'Central Pacific Standard Time',
+    'Antarctica/Casey': 'W. Australia Standard Time',
     'Antarctica/Davis': 'SE Asia Standard Time',
     'Antarctica/DumontDUrville': 'West Pacific Standard Time',
     'Antarctica/Macquarie': 'Central Pacific Standard Time',

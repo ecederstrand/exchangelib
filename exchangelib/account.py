@@ -52,7 +52,7 @@ class Account(object):
         :param autodiscover: Whether to look up the EWS endpoint automatically using the autodiscover protocol.
         :param credentials: A Credentials object containing valid credentials for this account.
         :param config: A Configuration object containing EWS endpoint information. Required if autodiscover is disabled
-        :param locale: The locale of the user. Defaults to the locale of the host.
+        :param locale: The locale of the user, e.g. 'en_US'. Defaults to the locale of the host, if available.
         :param default_timezone: EWS may return some datetime values without timezone information. In this case, we will
         assume values to be in the provided timezone. Defaults to the timezone of the host.
         """
@@ -60,7 +60,12 @@ class Account(object):
             raise ValueError("primary_smtp_address '%s' is not an email address" % primary_smtp_address)
         self.primary_smtp_address = primary_smtp_address
         self.fullname = fullname
-        self.locale = locale or getlocale()[0] or None  # get_locale() might not be able to determine the locale
+        try:
+            self.locale = locale or getlocale()[0] or None  # get_locale() might not be able to determine the locale
+        except ValueError as e:
+            # getlocale() may throw ValueError if it fails to parse the system locale
+            log.warning('Failed to get locale (%s)' % e)
+            self.locale = None
         if self.locale is not None:
             if not isinstance(self.locale, string_types):
                 raise ValueError("Expected 'locale' to be a string, got %s" % self.locale)

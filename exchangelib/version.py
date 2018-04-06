@@ -152,6 +152,7 @@ class Build(object):
 EXCHANGE_2007 = Build(8, 0)
 EXCHANGE_2007_SP1 = Build(8, 1)
 EXCHANGE_2010 = Build(14, 0)
+EXCHANGE_2010_SP1 = Build(14, 1)
 EXCHANGE_2010_SP2 = Build(14, 2)
 EXCHANGE_2013 = Build(15, 0)
 EXCHANGE_2013_SP1 = Build(15, 0, 847)

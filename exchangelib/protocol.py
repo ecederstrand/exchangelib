@@ -20,7 +20,8 @@ from future.moves.queue import LifoQueue, Empty, Full
 from .credentials import Credentials
 from .errors import TransportError
 from .properties import FreeBusyViewOptions, MailboxData, TimeWindow, TimeZone
-from .services import GetServerTimeZones, GetRoomLists, GetRooms, ResolveNames, GetUserAvailability
+from .services import GetServerTimeZones, GetRoomLists, GetRooms, ResolveNames, GetUserAvailability, \
+    GetSearchableMailboxes
 from .transport import get_auth_instance, get_service_authtype, get_docs_authtype, AUTH_TYPE_MAP, DEFAULT_HEADERS
 from .util import split_url
 from .version import Version, API_VERSIONS
@@ -305,17 +306,31 @@ class Protocol(with_metaclass(CachingProtocol, BaseProtocol)):
         return GetRooms(protocol=self).call(roomlist=RoomList(email_address=roomlist))
 
     def resolve_names(self, names, return_full_contact_data=False, search_scope=None, shape=None):
+        """ Resolve accounts on the server using partial account data, e.g. an email address or initials
+
+        :param names: A list of identifiers to query
+        :param return_full_contact_data: If True, returns full contact data
+        :param search_scope: The scope to perform the search. Must be one of SEARCH_SCOPE_CHOICES
+        :param shape:
+        :return: A list of Mailbox items or, if return_full_contact_data is True, tuples of (Mailbox, Contact) items
+        """
         from .items import SHAPE_CHOICES, SEARCH_SCOPE_CHOICES
         if search_scope:
             if search_scope not in SEARCH_SCOPE_CHOICES:
                 raise ValueError("'search_scope' %s must be one if %s" % (search_scope, SEARCH_SCOPE_CHOICES))
         if shape:
-            if shape not in AUTH_TYPE_MAP:
+            if shape not in SHAPE_CHOICES:
                 raise ValueError("'shape' %s must be one if %s" % (shape, SHAPE_CHOICES))
         return list(ResolveNames(protocol=self).call(
             unresolved_entries=names, return_full_contact_data=return_full_contact_data, search_scope=search_scope,
             contact_data_shape=shape,
         ))
+
+    def get_searchable_mailboxes(self, search_filter=None, expand_group_membership=False):
+        return GetSearchableMailboxes(protocol=self).call(
+            search_filter=search_filter,
+            expand_group_membership=expand_group_membership,
+        )
 
     def __str__(self):
         return '''\

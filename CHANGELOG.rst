@@ -13,6 +13,7 @@ HEAD
 * The full search API now works on single folders *and* collections of folders, e.g.
   ``some_folder.glob('foo*').filter()``, ``some_folder.children.filter()`` and ``some_folder.walk().filter()``.
 * Deprecated ``EWSService.CHUNKSIZE`` in favor of a per-request chunk_size available on ``Account.bulk_foo()`` methods.
+* Support searching the GAL and other contact folders using ``some_contact_folder.people()``.
 
 
 1.10.7

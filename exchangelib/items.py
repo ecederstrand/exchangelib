@@ -73,10 +73,11 @@ ITEM_TRAVERSAL_CHOICES = (SHALLOW, SOFT_DELETED, ASSOCIATED)
 
 # Shape enums
 IdOnly = 'IdOnly'
+Default = 'Default'
 # AllProperties doesn't actually get all properties in FindItem, just the "first-class" ones. See
 #    http://msdn.microsoft.com/en-us/library/office/dn600367(v=exchg.150).aspx
 AllProperties = 'AllProperties'
-SHAPE_CHOICES = (IdOnly, 'Default', AllProperties)
+SHAPE_CHOICES = (IdOnly, Default, AllProperties)
 
 # Contacts search (ResolveNames) scope enums
 ActiveDirectory = 'ActiveDirectory'
@@ -179,11 +180,10 @@ class Item(RegisterMixIn):
         CharField('last_modified_name', field_uri='item:LastModifiedName', is_read_only=True),
         DateTimeField('last_modified_time', field_uri='item:LastModifiedTime', is_read_only=True),
         BooleanField('is_associated', field_uri='item:IsAssociated', is_read_only=True, supported_from=EXCHANGE_2010),
-        # These two URIFields throw ErrorInternalServerError
-        # URIField('web_client_read_form_query_string', field_uri='calendar:WebClientReadFormQueryString',
-        #          is_read_only=True, supported_from=EXCHANGE_2010),
-        # URIField('web_client_edit_form_query_string', field_uri='calendar:WebClientEditFormQueryString',
-        #          is_read_only=True, supported_from=EXCHANGE_2010),
+        URIField('web_client_read_form_query_string', field_uri='item:WebClientReadFormQueryString',
+                 is_read_only=True, supported_from=EXCHANGE_2010),
+        URIField('web_client_edit_form_query_string', field_uri='item:WebClientEditFormQueryString',
+                 is_read_only=True, supported_from=EXCHANGE_2010),
         EWSElementField('conversation_id', field_uri='item:ConversationId', value_cls=ConversationId,
                         is_read_only=True, supported_from=EXCHANGE_2010),
         BodyField('unique_body', field_uri='item:UniqueBody', is_read_only=True, supported_from=EXCHANGE_2010),
@@ -275,6 +275,32 @@ class Item(RegisterMixIn):
             raise res[0]
         return res[0]
 
+    def _update_fieldnames(self):
+        # Return the list of fields we are allowed to update
+        update_fieldnames = []
+        for f in self.supported_fields(version=self.account.version):
+            if f.name == 'attachments':
+                # Attachments are handled separately after item creation
+                continue
+            if f.is_read_only:
+                # These cannot be changed
+                continue
+            if f.is_required or f.is_required_after_save:
+                if getattr(self, f.name) is None or (f.is_list and not getattr(self, f.name)):
+                    # These are required and cannot be deleted
+                    continue
+            if not self.is_draft and f.is_read_only_after_send:
+                # These cannot be changed when the item is no longer a draft
+                continue
+            if f.name == 'message_id' and f.is_read_only_after_send:
+                # 'message_id' doesn't support updating, no matter the draft status
+                continue
+            if f.name == 'mime_content' and isinstance(self, (Contact, DistributionList)):
+                # Contact and DistributionList don't support updating mime_content, no matter the draft status
+                continue
+            update_fieldnames.append(f.name)
+        return update_fieldnames
+
     def _update(self, update_fieldnames, message_disposition, conflict_resolution, send_meeting_invitations):
         if not self.account:
             raise ValueError('Item must have an account')
@@ -282,28 +308,7 @@ class Item(RegisterMixIn):
             raise ValueError('Item must have changekey')
         if not update_fieldnames:
             # The fields to update was not specified explicitly. Update all fields where update is possible
-            update_fieldnames = []
-            for f in self.supported_fields(version=self.account.version):
-                if f.name == 'attachments':
-                    # Attachments are handled separately after item creation
-                    continue
-                if f.is_read_only:
-                    # These cannot be changed
-                    continue
-                if f.is_required or f.is_required_after_save:
-                    if getattr(self, f.name) is None or (f.is_list and not getattr(self, f.name)):
-                        # These are required and cannot be deleted
-                        continue
-                if not self.is_draft and f.is_read_only_after_send:
-                    # These cannot be changed when the item is no longer a draft
-                    continue
-                if f.name == 'message_id' and f.is_read_only_after_send:
-                    # 'message_id' doesn't support updating, no matter the draft status
-                    continue
-                if f.name == 'mime_content' and isinstance(self, (Contact, DistributionList)):
-                    # Contact and DistributionList don't support updating mime_content, no matter the draft status
-                    continue
-                update_fieldnames.append(f.name)
+            update_fieldnames = self._update_fieldnames()
         # bulk_update() returns a tuple
         res = self.account.bulk_update(
             items=[(self, update_fieldnames)], message_disposition=message_disposition,
@@ -367,7 +372,7 @@ class Item(RegisterMixIn):
         self._delete(delete_type=MOVE_TO_DELETED_ITEMS, send_meeting_cancellations=send_meeting_cancellations,
                      affected_task_occurrences=affected_task_occurrences, suppress_read_receipts=suppress_read_receipts)
         self.item_id, self.changekey = None, None
-        self.folder = self.folder.account.trash
+        self.folder = self.account.trash
 
     def soft_delete(self, send_meeting_cancellations=SEND_TO_NONE, affected_task_occurrences=ALL_OCCURRENCIES,
                     suppress_read_receipts=True):
@@ -375,7 +380,7 @@ class Item(RegisterMixIn):
         self._delete(delete_type=SOFT_DELETE, send_meeting_cancellations=send_meeting_cancellations,
                      affected_task_occurrences=affected_task_occurrences, suppress_read_receipts=suppress_read_receipts)
         self.item_id, self.changekey = None, None
-        self.folder = self.folder.account.recoverable_items_deletions
+        self.folder = self.account.recoverable_items_deletions
 
     def delete(self, send_meeting_cancellations=SEND_TO_NONE, affected_task_occurrences=ALL_OCCURRENCIES,
                suppress_read_receipts=True):
@@ -480,6 +485,14 @@ class BulkCreateResult(Item):
         return cls(item_id=item_id, changekey=changekey, **kwargs)
 
 
+# CalendarItemType enums
+SINGLE = 'Single'
+OCCURRENCE = 'Occurrence'
+EXCEPTION = 'Exception'
+RECURRING_MASTER = 'RecurringMaster'
+CALENDAR_ITEM_CHOICES = (SINGLE, OCCURRENCE, EXCEPTION, RECURRING_MASTER)
+
+
 @python_2_unicode_compatible
 class CalendarItem(Item):
     """
@@ -502,9 +515,8 @@ class CalendarItem(Item):
         BooleanField('meeting_request_was_sent', field_uri='calendar:MeetingRequestWasSent', is_read_only=True),
         BooleanField('is_response_requested', field_uri='calendar:IsResponseRequested', default=None,
                      is_required_after_save=True, is_searchable=False),
-        ChoiceField('type', field_uri='calendar:CalendarItemType', choices={
-            Choice('Single'), Choice('Occurrence'), Choice('Exception'), Choice('RecurringMaster'),
-        }, is_read_only=True),
+        ChoiceField('type', field_uri='calendar:CalendarItemType', choices={Choice(c) for c in CALENDAR_ITEM_CHOICES},
+                    is_read_only=True),
         ChoiceField('my_response_type', field_uri='calendar:MyResponseType', choices={
             Choice(c) for c in Attendee.RESPONSE_TYPES
         }, is_read_only=True),
@@ -587,6 +599,15 @@ class CalendarItem(Item):
     def tentatively_accept(self, **kwargs):
         return TentativelyAcceptItem(reference_item_id=ReferenceItemId(id=self.item_id,
                                                                        changekey=self.changekey), **kwargs).send()
+
+      def _update_fieldnames(self):
+        update_fields = super(CalendarItem, self)._update_fieldnames()
+        if self.type == OCCURRENCE:
+            # Some CalendarItem fields cannot be updated when the item is an occurrence. The values are empty when we
+            # receive them so would have been updated because they are set to None.
+            update_fields.remove('recurrence')
+            update_fields.remove('uid')
+        return update_fields
 
 
 class Message(Item):
@@ -1307,17 +1328,17 @@ class Persona(EWSElement):
     ELEMENT_NAME = 'Persona'
     FIELDS = [
         EWSElementField('persona_id', field_uri='persona:PersonaId', value_cls=PersonaId),
-        TextField('file_as', field_uri='persona:FileAs'),
+        CharField('file_as', field_uri='persona:FileAs'),
         CharField('display_name', field_uri='persona:DisplayName'),
         CharField('given_name', field_uri='persona:GivenName'),
-        CharField('middle_name', field_uri='persona:MiddleName'),
+        TextField('middle_name', field_uri='persona:MiddleName'),
         CharField('surname', field_uri='persona:Surname'),
         TextField('generation', field_uri='persona:Generation'),
         TextField('nickname', field_uri='persona:Nickname'),
-        TextField('title', field_uri='persona:Title'),
+        CharField('title', field_uri='persona:Title'),
         TextField('department', field_uri='persona:Department'),
-        TextField('company_name', field_uri='persona:CompanyName'),
-        TextField('im_address', field_uri='persona:ImAddress'),
+        CharField('company_name', field_uri='persona:CompanyName'),
+        CharField('im_address', field_uri='persona:ImAddress'),
         TextField('initials', field_uri='persona:Initials'),
     ]
 

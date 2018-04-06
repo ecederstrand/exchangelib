@@ -14,13 +14,20 @@ import os
 from setuptools import setup
 
 
-def read(fname):
-    with io.open(os.path.join(os.path.dirname(__file__), fname), encoding='utf-8') as f:
+__version__ = None
+with io.open(os.path.join(os.path.dirname(__file__), 'exchangelib/__init__.py'), encoding='utf-8') as f:
+    for l in f:
+        if l.startswith('__version__'):
+            exec(l)
+
+
+def read(file_name):
+    with io.open(os.path.join(os.path.dirname(__file__), file_name), encoding='utf-8') as f:
         return f.read()
 
 setup(
     name='exchangelib',
-    version='1.10.7',
+    version=__version__,
     author='Erik Cederstrand',
     author_email='erik@cederstrand.dk',
     description='Client for Microsoft Exchange Web Services (EWS)',

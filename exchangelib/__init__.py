@@ -16,7 +16,11 @@ from .restriction import Q
 from .transport import BASIC, DIGEST, NTLM
 from .version import Build, Version
 from .settings import OofSettings
+
+__version__ = '1.10.7'
+
 __all__ = [
+    '__version__',
     'Account',
     'FileAttachment', 'ItemAttachment',
     'discover',

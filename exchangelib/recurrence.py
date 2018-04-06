@@ -63,17 +63,17 @@ class RelativeYearlyPattern(Pattern):
     ELEMENT_NAME = 'RelativeYearlyRecurrence'
 
     FIELDS = [
-        # The month of the year, from 1 - 12
-        EnumField('month', field_uri='t:Month', enum=MONTHS, is_required=True),
-        # Week number of the month, in range 1 -> 5. If 5 is specified, this assumes the last week of the month for
-        # months that have only 4 weeks
-        EnumField('week_number', field_uri='t:DayOfWeekIndex', enum=WEEK_NUMBERS, is_required=True),
         # List of valid ISO 8601 weekdays, as list of numbers in range 1 -> 7 (1 being Monday). Alternatively, weekdays
         # can be one of the DAY (or 8), WEEK_DAY (or 9) or WEEKEND_DAY (or 10) consts which is interpreted as the first
         # day, weekday, or weekend day in the month, respectively.
         ExtraWeekdaysField('weekdays', field_uri='t:DaysOfWeek', is_required=True),
+        # Week number of the month, in range 1 -> 5. If 5 is specified, this assumes the last week of the month for
+        # months that have only 4 weeks
+        EnumField('week_number', field_uri='t:DayOfWeekIndex', enum=WEEK_NUMBERS, is_required=True),
+        # The month of the year, from 1 - 12
+        EnumField('month', field_uri='t:Month', enum=MONTHS, is_required=True),
     ]
-    __slots__ = ('month', 'week_number', 'weekdays')
+    __slots__ = ('weekdays', 'week_number', 'month')
 
     def __str__(self):
         weekdays = [WEEKDAYS[i - 1] if isinstance(i, int) else i for i in self.weekdays]
@@ -106,13 +106,13 @@ class RelativeMonthlyPattern(Pattern):
     FIELDS = [
         # Interval, in months, in range 1 -> 99
         IntegerField('interval', field_uri='t:Interval', min=1, max=99, is_required=True),
-        # Week number of the month, in range 1 -> 5. If 5 is specified, this assumes the last week of the month for
-        # months that have only 4 weeks.
-        EnumField('week_number', field_uri='t:DayOfWeekIndex', enum=WEEK_NUMBERS, is_required=True),
         # List of valid ISO 8601 weekdays, as list of numbers in range 1 -> 7 (1 being Monday). Alternatively, weekdays
         # can be one of the DAY (or 8), WEEK_DAY (or 9) or WEEKEND_DAY (or 10) consts which is interpreted as the first
         # day, weekday, or weekend day in the month, respectively.
         ExtraWeekdaysField('weekdays', field_uri='t:DaysOfWeek', is_required=True),
+        # Week number of the month, in range 1 -> 5. If 5 is specified, this assumes the last week of the month for
+        # months that have only 4 weeks.
+        EnumField('week_number', field_uri='t:DayOfWeekIndex', enum=WEEK_NUMBERS, is_required=True),
     ]
     __slots__ = ('interval', 'week_number', 'weekdays')
 

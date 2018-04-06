@@ -16,6 +16,7 @@ import string
 import tempfile
 import time
 import unittest
+import unittest.util
 import warnings
 
 from dateutil.relativedelta import relativedelta
@@ -57,9 +58,9 @@ from exchangelib.folders import Calendar, DeletedItems, Drafts, Inbox, Outbox, S
     SyncIssues, MyContacts, ToDoSearch, FolderCollection
 from exchangelib.indexed_properties import EmailAddress, PhysicalAddress, PhoneNumber, \
     SingleFieldIndexedElement, MultiFieldIndexedElement
-from exchangelib.items import Item, CalendarItem, Message, Contact, Task, DistributionList
+from exchangelib.items import Item, CalendarItem, Message, Contact, Task, DistributionList, Persona
 from exchangelib.properties import Attendee, Mailbox, RoomList, MessageHeader, Room, ItemId, Member, EWSElement, Body, \
-    HTMLBody, TimeZone, FreeBusyView
+    HTMLBody, TimeZone, FreeBusyView, PersonaId
 from exchangelib.protocol import BaseProtocol, Protocol, NoVerifyHTTPAdapter
 from exchangelib.queryset import QuerySet, DoesNotExist, MultipleObjectsReturned
 from exchangelib.recurrence import Recurrence, AbsoluteYearlyPattern, RelativeYearlyPattern, AbsoluteMonthlyPattern, \
@@ -67,7 +68,8 @@ from exchangelib.recurrence import Recurrence, AbsoluteYearlyPattern, RelativeYe
     NoEndPattern, EndDatePattern, NumberedPattern, ExtraWeekdaysField
 from exchangelib.restriction import Restriction, Q
 from exchangelib.settings import OofSettings
-from exchangelib.services import GetServerTimeZones, GetRoomLists, GetRooms, GetAttachment, ResolveNames, TNS
+from exchangelib.services import GetServerTimeZones, GetRoomLists, GetRooms, GetAttachment, ResolveNames, GetPersona, \
+    TNS
 from exchangelib.transport import NOAUTH, BASIC, DIGEST, NTLM, wrap, _get_auth_method_from_response
 from exchangelib.util import chunkify, peek, get_redirect_url, to_xml, BOM, get_domain, value_to_xml_text, \
     post_ratelimited, create_element, CONNECTION_ERRORS, PrettyXmlHandler, xml_to_str
@@ -82,6 +84,9 @@ string_type = string_types[0]
 mock_account = namedtuple('mock_account', ('protocol', 'version'))
 mock_protocol = namedtuple('mock_protocol', ('version', 'service_endpoint'))
 mock_version = namedtuple('mock_version', ('build',))
+
+# Show full repr() output for object instances in unittest error messages
+unittest.util._MAX_LENGTH = 2000
 
 
 def mock_post(url, status_code, headers, text=''):
@@ -298,15 +303,18 @@ class ProtocolTest(unittest.TestCase):
 
     def test_close(self):
         proc = psutil.Process()
-        ip_addr = socket.gethostbyname('example.com')
+        ip_addresses = {info[4][0] for info in socket.getaddrinfo(
+            'example.com', 80, socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_IP
+        )}
+        self.assertGreater(len(ip_addresses), 0)
         protocol = Protocol(service_endpoint='http://example.com', credentials=Credentials('A', 'B'),
                             auth_type=NOAUTH, version=Version(Build(15, 1)))
         session = protocol.get_session()
         session.get('http://example.com')
-        self.assertEqual([p.raddr[0] for p in proc.connections() if p.raddr[0] == ip_addr], [ip_addr])
+        self.assertEqual(len({p.raddr[0] for p in proc.connections() if p.raddr[0] in ip_addresses}), 1)
         protocol.release_session(session)
         protocol.close()
-        self.assertEqual([p.raddr[0] for p in proc.connections() if p.raddr[0] == ip_addr], [])
+        self.assertEqual(len({p.raddr[0] for p in proc.connections() if p.raddr[0] in ip_addresses}), 0)
 
 
 class CredentialsTest(unittest.TestCase):
@@ -454,6 +462,16 @@ class EWSDateTimeTest(unittest.TestCase):
         self.assertEqual(tz.normalize(dt).ewsformat(), '2000-08-02T03:04:05+02:00')
         self.assertEqual(utc_tz.normalize(dt, is_dst=True).ewsformat(), '2000-08-02T01:04:05Z')
 
+        # Test in-place add and subtract
+        dt = tz.localize(EWSDateTime(2000, 1, 2, 3, 4, 5))
+        dt += datetime.timedelta(days=1)
+        self.assertIsInstance(dt, EWSDateTime)
+        self.assertEqual(dt, tz.localize(EWSDateTime(2000, 1, 3, 3, 4, 5)))
+        dt = tz.localize(EWSDateTime(2000, 1, 2, 3, 4, 5))
+        dt -= datetime.timedelta(days=1)
+        self.assertIsInstance(dt, EWSDateTime)
+        self.assertEqual(dt, tz.localize(EWSDateTime(2000, 1, 1, 3, 4, 5)))
+
     def test_generate(self):
         try:
             self.assertDictEqual(generate_map(), CLDR_TO_MS_TIMEZONE_MAP)
@@ -471,6 +489,16 @@ class EWSDateTimeTest(unittest.TestCase):
         self.assertIsInstance(EWSDate(2000, 1, 2) - EWSDate(2000, 1, 1), datetime.timedelta)
         self.assertIsInstance(EWSDate(2000, 1, 2) + datetime.timedelta(days=1), EWSDate)
         self.assertIsInstance(EWSDate(2000, 1, 2) - datetime.timedelta(days=1), EWSDate)
+
+        # Test in-place add and subtract
+        dt = EWSDate(2000, 1, 2)
+        dt += datetime.timedelta(days=1)
+        self.assertIsInstance(dt, EWSDate)
+        self.assertEqual(dt, EWSDate(2000, 1, 3))
+        dt = EWSDate(2000, 1, 2)
+        dt -= datetime.timedelta(days=1)
+        self.assertIsInstance(dt, EWSDate)
+        self.assertEqual(dt, EWSDate(2000, 1, 1))
 
 
 class PropertiesTest(unittest.TestCase):
@@ -1618,6 +1646,19 @@ class CommonTest(EWSTest):
         self.assertEqual(
             self.account.protocol.resolve_names(names=['foo\\bar']),
             []
+        )
+        # Test return_full_contact_data
+        mailbox, contact = self.account.protocol.resolve_names(
+            names=[self.account.primary_smtp_address],
+            return_full_contact_data=True
+        )[0]
+        self.assertEqual(
+            mailbox,
+            Mailbox(email_address=self.account.primary_smtp_address)
+        )
+        self.assertListEqual(
+            [e.email.replace('SMTP:', '') for e in contact.email_addresses if e.label == 'EmailAddress1'],
+            [self.account.primary_smtp_address]
         )
 
     def test_resolvenames_parsing(self):
@@ -4531,10 +4572,12 @@ class BaseItemTest(EWSTest):
             for f in item.FIELDS:
                 # datetime_created and last_modified_time aren't copied, but instead are added to the new item after
                 # uploading. This means mime_content and size can also change. Items also get new IDs on upload. And
-                # meeting_count values are dependent on contents of current calendar.
+                # meeting_count values are dependent on contents of current calendar. Form query strings contain the
+                # item ID and will also change.
                 if f.name in {'item_id', 'changekey', 'first_occurrence', 'last_occurrence', 'datetime_created',
                               'last_modified_time', 'mime_content', 'size', 'conversation_id',
-                              'adjacent_meeting_count', 'conflicting_meeting_count'}:
+                              'adjacent_meeting_count', 'conflicting_meeting_count',
+                              'web_client_read_form_query_string', 'web_client_edit_form_query_string'}:
                     continue
                 dict_item[f.name] = getattr(item, f.name)
                 if f.name == 'attachments':
@@ -5253,10 +5296,11 @@ class CalendarTest(BaseItemTest):
         )
 
     def test_recurring_items(self):
+        tz = self.account.default_timezone
         item = CalendarItem(
             folder=self.test_folder,
-            start=self.account.default_timezone.localize(EWSDateTime(2017, 9, 4, 11)),
-            end=self.account.default_timezone.localize(EWSDateTime(2017, 9, 4, 13)),
+            start=tz.localize(EWSDateTime(2017, 9, 4, 11)),
+            end=tz.localize(EWSDateTime(2017, 9, 4, 13)),
             subject='Hello Recurrence',
             recurrence=Recurrence(
                 pattern=WeeklyPattern(interval=3, weekdays=[MONDAY, WEDNESDAY]),
@@ -5274,19 +5318,19 @@ class CalendarTest(BaseItemTest):
             'Monday, Boundary: NumberedPattern(start=EWSDate(2017, 9, 4), number=7)'
         )
         self.assertIsInstance(fresh_item.first_occurrence, FirstOccurrence)
-        self.assertEqual(fresh_item.first_occurrence.start, self.account.default_timezone.localize(EWSDateTime(2017, 9, 4, 11)))
-        self.assertEqual(fresh_item.first_occurrence.end, self.account.default_timezone.localize(EWSDateTime(2017, 9, 4, 13)))
+        self.assertEqual(fresh_item.first_occurrence.start, tz.localize(EWSDateTime(2017, 9, 4, 11)))
+        self.assertEqual(fresh_item.first_occurrence.end, tz.localize(EWSDateTime(2017, 9, 4, 13)))
         self.assertIsInstance(fresh_item.last_occurrence, LastOccurrence)
-        self.assertEqual(fresh_item.last_occurrence.start, self.account.default_timezone.localize(EWSDateTime(2017, 11, 6, 11)))
-        self.assertEqual(fresh_item.last_occurrence.end, self.account.default_timezone.localize(EWSDateTime(2017, 11, 6, 13)))
+        self.assertEqual(fresh_item.last_occurrence.start, tz.localize(EWSDateTime(2017, 11, 6, 11)))
+        self.assertEqual(fresh_item.last_occurrence.end, tz.localize(EWSDateTime(2017, 11, 6, 13)))
         self.assertEqual(fresh_item.modified_occurrences, None)
         self.assertEqual(fresh_item.deleted_occurrences, None)
 
         # All occurrences expanded
         all_start_times = []
         for i in self.test_folder.view(
-                start=self.account.default_timezone.localize(EWSDateTime(2017, 9, 1)),
-                end=self.account.default_timezone.localize(EWSDateTime(2017, 12, 1))
+                start=tz.localize(EWSDateTime(2017, 9, 1)),
+                end=tz.localize(EWSDateTime(2017, 12, 1))
         ).only('start', 'categories').order_by('start'):
             if i.categories != self.categories:
                 continue
@@ -5294,15 +5338,59 @@ class CalendarTest(BaseItemTest):
         self.assertListEqual(
             all_start_times,
             [
-                self.account.default_timezone.localize(EWSDateTime(2017, 9, 4, 11)),
-                self.account.default_timezone.localize(EWSDateTime(2017, 9, 6, 11)),
-                self.account.default_timezone.localize(EWSDateTime(2017, 9, 25, 11)),
-                self.account.default_timezone.localize(EWSDateTime(2017, 9, 27, 11)),
-                self.account.default_timezone.localize(EWSDateTime(2017, 10, 16, 11)),
-                self.account.default_timezone.localize(EWSDateTime(2017, 10, 18, 11)),
-                self.account.default_timezone.localize(EWSDateTime(2017, 11, 6, 11)),
+                tz.localize(EWSDateTime(2017, 9, 4, 11)),
+                tz.localize(EWSDateTime(2017, 9, 6, 11)),
+                tz.localize(EWSDateTime(2017, 9, 25, 11)),
+                tz.localize(EWSDateTime(2017, 9, 27, 11)),
+                tz.localize(EWSDateTime(2017, 10, 16, 11)),
+                tz.localize(EWSDateTime(2017, 10, 18, 11)),
+                tz.localize(EWSDateTime(2017, 11, 6, 11)),
             ]
         )
+
+        # Test updating and deleting
+        for i, occurrence in enumerate(self.test_folder.view(
+                start=tz.localize(EWSDateTime(2017, 9, 1)),
+                end=tz.localize(EWSDateTime(2017, 12, 1))
+        ).order_by('start')):
+            if i % 2:
+                # Delete every other occurrence (items 1, 3 and 5)
+                occurrence.delete()
+            else:
+                # Update every other occurrence (items 0, 2, 4 and 6)
+                occurrence.refresh()  # changekey is sometimes updated. Possible due to neighbour occurrences changing?
+                # We receive timestamps as UTC but want to write them back as local timezone
+                occurrence.start = occurrence.start.astimezone(tz)
+                occurrence.start += datetime.timedelta(minutes=30)
+                occurrence.end = occurrence.end.astimezone(tz)
+                occurrence.end += datetime.timedelta(minutes=30)
+                occurrence.subject = 'Changed Occurrence'
+                occurrence.save()
+
+        # We should only get half the items of before, and start times should be shifted 30 minutes
+        updated_start_times = []
+        for i in self.test_folder.view(
+                start=tz.localize(EWSDateTime(2017, 9, 1)),
+                end=tz.localize(EWSDateTime(2017, 12, 1))
+        ).only('start', 'subject', 'categories').order_by('start'):
+            if i.categories != self.categories:
+                continue
+            updated_start_times.append(i.start)
+            self.assertEqual(i.subject, 'Changed Occurrence')
+        self.assertListEqual(
+            updated_start_times,
+            [
+                tz.localize(EWSDateTime(2017, 9, 4, 11, 30)),
+                tz.localize(EWSDateTime(2017, 9, 25, 11, 30)),
+                tz.localize(EWSDateTime(2017, 10, 16, 11, 30)),
+                tz.localize(EWSDateTime(2017, 11, 6, 11, 30)),
+            ]
+        )
+
+        # Test that the master item sees the deletes and updates
+        fresh_item = self.test_folder.get(item_id=item.item_id, changekey=item.changekey)
+        self.assertEqual(len(fresh_item.modified_occurrences), 4)
+        self.assertEqual(len(fresh_item.deleted_occurrences), 3)
 
 
 class MessagesTest(BaseItemTest):
@@ -5373,7 +5461,7 @@ class MessagesTest(BaseItemTest):
         item = self.get_test_item()
         item.folder = None
         item.send()  # get_test_item() sets the to_recipients to the test account
-        for _ in range(30):
+        for _ in range(60):
             try:
                 sent_item = self.account.inbox.get(subject=item.subject)
                 break
@@ -5383,7 +5471,7 @@ class MessagesTest(BaseItemTest):
             assert False, 'Gave up waiting for the sent item to show up in the inbox'
         new_subject = ('Re: %s' % sent_item.subject)[:255]
         sent_item.reply(subject=new_subject, body='Hello reply', to_recipients=[item.author])
-        for _ in range(30):
+        for _ in range(60):
             try:
                 reply = self.account.inbox.get(subject=new_subject)
                 break
@@ -5398,7 +5486,7 @@ class MessagesTest(BaseItemTest):
         item = self.get_test_item(folder=None)
         item.folder = None
         item.send()
-        for _ in range(30):
+        for _ in range(60):
             try:
                 sent_item = self.account.inbox.get(subject=item.subject)
                 break
@@ -5408,7 +5496,7 @@ class MessagesTest(BaseItemTest):
             assert False, 'Gave up waiting for the sent item to show up in the inbox'
         new_subject = ('Re: %s' % sent_item.subject)[:255]
         sent_item.reply_all(subject=new_subject, body='Hello reply')
-        for _ in range(30):
+        for _ in range(60):
             try:
                 reply = self.account.inbox.get(subject=new_subject)
                 break
@@ -5423,7 +5511,7 @@ class MessagesTest(BaseItemTest):
         item = self.get_test_item(folder=None)
         item.folder = None
         item.send()
-        for _ in range(30):
+        for _ in range(60):
             try:
                 sent_item = self.account.inbox.get(subject=item.subject)
                 break
@@ -5433,7 +5521,7 @@ class MessagesTest(BaseItemTest):
             assert False, 'Gave up waiting for the sent item to show up in the inbox'
         new_subject = ('Re: %s' % sent_item.subject)[:255]
         sent_item.forward(subject=new_subject, body='Hello reply', to_recipients=[item.author])
-        for _ in range(30):
+        for _ in range(60):
             try:
                 reply = self.account.inbox.get(subject=new_subject)
                 break
@@ -5502,6 +5590,24 @@ class ContactsTest(BaseItemTest):
         self.assertEqual({m.mailbox.email_address for m in new_dl.members}, dl.members)
 
         dl.delete()
+
+    def test_find_people(self):
+        # The test server may not have any contacts. Just test that the FindPeople service and helpers work
+        self.assertGreaterEqual(len(list(self.test_folder.people())), 0)
+        self.assertGreaterEqual(
+            len(list(
+                self.test_folder.people().only('display_name').filter(display_name='john').order_by('display_name')
+            )),
+            0
+        )
+
+    def test_get_persona(self):
+        # The test server may not have any personas. Just test that the service response with something we can parse
+        persona = Persona(persona_id=PersonaId(id='AAA=', changekey='xxx'))
+        try:
+            GetPersona(protocol=self.account.protocol).call(persona=persona)
+        except ErrorInvalidIdMalformed:
+            pass
 
 
 def get_random_bool():

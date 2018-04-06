@@ -23,8 +23,29 @@ class DoesNotExist(Exception):
     pass
 
 
+class SearchableMixIn(object):
+    # Implements a search API for inheritance
+    def get(self, *args, **kwargs):
+        raise NotImplementedError()
+
+    def all(self):
+        raise NotImplementedError()
+
+    def none(self):
+        raise NotImplementedError()
+
+    def filter(self, *args, **kwargs):
+        raise NotImplementedError()
+
+    def exclude(self, *args, **kwargs):
+        raise NotImplementedError()
+
+    def people(self):
+        raise NotImplementedError()
+
+
 @python_2_unicode_compatible
-class QuerySet(object):
+class QuerySet(SearchableMixIn):
     """
     A Django QuerySet-like class for querying items. Defers queries until the QuerySet is consumed. Supports chaining to
     build up complex queries.
@@ -37,11 +58,18 @@ class QuerySet(object):
     NONE = 'none'
     RETURN_TYPES = (VALUES, VALUES_LIST, FLAT, NONE)
 
-    def __init__(self, folder_collection):
+    ITEM = 'item'
+    PERSONA = 'persona'
+    REQUEST_TYPES = (ITEM, PERSONA)
+
+    def __init__(self, folder_collection, request_type=ITEM):
         from .folders import FolderCollection
         if not isinstance(folder_collection, FolderCollection):
             raise ValueError("folder_collection value '%s' must be a FolderCollection instance" % folder_collection)
         self.folder_collection = folder_collection  # A FolderCollection instance
+        if request_type not in self.REQUEST_TYPES:
+            raise ValueError("'request_type' %r must be one of %s" % (request_type, self.REQUEST_TYPES))
+        self.request_type = request_type
         self.q = Q()  # Default to no restrictions. 'None' means 'return nothing'
         self.only_fields = None
         self.order_fields = None
@@ -71,7 +99,7 @@ class QuerySet(object):
         if self.return_format not in self.RETURN_TYPES:
             raise ValueError("self.return_value '%s' must be one of %s" % (self.return_format, self.RETURN_TYPES))
         # Only mutable objects need to be deepcopied. Folder should be the same object
-        new_qs = self.__class__(self.folder_collection)
+        new_qs = self.__class__(self.folder_collection, request_type=self.request_type)
         new_qs.q = None if self.q is None else deepcopy(self.q)
         new_qs.only_fields = self.only_fields
         new_qs.order_fields = None if self.order_fields is None else deepcopy(self.order_fields)
@@ -86,6 +114,9 @@ class QuerySet(object):
         return self._cache is not None
 
     def _get_field_path(self, s):
+        from .items import Persona
+        if self.request_type == self.PERSONA:
+            return FieldPath(field=Persona.get_field_by_fieldname(s))
         for folder in self.folder_collection:
             try:
                 return FieldPath.from_string(s, folder=folder)
@@ -94,6 +125,11 @@ class QuerySet(object):
         raise ValueError("Unknown fieldname '%s' on folders '%s'" % (s, self.folder_collection.folders))
 
     def _get_field_order(self, s):
+        from .items import Persona
+        if self.request_type == self.PERSONA:
+            field_path = FieldPath(field=Persona.get_field_by_fieldname(s.lstrip('-')))
+            reverse = s.startswith('-')
+            return FieldOrder(field_path=field_path, reverse=reverse)
         for folder in self.folder_collection:
             try:
                 return FieldOrder.from_string(s, folder=folder)
@@ -114,6 +150,8 @@ class QuerySet(object):
             raise ValueError("'only_fields' value %r must be a tuple" % self.only_fields)
         # Remove ItemId and ChangeKey. We get them unconditionally
         additional_fields = {f for f in self.only_fields if not f.field.is_attribute}
+        if self.request_type != self.ITEM:
+            return additional_fields
 
         # For CalendarItem items, we want to inject internal timezone fields into the requested fields.
         has_start = 'start' in {f.field.name for f in additional_fields}
@@ -130,10 +168,18 @@ class QuerySet(object):
         return additional_fields
 
     def _query(self):
+        from .folders import SHALLOW
+        from .items import Persona
         if self.only_fields is None:
             # We didn't restrict list of field paths. Get all fields from the server, including extended properties.
-            additional_fields = {FieldPath(field=f) for f in self.folder_collection.allowed_fields()}
-            complex_fields_requested = True
+            if self.request_type == self.PERSONA:
+                additional_fields = {FieldPath(field=f) for f in Persona.supported_fields(
+                    version=self.folder_collection.account.version
+                ) if not f.is_complex}
+                complex_fields_requested = False
+            else:
+                additional_fields = {FieldPath(field=f) for f in self.folder_collection.allowed_fields()}
+                complex_fields_requested = True
         else:
             additional_fields = self._additional_fields()
             complex_fields_requested = \
@@ -156,31 +202,46 @@ class QuerySet(object):
         else:
             extra_order_fields = set()
 
-        find_item_kwargs = dict(
-            shape=IdOnly,  # Always use IdOnly here, because AllProperties doesn't actually get *all* properties
-            additional_fields=additional_fields,
-            order_fields=order_fields,
-            calendar_view=self.calendar_view,
-            page_size=self.page_size,
-            max_items=self.max_items,
-        )
-
-        if complex_fields_requested:
-            # The FindItem service does not support complex field types. Tell find_items() to return
-            # (item_id, changekey) tuples, and pass that to fetch().
-            find_item_kwargs['additional_fields'] = None
-            items = self.folder_collection.account.fetch(
-                ids=self.folder_collection.find_items(self.q, **find_item_kwargs),
-                only_fields=additional_fields,
-                chunk_size=self.page_size,
+        if self.request_type == self.PERSONA:
+            if len(self.folder_collection) != 1:
+                raise ValueError('Personas can only be queried on a single folder')
+            folder = list(self.folder_collection)[0]
+            items = folder.find_people(
+                self.q,
+                shape=IdOnly,
+                depth=SHALLOW,
+                additional_fields=additional_fields,
+                order_fields=order_fields,
+                page_size=self.page_size,
+                max_items=self.max_items,
             )
         else:
-            if not additional_fields:
-                # If additional_fields is the empty set, we only requested item_id and changekey fields. We can then
-                # take a shortcut by using (shape=IdOnly, additional_fields=None) to tell find_items() to return
-                # (item_id, changekey) tuples. We'll post-process those later.
+            find_item_kwargs = dict(
+                shape=IdOnly,  # Always use IdOnly here, because AllProperties doesn't actually get *all* properties
+                additional_fields=additional_fields,
+                order_fields=order_fields,
+                calendar_view=self.calendar_view,
+                page_size=self.page_size,
+                max_items=self.max_items,
+            )
+
+            if complex_fields_requested:
+                # The FindItem service does not support complex field types. Tell find_items() to return
+                # (item_id, changekey) tuples, and pass that to fetch().
                 find_item_kwargs['additional_fields'] = None
-            items = self.folder_collection.find_items(self.q, **find_item_kwargs)
+                items = self.folder_collection.account.fetch(
+                    ids=self.folder_collection.find_items(self.q, **find_item_kwargs),
+                    only_fields=additional_fields,
+                    chunk_size=self.page_size,
+                )
+            else:
+                if not additional_fields:
+                    # If additional_fields is the empty set, we only requested item_id and changekey fields. We can then
+                    # take a shortcut by using (shape=IdOnly, additional_fields=None) to tell find_items() to return
+                    # (item_id, changekey) tuples. We'll post-process those later.
+                    find_item_kwargs['additional_fields'] = None
+                items = self.folder_collection.find_items(self.q, **find_item_kwargs)
+
         if not must_sort_clientside:
             return items
 
@@ -457,6 +518,12 @@ class QuerySet(object):
         new_qs = self.copy()
         q = ~Q(*args, **kwargs)
         new_qs.q = q if new_qs.q is None else new_qs.q & q
+        return new_qs
+
+    def people(self):
+        """ Changes the queryset to search the folder for Personas instead of Items """
+        new_qs = self.copy()
+        new_qs.request_type = self.PERSONA
         return new_qs
 
     def only(self, *args):

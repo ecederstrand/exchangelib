@@ -32,11 +32,17 @@ class EWSDate(datetime.date):
         dt = super(EWSDate, self).__add__(other)
         return self.from_date(dt)  # We want to return EWSDate objects
 
+    def __iadd__(self, other):
+        return self + other
+
     def __sub__(self, other):
         dt = super(EWSDate, self).__sub__(other)
         if isinstance(dt, datetime.timedelta):
             return dt
         return self.from_date(dt)  # We want to return EWSDate objects
+
+    def __isub__(self, other):
+        return self - other
 
     @classmethod
     def fromordinal(cls, n):
@@ -112,11 +118,17 @@ class EWSDateTime(datetime.datetime):
         t = super(EWSDateTime, self).__add__(other)
         return self.from_datetime(t)  # We want to return EWSDateTime objects
 
+    def __iadd__(self, other):
+        return self + other
+
     def __sub__(self, other):
         t = super(EWSDateTime, self).__sub__(other)
         if isinstance(t, datetime.timedelta):
             return t
         return self.from_datetime(t)  # We want to return EWSDateTime objects
+
+    def __isub__(self, other):
+        return self - other
 
     @classmethod
     def from_string(cls, date_string):

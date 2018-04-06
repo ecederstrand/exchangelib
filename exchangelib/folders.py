@@ -10,17 +10,18 @@ from future.utils import python_2_unicode_compatible
 from six import text_type, string_types
 
 from .errors import ErrorAccessDenied, ErrorFolderNotFound, ErrorCannotEmptyFolder, ErrorCannotDeleteObject, \
-    ErrorNoPublicFolderReplicaAvailable, ErrorInvalidOperation, ErrorDeleteDistinguishedFolder
+    ErrorNoPublicFolderReplicaAvailable, ErrorInvalidOperation, ErrorDeleteDistinguishedFolder, ErrorItemNotFound
 from .fields import IntegerField, TextField, DateTimeField, FieldPath, EffectiveRightsField, MailboxField, IdField, \
     EWSElementField
 from .items import Item, CalendarItem, Contact, Message, Task, MeetingRequest, MeetingResponse, MeetingCancellation, \
     DistributionList, RegisterMixIn, ITEM_CLASSES, ITEM_TRAVERSAL_CHOICES, SHAPE_CHOICES, IdOnly, DELETE_TYPE_CHOICES, \
     HARD_DELETE, Persona
 from .properties import ItemId, Mailbox, EWSElement, ParentFolderId
-from .queryset import QuerySet
+from .queryset import QuerySet, SearchableMixIn
 from .restriction import Restriction
 from .services import FindFolder, GetFolder, FindItem, CreateFolder, UpdateFolder, DeleteFolder, EmptyFolder, FindPeople
 from .transport import TNS, MNS
+from .version import EXCHANGE_2007_SP1, EXCHANGE_2010_SP1, EXCHANGE_2013, EXCHANGE_2013_SP1
 
 string_type = string_types[0]
 log = logging.getLogger(__name__)
@@ -77,24 +78,6 @@ class CalendarView(EWSElement):
         super(CalendarView, self).clean(version=version)
         if self.end < self.start:
             raise ValueError("'start' must be before 'end'")
-
-
-class SearchableMixIn(object):
-    # Implements a search API for inheritance
-    def get(self, *args, **kwargs):
-        raise NotImplementedError()
-
-    def all(self):
-        raise NotImplementedError()
-
-    def none(self):
-        raise NotImplementedError()
-
-    def filter(self, *args, **kwargs):
-        raise NotImplementedError()
-
-    def exclude(self, *args, **kwargs):
-        raise NotImplementedError()
 
 
 class FolderCollection(SearchableMixIn):
@@ -304,6 +287,7 @@ class Folder(RegisterMixIn, SearchableMixIn):
     # Default item type for this folder. See http://msdn.microsoft.com/en-us/library/hh354773(v=exchg.80).aspx
     CONTAINER_CLASS = None
     supported_item_models = ITEM_CLASSES  # The Item types that this folder can contain. Default is all
+    supported_from = None  # For distinguished folders, marks the version from which the folder was introduced
     LOCALIZED_NAMES = dict()  # A map of (str)locale: (tuple)localized_folder_names
     ITEM_MODEL_MAP = {cls.response_tag(): cls for cls in ITEM_CLASSES}
     FIELDS = [
@@ -462,6 +446,13 @@ class Folder(RegisterMixIn, SearchableMixIn):
                     tree += '    %s\n' % node
         return tree.strip()
 
+    @classmethod
+    def supports_version(cls, version):
+        # 'version' is a Version instance, for convenience by callers
+        if not cls.supported_from or not version:
+            return True
+        return version.build >= cls.supported_from
+
     @property
     def has_distinguished_name(self):
         return self.name and self.DISTINGUISHED_FOLDER_ID and self.name.lower() == self.DISTINGUISHED_FOLDER_ID.lower()
@@ -569,6 +560,12 @@ class Folder(RegisterMixIn, SearchableMixIn):
 
     def exclude(self, *args, **kwargs):
         return FolderCollection(account=self.account, folders=[self]).exclude(*args, **kwargs)
+
+    def people(self):
+        return QuerySet(
+            folder_collection=FolderCollection(account=self.account, folders=[self]),
+            request_type=QuerySet.PERSONA,
+        )
 
     def find_people(self, q, shape=IdOnly, depth=SHALLOW, additional_fields=None, order_fields=None, page_size=None,
                     max_items=None):
@@ -905,18 +902,24 @@ class Root(Folder):
             return self._subfolders
 
         # Map root, and all subfolders of root, at arbitrary depth by folder ID. First get distinguished folders, then
-        # everything else. AdminAuditLogs folder is not retrievable and makes all other folders fail.
+        # everything else. AdminAuditLogs folder is not retrievable and makes the entire request fail.
         folders_map = {self.folder_id: self}
+        distinguished_folders = [
+            cls(account=self.account, name=cls.DISTINGUISHED_FOLDER_ID) for cls in WELLKNOWN_FOLDERS
+            if cls != AdminAuditLogs and cls.supports_version(self.account.version)
+        ]
         try:
-            for f in FolderCollection(account=self.account, folders=[
-                        cls(account=self.account, name=cls.DISTINGUISHED_FOLDER_ID)
-                        for cls in WELLKNOWN_FOLDERS if cls != AdminAuditLogs
-            ]).get_folders():
+            for f in FolderCollection(account=self.account, folders=distinguished_folders).get_folders():
                 if isinstance(f, (ErrorFolderNotFound, ErrorNoPublicFolderReplicaAvailable)):
                     # This is just a distinguished folder the server does not have
                     continue
                 if isinstance(f, ErrorInvalidOperation) and f.value == 'The distinguished folder name is unrecognized.':
                     # This is just a distinguished folder the server does not have
+                    continue
+                if isinstance(f, ErrorItemNotFound) \
+                        and f.value == 'The specified object was not found in the store., The process failed ' \
+                                       'to get the correct properties.':
+                    # This another way of telling us that this is just a distinguished folder the server does not have
                     continue
                 folders_map[f.folder_id] = f
             for f in FolderCollection(account=self.account, folders=[self]).find_folders(depth=DEEP):
@@ -1154,60 +1157,74 @@ class WellknownFolder(Folder):
 
 class AdminAuditLogs(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = 'adminauditlogs'
+    supported_from = EXCHANGE_2013
 
 
 class ArchiveDeletedItems(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = 'archivedeleteditems'
+    supported_from = EXCHANGE_2010_SP1
 
 
 class ArchiveInbox(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = 'archiveinbox'
+    supported_from = EXCHANGE_2013_SP1
 
 
 class ArchiveMsgFolderRoot(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = 'archivemsgfolderroot'
+    supported_from = EXCHANGE_2010_SP1
 
 
 class ArchiveRecoverableItemsDeletions(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = 'archiverecoverableitemsdeletions'
+    supported_from = EXCHANGE_2010_SP1
 
 
 class ArchiveRecoverableItemsPurges(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = 'archiverecoverableitemspurges'
+    supported_from = EXCHANGE_2010_SP1
 
 
 class ArchiveRecoverableItemsRoot(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = 'archiverecoverableitemsroot'
+    supported_from = EXCHANGE_2010_SP1
 
 
 class ArchiveRecoverableItemsVersions(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = 'archiverecoverableitemsversions'
+    supported_from = EXCHANGE_2010_SP1
 
 
 class ArchiveRoot(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = 'archiveroot'
+    supported_from = EXCHANGE_2010_SP1
 
 
 class Conflicts(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = 'conflicts'
+    supported_from = EXCHANGE_2013
 
 
 class ConversationHistory(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = 'conversationhistory'
+    supported_from = EXCHANGE_2013
 
 
 class Directory(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = 'directory'
+    supported_from = EXCHANGE_2013_SP1
 
 
 class Favorites(WellknownFolder):
     CONTAINER_CLASS = 'IPF.Note'
     DISTINGUISHED_FOLDER_ID = 'favorites'
+    supported_from = EXCHANGE_2013
 
 
 class IMContactList(WellknownFolder):
     CONTAINER_CLASS = 'IPF.Contact.MOC.ImContactList'
     DISTINGUISHED_FOLDER_ID = 'imcontactlist'
+    supported_from = EXCHANGE_2013
 
 
 class Journal(WellknownFolder):
@@ -1217,6 +1234,7 @@ class Journal(WellknownFolder):
 
 class LocalFailures(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = 'localfailures'
+    supported_from = EXCHANGE_2013
 
 
 class MsgFolderRoot(WellknownFolder):
@@ -1226,6 +1244,7 @@ class MsgFolderRoot(WellknownFolder):
 class MyContacts(WellknownFolder):
     CONTAINER_CLASS = 'IPF.Note'
     DISTINGUISHED_FOLDER_ID = 'mycontacts'
+    supported_from = EXCHANGE_2013
 
 
 class Notes(WellknownFolder):
@@ -1238,38 +1257,46 @@ class Notes(WellknownFolder):
 
 class PeopleConnect(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = 'peopleconnect'
+    supported_from = EXCHANGE_2013
 
 
 class PublicFoldersRoot(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = 'publicfoldersroot'
+    supported_from = EXCHANGE_2007_SP1
 
 
 class QuickContacts(WellknownFolder):
     CONTAINER_CLASS = 'IPF.Contact.MOC.QuickContacts'
     DISTINGUISHED_FOLDER_ID = 'quickcontacts'
+    supported_from = EXCHANGE_2013
 
 
 class RecipientCache(Contacts):
     DISTINGUISHED_FOLDER_ID = 'recipientcache'
     CONTAINER_CLASS = 'IPF.Contact.RecipientCache'
+    supported_from = EXCHANGE_2013
 
     LOCALIZED_NAMES = {}
 
 
 class RecoverableItemsDeletions(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = 'recoverableitemsdeletions'
+    supported_from = EXCHANGE_2010_SP1
 
 
 class RecoverableItemsPurges(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = 'recoverableitemspurges'
+    supported_from = EXCHANGE_2010_SP1
 
 
 class RecoverableItemsRoot(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = 'recoverableitemsroot'
+    supported_from = EXCHANGE_2010_SP1
 
 
 class RecoverableItemsVersions(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = 'recoverableitemsversions'
+    supported_from = EXCHANGE_2010_SP1
 
 
 class SearchFolders(WellknownFolder):
@@ -1278,16 +1305,20 @@ class SearchFolders(WellknownFolder):
 
 class ServerFailures(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = 'serverfailures'
+    supported_from = EXCHANGE_2013
 
 
 class SyncIssues(WellknownFolder):
     CONTAINER_CLASS = 'IPF.Note'
     DISTINGUISHED_FOLDER_ID = 'syncissues'
+    supported_from = EXCHANGE_2013
 
 
 class ToDoSearch(WellknownFolder):
     CONTAINER_CLASS = 'IPF.Task'
     DISTINGUISHED_FOLDER_ID = 'todosearch'
+    supported_from = EXCHANGE_2013
+
     LOCALIZED_NAMES = {
         None: (u'To-Do Search',),
     }

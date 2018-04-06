@@ -197,11 +197,13 @@ EWS has some special requirements on datetimes and timezones. You need to use th
     # Datetime math works transparently
     two_hours_later = localized_dt + timedelta(hours=2)
     two_hours = two_hours_later - localized_dt
+    two_hours_later += timedelta(hours=2)
 
     # Dates
     my_date = EWSDate(2017, 9, 5)
     today = EWSDate.today()
     also_today = right_now.date()
+    also_today += timedelta(days=10)
 
     # UTC helpers. 'UTC' is the UTC timezone as an EWSTimeZone instance.
     # 'UTC_NOW' returns a timezone-aware UTC timestamp of current time.
@@ -445,6 +447,21 @@ Here are some examples of using the API:
     FolderCollection(account=account, folders=[account.inbox, account.calendar]).filter(subject='foo')
 
 
+Searching contacts
+^^^^^^^^^^^^^^^^^^
+Fetching personas from a contact folderis supported using the same syntax as folders. Just start your query with
+``.people()``:
+
+.. code-block:: python
+
+    # Navigate to a contact folder and start the search
+    all_contacts = a.root / 'AllContacts'
+    for p in all_contacts.people():
+        print(p)
+    for p in all_contacts.people().only('display_name').filter(display_name='john').order_by('display_name'):
+        print(p)
+
+
 Extended properties
 ^^^^^^^^^^^^^^^^^^^
 Extended properties makes it possible to attach custom key-value pairs to items and folders on the Exchange server.
@@ -617,6 +634,22 @@ Here's an example of creating 7 occurrences on Mondays and Wednesdays of every t
     for i in a.calendar.view(start=start, end=start + timedelta(days=4*3*7)):
         print(i.subject, i.start, i.end)
 
+    # 'modified_occurrences' and 'deleted_occurrences' of master items are read-only fields. To delete or modify an
+    # occurrence, you must use 'view()' to fetch the occurrence and modify or delete it:
+    for occurrence in a.calendar.view(start=start, end=start + timedelta(days=4*3*7)):
+        # Delete or update random occurrences. This will affect  'modified_occurrences' and 'deleted_occurrences'
+        # of the master item.
+        if i.start.milliseconds % 2:
+            # We receive timestamps as UTC but want to write them back as local timezone
+            occurrence.start = occurrence.start.astimezone(tz)
+            occurrence.start += datetime.timedelta(minutes=30)
+            occurrence.end = occurrence.end.astimezone(tz)
+            occurrence.end += datetime.timedelta(minutes=30)
+            occurrence.subject = 'My new subject'
+            occurrence.save()
+        else:
+            item.delete()
+
 
 Message timestamp fields
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -685,7 +718,10 @@ Non-account methods
     a.protocol.get_rooms(some_roomlist)
 
     # Get account information for a list of names or email addresses
-    a.protocol.resolve_names(['ann@example.com', 'bart@example.com'])
+    for mailbox in a.protocol.resolve_names(['ann@example.com', 'bart@example.com']):
+        print(mailbox.email_address)
+    for mailbox, contact in a.protocol.resolve_names(['anne', 'bart'], return_full_contact_data=True):
+        print(mailbox.email_address, contact.display_name)
 
     # Get availability information for a list of accounts
     start = tz.localize(EWSDateTime.now())
@@ -698,7 +734,7 @@ Non-account methods
 Troubleshooting
 ^^^^^^^^^^^^^^^
 If you are having trouble using this library, the first thing to try is to enable debug logging. This will output a huge
-amount of information about what is going on, most notable the actual XML documents that are doing over the wite. This
+amount of information about what is going on, most notable the actual XML documents that are going over the wire. This
 can be really handy to see which fields are being sent and received.
 
 .. code-block:: python

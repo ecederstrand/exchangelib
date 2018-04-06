@@ -270,6 +270,12 @@ class ReferenceItemId(ItemId):
 class PersonaId(ItemId):
     # MSDN: https://msdn.microsoft.com/en-us/library/office/jj191430(v=exchg.150).aspx
     ELEMENT_NAME = 'PersonaId'
+    NAMESPACE = MNS
+
+    @classmethod
+    def response_tag(cls):
+        # For some reason, EWS wants this in the MNS namespace in a request, but TNS namespace in a response...
+        return '{%s}%s' % (TNS, cls.ELEMENT_NAME)
 
     __slots__ = ItemId.__slots__
 
@@ -514,6 +520,8 @@ class CalendarEvent(EWSElement):
         # CalendarEventDetails
     ]
 
+    __slots__ = tuple(f.name for f in FIELDS)
+
 
 class WorkingPeriod(EWSElement):
     # MSDN: https://msdn.microsoft.com/en-us/library/office/aa580377(v=exchg.150).aspx
@@ -523,6 +531,8 @@ class WorkingPeriod(EWSElement):
         TimeField('start', field_uri='StartTimeInMinutes', is_required=True),
         TimeField('end', field_uri='EndTimeInMinutes', is_required=True),
     ]
+
+    __slots__ = tuple(f.name for f in FIELDS)
 
 
 class FreeBusyView(EWSElement):
@@ -541,6 +551,8 @@ class FreeBusyView(EWSElement):
         # hopefully don't care about.
         EWSElementListField('working_hours', field_uri='WorkingPeriodArray', value_cls=WorkingPeriod),
     ]
+
+    __slots__ = tuple(f.name for f in FIELDS)
 
     @classmethod
     def from_xml(cls, elem, account):
@@ -631,3 +643,32 @@ class EffectiveRights(EWSElement):
 
     def __contains__(self, item):
         return getattr(self, item, False)
+
+
+class SearchableMailbox(EWSElement):
+    # MSDN: https://msdn.microsoft.com/en-us/library/office/jj191013(v=exchg.150).aspx
+    ELEMENT_NAME = 'SearchableMailbox'
+
+    FIELDS = [
+        CharField('guid', field_uri='Guid'),
+        EmailAddressField('primary_smtp_address', field_uri='PrimarySmtpAddress'),
+        BooleanField('is_external', field_uri='IsExternalMailbox'),
+        EmailAddressField('external_email', field_uri='ExternalEmailAddress'),
+        CharField('display_name', field_uri='DisplayName'),
+        BooleanField('is_membership_group', field_uri='IsMembershipGroup'),
+        CharField('reference_id', field_uri='ReferenceId'),
+    ]
+
+    __slots__ = tuple(f.name for f in FIELDS)
+
+
+class FailedMailbox(EWSElement):
+    # MSDN: https://msdn.microsoft.com/en-us/library/office/jj191027(v=exchg.150).aspx
+    FIELDS = [
+        CharField('mailbox', field_uri='Mailbox'),
+        IntegerField('error_code', field_uri='ErrorCode'),
+        CharField('error_message', field_uri='ErrorMessage'),
+        BooleanField('is_archive', field_uri='IsArchive'),
+    ]
+
+    __slots__ = tuple(f.name for f in FIELDS)
