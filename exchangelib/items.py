@@ -1187,9 +1187,9 @@ class BaseMeetingReplyItem(Item):
 
         res = self.account.bulk_create(items=[self], folder=self.folder, message_disposition=message_disposition)
 
-        for r in res:
-            if isinstance(r, Exception):
-                raise r
+        for r_item in res:
+            if isinstance(r_item, Exception):
+                raise r_item
         return res
 
 
