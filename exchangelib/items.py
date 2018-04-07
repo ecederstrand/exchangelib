@@ -1187,15 +1187,10 @@ class BaseMeetingReplyItem(Item):
 
         res = self.account.bulk_create(items=[self], folder=self.folder, message_disposition=message_disposition)
 
-        if len(res) == 2:
-            if isinstance(res[0], BulkCreateResult) and isinstance(res[0], BulkCreateResult):
-                return res  # return list of two BulkCreateResult (with item_id and changekey each)
-            else:
-                raise ValueError('Unexpected response')
-
-        if isinstance(res[0], Exception):
-            raise res[0]
-        raise ValueError('Unexpected response')
+        for r in res:
+            if isinstance(r, Exception):
+                raise r
+        return res
 
 
 class AcceptItem(BaseMeetingReplyItem):

@@ -450,8 +450,8 @@ Here are some examples of using the API:
 Meetings
 ^^^^^^^^
 
-The CalendarItem class allows you send out requests for meetings that you initiate or to cancel meetings that you
-already set up before. It is also possible to process ``MeetingRequest`` messages that are received. You can reply to
+The ``CalendarItem`` class allows you send out requests for meetings that you initiate or to cancel meetings that you
+already set out before. It is also possible to process ``MeetingRequest`` messages that are received. You can reply to
 these messages using the ``AcceptItem``, ``TentativelyAcceptItem`` and ``DeclineItem`` classes. If you receive a
 cancellation for a meeting (class ``MeetingCancellation``) that you already accepted then you can also process these
 by removing the entry from the calendar.
@@ -473,7 +473,7 @@ by removing the entry from the calendar.
     # cancel a meeting that was sent out using the CalendarItem class
     for calendar_item in account.calendar.all().order_by('-datetime_received')[:5]:
         # only the organizer of a meeting can cancel it
-        if item.organizer.email_address == account.primary_smtp_address:
+        if calendar_item.organizer.email_address == account.primary_smtp_address:
             calendar_item.cancel()
 
     # processing an incoming MeetingRequest
@@ -482,6 +482,10 @@ by removing the entry from the calendar.
             item.accept(body="Sure, I'll come")  # TODO(frennkie) not 100% sure about this
             # item.decline(body="No way!")
             # item.tentatively_accept(body="Maybe..")
+
+    # meeting requests can also be handled from the calendar - e.g. decline the meeting that was received last
+    for calendar_item in account.calendar.all().order_by('-datetime_received')[:1]:
+        calendar_item.decline()
 
     # processing an incoming MeetingCancellation (also delete from calendar)
     for item in account.inbox.all().order_by('-datetime_received')[:5]:
