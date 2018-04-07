@@ -470,15 +470,27 @@ by removing the entry from the calendar.
     )
     item.save(send_meeting_invitations=SEND_TO_ALL_AND_SAVE_COPY)
 
-    # cancel a meeting that was already sent out using the CalendarItem class
-    calendar_item.cancel()
+    # cancel a meeting that was sent out using the CalendarItem class
+    for calendar_item in account.calendar.all().order_by('-datetime_received')[:5]:
+        # only the organizer of a meeting can cancel it
+        if item.organizer.email_address == account.primary_smtp_address:
+            calendar_item.cancel()
 
     # processing an incoming MeetingRequest
-    TODO
+    for item in account.inbox.all().order_by('-datetime_received')[:5]:
+        if isinstance(item, MeetingRequest):
+            item.accept(body="Sure, I'll come")  # TODO(frennkie) not 100% sure about this
+            # item.decline(body="No way!")
+            # item.tentatively_accept(body="Maybe..")
 
-    # processing an incoming MeetingCancellation
-    TODO
-
+    # processing an incoming MeetingCancellation (also delete from calendar)
+    for item in account.inbox.all().order_by('-datetime_received')[:5]:
+        if isinstance(ews_item, MeetingCancellation):
+            if item.associated_calendar_item_id:
+                calendar_item = account.inbox.get(item_id=item.associated_calendar_item_id.id,
+                                                  changekey=item.associated_calendar_item_id.changekey)
+                calendar_item.delete()
+            item.move_to_trash()
 
 
 Searching contacts
