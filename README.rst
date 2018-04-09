@@ -479,9 +479,11 @@ by removing the entry from the calendar.
     # processing an incoming MeetingRequest
     for item in account.inbox.all().order_by('-datetime_received')[:5]:
         if isinstance(item, MeetingRequest):
-            item.accept(body="Sure, I'll come")  # TODO(frennkie) not 100% sure about this
-            # item.decline(body="No way!")
-            # item.tentatively_accept(body="Maybe..")
+            item.accept(body="Sure, I'll come")
+            # Or:
+            item.decline(body="No way!")
+            # Or:
+            item.tentatively_accept(body="Maybe...")
 
     # meeting requests can also be handled from the calendar - e.g. decline the meeting that was received last
     for calendar_item in account.calendar.all().order_by('-datetime_received')[:1]:
