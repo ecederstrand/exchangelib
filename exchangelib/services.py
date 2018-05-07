@@ -36,7 +36,7 @@ from .errors import EWSWarning, TransportError, SOAPError, ErrorTimeoutExpired, 
     ErrorInvalidOperation
 from .ewsdatetime import EWSDateTime, NaiveDateTimeNotAllowed
 from .transport import wrap, extra_headers, SOAPNS, TNS, MNS, ENS
-from .util import chunkify, create_element, add_xml_child, get_xml_attr, to_xml, post_ratelimited, ElementType, \
+from .util import chunkify, create_element, add_xml_child, get_xml_attr, to_xml, post_ratelimited, ElementType, redact_email, \
     xml_to_str, set_xml_value, peek, xml_text_to_value
 from .version import EXCHANGE_2010, EXCHANGE_2010_SP2, EXCHANGE_2013, EXCHANGE_2013_SP1
 
@@ -134,7 +134,7 @@ class EWSService(object):
                 # This may run from a thread pool, which obfuscates the stack trace. Print trace immediately.
                 account = self.account if isinstance(self, EWSAccountService) else None
                 log.warning('EWS %s, account %s: Exception in _get_elements: %s', self.protocol.service_endpoint,
-                            account, traceback.format_exc(20))
+                            redact_email(account), traceback.format_exc(20))
                 raise
 
     def _get_response_xml(self, payload):
@@ -165,7 +165,7 @@ class EWSService(object):
                 data=soap_payload,
                 allow_redirects=False)
             self.protocol.release_session(session)
-            log.debug('Trying API version %s for account %s', api_version, account)
+            log.debug('Trying API version %s for account %s', api_version, redact_email(account))
             try:
                 soap_response_payload = to_xml(r.text)
             except ParseError as e:
@@ -181,7 +181,7 @@ class EWSService(object):
                     # This should never happen for non-account services
                     raise ValueError("'account' should not be None")
                 # The guessed server version is wrong for this account. Try the next version
-                log.debug('API version %s was invalid for account %s', api_version, account)
+                log.debug('API version %s was invalid for account %s', api_version, redact_email(account))
                 continue
             except ResponseMessageError:
                 # We got an error message from Exchange, but we still want to get any new version info from the response
@@ -195,7 +195,7 @@ class EWSService(object):
             return res
         if account:
             raise ErrorInvalidSchemaVersionForMailboxVersion('Tried versions %s but all were invalid for account %s' %
-                                                             (api_versions, account))
+                                                             (api_versions, redact_email(account)))
         raise ErrorInvalidServerVersion('Tried versions %s but all were invalid' % api_versions)
 
     def _update_api_version(self, hint, api_version, response):
@@ -362,7 +362,7 @@ class EWSFolderService(EWSAccountService):
 class PagingEWSMixIn(EWSService):
     def _paged_call(self, payload_func, max_items, **kwargs):
         account = self.account if isinstance(self, EWSAccountService) else None
-        log_prefix = 'EWS %s, account %s, service %s' % (self.protocol.service_endpoint, account, self.SERVICE_NAME)
+        log_prefix = 'EWS %s, account %s, service %s' % (self.protocol.service_endpoint, redact_email(account), self.SERVICE_NAME)
         wait = 0
         if isinstance(self, EWSFolderService):
             expected_message_count = len(self.folders)
@@ -1449,7 +1449,7 @@ class FindPeople(EWSAccountService, PagingEWSMixIn):
 
     def _paged_call(self, payload_func, max_items, **kwargs):
         account = self.account if isinstance(self, EWSAccountService) else None
-        log_prefix = 'EWS %s, account %s, service %s' % (self.protocol.service_endpoint, account, self.SERVICE_NAME)
+        log_prefix = 'EWS %s, account %s, service %s' % (self.protocol.service_endpoint, redact_email(account), self.SERVICE_NAME)
         item_count = 0
         wait = 0
         while True:

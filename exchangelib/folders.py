@@ -22,6 +22,7 @@ from .restriction import Restriction
 from .services import FindFolder, GetFolder, FindItem, CreateFolder, UpdateFolder, DeleteFolder, EmptyFolder, FindPeople
 from .transport import TNS, MNS
 from .version import EXCHANGE_2007_SP1, EXCHANGE_2010_SP1, EXCHANGE_2013, EXCHANGE_2013_SP1
+from .utils import redact_email
 
 string_type = string_types[0]
 log = logging.getLogger(__name__)
@@ -781,7 +782,7 @@ class Folder(RegisterMixIn, SearchableMixIn):
                 except KeyError:
                     pass
             if folder_cls == Folder:
-                log.debug('Fallback to class Folder (folder_class %s, name %s)', kwargs['folder_class'], kwargs['name'])
+                log.debug('Fallback to class Folder (folder_class %s, name %s)', kwargs['folder_class'], redact_email(kwargs['name']))
         return folder_cls(account=account, folder_id=fld_id, changekey=changekey, **kwargs)
 
     def to_xml(self, version):

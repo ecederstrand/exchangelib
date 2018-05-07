@@ -32,7 +32,7 @@ from .errors import AutoDiscoverFailed, AutoDiscoverRedirect, AutoDiscoverCircul
     RedirectError, ErrorNonExistentMailbox, UnauthorizedError
 from .protocol import BaseProtocol, Protocol
 from .transport import DEFAULT_ENCODING, DEFAULT_HEADERS
-from .util import create_element, get_xml_attr, add_xml_child, to_xml, is_xml, post_ratelimited, xml_to_str, \
+from .util import create_element, get_xml_attr, add_xml_child, to_xml, is_xml, post_ratelimited, xml_to_str, redact_email, \
     get_domain, CONNECTION_ERRORS, TLS_ERRORS
 
 
@@ -172,7 +172,7 @@ def discover(email, credentials):
     autodiscover and EWS server might not be the same, so we use a different Protocol to do the autodiscover request,
     and return a hopefully-cached Protocol to the callee.
     """
-    log.debug('Attempting autodiscover on email %s', email)
+    log.debug('Attempting autodiscover on email %s', redact_email(email))
     if not isinstance(credentials, Credentials):
         raise ValueError("'credentials' %r must be a Credentials instance" % credentials)
     domain = get_domain(email)
@@ -196,9 +196,9 @@ def discover(email, credentials):
                 # Autodiscover no longer works with this domain. Clear cache and try again after releasing the lock
                 del _autodiscover_cache[autodiscover_key]
             except AutoDiscoverRedirect as e:
-                log.debug('%s redirects to %s', email, e.redirect_email)
+                log.debug('%s redirects to %s', redact_email(email), redact_email(e.redirect_email))
                 if email.lower() == e.redirect_email.lower():
-                    raise_from(AutoDiscoverCircularRedirect('Redirect to same email address: %s' % email), None)
+                    raise_from(AutoDiscoverCircularRedirect('Redirect to same email address: %s' % redact_email(email)), None)
                 # Start over with the new email address after releasing the lock
                 email = e.redirect_email
         else:
@@ -209,8 +209,8 @@ def discover(email, credentials):
                 return _try_autodiscover(hostname=domain, credentials=credentials, email=email)
             except AutoDiscoverRedirect as e:
                 if email.lower() == e.redirect_email.lower():
-                    raise_from(AutoDiscoverCircularRedirect('Redirect to same email address: %s' % email), None)
-                log.debug('%s redirects to %s', email, e.redirect_email)
+                    raise_from(AutoDiscoverCircularRedirect('Redirect to same email address: %s' % redact_email(email)), None)
+                log.debug('%s redirects to %s', redact_email(email), redact_email(e.redirect_email))
                 # Start over with the new email address after releasing the lock
                 email = e.redirect_email
     log.debug('Released autodiscover_cache_lock')
@@ -333,7 +333,7 @@ def _autodiscover_quick(credentials, email, protocol):
     ews_url, primary_smtp_address = _parse_response(r.text)
     if not primary_smtp_address:
         primary_smtp_address = email
-    log.debug('Autodiscover success: %s may connect to %s as primary email %s', email, ews_url, primary_smtp_address)
+    log.debug('Autodiscover success: %s may connect to %s as primary email %s', redact_email(email), ews_url, redact_email(primary_smtp_address))
     # Autodiscover response contains an auth type, but we don't want to spend time here testing if it actually works.
     # Instead of forcing a possibly-wrong auth type, just let Protocol auto-detect the auth type.
     return primary_smtp_address, Protocol(service_endpoint=ews_url, credentials=credentials, auth_type=None)
@@ -440,7 +440,7 @@ def _parse_response(response):
     ews_url = get_xml_attr(protocol, '{%s}EwsUrl' % RESPONSE_NS)
     if not ews_url:
         raise ValueError("Required element 'EwsUrl' not found in response")
-    log.debug('Primary SMTP: %s, EWS endpoint: %s', primary_smtp_address, ews_url)
+    log.debug('Primary SMTP: %s, EWS endpoint: %s', redact_email(primary_smtp_address), ews_url)
     return ews_url, primary_smtp_address
 
 
