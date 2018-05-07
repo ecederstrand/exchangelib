@@ -782,7 +782,8 @@ class Folder(RegisterMixIn, SearchableMixIn):
                 except KeyError:
                     pass
             if folder_cls == Folder:
-                log.debug('Fallback to class Folder (folder_class %s, name %s)', kwargs['folder_class'], redact_email(kwargs['name']))
+                redacted_name = redact_email(kwargs['name'])
+                log.debug('Fallback to class Folder (folder_class %s, name %s)', kwargs['folder_class'], redacted_name)
         return folder_cls(account=account, folder_id=fld_id, changekey=changekey, **kwargs)
 
     def to_xml(self, version):

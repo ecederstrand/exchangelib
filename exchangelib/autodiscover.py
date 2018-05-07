@@ -32,8 +32,8 @@ from .errors import AutoDiscoverFailed, AutoDiscoverRedirect, AutoDiscoverCircul
     RedirectError, ErrorNonExistentMailbox, UnauthorizedError
 from .protocol import BaseProtocol, Protocol
 from .transport import DEFAULT_ENCODING, DEFAULT_HEADERS
-from .util import create_element, get_xml_attr, add_xml_child, to_xml, is_xml, post_ratelimited, xml_to_str, redact_email, \
-    get_domain, CONNECTION_ERRORS, TLS_ERRORS
+from .util import create_element, get_xml_attr, add_xml_child, to_xml, is_xml, post_ratelimited, xml_to_str, \
+    redact_email, get_domain, CONNECTION_ERRORS, TLS_ERRORS
 
 
 log = logging.getLogger(__name__)
@@ -196,9 +196,10 @@ def discover(email, credentials):
                 # Autodiscover no longer works with this domain. Clear cache and try again after releasing the lock
                 del _autodiscover_cache[autodiscover_key]
             except AutoDiscoverRedirect as e:
-                log.debug('%s redirects to %s', redact_email(email), redact_email(e.redirect_email))
+                redacted_email = redact_email(email)
+                log.debug('%s redirects to %s', redacted_email, redact_email(e.redirect_email))
                 if email.lower() == e.redirect_email.lower():
-                    raise_from(AutoDiscoverCircularRedirect('Redirect to same email address: %s' % redact_email(email)), None)
+                    raise_from(AutoDiscoverCircularRedirect('Redirect to same email address: %s' % redacted_email), None)
                 # Start over with the new email address after releasing the lock
                 email = e.redirect_email
         else:
@@ -333,7 +334,9 @@ def _autodiscover_quick(credentials, email, protocol):
     ews_url, primary_smtp_address = _parse_response(r.text)
     if not primary_smtp_address:
         primary_smtp_address = email
-    log.debug('Autodiscover success: %s may connect to %s as primary email %s', redact_email(email), ews_url, redact_email(primary_smtp_address))
+    redacted_email = redact_email(email)
+    redacted_psa = redact_email(primary_smtp_address)
+    log.debug('Autodiscover success: %s may connect to %s as primary email %s', redacted_email, ews_url, redacted_psa)
     # Autodiscover response contains an auth type, but we don't want to spend time here testing if it actually works.
     # Instead of forcing a possibly-wrong auth type, just let Protocol auto-detect the auth type.
     return primary_smtp_address, Protocol(service_endpoint=ews_url, credentials=credentials, auth_type=None)
