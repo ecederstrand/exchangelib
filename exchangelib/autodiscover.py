@@ -197,7 +197,7 @@ def discover(email, credentials):
                 del _autodiscover_cache[autodiscover_key]
             except AutoDiscoverRedirect as e:
                 redacted = redact_email(email)
-                log.debug('%s redirects to %s', redacted_email, redact_email(e.redirect_email))
+                log.debug('%s redirects to %s', redacted, redact_email(e.redirect_email))
                 if email.lower() == e.redirect_email.lower():
                     raise_from(AutoDiscoverCircularRedirect('Redirect to same email address: %s' % redacted), None)
                 # Start over with the new email address after releasing the lock
