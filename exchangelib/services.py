@@ -361,9 +361,10 @@ class EWSFolderService(EWSAccountService):
 
 class PagingEWSMixIn(EWSService):
     def _paged_call(self, payload_func, max_items, **kwargs):
+        service_endpoint = self.protocol.service_endpoint
         account = self.account if isinstance(self, EWSAccountService) else None
         redacted_account = redact_email(account)
-        log_prefix = 'EWS %s, account %s, service %s' % (self.protocol.service_endpoint, redacted_account, self.SERVICE_NAME)
+        log_prefix = 'EWS %s, account %s, service %s' % (service_endpoint, redacted_account, self.SERVICE_NAME)
         wait = 0
         if isinstance(self, EWSFolderService):
             expected_message_count = len(self.folders)
@@ -1449,8 +1450,10 @@ class FindPeople(EWSAccountService, PagingEWSMixIn):
         return findpeople
 
     def _paged_call(self, payload_func, max_items, **kwargs):
+        service_endpoint = self.protocol.service_endpoint
         account = self.account if isinstance(self, EWSAccountService) else None
-        log_prefix = 'EWS %s, account %s, service %s' % (self.protocol.service_endpoint, redact_email(account), self.SERVICE_NAME)
+        redacted_account = redact_email(account)
+        log_prefix = 'EWS %s, account %s, service %s' % (service_endpoint, redacted_account, self.SERVICE_NAME)
         item_count = 0
         wait = 0
         while True:

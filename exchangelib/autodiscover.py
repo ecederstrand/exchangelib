@@ -196,10 +196,10 @@ def discover(email, credentials):
                 # Autodiscover no longer works with this domain. Clear cache and try again after releasing the lock
                 del _autodiscover_cache[autodiscover_key]
             except AutoDiscoverRedirect as e:
-                redacted_email = redact_email(email)
+                redacted = redact_email(email)
                 log.debug('%s redirects to %s', redacted_email, redact_email(e.redirect_email))
                 if email.lower() == e.redirect_email.lower():
-                    raise_from(AutoDiscoverCircularRedirect('Redirect to same email address: %s' % redacted_email), None)
+                    raise_from(AutoDiscoverCircularRedirect('Redirect to same email address: %s' % redacted), None)
                 # Start over with the new email address after releasing the lock
                 email = e.redirect_email
         else:
@@ -209,8 +209,9 @@ def discover(email, credentials):
                 # This eventually fills the cache in _autodiscover_hostname
                 return _try_autodiscover(hostname=domain, credentials=credentials, email=email)
             except AutoDiscoverRedirect as e:
+                redacted_email = redact_email(email)
                 if email.lower() == e.redirect_email.lower():
-                    raise_from(AutoDiscoverCircularRedirect('Redirect to same email address: %s' % redact_email(email)), None)
+                    raise_from(AutoDiscoverCircularRedirect('Redirect to same email address: %s' % redacted_email), None)
                 log.debug('%s redirects to %s', redact_email(email), redact_email(e.redirect_email))
                 # Start over with the new email address after releasing the lock
                 email = e.redirect_email
