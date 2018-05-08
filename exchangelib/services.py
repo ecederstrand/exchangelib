@@ -362,7 +362,6 @@ class PagingEWSMixIn(EWSService):
         account = self.account if isinstance(self, EWSAccountService) else None
         redacted_account = redact_email(account)
         log_prefix = 'EWS %s, account %s, service %s' % (service_endpoint, redacted_account, self.SERVICE_NAME)
-        wait = 0
         if isinstance(self, EWSFolderService):
             expected_message_count = len(self.folders)
         else:
