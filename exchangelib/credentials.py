@@ -7,7 +7,9 @@ See http://blogs.msdn.com/b/exchangedev/archive/2009/06/15/exchange-impersonatio
 """
 from __future__ import unicode_literals
 
+import datetime
 import logging
+from multiprocessing import Lock
 
 from future.utils import python_2_unicode_compatible
 
@@ -71,7 +73,27 @@ class ServiceAccount(Credentials):
         """
         super(ServiceAccount, self).__init__(username, password)
         self.max_wait = max_wait
+        self._back_off_until = None
+        self._back_off_lock = Lock()
 
     @property
     def fail_fast(self):
         return False
+
+    @property
+    def back_off_until(self):
+        """Returns the back off value as a datetime. Resets the current back off value if it has expired."""
+        if self._back_off_until is None:
+            return None
+        with self._back_off_lock:
+            if self._back_off_until is None:
+                return None
+            if self._back_off_until < datetime.datetime.now():
+                self._back_off_until = None  # The backoff value has expired. Reset
+                return None
+            return self._back_off_until
+
+    @back_off_until.setter
+    def back_off_until(self, value):
+        with self._back_off_lock:
+            self._back_off_until = value

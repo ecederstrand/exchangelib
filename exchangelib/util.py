@@ -481,6 +481,14 @@ Response data: %(xml_response)s
 ''')
     try:
         while True:
+            back_off_until = protocol.credentials.back_off_until
+            if back_off_until:
+                sleep_secs = (datetime.datetime.now() - back_off_until).total_seconds()
+                # The back off value may have expired within the last few milliseconds
+                if sleep_secs > 0:
+                    log.warning('Server requested back off until %s. Sleeping %s seconds', back_off_until, sleep_secs)
+                    time.sleep(sleep_secs)
+
             log.debug('Session %s thread %s: retry %s timeout %s POST\'ing to %s after %ss wait', session.session_id,
                       thread_id, retry, protocol.TIMEOUT, url, wait)
             d_start = time_func()
