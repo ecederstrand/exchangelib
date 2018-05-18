@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from copy import deepcopy
+import os
 import datetime
 from decimal import Decimal
 import io
@@ -41,6 +42,7 @@ _illegal_xml_chars_RE = re.compile('[\x00-\x08\x0b\x0c\x0e-\x1F\uD800-\uDFFF\uFF
 # UTF-8 byte order mark which may precede the XML from an Exchange server
 BOM = '\xef\xbb\xbf'
 BOM_LEN = len(BOM)
+EXCHANGELIB_REDACT_EMAIL = os.getenv('EXCHANGELIB_REDACT_EMAIL', False)
 
 
 def is_iterable(value, generators_allowed=False):
@@ -603,3 +605,10 @@ def _raise_response_errors(r, protocol, log_msg, log_vals):
         raise r.headers['TimeoutException']
     # This could be anything. Let higher layers handle this. Add full context for better debugging.
     raise TransportError(str('Unknown failure\n') + log_msg % log_vals)
+
+
+def redact_email(email):
+    if EXCHANGELIB_REDACT_EMAIL:
+        return 'REDACTED'
+    else:
+        return email
