@@ -370,7 +370,7 @@ class Account(object):
             ))
         if folder is not None:
             if not isinstance(folder, Folder):
-                raise ValueError("'folder' %r must be a Folder instence" % folder)
+                raise ValueError("'folder' %r must be a Folder instance" % folder)
             if folder.account != self:
                 raise ValueError('"Folder must belong to this account')
         if message_disposition == SAVE_ONLY and folder is None:
@@ -556,7 +556,7 @@ class Account(object):
         :return: Status for each send operation, in the same order as the input
         """
         if not isinstance(to_folder, Folder):
-            raise ValueError("'to_folder' %r must be a Folder instence" % to_folder)
+            raise ValueError("'to_folder' %r must be a Folder instance" % to_folder)
         # 'ids' could be an unevaluated QuerySet, e.g. if we ended up here via `bulk_copy(some_folder.filter(...))`. In
         # that case, we want to use its iterator. Otherwise, peek() will start a count() which is wasteful because we
         # need the item IDs immediately afterwards. iterator() will only do the bare minimum.
@@ -582,7 +582,7 @@ class Account(object):
         folder in a different mailbox, an empty list is returned.
         """
         if not isinstance(to_folder, Folder):
-            raise ValueError("'to_folder' %r must be a Folder instence" % to_folder)
+            raise ValueError("'to_folder' %r must be a Folder instance" % to_folder)
         # 'ids' could be an unevaluated QuerySet, e.g. if we ended up here via `bulk_move(some_folder.filter(...))`. In
         # that case, we want to use its iterator. Otherwise, peek() will start a count() which is wasteful because we
         # need the item IDs immediately afterwards. iterator() will only do the bare minimum.
