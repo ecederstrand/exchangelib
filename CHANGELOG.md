@@ -4,6 +4,7 @@ Change Log
 HEAD
 ----
 
+-   Add a MAINFEST.in to ensure the LICENSE file gets included + CHANGELOG.md/README.md to sdist tarball
 -   Renamed `Item.item_id`, `Folder.folder_id` and `Occurrence.item_id` to just `Item.id`,
     `Folder.id` and `Occurrence.id`, respectively. This removes redundancy in the naming
     and provides consistency. For all classes that have an ID, the ID can now be accessed
