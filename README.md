@@ -734,7 +734,7 @@ item.detach(my_file)
 # If you want to embed an image in the item body, you can link to the file in the HTML
 logo_filename = 'logo.png'
 with open(logo_filename, 'rb') as f:
-    my_logo = FileAttachment(name=logo_filename, content=f.read())
+    my_logo = FileAttachment(name=logo_filename, content=f.read(), content_id=logo_filename)
 message.attach(my_logo)
 message.body = HTMLBody('<html><body>Hello logo: <img src="cid:%s"></body></html>' % logo_filename)
 
