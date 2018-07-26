@@ -216,21 +216,8 @@ def safe_xml_value(value, replacement='?'):
     return text_type(_illegal_xml_chars_RE.sub(replacement, value))
 
 
-# Keeps a cache of Element objects to deepcopy
-_deepcopy_cache = dict()
-_deepcopy_cache_lock = Lock()
-
-
 def create_element(name, **attrs):
-    # copy.deepcopy() is an order of magnitude faster than creating a new Element() every time
-    key = (name, tuple(attrs.items()))  # dict requires key to be immutable
-    try:
-        cached_elem = _deepcopy_cache[key]
-    except KeyError:
-        with _deepcopy_cache_lock:
-            # Use setdefault() because another thread may have filled the cache while we were waiting for the lock
-            cached_elem = _deepcopy_cache.setdefault(key, Element(name, **attrs))
-    return deepcopy(cached_elem)
+    return Element(name, **attrs)
 
 
 def add_xml_child(tree, name, value):
