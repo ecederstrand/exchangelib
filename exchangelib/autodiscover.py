@@ -48,7 +48,10 @@ def shelve_filename():
     # 'shelve' may pickle objects using different pickle protocol versions. Append the python major+minor version
     # numbers to the filename. Also append the username, to avoid permission errors.
     major, minor = sys.version_info[:2]
-    user = getpass.getuser()
+    try:
+        user = getpass.getuser()
+    except KeyError:
+        user = "exchangelib"
     return 'exchangelib.cache.{user}.py{major}{minor}'.format(user=user, major=major, minor=minor)
 
 
