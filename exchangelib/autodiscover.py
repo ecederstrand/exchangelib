@@ -51,7 +51,8 @@ def shelve_filename():
     try:
         user = getpass.getuser()
     except KeyError:
-        user = "exchangelib"
+        # getuser() fails on some systems. Provide a sane default. See issue #448
+        user = 'exchangelib'
     return 'exchangelib.cache.{user}.py{major}{minor}'.format(user=user, major=major, minor=minor)
 
 
