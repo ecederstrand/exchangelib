@@ -1096,6 +1096,7 @@ class Calendar(Folder):
         'nl_NL': (u'Agenda',),
         'ru_RU': (u'Календарь',),
         'sv_SE': (u'Kalender',),
+        'zh_CN': (u'日历',),
     }
 
     def view(self, *args, **kwargs):
@@ -1116,6 +1117,7 @@ class DeletedItems(Folder):
         'nl_NL': (u'Verwijderde items',),
         'ru_RU': (u'Удаленные',),
         'sv_SE': (u'Borttaget',),
+        'zh_CN': (u'已删除邮件',),
     }
 
 
@@ -1136,6 +1138,7 @@ class Drafts(Messages):
         'nl_NL': (u'Concepten',),
         'ru_RU': (u'Черновики',),
         'sv_SE': (u'Utkast',),
+        'zh_CN': (u'草稿',),
     }
 
 
@@ -1151,6 +1154,7 @@ class Inbox(Messages):
         'nl_NL': (u'Postvak IN',),
         'ru_RU': (u'Входящие',),
         'sv_SE': (u'Inkorgen',),
+        'zh_CN': (u'收件箱',),
     }
 
 
@@ -1166,6 +1170,7 @@ class Outbox(Messages):
         'nl_NL': (u'Postvak UIT',),
         'ru_RU': (u'Исходящие',),
         'sv_SE': (u'Utkorgen',),
+        'zh_CN': (u'发件箱',),
     }
 
 
@@ -1181,6 +1186,7 @@ class SentItems(Messages):
         'nl_NL': (u'Verzonden items',),
         'ru_RU': (u'Отправленные',),
         'sv_SE': (u'Skickat',),
+        'zh_CN': (u'已发送邮件',),
     }
 
 
@@ -1196,6 +1202,7 @@ class JunkEmail(Messages):
         'nl_NL': (u'Ongewenste e-mail',),
         'ru_RU': (u'Нежелательная почта',),
         'sv_SE': (u'Skräppost',),
+        'zh_CN': (u'垃圾邮件',),
     }
 
 
@@ -1213,6 +1220,7 @@ class Tasks(Folder):
         'nl_NL': (u'Taken',),
         'ru_RU': (u'Задачи',),
         'sv_SE': (u'Uppgifter',),
+        'zh_CN': (u'任务',),
     }
 
 
@@ -1230,6 +1238,7 @@ class Contacts(Folder):
         'nl_NL': (u'Contactpersonen',),
         'ru_RU': (u'Контакты',),
         'sv_SE': (u'Kontakter',),
+        'zh_CN': (u'联系人',),
     }
 
 
@@ -1323,6 +1332,9 @@ class LocalFailures(WellknownFolder):
 class MsgFolderRoot(WellknownFolder):
     # Also known as the 'Top of Information Store' folder
     DISTINGUISHED_FOLDER_ID = 'msgfolderroot'
+    LOCALIZED_NAMES = {
+        'zh_CN': (u'信息存储顶部',),
+    }
 
 
 class MyContacts(WellknownFolder):
