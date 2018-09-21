@@ -5736,7 +5736,11 @@ class MessagesTest(BaseItemTest):
                 time.sleep(1)
         else:
             assert False, 'Gave up waiting for the reply to show up in the inbox'
-        self.account.bulk_delete([sent_item, reply])
+        reply2 = sent_item.create_forward(subject=new_subject, body='Hello reply', to_recipients=[item.author])
+        reply2 = reply2.save(self.account.drafts)
+        self.assertIsInstance(reply2, Message)
+        
+        self.account.bulk_delete([sent_item, reply, reply2])
 
     def test_mime_content(self):
         # Tests the 'mime_content' field

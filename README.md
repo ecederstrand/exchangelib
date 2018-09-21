@@ -381,6 +381,16 @@ m.forward(
     to_recipients=['carl@example.com', 'denice@example.com']
 )
 
+# You can also edit a draft of a reply or forward
+forward_draft = m.create_forward(
+    subject='Fwd: foo',
+    body='Hey, look at this!',
+    to_recipients=['carl@example.com', 'denice@example.com']
+).save(a.drafts) # gives you back the item
+forward_draft.reply_to = 'eric@example.com'
+forward_draft.attach(FileAttachment(name='my_file.txt', content='hello world'.encode('utf-8')))
+forward_draft.send() # now our forward has an extra reply_to field and an extra attachment.
+
 # EWS distinquishes between plain text and HTML body contents. If you want to send HTML body 
 # content, use the HTMLBody helper. Clients will see this as HTML and display the body correctly:
 item.body = HTMLBody('<html><body>Hello happy <blink>OWA user!</blink></body></html>')

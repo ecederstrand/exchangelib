@@ -733,14 +733,14 @@ class Message(Item):
                 if res:
                     raise ValueError('Unexpected response in send-only mode')
 
-    def reply(self, subject, body, to_recipients=None, cc_recipients=None, bcc_recipients=None):
+    def create_reply(self, subject, body, to_recipients=None, cc_recipients=None, bcc_recipients=None):
         if not self.account:
             raise ValueError('%s must have an account' % self.__class__.__name__)
         if not self.id:
             raise ValueError('%s must have an ID' % self.__class__.__name__)
         if not to_recipients and not self.author:
             raise ValueError("'to_recipients' must be set when message has no 'author'")
-        ReplyToItem(
+        return ReplyToItem(
             account=self.account,
             reference_item_id=ReferenceItemId(id=self.id, changekey=self.changekey),
             subject=subject,
@@ -748,14 +748,23 @@ class Message(Item):
             to_recipients=to_recipients or [self.author],
             cc_recipients=cc_recipients,
             bcc_recipients=bcc_recipients,
+        )
+
+    def reply(self, subject, body, to_recipients=None, cc_recipients=None, bcc_recipients=None):
+        self.create_reply(
+            subject,
+            body,
+            to_recipients,
+            cc_recipients,
+            bcc_recipients
         ).send()
 
-    def reply_all(self, subject, body):
+    def create_reply_all(self, subject, body):
         if not self.account:
             raise ValueError('%s must have an account' % self.__class__.__name__)
         if not self.id:
             raise ValueError('%s must have an ID' % self.__class__.__name__)
-        ReplyAllToItem(
+        return ReplyAllToItem(
             account=self.account,
             reference_item_id=ReferenceItemId(id=self.id, changekey=self.changekey),
             subject=subject,
@@ -763,14 +772,17 @@ class Message(Item):
             to_recipients=self.to_recipients or [self.author],
             cc_recipients=self.cc_recipients,
             bcc_recipients=self.bcc_recipients,
-        ).send()
+        )
 
-    def forward(self, subject, body, to_recipients, cc_recipients=None, bcc_recipients=None):
+    def reply_all(self, subject, body):
+        self.create_reply_all(subject, body).send()
+
+    def create_forward(self, subject, body, to_recipients, cc_recipients=None, bcc_recipients=None):
         if not self.account:
             raise ValueError('%s must have an account' % self.__class__.__name__)
         if not self.id:
             raise ValueError('%s must have an ID' % self.__class__.__name__)
-        ForwardItem(
+        return ForwardItem(
             account=self.account,
             reference_item_id=ReferenceItemId(id=self.id, changekey=self.changekey),
             subject=subject,
@@ -778,6 +790,15 @@ class Message(Item):
             to_recipients=to_recipients,
             cc_recipients=cc_recipients,
             bcc_recipients=bcc_recipients,
+        )
+
+    def forward(self, subject, body, to_recipients, cc_recipients=None, bcc_recipients=None):
+        self.create_forward(
+            subject,
+            body,
+            to_recipients,
+            cc_recipients,
+            bcc_recipients,
         ).send()
 
 
@@ -1233,6 +1254,21 @@ class BaseReplyItem(EWSElement):
         res = self.account.bulk_create(items=[self], folder=copy_to_folder, message_disposition=message_disposition)
         if res and isinstance(res[0], Exception):
             raise res[0]
+
+    def save(self, folder):
+        """
+        save reply/forward and retrieve the item result for further modification,
+        you may want to use account.drafts as the folder.
+        """
+        if not self.account:
+            raise ValueError('%s must have an account' % self.__class__.__name__)
+        res = self.account.bulk_create(items=[self], folder=folder, message_disposition=SAVE_ONLY)
+        if res and isinstance(res[0], Exception):
+            raise res[0]
+        res = list(self.account.fetch(res)) # retrieve result
+        if res and isinstance(res[0], Exception):
+            raise res[0]
+        return res[0]
 
 
 class ReplyToItem(BaseReplyItem):
