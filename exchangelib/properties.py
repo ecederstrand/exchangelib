@@ -602,6 +602,7 @@ class FreeBusyView(EWSElement):
         # WorkingPeriod is located inside WorkingHours element. WorkingHours also has timezone info that we
         # hopefully don't care about.
         EWSElementListField('working_hours', field_uri='WorkingPeriodArray', value_cls=WorkingPeriod),
+        EWSElementField('time_zone', field_uri='TimeZone', value_cls=TimeZone),
     ]
 
     __slots__ = tuple(f.name for f in FIELDS)
@@ -610,7 +611,7 @@ class FreeBusyView(EWSElement):
     def from_xml(cls, elem, account):
         kwargs = {}
         for f in cls.FIELDS:
-            if f.name == 'working_hours':
+            if f.name in ['working_hours', 'time_zone']:
                 kwargs[f.name] = f.from_xml(elem=elem.find('{%s}WorkingHours' % TNS), account=account)
                 continue
             kwargs[f.name] = f.from_xml(elem=elem, account=account)
