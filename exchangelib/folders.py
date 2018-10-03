@@ -372,6 +372,9 @@ class Folder(RegisterMixIn, SearchableMixIn):
         super(Folder, self).clean(version=version)
         if self.root and not isinstance(self.root, RootOfHierarchy):
             raise ValueError("'root' %r must be a RootOfHierarchy instance" % self.root)
+        # Set a default folder class for new folders. A folder class cannot be changed after saving.
+        if self.folder_id is None and self.folder_class is None:
+            self.folder_class = self.CONTAINER_CLASS
 
     @property
     def parent(self):
