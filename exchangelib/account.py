@@ -10,8 +10,6 @@ from cached_property import threaded_cached_property
 from future.utils import python_2_unicode_compatible
 from six import string_types
 
-from exchangelib.services import GetUserOofSettings, SetUserOofSettings
-from exchangelib.settings import OofSettings
 from .autodiscover import discover
 from .credentials import DELEGATE, IMPERSONATION, ACCESS_TYPES
 from .errors import UnknownTimeZone
@@ -33,7 +31,8 @@ from .properties import Mailbox
 from .protocol import Protocol
 from .queryset import QuerySet
 from .services import ExportItems, UploadItems, GetItem, CreateItem, UpdateItem, DeleteItem, MoveItem, SendItem, \
-    CopyItem
+    CopyItem, GetUserOofSettings, SetUserOofSettings
+from .settings import OofSettings
 from .util import get_domain, peek
 
 log = getLogger(__name__)

@@ -440,7 +440,7 @@ def post_ratelimited(protocol, session, url, headers, data, allow_redirects=Fals
     migrations or other maintenance tasks, misconfigurations or heavy load, or because the connecting user has hit a
     throttling policy limit.
 
-    If the loop exited early, consumers of exchangelib that don't implement their own rate-limiting code could quickly
+    If the loop exited early, consumers of this package that don't implement their own rate-limiting code could quickly
     swamp such a server with new requests. That would only make things worse. Instead, it's better if the request loop
     waits patiently until the server is functioning again.
 

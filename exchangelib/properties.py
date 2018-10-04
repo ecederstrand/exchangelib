@@ -662,7 +662,7 @@ class FreeBusyView(EWSElement):
             Choice('None'), Choice('MergedOnly'), Choice('FreeBusy'), Choice('FreeBusyMerged'), Choice('Detailed'),
             Choice('DetailedMerged'),
         }, is_required=True),
-        # A string of digits. Each digit points to a position in FREE_BUSY_CHOICES
+        # A string of digits. Each digit points to a position in .fields.FREE_BUSY_CHOICES
         CharField('merged', field_uri='MergedFreeBusy'),
         EWSElementListField('calendar_events', field_uri='CalendarEventArray', value_cls=CalendarEvent),
         # WorkingPeriod is located inside the WorkingPeriodArray element which is inside the WorkingHours element

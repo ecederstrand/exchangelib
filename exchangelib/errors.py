@@ -1,6 +1,6 @@
 # coding=utf-8
 """
-Stores errors specific to exchangelib, and mirrors all the possible errors that EWS can return.
+Stores errors specific to this package, and mirrors all the possible errors that EWS can return.
 """
 from __future__ import unicode_literals
 
