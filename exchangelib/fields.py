@@ -584,7 +584,7 @@ class DateTimeField(FieldURIField):
                     # There's nothing we can do but return the naive date. It's better than assuming e.g. UTC.
                     log.warning('Returning naive datetime %s on field %s', local_dt, self.name)
                     return local_dt
-                log.warning("Cannot convert value '%s' on field '%s' to type %s", val, self.name, self.value_cls)
+                log.info("Cannot convert value '%s' on field '%s' to type %s", val, self.name, self.value_cls)
                 return None
         return self.default
 
