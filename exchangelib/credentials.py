@@ -84,6 +84,17 @@ class ServiceAccount(Credentials):
         self._back_off_until = None
         self._back_off_lock = Lock()
 
+    def __getstate__(self):
+        # Locks cannot be pickled
+        state = self.__dict__.copy()
+        del state['_back_off_lock']
+        return state
+
+    def __setstate__(self, state):
+        # Restore the lock
+        self.__dict__.update(state)
+        self._back_off_lock = Lock()
+
     @property
     def fail_fast(self):
         return False

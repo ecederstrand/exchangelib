@@ -10,6 +10,7 @@ import io
 from keyword import kwlist
 import logging
 import os
+import pickle
 import random
 import socket
 import string
@@ -2204,6 +2205,18 @@ class AccountTest(EWSTest):
             self.assertEqual(folder.name.lower(), MockCalendar.localized_names(self.account.locale)[0])
         finally:
             Calendar.get_distinguished = _orig
+
+    def test_pickle(self):
+        # Test that we can pickle various objects
+        item = Message(folder=self.account.inbox, subject='XXX', categories=self.categories).save()
+        pickle.dumps(item)
+        item.delete()
+        pickle.dumps(self.account.protocol)
+        pickle.dumps(self.account.root)
+        pickle.dumps(self.account.inbox)
+        pickle.dumps(self.account)
+        pickle.dumps(Credentials('XXX', 'YYY'))
+        pickle.dumps(ServiceAccount('XXX', 'YYY'))
 
 
 class AutodiscoverTest(EWSTest):

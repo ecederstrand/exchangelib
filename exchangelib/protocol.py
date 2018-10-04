@@ -12,6 +12,7 @@ from multiprocessing.pool import ThreadPool
 import os
 from threading import Lock
 
+from cached_property import threaded_cached_property
 import requests.adapters
 import requests.sessions
 from future.utils import with_metaclass, python_2_unicode_compatible
@@ -225,9 +226,7 @@ class Protocol(with_metaclass(CachingProtocol, BaseProtocol)):
 
         # Try to behave nicely with the Exchange server. We want to keep the connection open between requests.
         # We also want to re-use sessions, to avoid the NTLM auth handshake on every request.
-        self._session_pool = LifoQueue(maxsize=self.SESSION_POOLSIZE)
-        for _ in range(self.SESSION_POOLSIZE):
-            self._session_pool.put(self.create_session(), block=False)
+        self._session_pool = self._create_session_pool()
 
         if version:
             isinstance(version, Version)
@@ -241,12 +240,21 @@ class Protocol(with_metaclass(CachingProtocol, BaseProtocol)):
                 pass
             self.version = Version.guess(self)
 
+    def _create_session_pool(self):
+        # Create a pool to reuse sessions containing connections to the server
+        session_pool = LifoQueue(maxsize=self.SESSION_POOLSIZE)
+        for _ in range(self.SESSION_POOLSIZE):
+            session_pool.put(self.create_session(), block=False)
+        return session_pool
+
+    @threaded_cached_property
+    def thread_pool(self):
         # Used by services to process service requests that are able to run in parallel. Thread pool should be
         # larger than the connection pool so we have time to process data without idling the connection.
         # Create the pool as the last thing here, since we may fail in the version or auth type guessing, which would
         # leave open threads around to be garbage collected.
         thread_poolsize = 4 * self.SESSION_POOLSIZE
-        self.thread_pool = ThreadPool(processes=thread_poolsize)
+        return ThreadPool(processes=thread_poolsize)
 
     def get_timezones(self, timezones=None, return_full_timezone_data=False):
         """ Get timezone definitions from the server
@@ -349,6 +357,22 @@ class Protocol(with_metaclass(CachingProtocol, BaseProtocol)):
             search_filter=search_filter,
             expand_group_membership=expand_group_membership,
         ))
+
+    def __getstate__(self):
+        # The thread and session pools cannot be pickled
+        state = self.__dict__.copy()
+        try:
+            del state['thread_pool']
+        except KeyError:
+            # thread_pool is a cached property and may not exist
+            pass
+        del state['_session_pool']
+        return state
+
+    def __setstate__(self, state):
+        # Restore the session pool. The thread pool is a property and will recreate itself
+        self.__dict__.update(state)
+        self._session_pool = self._create_session_pool()
 
     def __str__(self):
         return '''\
