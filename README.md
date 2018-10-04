@@ -955,18 +955,47 @@ for mailbox in a.protocol.resolve_names(['ann@example.com', 'bart@example.com'])
 for mailbox, contact in a.protocol.resolve_names(['anne', 'bart'], return_full_contact_data=True):
     print(mailbox.email_address, contact.display_name)
 
-# Get availability information for a list of accounts
-start = tz.localize(EWSDateTime.now())
-end = tz.localize(EWSDateTime.now() + datetime.timedelta(hours=6))
-# Create a list of (account, attendee_type, exclude_conflicts) tuples
-accounts = [(account, 'Organizer', False)]
-a.protocol.get_free_busy_info(accounts=accounts, start=start, end=end)
-
 # Get searchable mailboxes. This method is only available to users who have been assigned
 # the Discovery Management RBAC role.
 for mailbox in a.protocol.get_searchable_mailboxes():
     print(mailbox)
 ```
+
+EWS supports getting availability information for a set of users in a certain
+timeframe. The server returns an object for each account containing free/busy
+information, including a list of calendar events in the user's calendar, and
+the working hours and timezone of the user.
+
+```python
+start = tz.localize(EWSDateTime.now())
+end = start + datetime.timedelta(hours=6)
+accounts = [(a, 'Organizer', False)]
+for busy_info in a.protocol.get_free_busy_info(accounts=accounts, start=start, end=end):
+    print(busy_info)
+```
+
+The calendar events and working hours are returned as naive datetimes. To convert
+to timezone-aware datetimes, a bit of extra work is needed if the users are not
+known to be in the same timezone.
+
+```python
+# Get all server timezones. We need that to convert 'working_hours_timezone'
+timezones = list(a.protocol.get_timezones(return_full_timezone_data=True))
+
+# Get availability information for a list of accounts
+start = tz.localize(EWSDateTime.now())
+end = start + datetime.timedelta(hours=6)
+# get_free_busy_info() expects a list of (account, attendee_type, exclude_conflicts) tuples
+accounts = [(a, 'Organizer', False)]
+for busy_info in a.protocol.get_free_busy_info(accounts=accounts, start=start, end=end):
+    # Convert the TimeZone object to a Microsoft timezone ID
+    ms_id = busy_info.working_hours_timezone.to_server_timezone(timezones, start.year)
+    account_tz = EWSTimeZone.from_ms_id(ms_id)
+    print(account_tz, busy_info.working_hours)
+    for event in busy_info.calendar_events:
+        print(account_tz.localize(event.start), account_tz.localize(event.end))
+```
+
 
 ### Troubleshooting
 

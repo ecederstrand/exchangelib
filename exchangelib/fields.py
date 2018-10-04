@@ -574,12 +574,16 @@ class DateTimeField(FieldURIField):
                 return self.value_cls.from_string(val)
             except ValueError as e:
                 if isinstance(e, NaiveDateTimeNotAllowed):
-                    # We encountered a naive datetime. Convert to timezone-aware datetime using the default timezone of
-                    # the account.
+                    # We encountered a naive datetime
                     local_dt = e.args[0]
-                    tz = account.default_timezone if account else UTC
-                    log.info('Found naive datetime %s on field %s. Assuming timezone %s', local_dt, self.name, tz)
-                    return tz.localize(local_dt)
+                    if account:
+                        # Convert to timezone-aware datetime using the default timezone of the account
+                        tz = account.default_timezone
+                        log.info('Found naive datetime %s on field %s. Assuming timezone %s', local_dt, self.name, tz)
+                        return tz.localize(local_dt)
+                    # There's nothing we can do but return the naive date. It's better than assuming e.g. UTC.
+                    log.warning('Returning naive datetime %s on field %s', local_dt, self.name)
+                    return local_dt
                 log.warning("Cannot convert value '%s' on field '%s' to type %s", val, self.name, self.value_cls)
                 return None
         return self.default
