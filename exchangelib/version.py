@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 import logging
 import re
 
-from future.utils import python_2_unicode_compatible
+from future.utils import python_2_unicode_compatible, PY2
 from six import text_type
 
 from .errors import TransportError, ErrorInvalidSchemaVersionForMailboxVersion, ErrorInvalidServerVersion, \
@@ -138,6 +138,14 @@ class Build(object):
 
     def __ge__(self, other):
         return self.__cmp__(other) >= 0
+
+    if PY2:
+        def __getstate__(self):
+            return {k: getattr(self, k) for k in self.__slots__}
+
+        def __setstate__(self, state):
+            for k, v in state:
+                setattr(self, k, v)
 
     def __str__(self):
         return '%s.%s.%s.%s' % (self.major_version, self.minor_version, self.major_build, self.minor_build)
@@ -276,6 +284,14 @@ class Version(object):
                 log.info('API version "%s" worked but server reports version "%s". Using "%s"', requested_api_version,
                          api_version_from_server, api_version_from_server)
         return cls(build, api_version_from_server)
+
+    if PY2:
+        def __getstate__(self):
+            return {k: getattr(self, k) for k in self.__slots__}
+
+        def __setstate__(self, state):
+            for k, v in state:
+                setattr(self, k, v)
 
     def __repr__(self):
         return self.__class__.__name__ + repr((self.build, self.api_version))

@@ -7,6 +7,7 @@ import datetime
 import logging
 import struct
 
+from future.utils import PY2
 from six import text_type
 
 from .fields import SubField, TextField, EmailAddressField, ChoiceField, DateTimeField, EWSElementField, MailboxField, \
@@ -204,6 +205,14 @@ class EWSElement(object):
         return hash(
             tuple(tuple(getattr(self, f.name) or ()) if f.is_list else getattr(self, f.name) for f in self.FIELDS)
         )
+
+    if PY2:
+        def __getstate__(self):
+            return {k: getattr(self, k) for k in self.__slots__}
+
+        def __setstate__(self, state):
+            for k, v in state:
+                setattr(self, k, v)
 
     def __str__(self):
         return self.__class__.__name__ + '(%s)' % ', '.join(
