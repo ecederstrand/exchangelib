@@ -245,6 +245,8 @@ class Item(RegisterMixIn):
 
     def save(self, update_fields=None, conflict_resolution=AUTO_RESOLVE, send_meeting_invitations=SEND_TO_NONE):
         if self.id:
+            if update_fieldnames and not isinstance(update_fieldnames, list):
+                raise ValueError('update_fields, if set, must be a list')
             item_id, changekey = self._update(
                 update_fieldnames=update_fields,
                 message_disposition=SAVE_ONLY,

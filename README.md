@@ -342,7 +342,7 @@ item.subject = 'bar'
 # versions of Exchange.
 print(CalendarItem.FIELDS)
 item.save()  # When the items has an item_id, this will update the item
-item.save(update_fields=['subject'])  # Only updates certain fields
+item.save(update_fields=['subject'])  # Only updates certain fields - must be a list
 item.save(send_meeting_invitations=SEND_ONLY_TO_CHANGED)  # Send invites only to attendee changes
 item.delete()  # Hard deletinon
 item.delete(send_meeting_cancellations=SEND_ONLY_TO_ALL)  # Send cancellations to all attendees
