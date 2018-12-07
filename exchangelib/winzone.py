@@ -490,7 +490,6 @@ CLDR_TO_MS_TIMEZONE_MAP = {
 PYTZ_TO_MS_TIMEZONE_MAP = dict(CLDR_TO_MS_TIMEZONE_MAP, **{
     'Asia/Kolkata': 'India Standard Time',
     'UTC': 'UTC',
-    'GMT': 'GMT Standard Time',
 })
 
 # Reverse map from Microsoft timezone ID to pytz timezone name. Non-CLDR timezone ID's can be added here.
