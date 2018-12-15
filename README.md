@@ -969,7 +969,7 @@ for mailbox, contact in a.protocol.resolve_names(['anne', 'bart'], return_full_c
     print(mailbox.email_address, contact.display_name)
 
 # Get searchable mailboxes. This method is only available to users who have been assigned
-# the Discovery Management RBAC role.
+# the Discovery Management RBAC role. (This feature works on Exchange 2013 onwards)
 for mailbox in a.protocol.get_searchable_mailboxes():
     print(mailbox)
 ```
