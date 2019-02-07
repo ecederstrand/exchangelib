@@ -621,8 +621,8 @@ Response data: %(xml_response)s
     try:
         while True:
             _back_off_if_needed(protocol.credentials.back_off_until)
-            log.debug('Session %s thread %s: retry %s timeout %s POST\'ing to %s after %ss wait', session.session_id,
-                      thread_id, retry, protocol.TIMEOUT, url, wait)
+            log.debug('Session %s thread %s: retry %s timeout %s POST\'ing to %s after %ss wait' % (session.session_id,
+                      thread_id, retry, protocol.TIMEOUT, url, wait))
             d_start = time_func()
             # Always create a dummy response for logging purposes, in case we fail in the following
             r = DummyResponse(url=url, headers={}, request_headers=headers)
@@ -630,7 +630,8 @@ Response data: %(xml_response)s
                 r = session.post(url=url, headers=headers, data=data, allow_redirects=False, timeout=protocol.TIMEOUT,
                                  stream=stream)
             except CONNECTION_ERRORS as e:
-                log.debug('Session %s thread %s: connection error POST\'ing to %s', session.session_id, thread_id, url)
+                log.debug('Session %s thread %s: connection error POST\'ing to %s' % (session.session_id,
+                                                                                      thread_id, url))
                 r = DummyResponse(url=url, headers={'TimeoutException': e}, request_headers=headers)
             finally:
                 log_vals.update(
@@ -646,8 +647,8 @@ Response data: %(xml_response)s
                 )
             log.debug(log_msg, log_vals)
             if _may_retry_on_error(r, protocol, wait):
-                log.info("Session %s thread %s: Connection error on URL %s (code %s). Cool down %s secs",
-                         session.session_id, thread_id, r.url, r.status_code, wait)
+                log.info("Session %s thread %s: Connection error on URL %s (code %s). Cool down %s secs" %
+                         (session.session_id, thread_id, r.url, r.status_code, wait))
                 time.sleep(wait)  # Increase delay for every retry
                 retry += 1
                 wait *= 2
@@ -670,7 +671,7 @@ Response data: %(xml_response)s
         raise
     if r.status_code == 500 and r.content and is_xml(r.content):
         # Some genius at Microsoft thinks it's OK to send a valid SOAP response as an HTTP 500
-        log.debug('Got status code %s but trying to parse content anyway', r.status_code)
+        log.debug('Got status code %s but trying to parse content anyway' % r.status_code)
     elif r.status_code != 200:
         protocol.retire_session(session)
         try:
@@ -678,7 +679,7 @@ Response data: %(xml_response)s
         finally:
             if stream:
                 r.close()
-    log.debug('Session %s thread %s: Useful response from %s', session.session_id, thread_id, url)
+    log.debug('Session %s thread %s: Useful response from %s' % (session.session_id, thread_id, url))
     return r, session
 
 
@@ -687,7 +688,7 @@ def _back_off_if_needed(back_off_until):
         sleep_secs = (back_off_until - datetime.datetime.now()).total_seconds()
         # The back off value may have expired within the last few milliseconds
         if sleep_secs > 0:
-            log.warning('Server requested back off until %s. Sleeping %s seconds', back_off_until, sleep_secs)
+            log.warning('Server requested back off until %s. Sleeping %s seconds' % (back_off_until, sleep_secs))
             time.sleep(sleep_secs)
 
 
@@ -719,11 +720,11 @@ def _redirect_or_fail(response, redirects, allow_redirects):
     try:
         redirect_url = get_redirect_url(response=response, allow_relative=False)
     except RelativeRedirect as e:
-        log.debug("'allow_redirects' only supports relative redirects (%s -> %s)", response.url, e.value)
+        log.debug("'allow_redirects' only supports relative redirects (%s -> %s)" % (response.url, e.value))
         raise RedirectError(url=e.value)
     if not allow_redirects:
         raise TransportError('Redirect not allowed but we were redirected (%s -> %s)' % (response.url, redirect_url))
-    log.debug('HTTP redirected to %s', redirect_url)
+    log.debug('HTTP redirected to %s' % redirect_url)
     redirects += 1
     if redirects > MAX_REDIRECTS:
         raise TransportError('Max redirect count exceeded')

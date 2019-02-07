@@ -90,7 +90,7 @@ class EWSService(object):
                 # Read the XML and throw any general EWS error messages. Return a generator over the result elements
                 return self._get_elements_in_response(response=response)
             except ErrorServerBusy as e:
-                log.debug('Got ErrorServerBusy (back off %s seconds)', e.back_off)
+                log.debug('Got ErrorServerBusy (back off %s seconds)' % e.back_off)
                 # ErrorServerBusy is very often a symptom of sending too many requests. Scale back if possible.
                 try:
                     self.protocol.decrease_poolsize()
@@ -132,8 +132,8 @@ class EWSService(object):
             except Exception:
                 # This may run from a thread pool, which obfuscates the stack trace. Print trace immediately.
                 account = self.account if isinstance(self, EWSAccountService) else None
-                log.warning('EWS %s, account %s: Exception in _get_elements: %s', self.protocol.service_endpoint,
-                            account, traceback.format_exc(20))
+                log.warning('EWS %s, account %s: Exception in _get_elements: %s' % (self.protocol.service_endpoint,
+                            account, traceback.format_exc(20)))
                 raise
 
     def _get_response_xml(self, payload, **parse_opts):
@@ -151,7 +151,7 @@ class EWSService(object):
             hint = self.protocol.version
         api_versions = [hint.api_version] + [v for v in API_VERSIONS if v != hint.api_version]
         for api_version in api_versions:
-            log.debug('Trying API version %s for account %s', api_version, account)
+            log.debug('Trying API version %s for account %s' % (api_version, account))
             r, session = post_ratelimited(
                 protocol=self.protocol,
                 session=self.protocol.get_session(),
@@ -173,14 +173,14 @@ class EWSService(object):
                 raise SOAPError('Bad SOAP response: %s' % e)
             except ErrorInvalidServerVersion:
                 # The guessed server version is wrong. Try the next version
-                log.debug('API version %s was invalid', api_version)
+                log.debug('API version %s was invalid' % api_version)
                 continue
             except ErrorInvalidSchemaVersionForMailboxVersion:
                 if not account:
                     # This should never happen for non-account services
                     raise ValueError("'account' should not be None")
                 # The guessed server version is wrong for this account. Try the next version
-                log.debug('API version %s was invalid for account %s', api_version, account)
+                log.debug('API version %s was invalid for account %s' % (api_version, account))
                 continue
             except ErrorExceededConnectionCount as e:
                 # ErrorExceededConnectionCount indicates that the connecting user has too many open TCP connections to
@@ -211,7 +211,7 @@ class EWSService(object):
                 try:
                     self._update_api_version(hint=hint, api_version=api_version, response=r)
                 except TransportError as te:
-                    log.debug('Failed to update version info (%s)', te)
+                    log.debug('Failed to update version info (%s)' % te)
                 raise rme
             else:
                 self._update_api_version(hint=hint, api_version=api_version, response=r)
@@ -234,9 +234,9 @@ class EWSService(object):
         # version for account.
         from .version import Version
         if api_version != hint.api_version:
-            log.debug('Found new API version (%s -> %s)', hint.api_version, api_version)
+            log.debug('Found new API version (%s -> %s)' % (hint.api_version, api_version))
         else:
-            log.debug('Adding missing build number %s', api_version)
+            log.debug('Adding missing build number %s' % api_version)
         new_version = Version.from_response(requested_api_version=api_version, bytes_content=response.content)
         if isinstance(self, EWSAccountService):
             self.account.version = new_version
@@ -411,13 +411,13 @@ class PagingEWSMixIn(EWSService):
         common_next_offset = kwargs['offset']
         total_item_count = 0
         while True:
-            log.debug('%s: Getting items at offset %s (max_items %s)', log_prefix, common_next_offset, max_items)
+            log.debug('%s: Getting items at offset %s (max_items %s)' % (log_prefix, common_next_offset, max_items))
             kwargs['offset'] = common_next_offset
             payload = payload_func(**kwargs)
             try:
                 response = self._get_response_xml(payload=payload)
             except ErrorServerBusy as e:
-                log.debug('Got ErrorServerBusy (back off %s seconds)', e.back_off)
+                log.debug('Got ErrorServerBusy (back off %s seconds)' % e.back_off)
                 # ErrorServerBusy is very often a symptom of sending too many requests. Scale back if possible.
                 try:
                     self.protocol.decrease_poolsize()
@@ -474,7 +474,7 @@ class PagingEWSMixIn(EWSService):
             # choose something that is most likely to work. Select the lowest of all the values to at least make sure
             # we don't miss any items, although we may then get duplicates ¯\_(ツ)_/¯
             if len(next_offsets) > 1:
-                log.warning('Inconsistent next_offset values: %r. Using lowest value', next_offsets)
+                log.warning('Inconsistent next_offset values: %r. Using lowest value' % next_offsets)
             common_next_offset = min(next_offsets)
 
     def _get_page(self, message):
@@ -490,7 +490,7 @@ class PagingEWSMixIn(EWSService):
             if next_offset is not None:
                 raise ValueError("Expected empty 'next_offset' when 'item_count' is 0")
             rootfolder = None
-        log.debug('%s: Got page with next offset %s (last_page %s)', self.SERVICE_NAME, next_offset, is_last_page)
+        log.debug('%s: Got page with next offset %s (last_page %s)' % (self.SERVICE_NAME, next_offset, is_last_page))
         return rootfolder, next_offset
 
 
@@ -650,7 +650,7 @@ class EWSPooledMixIn(EWSService):
         results = []
         n = 1
         for chunk in chunkify(items, self.chunk_size):
-            log.debug('Starting %s._get_elements worker %s for %s items', self.__class__.__name__, n, len(chunk))
+            log.debug('Starting %s._get_elements worker %s for %s items' % (self.__class__.__name__, n, len(chunk)))
             n += 1
             results.append(self.protocol.thread_pool.apply_async(
                 lambda c: self._get_elements(payload=payload_func(c, **kwargs)),
@@ -663,18 +663,18 @@ class EWSPooledMixIn(EWSService):
                 if not r.ready():
                     # First non-yielded result isn't ready yet. Yielding other ready results would mess up ordering
                     break
-                log.debug('%s._get_elements result %s is ready early', self.__class__.__name__, i)
+                log.debug('%s._get_elements result %s is ready early' % (self.__class__.__name__, i))
                 for elem in r.get():
                     yield elem
                 results[i-1] = None
         # Yield remaining results in order, as they become available
         for i, r in enumerate(results, 1):
             if r is None:
-                log.debug('%s._get_elements result %s of %s already sent', self.__class__.__name__, i, len(results))
+                log.debug('%s._get_elements result %s of %s already sent' % (self.__class__.__name__, i, len(results)))
                 continue
-            log.debug('Waiting for %s._get_elements result %s of %s', self.__class__.__name__, i, len(results))
+            log.debug('Waiting for %s._get_elements result %s of %s' % (self.__class__.__name__, i, len(results)))
             elems = r.get()
-            log.debug('%s._get_elements result %s of %s is ready', self.__class__.__name__, i, len(results))
+            log.debug('%s._get_elements result %s of %s is ready' % (self.__class__.__name__, i, len(results)))
             for elem in elems:
                 yield elem
 
@@ -762,7 +762,7 @@ class CreateItem(EWSAccountService, EWSPooledMixIn):
             createitem.append(saveditemfolderid)
         item_elems = create_element('m:Items')
         for item in items:
-            log.debug('Adding item %s', item)
+            log.debug('Adding item %s' % item)
             set_xml_value(item_elems, item, version=self.account.version)
         if not len(item_elems):
             raise ValueError('"items" must not be empty')
@@ -920,7 +920,7 @@ class UpdateItem(EWSAccountService, EWSPooledMixIn):
             if not fieldnames:
                 raise ValueError('"fieldnames" must not be empty')
             itemchange = create_element('t:ItemChange')
-            log.debug('Updating item %s values %s', item.id, fieldnames)
+            log.debug('Updating item %s values %s' % (item.id, fieldnames))
             set_xml_value(itemchange, ItemId(item.id, item.changekey), version=self.account.version)
             updates = create_element('t:Updates')
             for elem in self._get_item_update_elems(item=item, fieldnames=fieldnames):
@@ -975,7 +975,7 @@ class DeleteItem(EWSAccountService, EWSPooledMixIn):
 
         item_ids = create_element('m:ItemIds')
         for item in items:
-            log.debug('Deleting item %s', item)
+            log.debug('Deleting item %s' % item)
             set_xml_value(item_ids, to_item_id(item, ItemId), version=self.account.version)
         if not len(item_ids):
             raise ValueError('"items" must not be empty')
@@ -1160,7 +1160,7 @@ class GetFolder(EWSAccountService):
                     if folder_cls.DISTINGUISHED_FOLDER_ID == folder.id:
                         break
                 else:
-                    raise ValueError('Unknown distinguished folder ID: %s', folder.id)
+                    raise ValueError('Unknown distinguished folder ID: %s' % folder.id)
                 f = folder_cls.from_xml(elem=elem, root=self.account.root)
             else:
                 # 'folder' is a generic FolderId instance. We don't know the root so assume account.root.
@@ -1185,7 +1185,7 @@ class GetFolder(EWSAccountService):
         getfolder.append(foldershape)
         folder_ids = create_element('m:FolderIds')
         for folder in folders:
-            log.debug('Getting folder %s', folder)
+            log.debug('Getting folder %s' % folder)
             if not isinstance(folder, (Folder, FolderId, DistinguishedFolderId)):
                 folder = to_item_id(folder, FolderId)
             set_xml_value(folder_ids, folder, version=self.account.version)
@@ -1229,7 +1229,7 @@ class CreateFolder(EWSAccountService):
         set_xml_value(create_folder, parentfolderid, version=self.account.version)
         folders_elem = create_element('m:Folders')
         for folder in folders:
-            log.debug('Creating folder %s', folder)
+            log.debug('Creating folder %s' % folder)
             if not isinstance(folder, (Folder, FolderId, DistinguishedFolderId)):
                 folder = to_item_id(folder, FolderId)
             set_xml_value(folders_elem, folder, version=self.account.version)
@@ -1309,7 +1309,7 @@ class UpdateFolder(EWSAccountService):
         updatefolder = create_element('m:%s' % self.SERVICE_NAME)
         folderchanges = create_element('m:FolderChanges')
         for folder, fieldnames in folders:
-            log.debug('Updating folder %s', folder)
+            log.debug('Updating folder %s' % folder)
             folderchange = create_element('t:FolderChange')
             if not isinstance(folder, (Folder, FolderId, DistinguishedFolderId)):
                 folder = to_item_id(folder, FolderId)
@@ -1340,7 +1340,7 @@ class DeleteFolder(EWSAccountService):
         deletefolder = create_element('m:%s' % self.SERVICE_NAME, DeleteType=delete_type)
         folder_ids = create_element('m:FolderIds')
         for folder in folders:
-            log.debug('Deleting folder %s', folder)
+            log.debug('Deleting folder %s' % folder)
             if not isinstance(folder, (Folder, FolderId, DistinguishedFolderId)):
                 folder = to_item_id(folder, FolderId)
             set_xml_value(folder_ids, folder, version=self.account.version)
@@ -1367,7 +1367,7 @@ class EmptyFolder(EWSAccountService):
                                      DeleteSubFolders='true' if delete_sub_folders else 'false')
         folder_ids = create_element('m:FolderIds')
         for folder in folders:
-            log.debug('Emptying folder %s', folder)
+            log.debug('Emptying folder %s' % folder)
             if not isinstance(folder, (Folder, FolderId, DistinguishedFolderId)):
                 folder = to_item_id(folder, FolderId)
             set_xml_value(folder_ids, folder, version=self.account.version)
@@ -1395,7 +1395,7 @@ class SendItem(EWSAccountService):
         )
         item_ids = create_element('m:ItemIds')
         for item in items:
-            log.debug('Sending item %s', item)
+            log.debug('Sending item %s' % item)
             set_xml_value(item_ids, to_item_id(item, ItemId), version=self.account.version)
         if not len(item_ids):
             raise ValueError('"items" must not be empty')
@@ -1430,7 +1430,7 @@ class MoveItem(EWSAccountService):
         moveitem.append(tofolderid)
         item_ids = create_element('m:ItemIds')
         for item in items:
-            log.debug('Moving item %s to %s', item, to_folder)
+            log.debug('Moving item %s to %s' % (item, to_folder))
             set_xml_value(item_ids, to_item_id(item, ItemId), version=self.account.version)
         if not len(item_ids):
             raise ValueError('"items" must not be empty')
@@ -1460,7 +1460,7 @@ class CopyItem(EWSAccountService):
         copyitem.append(tofolderid)
         item_ids = create_element('m:ItemIds')
         for item in items:
-            log.debug('Copying item %s to %s', item, to_folder)
+            log.debug('Copying item %s to %s' % (item, to_folder))
             set_xml_value(item_ids, to_item_id(item, ItemId), version=self.account.version)
         if not len(item_ids):
             raise ValueError('"items" must not be empty')
@@ -1549,13 +1549,13 @@ class FindPeople(EWSAccountService, PagingEWSMixIn):
         log_prefix = 'EWS %s, account %s, service %s' % (self.protocol.service_endpoint, account, self.SERVICE_NAME)
         item_count = kwargs['offset']
         while True:
-            log.debug('%s: Getting items at offset %s', log_prefix, item_count)
+            log.debug('%s: Getting items at offset %s' % (log_prefix, item_count))
             kwargs['offset'] = item_count
             payload = payload_func(**kwargs)
             try:
                 response = self._get_response_xml(payload=payload)
             except ErrorServerBusy as e:
-                log.debug('Got ErrorServerBusy (back off %s seconds)', e.back_off)
+                log.debug('Got ErrorServerBusy (back off %s seconds)' % e.back_off)
                 # ErrorServerBusy is very often a symptom of sending too many requests. Scale back if possible.
                 try:
                     self.protocol.decrease_poolsize()
@@ -1592,8 +1592,8 @@ class FindPeople(EWSAccountService, PagingEWSMixIn):
         total_items = int(message.find('{%s}TotalNumberOfPeopleInView' % MNS).text)
         first_matching = int(message.find('{%s}FirstMatchingRowIndex' % MNS).text)
         first_loaded = int(message.find('{%s}FirstLoadedRowIndex' % MNS).text)
-        log.debug('%s: Got page with total items %s, first matching %s, first loaded %s ', self.SERVICE_NAME,
-                  total_items, first_matching, first_loaded)
+        log.debug('%s: Got page with total items %s, first matching %s, first loaded %s ' % (self.SERVICE_NAME,
+                  total_items, first_matching, first_loaded))
         return message, total_items
 
 
