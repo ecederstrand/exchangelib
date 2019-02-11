@@ -173,6 +173,8 @@ class EWSTimeZone(object):
         # Microsoft timezones are less granular than pytz, so an EWSTimeZone created from 'Europe/Copenhagen' may return
         # from the server as 'Europe/Copenhagen'. We're catering for Microsoft here, so base equality on the Microsoft
         # timezone ID.
+        if not isinstance(other, EWSTimeZone):
+            return NotImplemented
         return self.ms_id == other.ms_id
 
     def __hash__(self):
