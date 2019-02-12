@@ -22,7 +22,7 @@ from .credentials import Credentials
 from .errors import TransportError, SessionPoolMinSizeReached
 from .properties import FreeBusyViewOptions, MailboxData, TimeWindow, TimeZone
 from .services import GetServerTimeZones, GetRoomLists, GetRooms, ResolveNames, GetUserAvailability, \
-    GetSearchableMailboxes
+    GetSearchableMailboxes, ExpandDL
 from .transport import get_auth_instance, get_service_authtype, get_docs_authtype, AUTH_TYPE_MAP, DEFAULT_HEADERS
 from .util import split_url
 from .version import Version, API_VERSIONS
@@ -368,6 +368,14 @@ class Protocol(with_metaclass(CachingProtocol, BaseProtocol)):
             unresolved_entries=names, return_full_contact_data=return_full_contact_data, search_scope=search_scope,
             contact_data_shape=shape,
         ))
+
+    def expand_dl(self, dl_mailbox):
+        """ Expand distribution list into it's members
+
+        :param dl_mailbox: Mailbox of the distribution list to expand
+        :return: A list of Mailbox items
+        """
+        return list(ExpandDL(protocol=self).call(distribution_list=dl_mailbox))
 
     def get_searchable_mailboxes(self, search_filter=None, expand_group_membership=False):
         """This method is only available to users who have been assigned the Discovery Management RBAC role. See
