@@ -369,13 +369,13 @@ class Protocol(with_metaclass(CachingProtocol, BaseProtocol)):
             contact_data_shape=shape,
         ))
 
-    def expand_dl(self, dl_mailbox):
+    def expand_dl(self, distribution_list):
         """ Expand distribution list into it's members
 
-        :param dl_mailbox: Mailbox of the distribution list to expand
-        :return: A list of Mailbox items
+        :param distribution_list: SMTP address of the distribution list to expand
+        :return: List of Mailbox items that are members of the distribution list
         """
-        return list(ExpandDL(protocol=self).call(distribution_list=dl_mailbox))
+        return list(ExpandDL(protocol=self).call(distribution_list=distribution_list))
 
     def get_searchable_mailboxes(self, search_filter=None, expand_group_membership=False):
         """This method is only available to users who have been assigned the Discovery Management RBAC role. See
