@@ -1783,6 +1783,12 @@ class CommonTest(EWSTest):
             {'anne@example.com', 'john@example.com'}
         )
 
+    def test_expanddl(self):
+        self.assertEqual(
+            len(self.account.protocol.expand_dl('non_existent_distro@example.com')),
+            0
+        )
+
     def test_oof_settings(self):
         oof = OofSettings(
             state=OofSettings.ENABLED,

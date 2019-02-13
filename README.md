@@ -1047,6 +1047,10 @@ for mailbox in a.protocol.resolve_names(['ann@example.com', 'bart@example.com'])
 for mailbox, contact in a.protocol.resolve_names(['anne', 'bart'], return_full_contact_data=True):
     print(mailbox.email_address, contact.display_name)
 
+# Get all mailboxes on a distribution list
+for mailbox in a.protocol.expand_dl('distro@example.com'):
+    print(mailbox.email_address)
+
 # Get searchable mailboxes. This method is only available to users who have been assigned
 # the Discovery Management RBAC role. (This feature works on Exchange 2013 onwards)
 for mailbox in a.protocol.get_searchable_mailboxes():
