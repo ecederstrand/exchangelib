@@ -1784,10 +1784,11 @@ class CommonTest(EWSTest):
         )
 
     def test_expanddl(self):
-        self.assertEqual(
-            len(self.account.protocol.expand_dl('non_existent_distro@example.com')),
-            0
-        )
+        try:
+            self.account.protocol.expand_dl('non_existent_distro@example.com')
+            self.assertFail("expanding a non existent distribution list should throw ErrorNameResolutionNoResults exception")
+        except ErrorNameResolutionNoResults:
+            pass
 
     def test_oof_settings(self):
         oof = OofSettings(
