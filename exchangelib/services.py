@@ -1699,8 +1699,6 @@ class ExpandDL(EWSService):
         from .properties import Mailbox
         elements = self._get_elements(payload=self.get_payload(distribution_list=distribution_list))
         for elem in elements:
-            if isinstance(elem, ErrorNameResolutionNoResults):
-                continue
             if isinstance(elem, Exception):
                 raise elem
             yield Mailbox.from_xml(elem, account=None)
