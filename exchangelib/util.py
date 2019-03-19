@@ -150,7 +150,7 @@ def value_to_xml_text(value):
     if isinstance(value, string_types):
         return safe_xml_value(value)
     if isinstance(value, bool):
-        return '1' if value else '0'
+        return 'true' if value else 'false'
     if isinstance(value, (int, Decimal)):
         return text_type(value)
     if isinstance(value, datetime.time):
