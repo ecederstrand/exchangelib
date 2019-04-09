@@ -37,6 +37,7 @@ VERSIONS = {
     'Exchange2015': ('Exchange2015', 'Microsoft Exchange Server 2015'),
     'Exchange2015_SP1': ('Exchange2015_SP1', 'Microsoft Exchange Server 2015 SP1'),
     'Exchange2016': ('Exchange2016', 'Microsoft Exchange Server 2016'),
+    'Exchange2019': ('Exchange2019', 'Microsoft Exchange Server 2019'),
 }
 
 # Build a list of unique API versions, used when guessing API version supported by the server.  Use reverse order so we
@@ -67,6 +68,7 @@ class Build(object):
         15: {
             0: 'Exchange2013',  # Minor builds starting from 847 are Exchange2013_SP1, see api_version()
             1: 'Exchange2016',
+            2: 'Exchange2019',
             20: 'Exchange2016',  # This is Office365. See issue #221
         },
     }
@@ -164,6 +166,7 @@ EXCHANGE_2010_SP2 = Build(14, 2)
 EXCHANGE_2013 = Build(15, 0)
 EXCHANGE_2013_SP1 = Build(15, 0, 847)
 EXCHANGE_2016 = Build(15, 1)
+EXCHANGE_2019 = Build(15, 2)
 
 
 @python_2_unicode_compatible
