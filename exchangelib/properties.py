@@ -13,7 +13,8 @@ from six import text_type, string_types
 
 from .fields import SubField, TextField, EmailAddressField, ChoiceField, DateTimeField, EWSElementField, MailboxField, \
     Choice, BooleanField, IdField, ExtendedPropertyField, IntegerField, TimeField, EnumField, CharField, EmailField, \
-    EWSElementListField, EnumListField, FreeBusyStatusField, WEEKDAY_NAMES, FieldPath, Field
+    EWSElementListField, EnumListField, FreeBusyStatusField, PermissionActionTypeField, UserIdField, \
+    UnknownEntriesField, TextListField, WEEKDAY_NAMES, FieldPath, Field
 from .util import get_xml_attr, create_element, set_xml_value, value_to_xml_text, MNS, TNS
 from .version import EXCHANGE_2013
 
@@ -834,6 +835,85 @@ class FailedMailbox(EWSElement):
         IntegerField('error_code', field_uri='ErrorCode'),
         CharField('error_message', field_uri='ErrorMessage'),
         BooleanField('is_archive', field_uri='IsArchive'),
+    ]
+
+    __slots__ = tuple(f.name for f in FIELDS)
+
+
+class UserId(EWSElement):
+    # MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/userid
+    ELEMENT_NAME = 'UserId'
+
+    FIELDS = [
+        TextField('sid', field_uri='SID'),
+        EmailAddressField('primary_smtp_address', field_uri='PrimarySmtpAddress'),
+        CharField('display_name', field_uri='DisplayName'),
+        ChoiceField('distinguished_user', field_uri='DistinguishedUser', choices={
+            Choice('Default'),
+            Choice('Anonymous')
+            }),
+        TextField('external_user_identity', field_uri='ExternalUserIdentity'),
+    ]
+
+    __slots__ = tuple(f.name for f in FIELDS)
+
+
+class BasePermission(EWSElement):
+    FIELDS = [
+        UserIdField('user_id', field_uri='UserId', is_required=True),
+        BooleanField('can_create_items', field_uri='CanCreateItems', default=False),
+        BooleanField('can_create_subfolders', field_uri='CanCreateSubFolders', default=False),
+        BooleanField('is_folder_owner', field_uri='IsFolderOwner', default=False),
+        BooleanField('is_folder_visible', field_uri='IsFolderVisible', default=False),
+        BooleanField('is_folder_contact', field_uri='IsFolderContact', default=False),
+        PermissionActionTypeField('edit_items', field_uri='EditItems'),
+        PermissionActionTypeField('delete_items', field_uri='DeleteItems'),
+    ]
+
+
+class Permission(BasePermission):
+    # MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/permission
+    ELEMENT_NAME = 'Permission'
+
+    FIELDS = BasePermission.FIELDS + [
+        ChoiceField('read_items', field_uri='ReadItems', choices={
+            Choice('None'), Choice('FullDetails'),
+        }, default='None'),
+        ChoiceField('permission_level', field_uri='PermissionLevel', choices={
+            Choice('None'), Choice('Owner'), Choice('PublishingEditor'), Choice('Editor'), Choice('PublishingAuthor'),
+            Choice('Author'), Choice('NoneditingAuthor'), Choice('Reviewer'), Choice('Contributor'), Choice('Custom'),
+        }, default='None'),
+    ]
+
+    __slots__ = tuple(f.name for f in FIELDS)
+
+
+class CalendarPermission(BasePermission):
+    # MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/calendarpermission
+    ELEMENT_NAME = 'CalendarPermission'
+
+    FIELDS = BasePermission.FIELDS + [
+        ChoiceField('read_items', field_uri='ReadItems', choices={
+            Choice('None'), Choice('FullDetails')
+        }, default='None'),
+        ChoiceField('calendar_permission_level', field_uri='CalendarPermissionLevel', choices={
+            Choice('None'), Choice('Owner'), Choice('PublishingEditor'), Choice('Editor'), Choice('PublishingAuthor'),
+            Choice('Author'), Choice('NoneditingAuthor'), Choice('Reviewer'), Choice('Contributor'),
+            Choice('FreeBusyTimeOnly'), Choice('FreeBusyTimeAndSubjectAndLocation'), Choice('Custom'),
+        }, default='None'),
+    ]
+
+    __slots__ = tuple(f.name for f in FIELDS)
+
+
+class PermissionSet(EWSElement):
+    # MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/permissionset-permissionsettype
+    ELEMENT_NAME = 'PermissionSet'
+
+    FIELDS = [
+        EWSElementListField('permissions', field_uri='Permissions', value_cls=Permission),
+        EWSElementListField('calendar_permissions', field_uri='CalendarPermissions', value_cls=CalendarPermission),
+        UnknownEntriesField('unknown_entries', field_uri='UnknownEntries'),
     ]
 
     __slots__ = tuple(f.name for f in FIELDS)

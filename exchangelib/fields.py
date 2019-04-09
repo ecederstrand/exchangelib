@@ -1211,3 +1211,36 @@ class EffectiveRightsField(EWSElementField):
         from .properties import EffectiveRights
         kwargs['value_cls'] = EffectiveRights
         super(EffectiveRightsField, self).__init__(*args, **kwargs)
+
+
+class UserIdField(EWSElementField):
+    def __init__(self, *args, **kwargs):
+        from .properties import UserId
+        kwargs['value_cls'] = UserId
+        super(UserIdField, self).__init__(*args, **kwargs)
+
+
+class PermissionActionTypeField(ChoiceField):
+    PERMISSION_ACTION_TYPE_CHOICES = [Choice('None'), Choice('Owned'), Choice('All')]
+
+    def __init__(self, *args, **kwargs):
+        kwargs['choices'] = set(PermissionActionTypeField.PERMISSION_ACTION_TYPE_CHOICES)
+        kwargs['default'] = 'None'
+        super(PermissionActionTypeField, self).__init__(*args, **kwargs)
+
+
+class UnknownEntriesField(TextField):
+    is_list = True
+
+    def from_xml(self, elem, account):
+        iter_elem = elem.find(self.response_tag())
+        if iter_elem is not None:
+            return get_xml_attrs(iter_elem, '{%s}UnknownEntry' % TNS)
+        return self.default
+
+
+class PermissionSetField(EWSElementField):
+    def __init__(self, *args, **kwargs):
+        from .properties import PermissionSet
+        kwargs['value_cls'] = PermissionSet
+        super(PermissionSetField, self).__init__(*args, **kwargs)

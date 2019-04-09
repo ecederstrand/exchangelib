@@ -12,8 +12,8 @@ from six import text_type, string_types
 
 from .errors import ErrorAccessDenied, ErrorFolderNotFound, ErrorCannotEmptyFolder, ErrorCannotDeleteObject, \
     ErrorNoPublicFolderReplicaAvailable, ErrorInvalidOperation, ErrorDeleteDistinguishedFolder, ErrorItemNotFound
-from .fields import IntegerField, TextField, DateTimeField, FieldPath, EffectiveRightsField, MailboxField, IdField, \
-    EWSElementField, Field
+from .fields import IntegerField, TextField, DateTimeField, FieldPath, EffectiveRightsField, PermissionSetField, \
+    MailboxField, IdField, EWSElementField, Field
 from .items import Item, CalendarItem, Contact, Message, Task, MeetingRequest, MeetingResponse, MeetingCancellation, \
     DistributionList, RegisterMixIn, Persona, ITEM_CLASSES, ITEM_TRAVERSAL_CHOICES, SHAPE_CHOICES, ID_ONLY, \
     DELETE_TYPE_CHOICES, HARD_DELETE
@@ -333,6 +333,7 @@ class Folder(RegisterMixIn, SearchableMixIn):
         IntegerField('child_folder_count', field_uri='folder:ChildFolderCount', is_read_only=True),
         IntegerField('unread_count', field_uri='folder:UnreadCount', is_read_only=True),
         EffectiveRightsField('effective_rights', field_uri='folder:EffectiveRights', is_read_only=True),
+        PermissionSetField('permission_set', field_uri='folder:PermissionSet', is_read_only=True),
     ]
 
     # Used to register extended properties
