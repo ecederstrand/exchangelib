@@ -122,3 +122,23 @@ class ServiceAccount(Credentials):
         value = datetime.datetime.now() + datetime.timedelta(seconds=seconds)
         with self._back_off_lock:
             self._back_off_until = value
+
+
+class OAuth2BackendClientCredentials(ServiceAccount):
+    def __init__(self, client_id, client_secret, tenant_id, max_wait=3600):
+        super(OAuth2BackendClientCredentials, self).__init__('', '', max_wait)
+        self.client_id = client_id
+        self.client_secret = client_secret
+        self.tenant_id = tenant_id
+
+    def __eq__(self, other):
+        return self.client_id == other.client_id and self.client_secret == other.client_secret and self.tenant_id == other.tenant_id
+
+    def __hash__(self):
+        return hash((self.client_id, self.client_secret, self.tenant_id))
+
+    def __repr__(self):
+        return self.__class__.__name__ + repr((self.client_id, '********'))
+
+    def __str__(self):
+        return self.client_id

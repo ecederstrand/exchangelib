@@ -5,6 +5,7 @@ import logging
 
 import requests.auth
 import requests_ntlm
+from requests_oauthlib import OAuth2
 
 from .credentials import IMPERSONATION
 from .errors import UnauthorizedError, TransportError, RedirectError, RelativeRedirect
@@ -18,11 +19,13 @@ NTLM = 'NTLM'
 BASIC = 'basic'
 DIGEST = 'digest'
 GSSAPI = 'gssapi'
+OAUTH = 'OAuth 2.0'
 
 AUTH_TYPE_MAP = {
     NTLM: requests_ntlm.HttpNtlmAuth,
     BASIC: requests.auth.HTTPBasicAuth,
     DIGEST: requests.auth.HTTPDigestAuth,
+    OAUTH: OAuth2,
     NOAUTH: None,
 }
 try:
@@ -73,7 +76,7 @@ def wrap(content, version, account=None):
     return xml_to_str(envelope, encoding=DEFAULT_ENCODING, xml_declaration=True)
 
 
-def get_auth_instance(credentials, auth_type):
+def get_auth_instance(credentials, auth_type, client=None):
     """
     Returns an *Auth instance suitable for the requests package
     """
@@ -83,9 +86,11 @@ def get_auth_instance(credentials, auth_type):
     username = credentials.username
     if auth_type == NTLM and credentials.type == credentials.EMAIL:
         username = '\\' + username
-    if auth_type == GSSAPI:
+    elif auth_type == GSSAPI:
         # Kerberos auth relies on credentials supplied via a ticket available externally to this library
         return model()
+    elif auth_type == OAUTH:
+        return model(client=client)
     return model(username=username, password=credentials.password)
 
 

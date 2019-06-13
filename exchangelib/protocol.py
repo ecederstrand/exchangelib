@@ -19,14 +19,17 @@ from future.utils import with_metaclass, python_2_unicode_compatible
 from future.moves.queue import LifoQueue, Empty, Full
 from six import string_types
 
-from .credentials import Credentials
+from .credentials import Credentials, OAuth2BackendClientCredentials
 from .errors import TransportError, SessionPoolMinSizeReached
 from .properties import FreeBusyViewOptions, MailboxData, TimeWindow, TimeZone
 from .services import GetServerTimeZones, GetRoomLists, GetRooms, ResolveNames, GetUserAvailability, \
     GetSearchableMailboxes, ExpandDL
-from .transport import get_auth_instance, get_service_authtype, get_docs_authtype, AUTH_TYPE_MAP, DEFAULT_HEADERS
+from .transport import get_auth_instance, get_service_authtype, get_docs_authtype, AUTH_TYPE_MAP, DEFAULT_HEADERS, OAUTH
 from .util import split_url
 from .version import Version, API_VERSIONS
+
+from oauthlib.oauth2 import BackendApplicationClient
+from requests_oauthlib import OAuth2Session, OAuth2
 
 log = logging.getLogger(__name__)
 
@@ -149,11 +152,25 @@ class BaseProtocol(object):
         return self.create_session()
 
     def create_session(self):
-        session = requests.sessions.Session()
+        session = None
+        if self.auth_type == OAUTH:
+            if not isinstance(self.credentials, OAuth2BackendClientCredentials):
+                raise Exception('OAuth2BackendClientCredentials object required for OAuth2 authentication')
+
+            token_url = f'https://login.microsoftonline.com/{self.credentials.tenant_id}/oauth2/v2.0/token'
+            scope = ['https://outlook.office365.com/.default']
+            client = BackendApplicationClient(client_id=self.credentials.client_id)
+            session = OAuth2Session(client=client)
+            # Fetch the token explicitly-- it doesn't occur implicitly
+            token = session.fetch_token(token_url=token_url, client_id=self.credentials.client_id, client_secret=self.credentials.client_secret, scope=scope)
+            session.auth = get_auth_instance(credentials=self.credentials, auth_type=OAUTH, client=client)
+        else:
+            session = requests.sessions.Session()
+            session.auth = get_auth_instance(credentials=self.credentials, auth_type=self.auth_type)
+        
         # Add some extra info
         session.session_id = sum(map(ord, str(os.urandom(100))))  # Used for debugging messages in services
         session.protocol = self
-        session.auth = get_auth_instance(credentials=self.credentials, auth_type=self.auth_type)
         # Create a copy of the headers because headers are mutable and session users may modify headers
         session.headers.update(DEFAULT_HEADERS.copy())
         session.mount('http://', adapter=self.get_adapter())

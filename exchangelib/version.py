@@ -167,6 +167,7 @@ EXCHANGE_2013 = Build(15, 0)
 EXCHANGE_2013_SP1 = Build(15, 0, 847)
 EXCHANGE_2016 = Build(15, 1)
 EXCHANGE_2019 = Build(15, 2)
+EXCHANGE_O365 = Build(15, 20)
 
 
 @python_2_unicode_compatible
