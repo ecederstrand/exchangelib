@@ -638,7 +638,7 @@ class Message(Item):
         BooleanField('is_read', field_uri='message:IsRead', is_required=True, default=False),
         BooleanField('is_response_requested', field_uri='message:IsResponseRequested', default=False, is_required=True),
         TextField('references', field_uri='message:References'),
-        MailboxField('reply_to', field_uri='message:ReplyTo', is_read_only_after_send=True, is_searchable=False),
+        MailboxListField('reply_to', field_uri='message:ReplyTo', is_read_only_after_send=True, is_searchable=False),
         MailboxField('received_by', field_uri='message:ReceivedBy', is_read_only=True),
         MailboxField('received_representing', field_uri='message:ReceivedRepresenting', is_read_only=True),
         # Placeholder for ReminderMessageData
