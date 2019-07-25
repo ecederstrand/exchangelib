@@ -758,6 +758,23 @@ for p in folder.people():
     print(p)
 for p in folder.people().only('display_name').filter(display_name='john').order_by('display_name'):
     print(p)
+
+# getting a single contact
+email1=exchangelib.indexed_properties.EmailAddress()
+email1.email='lucas@foo.com'
+contact = account.contacts.get(Q(email_addresses=email1))
+
+# all contacts with a gmail address
+gmail=exchangelib.indexed_properties.EmailAddress()
+gmail.email='gmail.com'
+list_gmail_contact = [x for x in account.contacts.filter(Q(email_addresses__contains=gmail))]
+
+# all email addresses at gmail 
+list_gmail_email = [x.email_addresses[0].email for x in account.contacts.filter(Q(email_addresses__contains=gmail))]
+
+# all emails
+list_all_emails = [x.email_addresses[0].email for x in account.contacts.all() if not isinstance(x, exchangelib.DistributionList) and len(x.email_addresses)>0]
+
 ```
 
 ## Extended properties
