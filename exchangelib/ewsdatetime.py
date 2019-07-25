@@ -8,6 +8,7 @@ import dateutil.parser
 import pytz
 import pytz.exceptions
 import tzlocal
+import six
 
 from .errors import NaiveDateTimeNotAllowed, UnknownTimeZone, AmbiguousTimeError, NonExistentTimeError
 from .winzone import PYTZ_TO_MS_TIMEZONE_MAP, MS_TIMEZONE_TO_PYTZ_MAP
@@ -256,10 +257,10 @@ class EWSTimeZone(object):
             # Not all pytz timezones support 'is_dst' argument. Only pass it on if it's set explicitly.
             try:
                 res = super(EWSTimeZone, self).localize(dt, is_dst=is_dst)
-            except pytz.exceptions.AmbiguousTimeError:
-                raise AmbiguousTimeError(str(dt))
-            except pytz.exceptions.NonExistentTimeError:
-                raise NonExistentTimeError(str(dt))
+            except pytz.exceptions.AmbiguousTimeError as exc:
+                six.raise_from(AmbiguousTimeError(str(dt)), exc)
+            except pytz.exceptions.NonExistentTimeError as exc:
+                six.raise_from(NonExistentTimeError(str(dt)), exc)
         else:
             res = super(EWSTimeZone, self).localize(dt)
         if not isinstance(res.tzinfo, EWSTimeZone):
