@@ -8,6 +8,8 @@ from future.moves.urllib.parse import urlparse
 from future.utils import python_2_unicode_compatible
 from six import text_type
 
+import pytz.exceptions
+
 
 @python_2_unicode_compatible
 class EWSError(Exception):
@@ -97,11 +99,11 @@ class UnknownTimeZone(EWSError):
     pass
 
 
-class AmbiguousTimeError(EWSError):
+class AmbiguousTimeError(EWSError, pytz.exceptions.AmbiguousTimeError):
     pass
 
 
-class NonExistentTimeError(EWSError):
+class NonExistentTimeError(EWSError, pytz.exceptions.NonExistentTimeError):
     pass
 
 
