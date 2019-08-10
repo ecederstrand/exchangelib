@@ -13,7 +13,7 @@ class SyncFolderItems(EWSFolderService):
         return self._get_elements(payload=self.get_payload(sync_state, ignore, max_changes))
 
     def get_payload(self, sync_state, ignore, max_changes):
-        payload = create_element(self.SERVICE_NAME, xmlns=MNS)
+        payload = create_element(self.SERVICE_NAME, attrs=dict(xmlns=MNS))
         itemshape = create_element('m:ItemShape')
         add_xml_child(itemshape, 't:BaseShape', 'IdOnly')
         payload.append(itemshape)
