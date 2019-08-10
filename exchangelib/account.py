@@ -29,8 +29,8 @@ from .items import Item, BulkCreateResult, HARD_DELETE, \
 from .properties import Mailbox, SendingAs
 from .queryset import QuerySet
 from .services import ExportItems, UploadItems, GetItem, CreateItem, UpdateItem, DeleteItem, MoveItem, SendItem, \
-    CopyItem, GetUserOofSettings, SetUserOofSettings, GetMailTips, SyncFolderItems, SubscribePushFolder, SubscribeStreamingFolder, \
-    UnsubscribeStreamingFolder, GetStreamingEvents, EVENT_TYPES
+    CopyItem, GetUserOofSettings, SetUserOofSettings, GetMailTips, SyncFolderItems, SubscribePushFolder, \
+    SubscribeStreamingFolder, UnsubscribeStreamingFolder, GetStreamingEvents, EVENT_TYPES
 from .settings import OofSettings
 from .util import get_domain, peek
 

@@ -1301,5 +1301,5 @@ class DeleteChange(Item):
 
 ITEM_CLASSES = (Item, CalendarItem, Contact, DistributionList, Message, PostItem, Task, MeetingRequest, MeetingResponse,
                 MeetingCancellation)
-ALL_ITEM_CLASSES = (Item, CalendarItem, Contact, DistributionList, Message, PostItem, Task, MeetingRequest, MeetingResponse,
-                MeetingCancellation, ReadFlagChange, CreateChange, UpdateChange, DeleteChange)
+ALL_ITEM_CLASSES = (Item, CalendarItem, Contact, DistributionList, Message, PostItem, Task, MeetingRequest,
+                    MeetingResponse, MeetingCancellation, ReadFlagChange, CreateChange, UpdateChange, DeleteChange)

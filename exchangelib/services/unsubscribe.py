@@ -1,4 +1,4 @@
-from ..util import add_xml_child, create_element, set_xml_value, MNS
+from ..util import add_xml_child, create_element, MNS
 from .common import EWSAccountService
 
 
@@ -16,6 +16,6 @@ class UnsubscribeStreamingFolder(EWSAccountService):
     def get_payload(self, subscription_id):
         if not subscription_id:
             raise ValueError('Cannot unsubscribe empty subscription id')
-        payload = create_element(self.SERVICE_NAME,  attrs=dict(xmlns=MNS))
+        payload = create_element(self.SERVICE_NAME, attrs=dict(xmlns=MNS))
         add_xml_child(payload, 'SubscriptionId', subscription_id)
         return payload
