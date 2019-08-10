@@ -1,6 +1,6 @@
 # coding=utf-8
 from ..items import CalendarItem, Contact, Message, Task, DistributionList, MeetingRequest, MeetingResponse, \
-    MeetingCancellation, ITEM_CLASSES
+    MeetingCancellation, CreateChange, UpdateChange, DeleteChange, ReadFlagChange, ITEM_CLASSES
 from ..version import EXCHANGE_2010_SP1, EXCHANGE_2013, EXCHANGE_2013_SP1
 from .base import Folder
 from .collections import FolderCollection
@@ -50,7 +50,8 @@ class DeletedItems(Folder):
 
 class Messages(Folder):
     CONTAINER_CLASS = 'IPF.Note'
-    supported_item_models = (Message, MeetingRequest, MeetingResponse, MeetingCancellation)
+    supported_item_models = (Message, MeetingRequest, MeetingResponse, MeetingCancellation, CreateChange,
+                             UpdateChange, DeleteChange, ReadFlagChange)
 
 
 class Drafts(Messages):

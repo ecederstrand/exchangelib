@@ -66,6 +66,7 @@ class Folder(RegisterMixIn, SearchableMixIn):
     def __init__(self, **kwargs):
         self.root = kwargs.pop('root', None)  # This is a pointer to the root of the folder hierarchy
         self.is_distinguished = kwargs.pop('is_distinguished', False)
+        self.sync_state = None
         parent = kwargs.pop('parent', None)
         if parent:
             if self.root:

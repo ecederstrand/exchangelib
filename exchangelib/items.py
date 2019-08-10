@@ -1265,5 +1265,39 @@ class Persona(IdChangeKeyMixIn):
     __slots__ = tuple(f.name for f in LOCAL_FIELDS)
 
 
+class ReadFlagChange(Item):
+    """
+    MSDN: https://msdn.microsoft.com/en-us/library/office/aa565609(v=exchg.150).aspx
+    """
+    ELEMENT_NAME = 'ReadFlagChange'
+    FIELDS = Item.FIELDS
+
+
+class CreateChange(Item):
+    """
+    MSDN: https://msdn.microsoft.com/en-us/library/office/aa565609(v=exchg.150).aspx
+    """
+    ELEMENT_NAME = 'Create'
+    FIELDS = Item.FIELDS + [
+        EWSElementField('changed_item', field_uri='Message', value_cls=Message)
+    ]
+
+
+class UpdateChange(Item):
+    """
+    MSDN: https://msdn.microsoft.com/en-us/library/office/aa565609(v=exchg.150).aspx
+    """
+    ELEMENT_NAME = 'Update'
+    FIELDS = Item.FIELDS
+
+
+class DeleteChange(Item):
+    """
+    MSDN: https://msdn.microsoft.com/en-us/library/office/aa565609(v=exchg.150).aspx
+    """
+    ELEMENT_NAME = 'Delete'
+    FIELDS = Item.FIELDS
+
+
 ITEM_CLASSES = (Item, CalendarItem, Contact, DistributionList, Message, PostItem, Task, MeetingRequest, MeetingResponse,
-                MeetingCancellation)
+                MeetingCancellation, ReadFlagChange, CreateChange, UpdateChange, DeleteChange)

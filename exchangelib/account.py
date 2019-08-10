@@ -29,7 +29,8 @@ from .items import Item, BulkCreateResult, HARD_DELETE, \
 from .properties import Mailbox, SendingAs
 from .queryset import QuerySet
 from .services import ExportItems, UploadItems, GetItem, CreateItem, UpdateItem, DeleteItem, MoveItem, SendItem, \
-    CopyItem, GetUserOofSettings, SetUserOofSettings, GetMailTips
+    CopyItem, GetUserOofSettings, SetUserOofSettings, GetMailTips, SyncFolderItems, SubscribePushFolder, SubscribeStreamingFolder, \
+    UnsubscribeStreamingFolder, GetStreamingEvents, EVENT_TYPES
 from .settings import OofSettings
 from .util import get_domain, peek
 
@@ -606,3 +607,67 @@ class Account(object):
         if self.fullname:
             txt += ' (%s)' % self.fullname
         return txt
+
+    def sync(self, folder, max_changes):
+        # Only use sync if sync_state is fully updated. First sync's with EWS will return (id, changekey) tuples
+        # for ALL items until the cursor hits the end of the state. Subsequent calls will return only specific changes.
+        # If you want to use sync, please ensure you re-use the sync_state properly (and persist it)
+        if not isinstance(folder, Folder):
+            raise ValueError('Cannot sync non-folder obj %r' % folder)
+        for change in SyncFolderItems(account=self, folders=[folder]).call(folder.sync_state, None, max_changes):
+            if isinstance(change, Exception):
+                yield change
+            else:
+                item = folder.item_model_from_tag(change.tag).from_xml(elem=change, account=self)
+                yield item
+
+    def changes(self, folder):
+        # More user friendly method. No need to worry about sync_states. Will return changes as they happen.
+        if not isinstance(folder, Folder):
+            raise ValueError('Cannot sync non-folder obj %r' % folder)
+
+        is_first_sync = not folder.sync_state
+        changes = []
+
+        ret = list(self.sync(folder, 512))
+        if len(ret) > 0:
+            changes.extend(ret)
+        while ret and len(ret) == 512:
+            ret = list(self.sync(folder, 512))
+            if len(ret) > 0:
+                changes.extend(ret)
+        return changes if not is_first_sync else []
+
+    def stream(self, folder):
+        # Subscribe for streaming notifications
+        # Usage:
+        # 1. Get subscription id for folder by calling stream
+        # 2. Call events which will block until changes on the folder happen or timeout is hit
+        # 3. Process changes and call unsubcribe with subscriptionId to end the subscription
+        if not isinstance(folder, Folder):
+            raise ValueError('Folder to subscribe to %r must be valid' % folder)
+        for subscription_id in SubscribeStreamingFolder(account=self, folders=[folder]).call(events=EVENT_TYPES):
+            yield subscription_id
+
+    def events(self, subscription_ids):
+        # Get streaming events - this will block until it hits timeout or enough data is accumulated
+        # TODO: Add stream=True for GetStreamingEvents and figure out how to accumulate data on the socket
+        for event in GetStreamingEvents(account=self).call(subscription_ids):
+            if isinstance(event, Exception):
+                yield event
+            else:
+                yield event
+
+    def push(self, folder, callback_url):
+        # Subscribe for push notifications from EWS to your server. Server must handle unsubcribe / re-use / validation
+        if not isinstance(folder, Folder):
+            raise ValueError('Folder to subscribe to %r must be valid' % folder)
+        for subscription_id in SubscribePushFolder(account=self, folders=[folder]).call(events=EVENT_TYPES,
+                                                                                       callback_url=callback_url):
+            yield subscription_id
+
+    def unsubscribe(self, subscription_id):
+        # Unsubscribe from streaming notifications
+        if not subscription_id:
+            raise ValueError('Cannot unsubscribe without a subscription id')
+        UnsubscribeStreamingFolder(account=self).call(subscription_id)
