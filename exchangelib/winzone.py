@@ -26,7 +26,7 @@ def generate_map(timeout=10):
 # This map is generated irregularly from generate_map(). Do not edit manually - make corrections to
 # PYTZ_TO_MS_TIMEZONE_MAP instead. We provide this map to avoid hammering the CLDR_WINZONE_URL.
 #
-# This list was generated from CLDR_WINZONE_URL version 2018i.
+# This list was generated from CLDR_WINZONE_URL version 2019b.
 CLDR_TO_MS_TIMEZONE_MAP = {
     'Africa/Abidjan': ('Greenwich Standard Time', 'CI'),
     'Africa/Accra': ('Greenwich Standard Time', 'GH'),
@@ -172,7 +172,7 @@ CLDR_TO_MS_TIMEZONE_MAP = {
     'America/Mendoza': ('Argentina Standard Time', 'AR'),
     'America/Menominee': ('Central Standard Time', 'US'),
     'America/Merida': ('Central Standard Time (Mexico)', 'MX'),
-    'America/Metlakatla': ('Pacific Standard Time', 'US'),
+    'America/Metlakatla': ('Alaskan Standard Time', 'US'),
     'America/Mexico_City': ('Central Standard Time (Mexico)', '001'),
     'America/Miquelon': ('Saint Pierre Standard Time', '001'),
     'America/Moncton': ('Atlantic Standard Time', 'CA'),
@@ -229,13 +229,13 @@ CLDR_TO_MS_TIMEZONE_MAP = {
     'America/Winnipeg': ('Central Standard Time', 'CA'),
     'America/Yakutat': ('Alaskan Standard Time', 'US'),
     'America/Yellowknife': ('Mountain Standard Time', 'CA'),
-    'Antarctica/Casey': ('W. Australia Standard Time', 'AQ'),
+    'Antarctica/Casey': ('Singapore Standard Time', 'AQ'),
     'Antarctica/Davis': ('SE Asia Standard Time', 'AQ'),
     'Antarctica/DumontDUrville': ('West Pacific Standard Time', 'AQ'),
     'Antarctica/Macquarie': ('Central Pacific Standard Time', 'AU'),
     'Antarctica/Mawson': ('West Asia Standard Time', 'AQ'),
     'Antarctica/McMurdo': ('New Zealand Standard Time', 'AQ'),
-    'Antarctica/Palmer': ('Magallanes Standard Time', 'AQ'),
+    'Antarctica/Palmer': ('SA Eastern Standard Time', 'AQ'),
     'Antarctica/Rothera': ('SA Eastern Standard Time', 'AQ'),
     'Antarctica/Syowa': ('E. Africa Standard Time', 'AQ'),
     'Antarctica/Vostok': ('Central Asia Standard Time', 'AQ'),
@@ -298,7 +298,7 @@ CLDR_TO_MS_TIMEZONE_MAP = {
     'Asia/Pyongyang': ('North Korea Standard Time', '001'),
     'Asia/Qatar': ('Arab Standard Time', 'QA'),
     'Asia/Qostanay': ('Central Asia Standard Time', 'KZ'),
-    'Asia/Qyzylorda': ('West Asia Standard Time', 'KZ'),
+    'Asia/Qyzylorda': ('Qyzylorda Standard Time', '001'),
     'Asia/Rangoon': ('Myanmar Standard Time', '001'),
     'Asia/Riyadh': ('Arab Standard Time', '001'),
     'Asia/Saigon': ('SE Asia Standard Time', 'VN'),
@@ -430,7 +430,7 @@ CLDR_TO_MS_TIMEZONE_MAP = {
     'Europe/Vatican': ('W. Europe Standard Time', 'VA'),
     'Europe/Vienna': ('W. Europe Standard Time', 'AT'),
     'Europe/Vilnius': ('FLE Standard Time', 'LT'),
-    'Europe/Volgograd': ('Russian Standard Time', 'RU'),
+    'Europe/Volgograd': ('Volgograd Standard Time', '001'),
     'Europe/Warsaw': ('Central European Standard Time', '001'),
     'Europe/Zagreb': ('Central European Standard Time', 'HR'),
     'Europe/Zaporozhye': ('FLE Standard Time', 'UA'),

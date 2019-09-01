@@ -1,7 +1,7 @@
 from .ewsdatetime import UTC_NOW
 from .fields import DateTimeField, MessageField, ChoiceField, Choice
-from .properties import EWSElement
-from .util import create_element, set_xml_value, TNS
+from .properties import EWSElement, OutOfOffice
+from .util import create_element, set_xml_value
 
 
 class OofSettings(EWSElement):
@@ -22,6 +22,8 @@ class OofSettings(EWSElement):
         MessageField('external_reply', field_uri='ExternalReply'),
     ]
 
+    __slots__ = tuple(f.name for f in FIELDS)
+
     def clean(self, version=None):
         super(OofSettings, self).clean(version=version)
         if self.state == self.SCHEDULED:
@@ -40,11 +42,7 @@ class OofSettings(EWSElement):
         for attr in ('state', 'external_audience', 'internal_reply', 'external_reply'):
             f = cls.get_field_by_fieldname(attr)
             kwargs[attr] = f.from_xml(elem=elem, account=account)
-        duration = elem.find('{%s}Duration' % TNS)
-        if duration is not None:
-            for attr in ('start', 'end'):
-                f = cls.get_field_by_fieldname(attr)
-                kwargs[attr] = f.from_xml(elem=duration, account=account)
+        kwargs.update(OutOfOffice.duration_to_start_end(elem=elem, account=account))
         cls._clear(elem)
         return cls(**kwargs)
 

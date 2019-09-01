@@ -562,7 +562,7 @@ CONNECTION_ERRORS = (requests.exceptions.ChunkedEncodingError, requests.exceptio
                      requests.exceptions.Timeout, socket.timeout)
 if not PY2:
     # Python2 does not have ConnectionResetError
-    CONNECTION_ERRORS += (ConnectionResetError,)
+    CONNECTION_ERRORS += (ConnectionResetError,)  # noqa: F821
 
 # A collection of error classes we want to handle as TLS verification errors
 TLS_ERRORS = (requests.exceptions.SSLError,)

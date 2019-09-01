@@ -9,6 +9,7 @@
 
 build
 dist
+__pycache__
 
 settings.yml
 scratch*.py

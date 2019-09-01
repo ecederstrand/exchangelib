@@ -22,7 +22,7 @@ install:
 # - if [[ "$( python --version | grep '[a|b]' )" ]] ; then pip install git+https://github.com/yaml/pyyaml.git ; fi
 - pip install .
 # Install test dependencies manually since we're calling tests/__init__.py directly in the 'script' section
-- pip install PyYAML requests_mock psutil coverage coveralls
+- pip install PyYAML requests_mock psutil coverage coveralls flake8
 
 script:
 - coverage run --source=exchangelib setup.py test

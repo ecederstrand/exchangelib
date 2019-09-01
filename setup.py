@@ -47,7 +47,7 @@ setup(
         'complete': ['requests_kerberos', 'requests_negotiate_sspi'],  # Only for Win32 environments
     },
     packages=find_packages(exclude=('tests',)),
-    tests_require=['PyYAML', 'requests_mock', 'psutil'],
+    tests_require=['PyYAML', 'requests_mock', 'psutil', 'flake8'],
     python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*",
     test_suite='tests',
     zip_safe=False,

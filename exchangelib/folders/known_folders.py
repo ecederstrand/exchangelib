@@ -25,6 +25,7 @@ class Calendar(Folder):
         'sv_SE': (u'Kalender',),
         'zh_CN': (u'日历',),
     }
+    __slots__ = tuple()
 
     def view(self, *args, **kwargs):
         return FolderCollection(account=self.root.account, folders=[self]).view(*args, **kwargs)
@@ -46,11 +47,13 @@ class DeletedItems(Folder):
         'sv_SE': (u'Borttaget',),
         'zh_CN': (u'已删除邮件',),
     }
+    __slots__ = tuple()
 
 
 class Messages(Folder):
     CONTAINER_CLASS = 'IPF.Note'
     supported_item_models = (Message, MeetingRequest, MeetingResponse, MeetingCancellation)
+    __slots__ = tuple()
 
 
 class Drafts(Messages):
@@ -67,6 +70,7 @@ class Drafts(Messages):
         'sv_SE': (u'Utkast',),
         'zh_CN': (u'草稿',),
     }
+    __slots__ = tuple()
 
 
 class Inbox(Messages):
@@ -83,6 +87,7 @@ class Inbox(Messages):
         'sv_SE': (u'Inkorgen',),
         'zh_CN': (u'收件箱',),
     }
+    __slots__ = tuple()
 
 
 class Outbox(Messages):
@@ -99,6 +104,7 @@ class Outbox(Messages):
         'sv_SE': (u'Utkorgen',),
         'zh_CN': (u'发件箱',),
     }
+    __slots__ = tuple()
 
 
 class SentItems(Messages):
@@ -115,6 +121,7 @@ class SentItems(Messages):
         'sv_SE': (u'Skickat',),
         'zh_CN': (u'已发送邮件',),
     }
+    __slots__ = tuple()
 
 
 class JunkEmail(Messages):
@@ -131,6 +138,7 @@ class JunkEmail(Messages):
         'sv_SE': (u'Skräppost',),
         'zh_CN': (u'垃圾邮件',),
     }
+    __slots__ = tuple()
 
 
 class Tasks(Folder):
@@ -149,6 +157,7 @@ class Tasks(Folder):
         'sv_SE': (u'Uppgifter',),
         'zh_CN': (u'任务',),
     }
+    __slots__ = tuple()
 
 
 class Contacts(Folder):
@@ -167,27 +176,32 @@ class Contacts(Folder):
         'sv_SE': (u'Kontakter',),
         'zh_CN': (u'联系人',),
     }
+    __slots__ = tuple()
 
 
 class WellknownFolder(Folder):
     # Use this class until we have specific folder implementations
     supported_item_models = ITEM_CLASSES
+    __slots__ = tuple()
 
 
 class AdminAuditLogs(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = 'adminauditlogs'
     supported_from = EXCHANGE_2013
     get_folder_allowed = False
+    __slots__ = tuple()
 
 
 class ArchiveDeletedItems(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = 'archivedeleteditems'
     supported_from = EXCHANGE_2010_SP1
+    __slots__ = tuple()
 
 
 class ArchiveInbox(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = 'archiveinbox'
     supported_from = EXCHANGE_2013_SP1
+    __slots__ = tuple()
 
 
 class ArchiveMsgFolderRoot(WellknownFolder):
@@ -198,58 +212,69 @@ class ArchiveMsgFolderRoot(WellknownFolder):
 class ArchiveRecoverableItemsDeletions(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = 'archiverecoverableitemsdeletions'
     supported_from = EXCHANGE_2010_SP1
+    __slots__ = tuple()
 
 
 class ArchiveRecoverableItemsPurges(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = 'archiverecoverableitemspurges'
     supported_from = EXCHANGE_2010_SP1
+    __slots__ = tuple()
 
 
 class ArchiveRecoverableItemsRoot(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = 'archiverecoverableitemsroot'
     supported_from = EXCHANGE_2010_SP1
+    __slots__ = tuple()
 
 
 class ArchiveRecoverableItemsVersions(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = 'archiverecoverableitemsversions'
     supported_from = EXCHANGE_2010_SP1
+    __slots__ = tuple()
 
 
 class Conflicts(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = 'conflicts'
     supported_from = EXCHANGE_2013
+    __slots__ = tuple()
 
 
 class ConversationHistory(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = 'conversationhistory'
     supported_from = EXCHANGE_2013
+    __slots__ = tuple()
 
 
 class Directory(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = 'directory'
     supported_from = EXCHANGE_2013_SP1
+    __slots__ = tuple()
 
 
 class Favorites(WellknownFolder):
     CONTAINER_CLASS = 'IPF.Note'
     DISTINGUISHED_FOLDER_ID = 'favorites'
     supported_from = EXCHANGE_2013
+    __slots__ = tuple()
 
 
 class IMContactList(WellknownFolder):
     CONTAINER_CLASS = 'IPF.Contact.MOC.ImContactList'
     DISTINGUISHED_FOLDER_ID = 'imcontactlist'
     supported_from = EXCHANGE_2013
+    __slots__ = tuple()
 
 
 class Journal(WellknownFolder):
     CONTAINER_CLASS = 'IPF.Journal'
     DISTINGUISHED_FOLDER_ID = 'journal'
+    __slots__ = tuple()
 
 
 class LocalFailures(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = 'localfailures'
     supported_from = EXCHANGE_2013
+    __slots__ = tuple()
 
 
 class MsgFolderRoot(WellknownFolder):
@@ -258,12 +283,14 @@ class MsgFolderRoot(WellknownFolder):
     LOCALIZED_NAMES = {
         'zh_CN': (u'信息存储顶部',),
     }
+    __slots__ = tuple()
 
 
 class MyContacts(WellknownFolder):
     CONTAINER_CLASS = 'IPF.Note'
     DISTINGUISHED_FOLDER_ID = 'mycontacts'
     supported_from = EXCHANGE_2013
+    __slots__ = tuple()
 
 
 class Notes(WellknownFolder):
@@ -272,17 +299,20 @@ class Notes(WellknownFolder):
     LOCALIZED_NAMES = {
         'da_DK': (u'Noter',),
     }
+    __slots__ = tuple()
 
 
 class PeopleConnect(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = 'peopleconnect'
     supported_from = EXCHANGE_2013
+    __slots__ = tuple()
 
 
 class QuickContacts(WellknownFolder):
     CONTAINER_CLASS = 'IPF.Contact.MOC.QuickContacts'
     DISTINGUISHED_FOLDER_ID = 'quickcontacts'
     supported_from = EXCHANGE_2013
+    __slots__ = tuple()
 
 
 class RecipientCache(Contacts):
@@ -291,41 +321,49 @@ class RecipientCache(Contacts):
     supported_from = EXCHANGE_2013
 
     LOCALIZED_NAMES = {}
+    __slots__ = tuple()
 
 
 class RecoverableItemsDeletions(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = 'recoverableitemsdeletions'
     supported_from = EXCHANGE_2010_SP1
+    __slots__ = tuple()
 
 
 class RecoverableItemsPurges(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = 'recoverableitemspurges'
     supported_from = EXCHANGE_2010_SP1
+    __slots__ = tuple()
 
 
 class RecoverableItemsRoot(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = 'recoverableitemsroot'
     supported_from = EXCHANGE_2010_SP1
+    __slots__ = tuple()
 
 
 class RecoverableItemsVersions(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = 'recoverableitemsversions'
     supported_from = EXCHANGE_2010_SP1
+    __slots__ = tuple()
 
 
 class SearchFolders(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = 'searchfolders'
+    __slots__ = tuple()
 
 
 class ServerFailures(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = 'serverfailures'
     supported_from = EXCHANGE_2013
+    __slots__ = tuple()
 
 
 class SyncIssues(WellknownFolder):
     CONTAINER_CLASS = 'IPF.Note'
     DISTINGUISHED_FOLDER_ID = 'syncissues'
     supported_from = EXCHANGE_2013
+    __slots__ = tuple()
 
 
 class ToDoSearch(WellknownFolder):
@@ -336,6 +374,7 @@ class ToDoSearch(WellknownFolder):
     LOCALIZED_NAMES = {
         None: (u'To-Do Search',),
     }
+    __slots__ = tuple()
 
 
 class VoiceMail(WellknownFolder):
@@ -344,6 +383,7 @@ class VoiceMail(WellknownFolder):
     LOCALIZED_NAMES = {
         None: (u'Voice Mail',),
     }
+    __slots__ = tuple()
 
 
 class NonDeleteableFolderMixin(object):
@@ -358,6 +398,7 @@ class AllContacts(NonDeleteableFolderMixin, Contacts):
     LOCALIZED_NAMES = {
         None: (u'AllContacts',),
     }
+    __slots__ = tuple()
 
 
 class AllItems(NonDeleteableFolderMixin, Folder):
@@ -366,6 +407,7 @@ class AllItems(NonDeleteableFolderMixin, Folder):
     LOCALIZED_NAMES = {
         None: (u'AllItems',),
     }
+    __slots__ = tuple()
 
 
 class Audits(NonDeleteableFolderMixin, Folder):
@@ -373,18 +415,21 @@ class Audits(NonDeleteableFolderMixin, Folder):
         None: (u'Audits',),
     }
     get_folder_allowed = False
+    __slots__ = tuple()
 
 
 class CalendarLogging(NonDeleteableFolderMixin, Folder):
     LOCALIZED_NAMES = {
         None: (u'Calendar Logging',),
     }
+    __slots__ = tuple()
 
 
 class CommonViews(NonDeleteableFolderMixin, Folder):
     LOCALIZED_NAMES = {
         None: (u'Common Views',),
     }
+    __slots__ = tuple()
 
 
 class ConversationSettings(NonDeleteableFolderMixin, Folder):
@@ -392,6 +437,7 @@ class ConversationSettings(NonDeleteableFolderMixin, Folder):
     LOCALIZED_NAMES = {
         'da_DK': (u'Indstillinger for samtalehandlinger',),
     }
+    __slots__ = tuple()
 
 
 class DefaultFoldersChangeHistory(NonDeleteableFolderMixin, Folder):
@@ -399,18 +445,21 @@ class DefaultFoldersChangeHistory(NonDeleteableFolderMixin, Folder):
     LOCALIZED_NAMES = {
         None: (u'DefaultFoldersChangeHistory',),
     }
+    __slots__ = tuple()
 
 
 class DeferredAction(NonDeleteableFolderMixin, Folder):
     LOCALIZED_NAMES = {
         None: (u'Deferred Action',),
     }
+    __slots__ = tuple()
 
 
 class ExchangeSyncData(NonDeleteableFolderMixin, Folder):
     LOCALIZED_NAMES = {
         None: (u'ExchangeSyncData',),
     }
+    __slots__ = tuple()
 
 
 class Files(NonDeleteableFolderMixin, Folder):
@@ -419,12 +468,14 @@ class Files(NonDeleteableFolderMixin, Folder):
     LOCALIZED_NAMES = {
         'da_DK': (u'Filer',),
     }
+    __slots__ = tuple()
 
 
 class FreebusyData(NonDeleteableFolderMixin, Folder):
     LOCALIZED_NAMES = {
         None: (u'Freebusy Data',),
     }
+    __slots__ = tuple()
 
 
 class Friends(NonDeleteableFolderMixin, Contacts):
@@ -433,6 +484,7 @@ class Friends(NonDeleteableFolderMixin, Contacts):
     LOCALIZED_NAMES = {
         'de_DE': (u'Bekannte',),
     }
+    __slots__ = tuple()
 
 
 class GALContacts(NonDeleteableFolderMixin, Contacts):
@@ -442,6 +494,7 @@ class GALContacts(NonDeleteableFolderMixin, Contacts):
     LOCALIZED_NAMES = {
         None: ('GAL Contacts',),
     }
+    __slots__ = tuple()
 
 
 class GraphAnalytics(NonDeleteableFolderMixin, Folder):
@@ -449,18 +502,21 @@ class GraphAnalytics(NonDeleteableFolderMixin, Folder):
     LOCALIZED_NAMES = {
         None: (u'GraphAnalytics',),
     }
+    __slots__ = tuple()
 
 
 class Location(NonDeleteableFolderMixin, Folder):
     LOCALIZED_NAMES = {
         None: (u'Location',),
     }
+    __slots__ = tuple()
 
 
 class MailboxAssociations(NonDeleteableFolderMixin, Folder):
     LOCALIZED_NAMES = {
         None: (u'MailboxAssociations',),
     }
+    __slots__ = tuple()
 
 
 class MyContactsExtended(NonDeleteableFolderMixin, Contacts):
@@ -468,6 +524,7 @@ class MyContactsExtended(NonDeleteableFolderMixin, Contacts):
     LOCALIZED_NAMES = {
         None: (u'MyContactsExtended',),
     }
+    __slots__ = tuple()
 
 
 class ParkedMessages(NonDeleteableFolderMixin, Folder):
@@ -475,6 +532,7 @@ class ParkedMessages(NonDeleteableFolderMixin, Folder):
     LOCALIZED_NAMES = {
         None: (u'ParkedMessages',),
     }
+    __slots__ = tuple()
 
 
 class PassThroughSearchResults(NonDeleteableFolderMixin, Folder):
@@ -482,6 +540,7 @@ class PassThroughSearchResults(NonDeleteableFolderMixin, Folder):
     LOCALIZED_NAMES = {
         None: (u'Pass-Through Search Results',),
     }
+    __slots__ = tuple()
 
 
 class PdpProfileV2Secured(NonDeleteableFolderMixin, Folder):
@@ -489,6 +548,7 @@ class PdpProfileV2Secured(NonDeleteableFolderMixin, Folder):
     LOCALIZED_NAMES = {
         None: (u'PdpProfileV2Secured',),
     }
+    __slots__ = tuple()
 
 
 class Reminders(NonDeleteableFolderMixin, Folder):
@@ -496,6 +556,7 @@ class Reminders(NonDeleteableFolderMixin, Folder):
     LOCALIZED_NAMES = {
         'da_DK': (u'Påmindelser',),
     }
+    __slots__ = tuple()
 
 
 class RSSFeeds(NonDeleteableFolderMixin, Folder):
@@ -503,12 +564,14 @@ class RSSFeeds(NonDeleteableFolderMixin, Folder):
     LOCALIZED_NAMES = {
         None: (u'RSS Feeds',),
     }
+    __slots__ = tuple()
 
 
 class Schedule(NonDeleteableFolderMixin, Folder):
     LOCALIZED_NAMES = {
         None: (u'Schedule',),
     }
+    __slots__ = tuple()
 
 
 class Sharing(NonDeleteableFolderMixin, Folder):
@@ -516,12 +579,14 @@ class Sharing(NonDeleteableFolderMixin, Folder):
     LOCALIZED_NAMES = {
         None: (u'Sharing',),
     }
+    __slots__ = tuple()
 
 
 class Shortcuts(NonDeleteableFolderMixin, Folder):
     LOCALIZED_NAMES = {
         None: (u'Shortcuts',),
     }
+    __slots__ = tuple()
 
 
 class Signal(NonDeleteableFolderMixin, Folder):
@@ -529,6 +594,7 @@ class Signal(NonDeleteableFolderMixin, Folder):
     LOCALIZED_NAMES = {
         None: (u'Signal',),
     }
+    __slots__ = tuple()
 
 
 class SmsAndChatsSync(NonDeleteableFolderMixin, Folder):
@@ -536,12 +602,14 @@ class SmsAndChatsSync(NonDeleteableFolderMixin, Folder):
     LOCALIZED_NAMES = {
         None: (u'SmsAndChatsSync',),
     }
+    __slots__ = tuple()
 
 
 class SpoolerQueue(NonDeleteableFolderMixin, Folder):
     LOCALIZED_NAMES = {
         None: (u'Spooler Queue',),
     }
+    __slots__ = tuple()
 
 
 class System(NonDeleteableFolderMixin, Folder):
@@ -549,24 +617,28 @@ class System(NonDeleteableFolderMixin, Folder):
         None: (u'System',),
     }
     get_folder_allowed = False
+    __slots__ = tuple()
 
 
 class TemporarySaves(NonDeleteableFolderMixin, Folder):
     LOCALIZED_NAMES = {
         None: (u'TemporarySaves',),
     }
+    __slots__ = tuple()
 
 
 class Views(NonDeleteableFolderMixin, Folder):
     LOCALIZED_NAMES = {
         None: (u'Views',),
     }
+    __slots__ = tuple()
 
 
 class WorkingSet(NonDeleteableFolderMixin, Folder):
     LOCALIZED_NAMES = {
         None: (u'Working Set',),
     }
+    __slots__ = tuple()
 
 
 # Folders that return 'ErrorDeleteDistinguishedFolder' when we try to delete them. I can't find any official docs

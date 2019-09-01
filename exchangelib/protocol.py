@@ -91,7 +91,7 @@ class BaseProtocol(object):
         # pylint: disable=bare-except
         try:
             self.close()
-        except:  # nosec
+        except Exception:  # nosec
             # __del__ should never fail
             pass
 

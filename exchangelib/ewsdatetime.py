@@ -308,4 +308,4 @@ class EWSTimeZone(object):
 
 
 UTC = EWSTimeZone.timezone('UTC')
-UTC_NOW = lambda: EWSDateTime.now(tz=UTC)
+UTC_NOW = lambda: EWSDateTime.now(tz=UTC)  # noqa: E731

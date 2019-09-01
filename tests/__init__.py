@@ -24,6 +24,8 @@ import warnings
 
 from dateutil.relativedelta import relativedelta
 import dns.resolver
+import flake8.defaults
+import flake8.main.application
 import psutil
 import pytz
 import requests
@@ -63,7 +65,7 @@ from exchangelib.folders import Calendar, DeletedItems, Drafts, Inbox, Outbox, S
     PdpProfileV2Secured, VoiceMail, FolderQuerySet, SingleFolderQuerySet, SHALLOW
 from exchangelib.indexed_properties import EmailAddress, PhysicalAddress, PhoneNumber, \
     SingleFieldIndexedElement, MultiFieldIndexedElement
-from exchangelib.items import Item, CalendarItem, Message, Contact, Task, DistributionList, Persona
+from exchangelib.items import Item, CalendarItem, Message, Contact, Task, DistributionList, Persona, BaseItem
 from exchangelib.properties import Attendee, Mailbox, RoomList, MessageHeader, Room, ItemId, Member, EWSElement, Body, \
     HTMLBody, TimeZone, FreeBusyView, UID, InvalidField, InvalidFieldForVersion, DLMailbox, PermissionSet, \
     Permission, UserId
@@ -127,6 +129,16 @@ class TimedTestCase(unittest.TestCase):
         t2 = time.time() - self.t1
         if t2 > self.SLOW_TEST_DURATION:
             print("{:07.3f} : {}".format(t2, self.id()))
+
+
+class StyleTest(TimedTestCase):
+    def test_flake8(self):
+        import exchangelib
+        flake8.defaults.MAX_LINE_LENGTH = 120
+        app = flake8.main.application.Application()
+        app.run(exchangelib.__path__)
+        # If this fails, look at stdout for actual error messages
+        self.assertEqual(app.result_count, 0)
 
 
 class BuildTest(TimedTestCase):
@@ -616,6 +628,7 @@ class EWSDateTimeTest(TimedTestCase):
         with self.assertRaises(ValueError):
             EWSDate.from_date(EWSDate(2000, 1, 2))
 
+
 class PropertiesTest(TimedTestCase):
     def test_unique_field_names(self):
         from exchangelib import attachments, properties, items, folders, indexed_properties, recurrence, settings
@@ -623,11 +636,16 @@ class PropertiesTest(TimedTestCase):
             for cls in vars(module).values():
                 if not isclass(cls) or not issubclass(cls, EWSElement):
                     continue
-                # Assert that all FIELDS names are unique on the model
+                # Assert that all FIELDS names are unique on the model. Also assert that the class defines __slots__,
+                # that all fields are mentioned in __slots__ and that __slots__ is unique.
                 field_names = set()
+                all_slots = tuple(chain(*(getattr(c, '__slots__', ()) for c in cls.__mro__)))
+                self.assertEqual(len(all_slots), len(set(all_slots)),
+                                 '__slots__ contains duplicates: %s' % sorted(all_slots))
                 for f in cls.FIELDS:
                     self.assertNotIn(f.name, field_names,
                                      'Field name %r is not unique on model %r' % (f.name, cls.__name__))
+                    self.assertIn(f.name, all_slots)
                     field_names.add(f.name)
 
     def test_uid(self):
@@ -833,6 +851,15 @@ class FieldTest(TimedTestCase):
         with self.assertRaises(ValueError)as e:
             field.clean(12)
         self.assertEqual(str(e.exception), "Value 12 on field 'foo' must be less than 10")
+
+        # Test min/max on DecimalField
+        field = DecimalField('foo', field_uri='bar', min=5, max=10)
+        with self.assertRaises(ValueError) as e:
+            field.clean(Decimal(2))
+        self.assertEqual(str(e.exception), "Value Decimal('2') on field 'foo' must be greater than 5")
+        with self.assertRaises(ValueError)as e:
+            field.clean(Decimal(12))
+        self.assertEqual(str(e.exception), "Value Decimal('12') on field 'foo' must be less than 10")
 
         # Test enum validation
         field = EnumField('foo', field_uri='bar', enum=['a', 'b', 'c'])
@@ -5595,7 +5622,7 @@ class CommonItemTest(BaseItemTest):
         # Test with generator as argument
         insert_ids = self.test_folder.bulk_create(items=(i for i in [item]))
         self.assertEqual(len(insert_ids), 1)
-        self.assertIsInstance(insert_ids[0], Item)
+        self.assertIsInstance(insert_ids[0], BaseItem)
         find_ids = self.test_folder.filter(categories__contains=item.categories).values_list('id', 'changekey')
         self.assertEqual(len(find_ids), 1)
         self.assertEqual(len(find_ids[0]), 2, find_ids[0])

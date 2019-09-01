@@ -230,7 +230,7 @@ class Occurrence(IdChangeKeyMixIn):
     # MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/occurrence
     ELEMENT_NAME = 'Occurrence'
 
-    FIELDS = IdChangeKeyMixIn.FIELDS + [
+    LOCAL_FIELDS = [
         # The modified start time of the item, as EWSDateTime
         DateTimeField('start', field_uri='t:Start'),
         # The modified end time of the item, as EWSDateTime
@@ -238,8 +238,9 @@ class Occurrence(IdChangeKeyMixIn):
         # The original start time of the item, as EWSDateTime
         DateTimeField('original_start', field_uri='t:OriginalStart'),
     ]
+    FIELDS = IdChangeKeyMixIn.FIELDS + LOCAL_FIELDS
 
-    __slots__ = tuple(f.name for f in FIELDS)
+    __slots__ = tuple(f.name for f in LOCAL_FIELDS)
 
 
 # Container elements:
