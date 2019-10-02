@@ -462,6 +462,30 @@ class Item(BaseItem):
             if a in self.attachments:
                 self.attachments.remove(a)
 
+    def create_forward(self, subject, body, to_recipients, cc_recipients=None, bcc_recipients=None):
+        if not self.account:
+            raise ValueError('%s must have an account' % self.__class__.__name__)
+        if not self.id:
+            raise ValueError('%s must have an ID' % self.__class__.__name__)
+        return ForwardItem(
+            account=self.account,
+            reference_item_id=ReferenceItemId(id=self.id, changekey=self.changekey),
+            subject=subject,
+            new_body=body,
+            to_recipients=to_recipients,
+            cc_recipients=cc_recipients,
+            bcc_recipients=bcc_recipients,
+        )
+
+    def forward(self, subject, body, to_recipients, cc_recipients=None, bcc_recipients=None):
+        self.create_forward(
+            subject,
+            body,
+            to_recipients,
+            cc_recipients,
+            bcc_recipients,
+        ).send()
+
 
 @python_2_unicode_compatible
 class BulkCreateResult(BaseItem):
@@ -774,30 +798,6 @@ class Message(Item):
 
     def reply_all(self, subject, body):
         self.create_reply_all(subject, body).send()
-
-    def create_forward(self, subject, body, to_recipients, cc_recipients=None, bcc_recipients=None):
-        if not self.account:
-            raise ValueError('%s must have an account' % self.__class__.__name__)
-        if not self.id:
-            raise ValueError('%s must have an ID' % self.__class__.__name__)
-        return ForwardItem(
-            account=self.account,
-            reference_item_id=ReferenceItemId(id=self.id, changekey=self.changekey),
-            subject=subject,
-            new_body=body,
-            to_recipients=to_recipients,
-            cc_recipients=cc_recipients,
-            bcc_recipients=bcc_recipients,
-        )
-
-    def forward(self, subject, body, to_recipients, cc_recipients=None, bcc_recipients=None):
-        self.create_forward(
-            subject,
-            body,
-            to_recipients,
-            cc_recipients,
-            bcc_recipients,
-        ).send()
 
 
 class Task(Item):
