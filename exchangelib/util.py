@@ -358,28 +358,51 @@ class ForgivingParser(GlobalParserTLS):
 _forgiving_parser = ForgivingParser()
 
 
-class BytesGeneratorIO(io.BytesIO):
+class BytesGeneratorIO(io.RawIOBase):
     # A BytesIO that can produce bytes from a streaming HTTP request. Expects r.iter_content() as input
+    # lxml tries to be smart by calling `getvalue` when present, assuming that the entire string is in memory.
+    # ommitting `getvalue` forces lxml to stream the request through `read` avoiding the memory duplication
     def __init__(self, bytes_generator):
         self._bytes_generator = bytes_generator
+        self._next = bytearray()
         self._tell = 0
         super(BytesGeneratorIO, self).__init__()
 
-    def getvalue(self):
-        res = b''.join(self._bytes_generator)
-        self._tell += len(res)
-        return res
+    def readable(self):
+        return not self.closed
 
     def tell(self):
         return self._tell
 
     def read(self, size=-1):
-        if size is None or size <= -1:
-            res = b''.join(self._bytes_generator)
-        else:
-            res = b''.join(next(self._bytes_generator) for _ in range(size))
+        # requests `iter_content()` auto-adjusts the number of bytes based on bandwidth
+        # can't assume how many bytes next returns so stash any extra in `self._next`
+        if self.closed:
+            raise ValueError("read from a closed file")
+        if self._next is None:
+            return b''
+        if size is None:
+            size = -1
+
+        res = self._next
+        while size < 0 or len(res) < size:
+            try:
+                res.extend(next(self._bytes_generator))
+            except StopIteration:
+                self._next = None
+                break
+
+        if size > 0 and self._next is not None:
+            self._next = res[size:]
+            res = res[:size]
+
         self._tell += len(res)
-        return res
+        return bytes(res)
+
+    def close(self):
+        if not self.closed:
+            self._bytes_generator.close()
+        super(BytesGeneratorIO, self).close()
 
 
 def to_xml(bytes_content):
@@ -402,14 +425,17 @@ def to_xml(bytes_content):
         try:
             stream.seek(0)
             offending_line = stream.read().splitlines()[e.lineno - 1]
-        except IndexError:
+        except (IndexError, io.UnsupportedOperation):
             raise ParseError(text_type(e), '<not from file>', e.lineno, e.offset)
         else:
             offending_excerpt = offending_line[max(0, e.offset - 20):e.offset + 20]
             msg = '%s\nOffending text: [...]%s[...]' % (text_type(e), offending_excerpt)
             raise ParseError(msg, e.lineno, e.offset)
     except TypeError:
-        stream.seek(0)
+        try:
+            stream.seek(0)
+        except (IndexError, io.UnsupportedOperation):
+            pass
         raise ParseError('This is not XML: %r' % stream.read(), '<not from file>', -1, 0)
 
 
