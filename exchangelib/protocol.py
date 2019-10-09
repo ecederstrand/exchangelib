@@ -314,6 +314,14 @@ class Protocol(with_metaclass(CachingProtocol, BaseProtocol)):
         thread_poolsize = 4 * self._session_pool_size
         return ThreadPool(processes=thread_poolsize)
 
+    def close(self):
+        # Close the thread pool before closing the session pool to ensure all sessions are released.
+        if "thread_pool" in self.__dict__:
+            self.thread_pool.close()
+            self.thread_pool.join()
+            del self.__dict__["thread_pool"]
+        super(Protocol, self).close()
+
     def get_timezones(self, timezones=None, return_full_timezone_data=False):
         """ Get timezone definitions from the server
 
