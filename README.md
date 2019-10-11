@@ -245,6 +245,20 @@ from exchangelib.protocol import BaseProtocol, NoVerifyHTTPAdapter
 BaseProtocol.HTTP_ADAPTER_CLS = NoVerifyHTTPAdapter
 ```
 
+## User-Agent
+
+You can supply a custom 'User-Agent' for your application.
+By default, `exchangelib` will use: `exchangelib/<version> (python-requests/<version>)`
+
+Here's an example using different User-Agent:
+
+```python
+from exchangelib.protocol import BaseProtocol
+
+# Tell exchangelib to use this user-agent instead of the default
+BaseProtocol.USERAGENT = "Auto-Reply/0.1.0"
+```
+
 ## Folders
 All wellknown folders are available as properties on the account, e.g. as `account.root`, `account.calendar`,
 `account.trash`, `account.inbox`, `account.outbox`, `account.sent`, `account.junk`, `account.tasks` and

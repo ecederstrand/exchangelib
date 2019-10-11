@@ -16,6 +16,7 @@ from threading import Lock
 from cached_property import threaded_cached_property
 import requests.adapters
 import requests.sessions
+import requests.utils
 from future.utils import with_metaclass, python_2_unicode_compatible
 from future.moves.queue import LifoQueue, Empty, Full
 from oauthlib.oauth2 import BackendApplicationClient
@@ -54,6 +55,9 @@ class BaseProtocol(object):
 
     # The adapter class to use for HTTP requests. Override this if you need e.g. proxy support or specific TLS versions
     HTTP_ADAPTER_CLS = requests.adapters.HTTPAdapter
+
+    # The User-Agent header to use for HTTP requests. Override this to set an app-specific one
+    USERAGENT = None
 
     def __init__(self, config):
         from .configuration import Configuration
@@ -111,6 +115,14 @@ class BaseProtocol(object):
             pool_maxsize=cls.CONNECTIONS_PER_SESSION,
             max_retries=0,
         )
+
+    @classmethod
+    def get_useragent(cls):
+        if not cls.USERAGENT:
+            # import here to avoid a cyclic import
+            from exchangelib import __version__
+            cls.USERAGENT = "exchangelib/%s (%s)" % (__version__, requests.utils.default_user_agent())
+        return cls.USERAGENT
 
     @property
     def session_pool_size(self):
@@ -206,6 +218,7 @@ class BaseProtocol(object):
         else:
             session = requests.sessions.Session()
         session.headers.update(DEFAULT_HEADERS)
+        session.headers["User-Agent"] = cls.get_useragent()
         session.mount('http://', adapter=cls.get_adapter())
         session.mount('https://', adapter=cls.get_adapter())
         return session
