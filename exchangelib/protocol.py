@@ -175,7 +175,7 @@ class BaseProtocol(object):
             token_url = 'https://login.microsoftonline.com/%s/oauth2/v2.0/token' % self.credentials.tenant_id
             scope = ['https://outlook.office365.com/.default']
             client = BackendApplicationClient(client_id=self.credentials.client_id)
-            session = OAuth2Session(client=client)
+            session = self.raw_session(client)
             # Fetch the token explicitly -- it doesn't occur implicitly
             session.fetch_token(token_url=token_url, client_id=self.credentials.client_id,
                                 client_secret=self.credentials.client_secret, scope=scope)
@@ -185,30 +185,30 @@ class BaseProtocol(object):
                 username = '\\' + self.credentials.username
             else:
                 username = self.credentials.username
-            session = requests.sessions.Session()
+            session = self.raw_session()
             session.auth = get_auth_instance(auth_type=self.auth_type, username=username,
                                              password=self.credentials.password)
         else:
             if self.auth_type not in (GSSAPI, SSPI):
                 raise ValueError('Auth type %r requires credentials' % self.auth_type)
-            session = requests.sessions.Session()
+            session = self.raw_session()
             session.auth = get_auth_instance(auth_type=self.auth_type)
         # Add some extra info
         session.session_id = sum(map(ord, str(os.urandom(100))))  # Used for debugging messages in services
         session.protocol = self
-        # Create a copy of the headers because headers are mutable and session users may modify headers
-        session.headers.update(DEFAULT_HEADERS.copy())
-        session.mount('http://', adapter=self.get_adapter())
-        session.mount('https://', adapter=self.get_adapter())
         log.debug('Server %s: Created session %s', self.server, session.session_id)
         return session
 
     @classmethod
-    def raw_session(cls):
-        s = requests.sessions.Session()
-        s.mount('http://', adapter=cls.get_adapter())
-        s.mount('https://', adapter=cls.get_adapter())
-        return s
+    def raw_session(cls, oauth2_client=None):
+        if oauth2_client:
+            session = OAuth2Session(client=oauth2_client)
+        else:
+            session = requests.sessions.Session()
+        session.headers.update(DEFAULT_HEADERS)
+        session.mount('http://', adapter=cls.get_adapter())
+        session.mount('https://', adapter=cls.get_adapter())
+        return session
 
     def __repr__(self):
         return self.__class__.__name__ + repr((self.service_endpoint, self.credentials, self.auth_type))
