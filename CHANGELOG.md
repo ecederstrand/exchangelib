@@ -6,6 +6,7 @@ HEAD
 -   Added support for OAuth 2.0 authentication
 -   Fixed a bug in `RelativeMonthlyPattern` and `RelativeYearlyPattern` where the `weekdays` field was thought to
     be a list, but is in fact a single value. Renamed the field to `weekday` to reflect the change.
+-   Added support for archiving items to the archive mailbox, if the account has one.
 
 
 2.0.1
@@ -122,7 +123,7 @@ HEAD
 1.11.3
 ------
 
--   Add experimental Kerberos support. This adds the `pykerberos` package, 
+-   Add experimental Kerberos support. This adds the `pykerberos` package,
     which needs the following system packages to be installed on Ubuntu/Debian
     systems: `apt-get install build-essential libssl-dev libffi-dev python-dev libkrb5-dev`.
 

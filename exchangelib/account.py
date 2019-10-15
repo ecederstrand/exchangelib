@@ -26,10 +26,10 @@ from .items import Item, BulkCreateResult, HARD_DELETE, \
     DELETE_TYPE_CHOICES, MESSAGE_DISPOSITION_CHOICES, CONFLICT_RESOLUTION_CHOICES, AFFECTED_TASK_OCCURRENCES_CHOICES, \
     SEND_MEETING_INVITATIONS_CHOICES, SEND_MEETING_INVITATIONS_AND_CANCELLATIONS_CHOICES, \
     SEND_MEETING_CANCELLATIONS_CHOICES, ID_ONLY
-from .properties import Mailbox, SendingAs
+from .properties import Mailbox, SendingAs, FolderId, DistinguishedFolderId
 from .queryset import QuerySet
 from .services import ExportItems, UploadItems, GetItem, CreateItem, UpdateItem, DeleteItem, MoveItem, SendItem, \
-    CopyItem, GetUserOofSettings, SetUserOofSettings, GetMailTips, GetDelegate
+    CopyItem, GetUserOofSettings, SetUserOofSettings, GetMailTips, ArchiveItem, GetDelegate
 from .settings import OofSettings
 from .util import get_domain, peek
 
@@ -552,6 +552,22 @@ class Account(object):
         return list(
             i if isinstance(i, Exception) else Item.id_from_xml(i)
             for i in self._consume_item_service(service_cls=MoveItem, items=ids, chunk_size=chunk_size, kwargs=dict(
+                to_folder=to_folder,
+            ))
+        )
+
+    def bulk_archive(self, ids, to_folder, chunk_size=None):
+        """Archive items to a folder in the archive mailbox. An archive mailbox must be enabled in order for this
+        to work.
+
+        :param ids: an iterable of either (id, changekey) tuples or Item objects.
+        :param to_folder: The destination folder of the archive operation
+        :param chunk_size: The number of items to send to the server in a single request
+        :return: A list containing True or an exception instance in stable order of the requested items
+        """
+        if not isinstance(to_folder, (BaseFolder, FolderId, DistinguishedFolderId)):
+            raise ValueError("'to_folder' %r must be a Folder or FolderId instance" % to_folder)
+        return list(self._consume_item_service(service_cls=ArchiveItem, items=ids, chunk_size=chunk_size, kwargs=dict(
                 to_folder=to_folder,
             ))
         )

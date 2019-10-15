@@ -644,6 +644,22 @@ class QuerySet(SearchableMixIn):
         self._cache = None  # Invalidate the cache after delete, regardless of the results
         return res
 
+    def archive(self, to_folder, page_size=1000):
+        """ Archive the items matching the query, with as little effort as possible. 'page_size' is the number of items
+        to fetch and move per request. We're only fetching the IDs, so keep it high"""
+        if self.is_cached:
+            ids = self._cache
+        else:
+            ids = self._id_only_copy_self()
+            ids.page_size = page_size
+        res = self.folder_collection.account.bulk_archive(
+            ids=ids,
+            to_folder=to_folder,
+            chunk_size=page_size,
+        )
+        self._cache = None  # Invalidate the cache after delete, regardless of the results
+        return res
+
     def __str__(self):
         fmt_args = [('q', str(self.q)), ('folders', '[%s]' % ', '.join(str(f) for f in self.folder_collection.folders))]
         if self.is_cached:

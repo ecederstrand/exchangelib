@@ -378,7 +378,7 @@ py_dt = pytz_tz.localize(datetime(2017, 12, 11, 10, 9, 8))
 ews_now = EWSDateTime.from_datetime(py_dt)
 ```
 
-## Creating, updating, deleting, sending and moving
+## Creating, updating, deleting, sending, moving, archiving
 
 ```python
 # Here's an example of creating a calendar item in the user's standard calendar.  If you want to
@@ -387,6 +387,7 @@ ews_now = EWSDateTime.from_datetime(py_dt)
 # You can create, update and delete single items:
 from exchangelib import Account, CalendarItem, Message, Mailbox, FileAttachment, HTMLBody
 from exchangelib.items import SEND_ONLY_TO_ALL, SEND_ONLY_TO_CHANGED
+from exchangelib.properties import DistinguishedFolderId
 
 a = Account(...)
 item = CalendarItem(folder=a.calendar, subject='foo')
@@ -407,6 +408,7 @@ item.soft_delete()  # Delete, but keep a copy in the recoverable items folder
 item.move_to_trash()  # Move to the trash folder
 item.move(a.trash)  # Also moves the item to the trash folder
 item.copy(a.trash)  # Creates a copy of the item to the trash folder
+item.archive(DistinguishedFolderId('inbox'))  # Archives the item to inbox of the the archive mailbox
 
 # You can also send emails. If you don't want a local copy:
 m = Message(
@@ -470,6 +472,7 @@ item.body = HTMLBody('<html><body>Hello happy <blink>OWA user!</blink></body></h
 ```python
 # Build a list of calendar items
 from exchangelib import Account, CalendarItem, EWSDateTime, EWSTimeZone, Attendee, Mailbox
+from exchangelib.properties import DistinguishedFolderId
 
 a = Account(...)
 tz = EWSTimeZone.timezone('Europe/Copenhagen')
@@ -511,15 +514,19 @@ new_ids = a.bulk_send(ids=message_ids, save_copy=False)
 # Delete in bulk
 delete_results = a.bulk_delete(ids=calendar_ids)
 
+# Archive in bulk
+delete_results = a.bulk_archive(ids=calendar_ids, to_folder=DistinguishedFolderId('inbox'))
+
 # Bulk delete items found as a queryset
 a.inbox.filter(subject__startswith='Invoice').delete()
 
-# Likewise, you can bulk send, copy or move items found in a QuerySet
+# Likewise, you can bulk send, copy, move or archive items found in a QuerySet
 a.drafts.filter(subject__startswith='Invoice').send()
 # All kwargs are passed on to the equivalent bulk methods on the Account
 a.drafts.filter(subject__startswith='Invoice').send(save_copy=False)
 a.inbox.filter(subject__startswith='Invoice').copy(to_folder=a.inbox / 'Archive')
 a.inbox.filter(subject__startswith='Invoice').move(to_folder=a.inbox / 'Archive')
+a.inbox.filter(subject__startswith='Invoice').archive(to_folder=DistinguishedFolderId('inbox'))
 
 # You can change the default page size of bulk operations if you have a slow or busy server
 a.inbox.filter(subject__startswith='Invoice').delete(page_size=25)

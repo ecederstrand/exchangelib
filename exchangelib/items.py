@@ -426,6 +426,18 @@ class Item(BaseItem):
         if isinstance(res[0], Exception):
             raise res[0]
 
+    def archive(self, to_folder):
+        if not self.account:
+            raise ValueError('%s must have an account' % self.__class__.__name__)
+        if not self.id:
+            raise ValueError('%s must have an ID' % self.__class__.__name__)
+        res = self.account.bulk_archive(ids=[self], to_folder=to_folder)
+        if len(res) != 1:
+            raise ValueError('Expected result length 1, but got %s' % res)
+        if isinstance(res[0], Exception):
+            raise res[0]
+        return res[0]
+
     def attach(self, attachments):
         """Add an attachment, or a list of attachments, to this item. If the item has already been saved, the
         attachments will be created on the server immediately. If the item has not yet been saved, the attachments will
