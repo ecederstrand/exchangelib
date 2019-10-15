@@ -1004,6 +1004,40 @@ class EffectiveRights(EWSElement):
         return getattr(self, item, False)
 
 
+class DelegatePermissions(EWSElement):
+    # MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/delegatepermissions
+    PERMISSION_LEVEL_CHOICES = {
+            Choice('None'), Choice('Editor'), Choice('Reviewer'), Choice('Author'), Choice('Custom'),
+        }
+    FIELDS = [
+        ChoiceField('calendar_folder_permission_level', field_uri='CalendarFolderPermissionLevel',
+                    choices=PERMISSION_LEVEL_CHOICES, default='None'),
+        ChoiceField('tasks_folder_permission_level', field_uri='TasksFolderPermissionLevel',
+                    choices=PERMISSION_LEVEL_CHOICES, default='None'),
+        ChoiceField('inbox_folder_permission_level', field_uri='InboxFolderPermissionLevel',
+                    choices=PERMISSION_LEVEL_CHOICES, default='None'),
+        ChoiceField('contacts_folder_permission_level', field_uri='ContactsFolderPermissionLevel',
+                    choices=PERMISSION_LEVEL_CHOICES, default='None'),
+        ChoiceField('notes_folder_permission_level', field_uri='NotesFolderPermissionLevel',
+                    choices=PERMISSION_LEVEL_CHOICES, default='None'),
+        ChoiceField('journal_folder_permission_level', field_uri='JournalFolderPermissionLevel',
+                    choices=PERMISSION_LEVEL_CHOICES, default='None'),
+    ]
+
+
+class DelegateUser(EWSElement):
+    # MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/delegateuser
+    ELEMENT_NAME = 'DelegateUser'
+    NAMESPACE = MNS
+
+    FIELDS = [
+        EWSElementField('user_id', field_uri='UserId', value_cls=UserId),
+        EWSElementField('delegate_permissions', field_uri='DelegatePermissions', value_cls=DelegatePermissions),
+        BooleanField('receive_copies_of_meeting_messages', field_uri='ReceiveCopiesOfMeetingMessages', default=False),
+        BooleanField('view_private_items', field_uri='ViewPrivateItems', default=False),
+    ]
+
+
 class SearchableMailbox(EWSElement):
     # MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/searchablemailbox
     ELEMENT_NAME = 'SearchableMailbox'
