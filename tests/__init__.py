@@ -68,7 +68,7 @@ from exchangelib.indexed_properties import EmailAddress, PhysicalAddress, PhoneN
 from exchangelib.items import Item, CalendarItem, Message, Contact, Task, DistributionList, Persona, BaseItem
 from exchangelib.properties import Attendee, Mailbox, RoomList, MessageHeader, Room, ItemId, Member, EWSElement, Body, \
     HTMLBody, TimeZone, FreeBusyView, UID, InvalidField, InvalidFieldForVersion, DLMailbox, PermissionSet, \
-    Permission, UserId
+    Permission, UserId, DelegateUser, DelegatePermissions
 from exchangelib.protocol import BaseProtocol, Protocol, NoVerifyHTTPAdapter, FaultTolerance, FailFast
 from exchangelib.queryset import QuerySet, DoesNotExist, MultipleObjectsReturned
 from exchangelib.recurrence import Recurrence, AbsoluteYearlyPattern, RelativeYearlyPattern, AbsoluteMonthlyPattern, \
@@ -77,7 +77,7 @@ from exchangelib.recurrence import Recurrence, AbsoluteYearlyPattern, RelativeYe
 from exchangelib.restriction import Restriction, Q
 from exchangelib.settings import OofSettings
 from exchangelib.services import GetServerTimeZones, GetRoomLists, GetRooms, GetAttachment, ResolveNames, GetPersona, \
-    GetFolder
+    GetFolder, GetDelegate
 from exchangelib.transport import NOAUTH, BASIC, DIGEST, NTLM, AUTH_TYPE_MAP, wrap, _get_auth_method_from_response
 from exchangelib.util import chunkify, peek, get_redirect_url, to_xml, BOM_UTF8, get_domain, value_to_xml_text, \
     post_ratelimited, create_element, CONNECTION_ERRORS, PrettyXmlHandler, xml_to_str, ParseError, TNS
@@ -2476,6 +2476,72 @@ class AccountTest(EWSTest):
     def test_mail_tips(self):
         # Test that mail tips work
         self.assertEqual(self.account.mail_tips.recipient_address, self.account.primary_smtp_address)
+
+    def test_delegate(self):
+        # The test server does not have any delegate info. Mock instead.
+        xml = b'''<?xml version="1.0" encoding="utf-8"?>
+        <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+                       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                       xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+          <soap:Header>
+            <t:ServerVersionInfo MajorBuildNumber="845" MajorVersion="15" MinorBuildNumber="22" MinorVersion="1"
+                                 Version="V2016_10_10"
+                                 xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types" />
+          </soap:Header>
+          <soap:Body>
+            <m:GetDelegateResponse xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types"
+                                   ResponseClass="Success"
+                                   xmlns:m="http://schemas.microsoft.com/exchange/services/2006/messages">
+              <m:ResponseCode>NoError</m:ResponseCode>
+              <m:ResponseMessages>
+                <m:DelegateUserResponseMessageType ResponseClass="Success">
+                  <m:ResponseCode>NoError</m:ResponseCode>
+                  <m:DelegateUser>
+                      <t:UserId>
+                        <t:SID>SOME_SID</t:SID>
+                        <t:PrimarySmtpAddress>foo@example.com</t:PrimarySmtpAddress>
+                        <t:DisplayName>Foo Bar</t:DisplayName>
+                      </t:UserId>
+                      <t:DelegatePermissions>
+                        <t:CalendarFolderPermissionLevel>Author</t:CalendarFolderPermissionLevel>
+                        <t:InboxFolderPermissionLevel>Reviewer</t:ContactsFolderPermissionLevel>
+                      </t:DelegatePermissions>
+                      <t:ReceiveCopiesOfMeetingMessages>false</t:ReceiveCopiesOfMeetingMessages>
+                    <t:ViewPrivateItems>true</t:ViewPrivateItems>
+                    </m:DelegateUser>
+                  </m:DelegateUserResponseMessageType>
+              </m:ResponseMessages>
+              <m:DeliverMeetingRequests>DelegatesAndMe</m:DeliverMeetingRequests>
+              </m:GetDelegateResponse>
+          </soap:Body>
+        </soap:Envelope>'''
+
+        MockTZ = namedtuple('EWSTimeZone', ['ms_id'])
+        MockAccount = namedtuple('Account', ['access_type', 'primary_smtp_address', 'default_timezone', 'protocol'])
+        a = MockAccount(DELEGATE, 'foo@example.com', MockTZ('XXX'), protocol='foo')
+
+        ws = GetDelegate(account=a)
+        header, body = ws._get_soap_parts(response=MockResponse(xml))
+        res = ws._get_elements_in_response(response=ws._get_soap_messages(body=body))
+        delegates = [DelegateUser.from_xml(elem=elem, account=a) for elem in res]
+        self.assertListEqual(
+            delegates,
+            [
+                DelegateUser(
+                    user_id=UserId(sid='SOME_SID', primary_smtp_address='foo@example.com', display_name='Foo Bar'),
+                    delegate_permissions=DelegatePermissions(
+                        calendar_folder_permission_level='Author',
+                        inbox_folder_permission_level='Reviewer',
+                        contacts_folder_permission_level='None',
+                        notes_folder_permission_level='None',
+                        journal_folder_permission_level='None',
+                        tasks_folder_permission_level='None',
+                    ),
+                    receive_copies_of_meeting_messages=False,
+                    view_private_items=True,
+                )
+            ]
+        )
 
 
 class AutodiscoverTest(EWSTest):

@@ -623,7 +623,7 @@ class Account(object):
 
     @property
     def delegates(self):
-        """Returns the settings for the delegates that are set on this account
+        """Returns a list of DelegateUser objects representing the delegates that are set on this account
         """
         return list(GetDelegate(account=self).call(user_ids=None, include_permissions=True))
 

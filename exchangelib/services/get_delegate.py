@@ -1,4 +1,3 @@
-from ..errors import MalformedResponseError
 from ..util import create_element, set_xml_value, MNS
 from ..version import EXCHANGE_2007_SP1
 from .common import EWSAccountService
@@ -9,7 +8,6 @@ class GetDelegate(EWSAccountService):
     MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getdelegate-operation
     """
     SERVICE_NAME = 'GetDelegate'
-    element_container_name = '{%s}DelegateUserResponseMessageType' % MNS
 
     def call(self, user_ids, include_permissions):
         if self.protocol.version.build < EXCHANGE_2007_SP1:
@@ -36,13 +34,17 @@ class GetDelegate(EWSAccountService):
             set_xml_value(payload, user_ids, version=self.protocol.version)
         return payload
 
-    def _get_element_container(self, *args, **kwargs):
-        try:
-            return super(GetDelegate, self)._get_element_container(*args, **kwargs)
-        except MalformedResponseError:
-            # When there are no delegates, the response does not contain a DelegateUserResponseMessageType element
-            return []
+    def _get_elements_in_container(self, container):
+        # We may have other elements in here, e.g. 'ResponseCode'. Filter away those.
+        from ..properties import DelegateUser
+        return container.findall(DelegateUser.response_tag())
+
+    def _get_element_container(self, message, response_message=None, name=None):
+        # Do nothing. See self._response_message_tag.
+        return message
 
     @classmethod
     def _response_message_tag(cls):
-        return '{%s}%sResponseMessage' % (MNS, cls.SERVICE_NAME)
+        # We're using this in place of self.element_container_name because self._get_soap_messages expects to find
+        # elements at this level. We'll let self._get_element_container do nothing instead.
+        return '{%s}DelegateUserResponseMessageType' % MNS
