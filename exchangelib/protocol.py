@@ -27,7 +27,7 @@ from .credentials import OAuth2Credentials
 from .errors import TransportError, SessionPoolMinSizeReached
 from .properties import FreeBusyViewOptions, MailboxData, TimeWindow, TimeZone
 from .services import GetServerTimeZones, GetRoomLists, GetRooms, ResolveNames, GetUserAvailability, \
-    GetSearchableMailboxes, ExpandDL
+    GetSearchableMailboxes, ExpandDL, ConvertId
 from .transport import get_auth_instance, get_service_authtype, NTLM, GSSAPI, SSPI, OAUTH2, DEFAULT_HEADERS
 from .version import Version, API_VERSIONS
 
@@ -472,6 +472,18 @@ class Protocol(with_metaclass(CachingProtocol, BaseProtocol)):
             search_filter=search_filter,
             expand_group_membership=expand_group_membership,
         ))
+
+    def convert_ids(self, ids, destination_format):
+        """Converts item and folder IDs between multiple formats
+
+        :param ids: a list of AlternateId, AlternatePublicFolderId or AlternatePublicFolderItemId instances
+        :param destination_format: A string
+        :return: a generator of AlternateId, AlternatePublicFolderId or AlternatePublicFolderItemId instances
+        """
+        from .properties import ID_FORMATS
+        if destination_format not in ID_FORMATS:
+            raise ValueError("'destination_format' %r must be one of %s" % (destination_format, ID_FORMATS))
+        return ConvertId(protocol=self).call(items=ids, destination_format=destination_format)
 
     def __getstate__(self):
         # The thread and session pools cannot be pickled

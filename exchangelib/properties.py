@@ -1141,6 +1141,46 @@ class MailTips(EWSElement):
     __slots__ = tuple(f.name for f in FIELDS)
 
 
+ENTRY_ID = 'EntryId'  # The base64-encoded PR_ENTRYID property
+EWS_ID = 'EwsId'  # The EWS format used in Exchange 2007 SP1 and later
+EWS_LEGACY_ID = 'EwsLegacyId'  # The EWS format used in Exchange 2007 before SP1
+HEX_ENTRY_ID = 'HexEntryId'  # The hexadecimal representation of the PR_ENTRYID property
+OWA_ID = 'OwaId'  # The OWA format for Exchange 2007 and 2010
+STORE_ID = 'StoreId'  # The Exchange Store format
+# IdFormat enum
+ID_FORMATS = (ENTRY_ID, EWS_ID, EWS_LEGACY_ID, HEX_ENTRY_ID, OWA_ID, STORE_ID)
+
+
+class AlternateId(EWSElement):
+    ELEMENT_NAME = 'AlternateId'
+    FIELDS = [
+        CharField('id', field_uri='Id', is_required=True, is_attribute=True),
+        ChoiceField('format', field_uri='Format', is_required=True, is_attribute=True,
+                    choices={Choice(c) for c in ID_FORMATS}),
+        EmailAddressField('mailbox', field_uri='Mailbox', is_required=True, is_attribute=True),
+        BooleanField('is_archive', field_uri='IsArchive', is_required=False, is_attribute=True),
+    ]
+
+
+class AlternatePublicFolderId(EWSElement):
+    ELEMENT_NAME = 'AlternatePublicFolderId'
+    FIELDS = [
+        CharField('folder_id', field_uri='FolderId', is_required=True, is_attribute=True),
+        ChoiceField('format', field_uri='Format', is_required=True, is_attribute=True,
+                    choices={Choice(c) for c in ID_FORMATS}),
+    ]
+
+
+class AlternatePublicFolderItemId(EWSElement):
+    ELEMENT_NAME = 'AlternatePublicFolderItemId'
+    FIELDS = [
+        CharField('folder_id', field_uri='FolderId', is_required=True, is_attribute=True),
+        ChoiceField('format', field_uri='Format', is_required=True, is_attribute=True,
+                    choices={Choice(c) for c in ID_FORMATS}),
+        CharField('item_id', field_uri='ItemId', is_required=True, is_attribute=True),
+    ]
+
+
 class IdChangeKeyMixIn(EWSElement):
     # A class that has 'id' and 'changekey' fields which are actually attributes on ID element
     ID_ELEMENT_CLS = ItemId
