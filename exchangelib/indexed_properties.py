@@ -11,12 +11,14 @@ log = logging.getLogger(__name__)
 
 
 class IndexedElement(EWSElement):
+    """Base class for all classes that implement an indexed element"""
     LABELS = set()
 
     __slots__ = tuple()
 
 
 class SingleFieldIndexedElement(IndexedElement):
+    """Base class for all classes that implement an indexed element with a single field"""
     __slots__ = tuple()
 
     @classmethod
@@ -28,7 +30,7 @@ class SingleFieldIndexedElement(IndexedElement):
 
 
 class EmailAddress(SingleFieldIndexedElement):
-    # MSDN:  https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/entry-emailaddress
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/entry-emailaddress"""
     ELEMENT_NAME = 'Entry'
     FIELDS = [
         LabelField('label', field_uri='Key', choices={
@@ -41,7 +43,7 @@ class EmailAddress(SingleFieldIndexedElement):
 
 
 class PhoneNumber(SingleFieldIndexedElement):
-    # MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/entry-phonenumber
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/entry-phonenumber"""
     ELEMENT_NAME = 'Entry'
     FIELDS = [
         LabelField('label', field_uri='Key', choices={
@@ -57,11 +59,12 @@ class PhoneNumber(SingleFieldIndexedElement):
 
 
 class MultiFieldIndexedElement(IndexedElement):
+    """Base class for all classes that implement an indexed element with multiple fields"""
     __slots__ = tuple()
 
 
 class PhysicalAddress(MultiFieldIndexedElement):
-    # MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/entry-physicaladdress
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/entry-physicaladdress"""
     ELEMENT_NAME = 'Entry'
     FIELDS = [
         LabelField('label', field_uri='Key', choices={

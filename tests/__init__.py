@@ -35,7 +35,7 @@ from yaml import safe_load
 
 from exchangelib import close_connections
 from exchangelib.account import Account, SAVE_ONLY, SEND_ONLY, SEND_AND_SAVE_COPY
-from exchangelib.attachments import FileAttachment, ItemAttachment, AttachmentId
+from exchangelib.attachments import FileAttachment, ItemAttachment, AttachmentId, Attachment
 from exchangelib.autodiscover import AutodiscoverProtocol, discover
 import exchangelib.autodiscover
 from exchangelib.configuration import Configuration
@@ -62,13 +62,15 @@ from exchangelib.folders import Calendar, DeletedItems, Drafts, Inbox, Outbox, S
     AllItems, ConversationSettings, Friends, RSSFeeds, Sharing, IMContactList, QuickContacts, Journal, Notes, \
     SyncIssues, MyContacts, ToDoSearch, FolderCollection, DistinguishedFolderId, Files, \
     DefaultFoldersChangeHistory, PassThroughSearchResults, SmsAndChatsSync, GraphAnalytics, Signal, \
-    PdpProfileV2Secured, VoiceMail, FolderQuerySet, SingleFolderQuerySet, SHALLOW
+    PdpProfileV2Secured, VoiceMail, FolderQuerySet, SingleFolderQuerySet, RootOfHierarchy, SHALLOW
 from exchangelib.indexed_properties import EmailAddress, PhysicalAddress, PhoneNumber, \
     SingleFieldIndexedElement, MultiFieldIndexedElement
-from exchangelib.items import Item, CalendarItem, Message, Contact, Task, DistributionList, Persona, BaseItem
+from exchangelib.items import Item, CalendarItem, Message, Contact, Task, DistributionList, Persona, BaseItem, \
+    RegisterMixIn, BulkCreateResult
 from exchangelib.properties import Attendee, Mailbox, RoomList, MessageHeader, Room, ItemId, Member, EWSElement, Body, \
     HTMLBody, TimeZone, FreeBusyView, UID, InvalidField, InvalidFieldForVersion, DLMailbox, PermissionSet, \
-    Permission, UserId, DelegateUser, DelegatePermissions, AlternateId, ID_FORMATS, EWS_ID
+    Permission, UserId, DelegateUser, DelegatePermissions, TimeZoneTransition, IdChangeKeyMixIn, AlternateId, \
+    ID_FORMATS, EWS_ID
 from exchangelib.protocol import BaseProtocol, Protocol, NoVerifyHTTPAdapter, FaultTolerance, FailFast
 from exchangelib.queryset import QuerySet, DoesNotExist, MultipleObjectsReturned
 from exchangelib.recurrence import Recurrence, AbsoluteYearlyPattern, RelativeYearlyPattern, AbsoluteMonthlyPattern, \
@@ -616,6 +618,24 @@ class PropertiesTest(TimedTestCase):
                                      'Field name %r is not unique on model %r' % (f.name, cls.__name__))
                     self.assertIn(f.name, all_slots, 'Field name %s is not in __slots__ on model %s' % (f.name, cls.__name__))
                     field_names.add(f.name)
+                # Finally, test that all models have a link to MSDN documentation
+                if issubclass(cls, Folder):
+                    # We have a long list of folders subclasses. Don't require a docstring for each
+                    continue
+                self.assertIsNotNone(cls.__doc__, '%s is missing a docstring' % cls)
+                if cls in (DLMailbox, BulkCreateResult):
+                        # Some classes are just workarounds for other classes
+                        continue
+                if cls.__doc__.startswith('Base class '):
+                    # Base classes don't have an MSDN link
+                    continue
+                if issubclass(cls, RootOfHierarchy):
+                    # Root folders don't have an MSDN link
+                    continue
+                # collapse multiline docstrings
+                docstring = ' '.join(l.strip() for l in cls.__doc__.split('\n'))
+                self.assertIn('MSDN: https://docs.microsoft.com', docstring,
+                              '%s is missing an MSDN link in the docstring' % cls)
 
     def test_uid(self):
         # Test translation of calendar UIDs. See #453

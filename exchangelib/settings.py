@@ -5,6 +5,7 @@ from .util import create_element, set_xml_value
 
 
 class OofSettings(EWSElement):
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/oofsettings"""
     ELEMENT_NAME = 'OofSettings'
     REQUEST_ELEMENT_NAME = 'UserOofSettings'
 

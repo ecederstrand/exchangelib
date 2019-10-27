@@ -205,7 +205,7 @@ import requests.adapters
 from exchangelib.protocol import BaseProtocol
 
 class RootCAAdapter(requests.adapters.HTTPAdapter):
-    # An HTTP adapter that uses a custom root CA certificate at a hard coded location
+    """An HTTP adapter that uses a custom root CA certificate at a hard coded location"""
     def cert_verify(self, conn, url, verify, cert):
         cert_file = {
             'example.com': '/path/to/example.com.crt',

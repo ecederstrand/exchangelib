@@ -19,7 +19,7 @@ log = logging.getLogger(__name__)
 
 
 class SearchableMixIn(object):
-    # Implements a search API for inheritance
+    """Implements a search API for inheritance"""
     def get(self, *args, **kwargs):
         raise NotImplementedError()
 

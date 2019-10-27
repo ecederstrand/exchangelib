@@ -443,8 +443,9 @@ class DecimalField(IntegerField):
 
 
 class EnumField(IntegerField):
-    # A field type where you can enter either the 1-based index in an enum (tuple), or the enum value. Values will be
-    # stored internally as integers but output in XML as strings.
+    """A field type where you can enter either the 1-based index in an enum (tuple), or the enum value. Values will be
+    stored internally as integers but output in XML as strings.
+    """
     def __init__(self, *args, **kwargs):
         self.enum = kwargs.pop('enum')
         # Set different min/max defaults than IntegerField
@@ -507,7 +508,7 @@ class EnumListField(EnumField):
 
 
 class EnumAsIntField(EnumField):
-    # Like EnumField, but communicates values with EWS in integers
+    """Like EnumField, but communicates values with EWS in integers"""
     def from_xml(self, elem, account):
         val = self._get_val_from_elem(elem)
         if val is not None:
@@ -548,7 +549,7 @@ class Base64Field(FieldURIField):
 
 
 class MimeContentField(Base64Field):
-    # EWS: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/mimecontent
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/mimecontent"""
     value_cls = string_types[0]
     default_encoding = 'utf-8'
 
@@ -660,7 +661,7 @@ class TimeZoneField(FieldURIField):
 
 
 class TextField(FieldURIField):
-    # A field that stores a string value with no length limit
+    """A field that stores a string value with no length limit"""
     value_cls = string_types[0]
     is_complex = True
 
@@ -704,7 +705,7 @@ class MessageField(TextField):
 
 
 class CharField(TextField):
-    # A field that stores a string value with a limited length
+    """A field that stores a string value with a limited length"""
     is_complex = False
 
     def __init__(self, *args, **kwargs):
@@ -728,9 +729,10 @@ class CharField(TextField):
 
 
 class IdField(CharField):
-    # A field to hold the 'Id' and 'Changekey' attributes on 'ItemId' type items. There is no guaranteed max length,
-    # but we can assume 512 bytes in practice. See
-    # https://docs.microsoft.com/en-us/exchange/client-developer/exchange-web-services/ews-identifiers-in-exchange
+    """A field to hold the 'Id' and 'Changekey' attributes on 'ItemId' type items. There is no guaranteed max length,
+    but we can assume 512 bytes in practice. See
+    https://docs.microsoft.com/en-us/exchange/client-developer/exchange-web-services/ews-identifiers-in-exchange
+    """
     def __init__(self, *args, **kwargs):
         super(IdField, self).__init__(*args, **kwargs)
         self.max_length = 512  # This is above the normal 255 limit, but this is actually an attribute, not a field
@@ -752,23 +754,24 @@ class CharListField(CharField):
 
 
 class URIField(TextField):
-    # Helper to mark strings that must conform to xsd:anyURI
-    # If we want an URI validator, see http://stackoverflow.com/questions/14466585/is-this-regex-correct-for-xsdanyuri
+    """Helper to mark strings that must conform to xsd:anyURI
+    If we want an URI validator, see http://stackoverflow.com/questions/14466585/is-this-regex-correct-for-xsdanyuri
+    """
     pass
 
 
 class EmailAddressField(CharField):
-    # A helper class used for email address string that we can use for email validation
+    """A helper class used for email address string that we can use for email validation"""
     pass
 
 
 class CultureField(CharField):
-    # Helper to mark strings that are # RFC 1766 culture values.
+    """Helper to mark strings that are # RFC 1766 culture values."""
     pass
 
 
 class Choice(object):
-    """ Implements versioned choices for the ChoiceField field"""
+    """Implements versioned choices for the ChoiceField field"""
     def __init__(self, value, supported_from=None):
         self.value = value
         self.supported_from = supported_from
@@ -931,7 +934,7 @@ class MessageHeaderField(EWSElementListField):
 
 
 class BaseEmailField(EWSElementField):
-    # A base class for EWSElement classes that have an 'email_address' field that we want to provide helpers for
+    """A base class for EWSElement classes that have an 'email_address' field that we want to provide helpers for"""
 
     is_complex = True  # FindItem only returns the name, not the email address
 
@@ -1041,7 +1044,7 @@ class AttachmentField(EWSElementListField):
 
 
 class LabelField(ChoiceField):
-    # A field to hold the label on an IndexedElement
+    """A field to hold the label on an IndexedElement"""
     def __init__(self, *args, **kwargs):
         super(LabelField, self).__init__(*args, **kwargs)
         self.is_attribute = True
@@ -1077,7 +1080,7 @@ class SubField(Field):
 
 
 class EmailSubField(SubField):
-    # A field to hold the value on an SingleFieldIndexedElement
+    """A field to hold the value on an SingleFieldIndexedElement"""
     value_cls = string_types[0]
 
     def from_xml(self, elem, account):
@@ -1085,7 +1088,7 @@ class EmailSubField(SubField):
 
 
 class NamedSubField(SubField):
-    # A field to hold the value on an MultiFieldIndexedElement
+    """A field to hold the value on an MultiFieldIndexedElement"""
     value_cls = string_types[0]
 
     def __init__(self, *args, **kwargs):
@@ -1168,7 +1171,7 @@ class PhoneNumberField(IndexedField):
 
 
 class PhysicalAddressField(IndexedField):
-    # MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/entry-physicaladdress
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/entry-physicaladdress"""
     is_list = True
 
     PARENT_ELEMENT_NAME = 'PhysicalAddresses'

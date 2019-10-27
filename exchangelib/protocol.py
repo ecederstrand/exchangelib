@@ -39,7 +39,7 @@ def close_connections():
 
 
 class BaseProtocol(object):
-    # Base class for Protocol which implements the bare essentials
+    """Base class for Protocol which implements the bare essentials"""
 
     # The maximum number of sessions (== TCP connections, see below) we will open to this service endpoint. Keep this
     # low unless you have an agreement with the Exchange admin on the receiving end to hammer the server and
@@ -519,7 +519,7 @@ EWS auth: %s''' % (
 
 
 class NoVerifyHTTPAdapter(requests.adapters.HTTPAdapter):
-    # An HTTP adapter that ignores TLS validation errors. Use at own risk.
+    """An HTTP adapter that ignores TLS validation errors. Use at own risk."""
     def cert_verify(self, conn, url, verify, cert):
         # pylint: disable=unused-argument
         # We're overiding a method so we have to keep the signature
@@ -527,8 +527,7 @@ class NoVerifyHTTPAdapter(requests.adapters.HTTPAdapter):
 
 
 class RetryPolicy(object):
-    """Stores retry logic used when faced with errors from the server
-    """
+    """Stores retry logic used when faced with errors from the server"""
     @property
     def fail_fast(self):
         # Used to choose the error handling policy. When True, a fault-tolerant policy is used. False, a fail-fast
@@ -545,8 +544,7 @@ class RetryPolicy(object):
 
 
 class FailFast(RetryPolicy):
-    """Fail immediately on server errors
-    """
+    """Fail immediately on server errors"""
     @property
     def fail_fast(self):
         return True

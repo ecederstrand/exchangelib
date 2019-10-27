@@ -94,6 +94,8 @@ SEARCH_SCOPE_CHOICES = (ACTIVE_DIRECTORY, ACTIVE_DIRECTORY_CONTACTS, CONTACTS, C
 
 
 class RegisterMixIn(IdChangeKeyMixIn):
+    """Base class for classes that can change their list of supported fields dynamically"""
+
     # This class implements dynamic fields on an element class, so we need to include __dict__ in __slots__
     __slots__ = ('__dict__',)
 
@@ -138,6 +140,7 @@ class RegisterMixIn(IdChangeKeyMixIn):
 
 
 class BaseItem(RegisterMixIn):
+    """Base class for all other classes that implement EWS items"""
     __slots__ = ('account', 'folder')
 
     def __init__(self, **kwargs):
@@ -501,9 +504,7 @@ class Item(BaseItem):
 
 @python_2_unicode_compatible
 class BulkCreateResult(BaseItem):
-    """
-    A dummy class to store return values from a CreateItem service call
-    """
+    """A dummy class to store return values from a CreateItem service call"""
     LOCAL_FIELDS = [
         AttachmentField('attachments', field_uri='item:Attachments'),  # ItemAttachment or FileAttachment
     ]
@@ -1077,9 +1078,7 @@ class MeetingRequest(BaseMeetingItem, AcceptDeclineMixIn):
 
 
 class MeetingMessage(BaseMeetingItem):
-    """
-    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/meetingmessage
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/meetingmessage"""
     # TODO: Untested - not sure if this is ever used
     ELEMENT_NAME = 'MeetingMessage'
 
@@ -1095,9 +1094,7 @@ class MeetingMessage(BaseMeetingItem):
 
 
 class MeetingResponse(BaseMeetingItem):
-    """
-    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/meetingresponse
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/meetingresponse"""
     ELEMENT_NAME = 'MeetingResponse'
     LOCAL_FIELDS = [
         MailboxField('received_by', field_uri='message:ReceivedBy', is_read_only=True),
@@ -1118,16 +1115,14 @@ class MeetingResponse(BaseMeetingItem):
 
 
 class MeetingCancellation(BaseMeetingItem):
-    """
-    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/meetingcancellation
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/meetingcancellation"""
     ELEMENT_NAME = 'MeetingCancellation'
 
     __slots__ = tuple()
 
 
 class BaseMeetingReplyItem(BaseItem):
-    # A base class for meeting request reply items that share the same fields (Accept, TentativelyAccept, Decline)
+    """Base class for meeting request reply items that share the same fields (Accept, TentativelyAccept, Decline)"""
     FIELDS = [
         CharField('item_class', field_uri='item:ItemClass', is_read_only=True),
         ChoiceField('sensitivity', field_uri='item:Sensitivity', choices={
@@ -1159,34 +1154,28 @@ class BaseMeetingReplyItem(BaseItem):
 
 
 class AcceptItem(BaseMeetingReplyItem):
-    """
-    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/acceptitem
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/acceptitem"""
     ELEMENT_NAME = 'AcceptItem'
 
     __slots__ = tuple()
 
 
 class TentativelyAcceptItem(BaseMeetingReplyItem):
-    """
-    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/tentativelyacceptitem
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/tentativelyacceptitem"""
     ELEMENT_NAME = 'TentativelyAcceptItem'
 
     __slots__ = tuple()
 
 
 class DeclineItem(BaseMeetingReplyItem):
-    """
-    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/declineitem
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/declineitem"""
     ELEMENT_NAME = 'DeclineItem'
 
     __slots__ = tuple()
 
 
 class BaseReplyItem(EWSElement):
-    # A base class for reply/forward elements that share the same fields
+    """Base class for reply/forward elements that share the same fields"""
     FIELDS = [
         CharField('subject', field_uri='Subject'),
         BodyField('body', field_uri='Body'),  # Accepts and returns Body or HTMLBody instances
@@ -1240,43 +1229,35 @@ class BaseReplyItem(EWSElement):
 
 
 class ReplyToItem(BaseReplyItem):
-    """
-    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/replytoitem
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/replytoitem"""
     ELEMENT_NAME = 'ReplyToItem'
 
     __slots__ = tuple()
 
 
 class ReplyAllToItem(BaseReplyItem):
-    """
-    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/replyalltoitem
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/replyalltoitem"""
     ELEMENT_NAME = 'ReplyAllToItem'
 
     __slots__ = tuple()
 
 
 class ForwardItem(BaseReplyItem):
-    """
-    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/forwarditem
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/forwarditem"""
     ELEMENT_NAME = 'ForwardItem'
 
     __slots__ = tuple()
 
 
 class CancelCalendarItem(BaseReplyItem):
-    """
-    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/cancelcalendaritem
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/cancelcalendaritem"""
     ELEMENT_NAME = 'CancelCalendarItem'
     FIELDS = [f for f in BaseReplyItem.FIELDS if f.name != 'author']
     __slots__ = tuple()
 
 
 class Persona(IdChangeKeyMixIn):
-    # MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/persona
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/persona"""
     ELEMENT_NAME = 'Persona'
     ID_ELEMENT_CLS = PersonaId
     LOCAL_FIELDS = [

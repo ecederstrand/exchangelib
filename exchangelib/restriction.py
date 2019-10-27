@@ -15,6 +15,8 @@ log = logging.getLogger(__name__)
 
 @python_2_unicode_compatible
 class Q(object):
+    """A class with an API similar to Django Q objects. Used to implemnt advanced filtering logic."""
+
     # Connection types
     AND = 'AND'
     OR = 'OR'

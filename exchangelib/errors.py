@@ -133,8 +133,9 @@ class ResponseMessageError(TransportError):
 
 @python_2_unicode_compatible
 class CASError(EWSError):
-    # EWS will sometimes return an error message in an 'X-CasErrorCode' custom HTTP header in an HTTP 500 error code.
-    # This exception is for those cases. The caller may want to do something with the original response, so store that.
+    """EWS will sometimes return an error message in an 'X-CasErrorCode' custom HTTP header in an HTTP 500 error code.
+    This exception is for those cases. The caller may want to do something with the original response, so store that.
+    """
     def __init__(self, cas_error, response):
         self.cas_error = cas_error
         self.response = response

@@ -7,9 +7,7 @@ from .collections import FolderCollection
 
 
 class Calendar(Folder):
-    """
-    An interface for the Exchange calendar
-    """
+    """An interface for the Exchange calendar"""
     DISTINGUISHED_FOLDER_ID = 'calendar'
     CONTAINER_CLASS = 'IPF.Appointment'
     supported_item_models = (CalendarItem,)
@@ -180,7 +178,7 @@ class Contacts(Folder):
 
 
 class WellknownFolder(Folder):
-    # Use this class until we have specific folder implementations
+    """A base class to use until we have a more specific folder implementation for this folder"""
     supported_item_models = ITEM_CLASSES
     __slots__ = tuple()
 
@@ -278,7 +276,7 @@ class LocalFailures(WellknownFolder):
 
 
 class MsgFolderRoot(WellknownFolder):
-    # Also known as the 'Top of Information Store' folder
+    """Also known as the 'Top of Information Store' folder"""
     DISTINGUISHED_FOLDER_ID = 'msgfolderroot'
     LOCALIZED_NAMES = {
         'zh_CN': (u'信息存储顶部',),

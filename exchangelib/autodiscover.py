@@ -85,20 +85,21 @@ def shelve_open_with_failover(filename):
 
 @python_2_unicode_compatible
 class AutodiscoverCache(object):
-    # Stores the translation from (email domain, credentials) -> AutodiscoverProtocol object so we can re-use TCP
-    # connections to an autodiscover server within the same process. Also persists the email domain -> (autodiscover
-    # endpoint URL, auth_type) translation to the filesystem so the cache can be shared between multiple processes.
+    """Stores the translation from (email domain, credentials) -> AutodiscoverProtocol object so we can re-use TCP
+    connections to an autodiscover server within the same process. Also persists the email domain -> (autodiscover
+    endpoint URL, auth_type) translation to the filesystem so the cache can be shared between multiple processes.
 
-    # According to Microsoft, we may forever cache the (email domain -> autodiscover endpoint URL) mapping, or until
-    # it stops responding. My previous experience with Exchange products in mind, I'm not sure if I should trust that
-    # advice. But it could save some valuable seconds every time we start a new connection to a known server. In any
-    # case, the persistent storage must not contain any sensitive information since the cache could be readable by
-    # unprivileged users. Domain, endpoint and auth_type are OK to cache since this info is make publicly available on
-    # HTTP and DNS servers via the autodiscover protocol. Just don't persist any credentials info.
+    According to Microsoft, we may forever cache the (email domain -> autodiscover endpoint URL) mapping, or until
+    it stops responding. My previous experience with Exchange products in mind, I'm not sure if I should trust that
+    advice. But it could save some valuable seconds every time we start a new connection to a known server. In any
+    case, the persistent storage must not contain any sensitive information since the cache could be readable by
+    unprivileged users. Domain, endpoint and auth_type are OK to cache since this info is make publicly available on
+    HTTP and DNS servers via the autodiscover protocol. Just don't persist any credentials info.
 
-    # If an autodiscover lookup fails for any reason, the corresponding cache entry must be purged.
+    If an autodiscover lookup fails for any reason, the corresponding cache entry must be purged.
 
-    # 'shelve' is supposedly thread-safe and process-safe, which suits our needs.
+    'shelve' is supposedly thread-safe and process-safe, which suits our needs.
+    """
     def __init__(self):
         self._protocols = {}  # Mapping from (domain, credentials) to AutodiscoverProtocol
 
@@ -524,7 +525,7 @@ def _get_hostname_from_srv(hostname):
 
 @python_2_unicode_compatible
 class AutodiscoverProtocol(BaseProtocol):
-    # Protocol which implements the bare essentials for autodiscover
+    """Protocol which implements the bare essentials for autodiscover"""
     TIMEOUT = 10  # Seconds
 
     def __str__(self):

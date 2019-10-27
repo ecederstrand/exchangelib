@@ -16,6 +16,8 @@ log = logging.getLogger(__name__)
 
 
 class FolderCollection(SearchableMixIn):
+    """A class that implements an API for searching folders"""
+
     # These fields are required in a FindFolder or GetFolder call to properly identify folder types
     REQUIRED_FOLDER_FIELDS = ('name', 'folder_class')
 

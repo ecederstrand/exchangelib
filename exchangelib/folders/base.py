@@ -27,9 +27,7 @@ log = logging.getLogger(__name__)
 
 
 class BaseFolder(RegisterMixIn, SearchableMixIn):
-    """
-    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/folder
-    """
+    """Base class for all classes that implement a folder"""
     ELEMENT_NAME = 'Folder'
     NAMESPACE = TNS
     # See https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/distinguishedfolderid
@@ -565,6 +563,7 @@ class BaseFolder(RegisterMixIn, SearchableMixIn):
 
 @python_2_unicode_compatible
 class Folder(BaseFolder):
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/folder"""
     LOCAL_FIELDS = [
         PermissionSetField('permission_set', field_uri='folder:PermissionSet', supported_from=EXCHANGE_2007_SP1),
         EffectiveRightsField('effective_rights', field_uri='folder:EffectiveRights', is_read_only=True,

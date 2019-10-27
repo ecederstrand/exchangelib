@@ -35,7 +35,7 @@ log = logging.getLogger(__name__)
 
 
 class ParseError(_etree.ParseError):
-    # Wrap lxml ParseError in our own class
+    """Used to wrap lxml ParseError in our own class"""
     pass
 
 
@@ -74,8 +74,7 @@ for item in ns_translation.items():
 
 
 def is_iterable(value, generators_allowed=False):
-    """
-    Checks if value is a list-like object. Don't match generators and generator-like objects here by default, because
+    """Checks if value is a list-like object. Don't match generators and generator-like objects here by default, because
     callers don't necessarily guarantee that they only iterate the value once. Take care to not match string types and
     bytes.
 
@@ -93,9 +92,7 @@ def is_iterable(value, generators_allowed=False):
 
 
 def chunkify(iterable, chunksize):
-    """
-    Splits an iterable into chunks of size ``chunksize``. The last chunk may be smaller than ``chunksize``.
-    """
+    """Splits an iterable into chunks of size ``chunksize``. The last chunk may be smaller than ``chunksize``."""
     from .queryset import QuerySet
     if hasattr(iterable, '__getitem__') and not isinstance(iterable, QuerySet):
         # tuple, list. QuerySet has __getitem__ but that evaluates the entire query greedily. We don't want that here.
@@ -114,9 +111,7 @@ def chunkify(iterable, chunksize):
 
 
 def peek(iterable):
-    """
-    Checks if an iterable is empty and returns status and the rewinded iterable
-    """
+    """Checks if an iterable is empty and returns status and the rewinded iterable"""
     from .queryset import QuerySet
     if isinstance(iterable, QuerySet):
         # QuerySet has __len__ but that evaluates the entire query greedily. We don't want that here. Instead, peek()
@@ -359,9 +354,10 @@ _forgiving_parser = ForgivingParser()
 
 
 class BytesGeneratorIO(io.RawIOBase):
-    # A BytesIO that can produce bytes from a streaming HTTP request. Expects r.iter_content() as input
-    # lxml tries to be smart by calling `getvalue` when present, assuming that the entire string is in memory.
-    # ommitting `getvalue` forces lxml to stream the request through `read` avoiding the memory duplication
+    """A BytesIO that can produce bytes from a streaming HTTP request. Expects r.iter_content() as input
+    lxml tries to be smart by calling `getvalue` when present, assuming that the entire string is in memory.
+    Omitting `getvalue` forces lxml to stream the request through `read` avoiding the memory duplication.
+    """
     def __init__(self, bytes_generator):
         self._bytes_generator = bytes_generator
         self._next = bytearray()
