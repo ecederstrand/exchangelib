@@ -480,10 +480,18 @@ class Protocol(with_metaclass(CachingProtocol, BaseProtocol)):
         :param destination_format: A string
         :return: a generator of AlternateId, AlternatePublicFolderId or AlternatePublicFolderItemId instances
         """
-        from .properties import ID_FORMATS
+        from .properties import ID_FORMATS, AlternateId, AlternatePublicFolderId, AlternatePublicFolderItemId
         if destination_format not in ID_FORMATS:
             raise ValueError("'destination_format' %r must be one of %s" % (destination_format, ID_FORMATS))
-        return ConvertId(protocol=self).call(items=ids, destination_format=destination_format)
+        cls_map = {cls.response_tag(): cls for cls in (
+            AlternateId, AlternatePublicFolderItemId, AlternatePublicFolderItemId
+        )}
+        for i in ConvertId(protocol=self).call(items=ids, destination_format=destination_format):
+            if isinstance(i, Exception):
+                yield i
+            else:
+                id_cls = cls_map[i.tag]
+                yield id_cls.from_xml(i, account=None)
 
     def __getstate__(self):
         # The thread and session pools cannot be pickled

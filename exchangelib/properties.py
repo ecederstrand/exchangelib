@@ -1152,6 +1152,7 @@ ID_FORMATS = (ENTRY_ID, EWS_ID, EWS_LEGACY_ID, HEX_ENTRY_ID, OWA_ID, STORE_ID)
 
 
 class AlternateId(EWSElement):
+    # MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/alternateid
     ELEMENT_NAME = 'AlternateId'
     FIELDS = [
         CharField('id', field_uri='Id', is_required=True, is_attribute=True),
@@ -1161,8 +1162,14 @@ class AlternateId(EWSElement):
         BooleanField('is_archive', field_uri='IsArchive', is_required=False, is_attribute=True),
     ]
 
+    @classmethod
+    def response_tag(cls):
+        # This element is in TNS in the request and MNS in the response...
+        return '{%s}%s' % (MNS, cls.ELEMENT_NAME)
+
 
 class AlternatePublicFolderId(EWSElement):
+    # MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/alternatepublicfolderid
     ELEMENT_NAME = 'AlternatePublicFolderId'
     FIELDS = [
         CharField('folder_id', field_uri='FolderId', is_required=True, is_attribute=True),
@@ -1172,6 +1179,7 @@ class AlternatePublicFolderId(EWSElement):
 
 
 class AlternatePublicFolderItemId(EWSElement):
+    # MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/alternatepublicfolderitemid
     ELEMENT_NAME = 'AlternatePublicFolderItemId'
     FIELDS = [
         CharField('folder_id', field_uri='FolderId', is_required=True, is_attribute=True),

@@ -68,7 +68,7 @@ from exchangelib.indexed_properties import EmailAddress, PhysicalAddress, PhoneN
 from exchangelib.items import Item, CalendarItem, Message, Contact, Task, DistributionList, Persona, BaseItem
 from exchangelib.properties import Attendee, Mailbox, RoomList, MessageHeader, Room, ItemId, Member, EWSElement, Body, \
     HTMLBody, TimeZone, FreeBusyView, UID, InvalidField, InvalidFieldForVersion, DLMailbox, PermissionSet, \
-    Permission, UserId, DelegateUser, DelegatePermissions
+    Permission, UserId, DelegateUser, DelegatePermissions, AlternateId, ID_FORMATS, EWS_ID
 from exchangelib.protocol import BaseProtocol, Protocol, NoVerifyHTTPAdapter, FaultTolerance, FailFast
 from exchangelib.queryset import QuerySet, DoesNotExist, MultipleObjectsReturned
 from exchangelib.recurrence import Recurrence, AbsoluteYearlyPattern, RelativeYearlyPattern, AbsoluteMonthlyPattern, \
@@ -2010,6 +2010,16 @@ class CommonTest(EWSTest):
                 start=UTC.localize(EWSDateTime(2100, 11, 1)),
                 end=UTC.localize(EWSDateTime(2100, 12, 1)),
             ).clean(version=None)
+
+    def test_convert_id(self):
+        i = 'AAMkADQyYzZmYmUxLTJiYjItNDg2Ny1iMzNjLTIzYWE1NDgxNmZhNABGAAAAAADUebQDarW2Q7G2Ji8hKofPBwAl9iKCsfCfSa9cmjh' \
+            '+JCrCAAPJcuhjAAB0l+JSKvzBRYP+FXGewReXAABj6DrMAAA='
+        for fmt in ID_FORMATS:
+            res = list(self.account.protocol.convert_ids(
+                    [AlternateId(id=i, format=EWS_ID, mailbox=self.account.primary_smtp_address)],
+                    destination_format=fmt))
+            self.assertEqual(len(res), 1)
+            self.assertEqual(res[0].format, fmt)
 
     def test_sessionpool(self):
         # First, empty the calendar
