@@ -7,11 +7,12 @@ from ..errors import ErrorAccessDenied, ErrorFolderNotFound, ErrorCannotEmptyFol
 from ..fields import IntegerField, CharField, FieldPath, EffectiveRightsField, PermissionSetField, EWSElementField, \
     Field
 from ..items import CalendarItem, RegisterMixIn, Persona, ITEM_CLASSES, ITEM_TRAVERSAL_CHOICES, SHAPE_CHOICES, \
-    ID_ONLY, DELETE_TYPE_CHOICES, HARD_DELETE, SHALLOW as SHALLOW_ITEMS
+    ID_ONLY, DELETE_TYPE_CHOICES, HARD_DELETE, ALL_ITEM_CLASSES, SHALLOW as SHALLOW_ITEMS
 from ..properties import Mailbox, FolderId, ParentFolderId, InvalidField, DistinguishedFolderId
 from ..queryset import QuerySet, SearchableMixIn, DoesNotExist
 from ..restriction import Restriction
-from ..services import CreateFolder, UpdateFolder, DeleteFolder, EmptyFolder, FindPeople
+from ..services import CreateFolder, UpdateFolder, DeleteFolder, EmptyFolder, FindPeople, EVENT_TYPES, \
+    SyncFolderItems, SubscribePushFolder, SubscribeStreamingFolder, UnsubscribeStreamingFolder, GetStreamingEvents
 from ..util import TNS
 from ..version import Version, EXCHANGE_2007_SP1, EXCHANGE_2010
 from .collections import FolderCollection
@@ -38,7 +39,7 @@ class BaseFolder(RegisterMixIn, SearchableMixIn):
     DEFAULT_FOLDER_TRAVERSAL_DEPTH = DEEP_FOLDERS
     DEFAULT_ITEM_TRAVERSAL_DEPTH = SHALLOW_ITEMS
     LOCALIZED_NAMES = dict()  # A map of (str)locale: (tuple)localized_folder_names
-    ITEM_MODEL_MAP = {cls.response_tag(): cls for cls in ITEM_CLASSES}
+    ITEM_MODEL_MAP = {cls.response_tag(): cls for cls in ALL_ITEM_CLASSES}
     ID_ELEMENT_CLS = FolderId
     LOCAL_FIELDS = [
         EWSElementField('parent_folder_id', field_uri='folder:ParentFolderId', value_cls=ParentFolderId,
@@ -59,6 +60,7 @@ class BaseFolder(RegisterMixIn, SearchableMixIn):
     def __init__(self, **kwargs):
         self.is_distinguished = kwargs.pop('is_distinguished', False)
         super().__init__(**kwargs)
+        self.sync_state = None
 
     @property
     def account(self):
@@ -455,6 +457,61 @@ class BaseFolder(RegisterMixIn, SearchableMixIn):
                     f.delete()
                 except ErrorDeleteDistinguishedFolder:
                     log.warning('Tried to delete a distinguished folder (%s)', f)
+
+    def sync(self, max_changes):
+        # Only use sync if sync_state is fully updated. First sync's with EWS will return (id, changekey) tuples
+        # for ALL items until the cursor hits the end of the state. Subsequent calls will return only specific changes.
+        # If you want to use sync, please ensure you re-use the sync_state properly (and persist it)
+        for change in SyncFolderItems(account=self.account, folders=[self]).call(self.sync_state, None, max_changes):
+            if isinstance(change, Exception):
+                yield change
+            else:
+                item = self.item_model_from_tag(change.tag).from_xml(elem=change, account=self.account)
+                yield item
+
+    def changes(self, max_changes=512):
+        # More user friendly method. No need to worry about sync_states. Will return changes as they happen.
+
+        if not self.sync_state:
+            return []
+
+        changes = []
+        while True:
+            res = list(self.sync(max_changes))
+            if len(res) < max_changes:
+                break
+            changes.extend(res)
+        return changes
+
+    def stream(self):
+        # Subscribe for streaming notifications
+        # Usage:
+        # 1. Get subscription id for folder by calling stream
+        # 2. Call events which will block until changes on the folder happen or timeout is hit
+        # 3. Process changes and call unsubcribe with subscriptionId to end the subscription
+        for subscription_id in SubscribeStreamingFolder(account=self.account, folders=[self]).call(events=EVENT_TYPES):
+            yield subscription_id
+
+    def events(self, subscription_ids):
+        # Get streaming events - this will block until it hits timeout or enough data is accumulated
+        # TODO: Add stream=True for GetStreamingEvents and figure out how to accumulate data on the socket
+        for event in GetStreamingEvents(account=self.account).call(subscription_ids):
+            if isinstance(event, Exception):
+                yield event
+            else:
+                yield event
+
+    def push(self, callback_url):
+        # Subscribe for push notifications from EWS to your server. Server must handle unsubcribe / re-use / validation
+        for subscription_id in SubscribePushFolder(account=self.account, folders=[self]).call(
+                events=EVENT_TYPES, callback_url=callback_url):
+            yield subscription_id
+
+    def unsubscribe(self, subscription_id):
+        # Unsubscribe from streaming notifications
+        if not subscription_id:
+            raise ValueError('Cannot unsubscribe without a subscription id')
+        UnsubscribeStreamingFolder(account=self.account).call(subscription_id)
 
     def test_access(self):
         """

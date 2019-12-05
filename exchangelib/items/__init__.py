@@ -6,7 +6,8 @@ from .item import SEND_MEETING_INVITATIONS_CHOICES, SEND_TO_NONE, SEND_ONLY_TO_A
     SEND_MEETING_INVITATIONS_AND_CANCELLATIONS_CHOICES, SEND_ONLY_TO_CHANGED, SEND_TO_CHANGED_AND_SAVE_COPY, \
     SEND_MEETING_CANCELLATIONS_CHOICES, AFFECTED_TASK_OCCURRENCES_CHOICES, ALL_OCCURRENCIES, \
     SPECIFIED_OCCURRENCE_ONLY, CONFLICT_RESOLUTION_CHOICES, NEVER_OVERWRITE, AUTO_RESOLVE, ALWAYS_OVERWRITE, \
-    DELETE_TYPE_CHOICES, HARD_DELETE, SOFT_DELETE, MOVE_TO_DELETED_ITEMS, BaseItem, Item, BulkCreateResult
+    DELETE_TYPE_CHOICES, HARD_DELETE, SOFT_DELETE, MOVE_TO_DELETED_ITEMS, BaseItem, Item, BulkCreateResult, \
+    ReadFlagChange, CreateChange, UpdateChange, DeleteChange
 from .message import Message, ReplyToItem, ReplyAllToItem, ForwardItem
 from .post import PostItem, PostReplyItem
 from .task import Task
@@ -51,3 +52,5 @@ SEARCH_SCOPE_CHOICES = (ACTIVE_DIRECTORY, ACTIVE_DIRECTORY_CONTACTS, CONTACTS, C
 
 ITEM_CLASSES = (Item, CalendarItem, Contact, DistributionList, Message, PostItem, Task, MeetingRequest, MeetingResponse,
                 MeetingCancellation)
+ALL_ITEM_CLASSES = (Item, CalendarItem, Contact, DistributionList, Message, PostItem, Task, MeetingRequest,
+                    MeetingResponse, MeetingCancellation, ReadFlagChange, CreateChange, UpdateChange, DeleteChange)

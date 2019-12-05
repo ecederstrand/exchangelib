@@ -1,5 +1,6 @@
 from ..items import CalendarItem, Contact, Message, Task, DistributionList, MeetingRequest, MeetingResponse, \
-    MeetingCancellation, ITEM_CLASSES, ASSOCIATED
+    MeetingCancellation, CreateChange, UpdateChange, DeleteChange, ReadFlagChange, ITEM_CLASSES, ALL_ITEM_CLASSES, \
+    ASSOCIATED
 from ..version import EXCHANGE_2010_SP1, EXCHANGE_2013, EXCHANGE_2013_SP1
 from .base import Folder
 from .collections import FolderCollection
@@ -49,7 +50,8 @@ class DeletedItems(Folder):
 
 class Messages(Folder):
     CONTAINER_CLASS = 'IPF.Note'
-    supported_item_models = (Message, MeetingRequest, MeetingResponse, MeetingCancellation)
+    supported_item_models = (Message, MeetingRequest, MeetingResponse, MeetingCancellation, CreateChange,
+                             UpdateChange, DeleteChange, ReadFlagChange)
     __slots__ = tuple()
 
 

@@ -40,6 +40,9 @@ from .move_item import MoveItem
 from .resolve_names import ResolveNames
 from .send_item import SendItem
 from .set_user_oof_settings import SetUserOofSettings
+from .subscribe import GetStreamingEvents, SubscribePushFolder, SubscribeStreamingFolder, EVENT_TYPES
+from .sync_folder import SyncFolderItems
+from .unsubscribe import UnsubscribeStreamingFolder
 from .update_folder import UpdateFolder
 from .update_item import UpdateItem
 from .upload_items import UploadItems
@@ -71,12 +74,18 @@ __all__ = [
     'GetRooms',
     'GetSearchableMailboxes',
     'GetServerTimeZones',
+    'GetStreamingEvents',
     'GetUserAvailability',
     'GetUserOofSettings',
     'MoveItem',
     'ResolveNames',
     'SendItem',
     'SetUserOofSettings',
+    'EVENT_TYPES',
+    'SubscribePushFolder',
+    'SubscribeStreamingFolder',
+    'SyncFolderItems',
+    'UnsubscribeStreamingFolder',
     'UpdateFolder',
     'UpdateItem',
     'UploadItems',
