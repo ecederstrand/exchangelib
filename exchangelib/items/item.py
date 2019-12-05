@@ -7,6 +7,7 @@ from ..properties import ConversationId, ParentFolderId, ReferenceItemId
 from ..util import is_iterable
 from ..version import EXCHANGE_2010, EXCHANGE_2013
 from .base import BaseItem, SAVE_ONLY, SEND_ONLY, SEND_AND_SAVE_COPY
+from .message import Message
 
 log = logging.getLogger(__name__)
 
@@ -405,3 +406,37 @@ class BulkCreateResult(BaseItem):
         # pylint: disable=access-member-before-definition
         if self.attachments is None:
             self.attachments = []
+
+
+class ReadFlagChange(Item):
+    """
+    MSDN: https://msdn.microsoft.com/en-us/library/office/aa565609(v=exchg.150).aspx
+    """
+    ELEMENT_NAME = 'ReadFlagChange'
+    FIELDS = Item.FIELDS
+
+
+class CreateChange(Item):
+    """
+    MSDN: https://msdn.microsoft.com/en-us/library/office/aa565609(v=exchg.150).aspx
+    """
+    ELEMENT_NAME = 'Create'
+    FIELDS = Item.FIELDS + [
+        EWSElementField('changed_item', field_uri='Message', value_cls=Message)
+    ]
+
+
+class UpdateChange(Item):
+    """
+    MSDN: https://msdn.microsoft.com/en-us/library/office/aa565609(v=exchg.150).aspx
+    """
+    ELEMENT_NAME = 'Update'
+    FIELDS = Item.FIELDS
+
+
+class DeleteChange(Item):
+    """
+    MSDN: https://msdn.microsoft.com/en-us/library/office/aa565609(v=exchg.150).aspx
+    """
+    ELEMENT_NAME = 'Delete'
+    FIELDS = Item.FIELDS
