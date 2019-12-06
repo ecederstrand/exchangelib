@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 from contextlib import contextmanager
 
+from contextlib import contextmanager
 from fnmatch import fnmatch
 import logging
 from operator import attrgetter
@@ -63,13 +64,8 @@ class BaseFolder(RegisterMixIn, SearchableMixIn):
 
     def __init__(self, **kwargs):
         self.is_distinguished = kwargs.pop('is_distinguished', False)
-<<<<<<< HEAD
         super().__init__(**kwargs)
         self.sync_state = None
-=======
-        self.sync_state = None
-        super(BaseFolder, self).__init__(**kwargs)
->>>>>>> draft subscribe
 
     @property
     def account(self):
@@ -492,23 +488,15 @@ class BaseFolder(RegisterMixIn, SearchableMixIn):
             changes.extend(res)
         return changes
 
-<<<<<<< HEAD
     def subscribe(self):
         # Subscribe for streaming notifications
         # Usage:
-        # 1. Get subscription id for folder by calling subscribe
-=======
-    def stream(self):
-        # Subscribe for streaming notifications
-        # Usage:
         # 1. Get subscription id for folder by calling stream
->>>>>>> draft subscribe
         # 2. Call events which will block until changes on the folder happen or timeout is hit
         # 3. Process changes and call unsubcribe with subscriptionId to end the subscription
         for subscription_id in SubscribeStreamingFolder(account=self.account, folders=[self]).call(events=EVENT_TYPES):
             yield subscription_id
 
-<<<<<<< HEAD
     def unsubscribe(self, subscription_id):
         # Unsubscribe from streaming notifications
         if not subscription_id:
@@ -526,16 +514,18 @@ class BaseFolder(RegisterMixIn, SearchableMixIn):
             yield event
         for subscription_id in subscription_ids:
             self.unsubscribe(subscription_id)
-=======
+
     def events(self, subscription_ids):
         # Get streaming events - this will block until it hits timeout or enough data is accumulated
         # TODO: Add stream=True for GetStreamingEvents and figure out how to accumulate data on the socket
+        subscription_ids = self.subscribe()
         for event in GetStreamingEvents(account=self.account).call(subscription_ids):
             if isinstance(event, Exception):
                 yield event
             else:
                 yield event
->>>>>>> draft subscribe
+        for subscription_id in subscription_ids:
+            self.unsubscribe(subscription_id)
 
     def push(self, callback_url):
         # Subscribe for push notifications from EWS to your server. Server must handle unsubcribe / re-use / validation
@@ -543,15 +533,6 @@ class BaseFolder(RegisterMixIn, SearchableMixIn):
                 events=EVENT_TYPES, callback_url=callback_url):
             yield subscription_id
 
-<<<<<<< HEAD
-=======
-    def unsubscribe(self, subscription_id):
-        # Unsubscribe from streaming notifications
-        if not subscription_id:
-            raise ValueError('Cannot unsubscribe without a subscription id')
-        UnsubscribeStreamingFolder(account=self.account).call(subscription_id)
-
->>>>>>> draft subscribe
     def test_access(self):
         """
         Does a simple FindItem to test (read) access to the folder. Maybe the account doesn't exist, maybe the
