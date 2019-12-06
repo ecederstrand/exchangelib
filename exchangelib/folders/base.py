@@ -491,7 +491,7 @@ class BaseFolder(RegisterMixIn, SearchableMixIn):
     def subscribe(self):
         # Subscribe for streaming notifications
         # Usage:
-        # 1. Get subscription id for folder by calling stream
+        # 1. Get subscription id for folder by calling subscribe
         # 2. Call events which will block until changes on the folder happen or timeout is hit
         # 3. Process changes and call unsubcribe with subscriptionId to end the subscription
         for subscription_id in SubscribeStreamingFolder(account=self.account, folders=[self]).call(events=EVENT_TYPES):
