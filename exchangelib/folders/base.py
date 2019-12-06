@@ -1,3 +1,7 @@
+# coding=utf-8
+from __future__ import unicode_literals
+from contextlib import contextmanager
+
 from fnmatch import fnmatch
 import logging
 from operator import attrgetter
@@ -483,7 +487,7 @@ class BaseFolder(RegisterMixIn, SearchableMixIn):
             changes.extend(res)
         return changes
 
-    def stream(self):
+    def subscribe(self):
         # Subscribe for streaming notifications
         # Usage:
         # 1. Get subscription id for folder by calling stream
@@ -492,26 +496,29 @@ class BaseFolder(RegisterMixIn, SearchableMixIn):
         for subscription_id in SubscribeStreamingFolder(account=self.account, folders=[self]).call(events=EVENT_TYPES):
             yield subscription_id
 
-    def events(self, subscription_ids):
+    def unsubscribe(self, subscription_id):
+        # Unsubscribe from streaming notifications
+        if not subscription_id:
+            raise ValueError('Cannot unsubscribe without a subscription id')
+        ret = UnsubscribeStreamingFolder(account=self.account).call(subscription_id)
+        if isinstance(ret, Exception):
+            raise ret
+
+    @contextmanager
+    def stream_events(self):
         # Get streaming events - this will block until it hits timeout or enough data is accumulated
         # TODO: Add stream=True for GetStreamingEvents and figure out how to accumulate data on the socket
+        subscription_ids = self.subscribe()
         for event in GetStreamingEvents(account=self.account).call(subscription_ids):
-            if isinstance(event, Exception):
-                yield event
-            else:
-                yield event
+            yield event
+        for subscription_id in subscription_ids:
+            self.unsubscribe(subscription_id)
 
     def push(self, callback_url):
         # Subscribe for push notifications from EWS to your server. Server must handle unsubcribe / re-use / validation
         for subscription_id in SubscribePushFolder(account=self.account, folders=[self]).call(
                 events=EVENT_TYPES, callback_url=callback_url):
             yield subscription_id
-
-    def unsubscribe(self, subscription_id):
-        # Unsubscribe from streaming notifications
-        if not subscription_id:
-            raise ValueError('Cannot unsubscribe without a subscription id')
-        UnsubscribeStreamingFolder(account=self.account).call(subscription_id)
 
     def test_access(self):
         """
