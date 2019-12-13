@@ -8,7 +8,7 @@ import logging
 from future.utils import python_2_unicode_compatible
 
 from .errors import MultipleObjectsReturned, DoesNotExist
-from .items import CalendarItem, ID_ONLY
+from .items import CalendarItem, ID_ONLY, SHALLOW
 from .fields import FieldPath, FieldOrder
 from .properties import InvalidField
 from .restriction import Q
@@ -57,7 +57,7 @@ class QuerySet(SearchableMixIn):
     PERSONA = 'persona'
     REQUEST_TYPES = (ITEM, PERSONA)
 
-    def __init__(self, folder_collection, request_type=ITEM):
+    def __init__(self, folder_collection, request_type=ITEM, depth=SHALLOW, shape=ID_ONLY):
         from .folders import FolderCollection
         if not isinstance(folder_collection, FolderCollection):
             raise ValueError("folder_collection value '%s' must be a FolderCollection instance" % folder_collection)
@@ -75,6 +75,9 @@ class QuerySet(SearchableMixIn):
         self.offset = 0
 
         self._cache = None
+
+        self.shape = shape
+        self.depth = depth
 
     def _copy_self(self):
         # When we copy a queryset where the cache has already been filled, we don't copy the cache. Thus, a copied
@@ -104,6 +107,8 @@ class QuerySet(SearchableMixIn):
         new_qs.page_size = self.page_size
         new_qs.max_items = self.max_items
         new_qs.offset = self.offset
+        new_qs.shape = self.shape
+        new_qs.depth = self.depth
         return new_qs
 
     @property
@@ -174,7 +179,6 @@ class QuerySet(SearchableMixIn):
         }[return_format](items)
 
     def _query(self):
-        from .folders import SHALLOW
         from .items import Persona
         if self.only_fields is None:
             # We didn't restrict list of field paths. Get all fields from the server, including extended properties.
@@ -212,8 +216,8 @@ class QuerySet(SearchableMixIn):
                 raise ValueError('Personas can only be queried on a single folder')
             items = list(self.folder_collection)[0].find_people(
                 self.q,
-                shape=ID_ONLY,
-                depth=SHALLOW,
+                shape=self.shape,
+                depth=self.depth,
                 additional_fields=additional_fields,
                 order_fields=order_fields,
                 page_size=self.page_size,
@@ -222,7 +226,8 @@ class QuerySet(SearchableMixIn):
             )
         else:
             find_item_kwargs = dict(
-                shape=ID_ONLY,  # Always use IdOnly here, because AllProperties doesn't actually get *all* properties
+                shape=self.shape,
+                depth=self.depth,
                 additional_fields=additional_fields,
                 order_fields=order_fields,
                 calendar_view=self.calendar_view,

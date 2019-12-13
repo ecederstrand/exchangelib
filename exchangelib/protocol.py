@@ -78,6 +78,19 @@ class BaseProtocol(object):
         self._session_pool = self._create_session_pool()
         self._session_pool_lock = Lock()
 
+        # custom headers for advanced usage / testing
+        self._headers = {}
+        self.extra_headers = {}
+
+    def _get_extra_headers(self, account):
+        """Generate extra HTTP headers"""
+        if account:
+            # See
+            # https://blogs.msdn.microsoft.com/webdav_101/2015/05/11/best-practices-ews-authentication-and-access-issues/
+            self._headers.update({'X-AnchorMailbox': account.primary_smtp_address})
+            self._headers.update(self.extra_headers)
+        return self._headers
+
     @property
     def service_endpoint(self):
         return self.config.service_endpoint

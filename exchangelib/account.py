@@ -572,13 +572,14 @@ class Account(object):
             ))
         )
 
-    def fetch(self, ids, folder=None, only_fields=None, chunk_size=None):
+    def fetch(self, ids, folder=None, only_fields=None, chunk_size=None, shape=ID_ONLY):
         """ Fetch items by ID
 
         :param ids: an iterable of either (id, changekey) tuples or Item objects.
         :param folder: used for validating 'only_fields'
         :param only_fields: A list of string or FieldPath items specifying the fields to fetch. Default to all fields
         :param chunk_size: The number of items to send to the server in a single request
+        :param shape: Property Shape / Set to be returned. Defaults to IdOnly
         :return: A generator of Item objects, in the same order as the input
         """
         validation_folder = folder or Folder(root=self.root)  # Default to a folder type that supports all item types
@@ -594,10 +595,10 @@ class Account(object):
             for field in only_fields:
                 validation_folder.validate_item_field(field=field, version=self.version)
             additional_fields = validation_folder.normalize_fields(fields=only_fields)
-        # Always use IdOnly here, because AllProperties doesn't actually get *all* properties
+        # Use IdOnly here by default, AllProperties doesn't actually get *all* properties
         for i in self._consume_item_service(service_cls=GetItem, items=ids, chunk_size=chunk_size, kwargs=dict(
                 additional_fields=additional_fields,
-                shape=ID_ONLY,
+                shape=shape,
         )):
             if isinstance(i, Exception):
                 yield i
