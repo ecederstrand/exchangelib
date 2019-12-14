@@ -82,7 +82,7 @@ class BaseProtocol(object):
         self._headers = {}
         self.extra_headers = {}
 
-    def _get_extra_headers(self, account):
+    def get_extra_headers(self, account):
         """Generate extra HTTP headers"""
         if account:
             # See

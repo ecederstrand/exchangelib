@@ -129,7 +129,7 @@ class EWSService(object):
                 protocol=self.protocol,
                 session=self.protocol.get_session(),
                 url=self.protocol.service_endpoint,
-                headers=self.protocol._get_extra_headers(account=account),
+                headers=self.protocol.get_extra_headers(account=account),
                 data=wrap(content=payload, version=api_version, account=account),
                 allow_redirects=False,
                 stream=self.streaming,
