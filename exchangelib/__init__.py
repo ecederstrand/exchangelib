@@ -4,7 +4,8 @@ from .account import Account
 from .attachments import FileAttachment, ItemAttachment
 from .autodiscover import discover
 from .configuration import Configuration
-from .credentials import DELEGATE, IMPERSONATION, Credentials, OAuth2Credentials
+from .credentials import DELEGATE, IMPERSONATION, Credentials, OAuth2Credentials, \
+    OAuth2AuthorizationCodeCredentials
 from .ewsdatetime import EWSDate, EWSDateTime, EWSTimeZone, UTC, UTC_NOW
 from .extended_properties import ExtendedProperty
 from .folders import Folder, FolderCollection, SHALLOW, DEEP
@@ -25,7 +26,7 @@ __all__ = [
     'FileAttachment', 'ItemAttachment',
     'discover',
     'Configuration',
-    'DELEGATE', 'IMPERSONATION', 'Credentials', 'OAuth2Credentials',
+    'DELEGATE', 'IMPERSONATION', 'Credentials', 'OAuth2AuthorizationCodeCredentials', 'OAuth2Credentials',
     'EWSDate', 'EWSDateTime', 'EWSTimeZone', 'UTC', 'UTC_NOW',
     'ExtendedProperty',
     'Folder', 'FolderCollection', 'SHALLOW', 'DEEP',

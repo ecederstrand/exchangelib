@@ -19,11 +19,11 @@ import requests.sessions
 import requests.utils
 from future.utils import with_metaclass, python_2_unicode_compatible
 from future.moves.queue import LifoQueue, Empty, Full
-from oauthlib.oauth2 import BackendApplicationClient
+from oauthlib.oauth2 import BackendApplicationClient, WebApplicationClient
 from requests_oauthlib import OAuth2Session
 from six import string_types
 
-from .credentials import OAuth2Credentials
+from .credentials import OAuth2AuthorizationCodeCredentials, OAuth2Credentials
 from .errors import TransportError, SessionPoolMinSizeReached
 from .properties import FreeBusyViewOptions, MailboxData, TimeWindow, TimeZone
 from .services import GetServerTimeZones, GetRoomLists, GetRooms, ResolveNames, GetUserAvailability, \
@@ -211,44 +211,116 @@ class BaseProtocol(object):
         del session
         return self.create_session()
 
-    def create_session(self):
-        if self.auth_type is None:
-            raise ValueError('Cannot create session without knowing the auth type')
-        if isinstance(self.credentials, OAuth2Credentials):
-            if self.auth_type != OAUTH2:
-                raise ValueError('Auth type must be %r for credentials type OAuth2Credentials' % OAUTH2)
+    def refresh_credentials(self, session):
+        # Credentials need to be refreshed, probably due to an OAuth
+        # access token expiring. If we've gotten here, it's because the
+        # application didn't provide an OAuth client secret, so we can't
+        # handle token refreshing for it.
+        with self.credentials.lock:
+            if hash(self.credentials) == self.credentials_hash:
+                # Credentials have not been refreshed by another thread:
+                # they're the same as the session was created with. If
+                # this isn't the case, we can just go ahead with a new
+                # session using the already-updated credentials.
+                self.credentials.refresh()
+        return self.renew_session(session)
 
-            token_url = 'https://login.microsoftonline.com/%s/oauth2/v2.0/token' % self.credentials.tenant_id
-            scope = ['https://outlook.office365.com/.default']
-            client = BackendApplicationClient(client_id=self.credentials.client_id)
-            session = self.raw_session(client)
-            # Fetch the token explicitly -- it doesn't occur implicitly
-            session.fetch_token(token_url=token_url, client_id=self.credentials.client_id,
-                                client_secret=self.credentials.client_secret, scope=scope)
-            session.auth = get_auth_instance(auth_type=OAUTH2, client=client)
-        elif self.credentials:
-            if self.auth_type == NTLM and self.credentials.type == self.credentials.EMAIL:
-                username = '\\' + self.credentials.username
+    def create_session(self):
+        with self.credentials.lock:
+            if self.auth_type is None:
+                raise ValueError('Cannot create session without knowing the auth type')
+            if isinstance(self.credentials, OAuth2Credentials):
+                session = self.create_oauth2_session()
+            elif self.credentials:
+                if self.auth_type == NTLM and self.credentials.type == self.credentials.EMAIL:
+                    username = '\\' + self.credentials.username
+                else:
+                    username = self.credentials.username
+                session = self.raw_session()
+                session.auth = get_auth_instance(auth_type=self.auth_type, username=username,
+                                                 password=self.credentials.password)
             else:
-                username = self.credentials.username
-            session = self.raw_session()
-            session.auth = get_auth_instance(auth_type=self.auth_type, username=username,
-                                             password=self.credentials.password)
-        else:
-            if self.auth_type not in (GSSAPI, SSPI):
-                raise ValueError('Auth type %r requires credentials' % self.auth_type)
-            session = self.raw_session()
-            session.auth = get_auth_instance(auth_type=self.auth_type)
+                if self.auth_type not in (GSSAPI, SSPI):
+                    raise ValueError('Auth type %r requires credentials' % self.auth_type)
+                session = self.raw_session()
+                session.auth = get_auth_instance(auth_type=self.auth_type)
+            # Keep track of the credentials used to create this session. If
+            # and when we need to renew credentials (for example, refreshing
+            # an OAuth access token), this lets us easily determine whether
+            # the credentials have already been refreshed in another thread
+            # by the time this session tries.
+            session.credentials_hash = hash(self.credentials)
         # Add some extra info
         session.session_id = sum(map(ord, str(os.urandom(100))))  # Used for debugging messages in services
         session.protocol = self
         log.debug('Server %s: Created session %s', self.server, session.session_id)
         return session
 
+    def create_oauth2_session(self):
+        if self.auth_type != OAUTH2:
+            raise ValueError('Auth type must be %r for credentials type OAuth2Credentials' % OAUTH2)
+
+        has_token = False
+        scope = ['https://outlook.office365.com/.default']
+        session_params = {}
+        token_params = {}
+
+        if isinstance(self.credentials, OAuth2AuthorizationCodeCredentials):
+            # Ask for a refresh token
+            scope.append('offline_access')
+
+            # We don't know (or need) the Microsoft tenant ID. Use
+            # common/ to let Microsoft select the appropriate tenant
+            # for the provided authorization code or refresh token.
+            token_url = 'https://login.microsoftonline.com/common/oauth2/v2.0/token'
+
+            client_params = {}
+            has_token = self.credentials.access_token is not None
+            if has_token:
+                session_params['token'] = self.credentials.access_token
+            elif self.credentials.authorization_code is not None:
+                token_params['code'] = self.credentials.authorization_code
+                self.credentials.authorization_code = None
+
+            if self.credentials.client_id is not None and self.credentials.client_secret is not None:
+                # If we're given a client ID and secret, we have enough
+                # to refresh access tokens ourselves. In other cases the
+                # session will raise TokenExpiredError and we'll need to
+                # ask the calling application to refresh the token (that
+                # covers cases where the caller doesn't have access to
+                # the client secret but is working with a service that
+                # can provide it refreshed tokens on a limited basis).
+                session_params = {
+                    **session_params,
+                    'auto_refresh_kwargs': {
+                        'client_id': self.credentials.client_id,
+                        'client_secret': self.credentials.client_secret,
+                    },
+                    'auto_refresh_url': token_url,
+                    'token_updater': self.credentials.on_token_auto_refreshed,
+                }
+            client = WebApplicationClient(self.credentials.client_id, **client_params)
+        else:
+            token_url = 'https://login.microsoftonline.com/%s/oauth2/v2.0/token' % self.credentials.tenant_id
+            client = BackendApplicationClient(client_id=self.credentials.client_id)
+
+        session = self.raw_session(client, session_params)
+        if not has_token:
+            # Fetch the token explicitly -- it doesn't occur implicitly
+            token = session.fetch_token(token_url=token_url, client_id=self.credentials.client_id,
+                                        client_secret=self.credentials.client_secret, scope=scope,
+                                        **token_params)
+            # Allow the credentials object to update its copy of the new
+            # token, and give the application an opportunity to cache it
+            credentials.on_token_auto_refreshed(token)
+        session.auth = get_auth_instance(auth_type=OAUTH2, client=client)
+
+        return session
+
     @classmethod
-    def raw_session(cls, oauth2_client=None):
+    def raw_session(cls, oauth2_client=None, oauth2_session_params=None):
         if oauth2_client:
-            session = OAuth2Session(client=oauth2_client)
+            session = OAuth2Session(client=oauth2_client, **(oauth2_session_params or {}))
         else:
             session = requests.sessions.Session()
         session.headers.update(DEFAULT_HEADERS)

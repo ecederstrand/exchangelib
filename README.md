@@ -93,7 +93,8 @@ fails to install.
 
 ```python
 from exchangelib import DELEGATE, IMPERSONATION, Account, Credentials, OAuth2Credentials, \
-    FaultTolerance, Configuration, NTLM, GSSAPI, SSPI, OAUTH2, Build, Version
+    OAuth2AuthorizationCodeCredentials, FaultTolerance, Configuration, NTLM, GSSAPI, SSPI, \
+    OAUTH2, Build, Version
 from exchangelib.autodiscover import AutodiscoverProtocol
 
 # Specify your credentials. Username is usually in WINDOMAIN\username format, where WINDOMAIN is
@@ -165,8 +166,30 @@ config = Configuration(server='example.com', auth_type=GSSAPI)
 config = Configuration(server='example.com', auth_type=SSPI)
 
 # OAuth is supported via the OAUTH2 auth type and the OAuth2Credentials class.
+# Use OAuth2AuthorizationCodeCredentials for the authorization code flow (useful
+# for applications that access multiple accounts).
 credentials = OAuth2Credentials(client_id='MY_ID', client_secret='MY_SECRET', tenant_id='TENANT_ID')
+credentials = OAuth2AuthorizationCodeCredentials(client_id='MY_ID', client_secret='MY_SECRET', authorization_code='AUTH_CODE')
+credentials = OAuth2AuthorizationCodeCredentials(client_id='MY_ID', client_secret='MY_SECRET', access_token='EXISTING_TOKEN')
 config = Configuration(credentials=credentials, auth_type=OAUTH2)
+
+# Applications using the authorization code flow that let exchangelib refresh
+# access tokens for them probably want to store the refreshed tokens so users
+# don't have to re-authorize. Subclass OAuth2AuthorizationCodeCredentials and
+# override on_token_auto_refreshed():
+class MyCredentials(OAuth2AuthorizationCodeCredentials):
+    def on_token_auto_refreshed(self, access_token):
+        store_it_somewhere(access_token)
+        # Let the object update its internal state!
+        super(MyCredentials, self).on_token_auto_refreshed(access_token)
+
+# For applications that use the authorization code flow and rely on an external
+# provider to refresh access tokens (and thus are unable to provide a client ID
+# and secret to exchangelib), subclass OAuth2AuthorizationCodeCredentials and
+# override refresh().
+class MyCredentials(OAuth2AuthorizationCodeCredentials):
+    def refresh(self):
+        self.access_token = ...
 
 # If you're connecting to the same account very often, you can cache the autodiscover result for
 # later so you can skip the autodiscover lookup:

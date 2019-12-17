@@ -21,6 +21,7 @@ from future.backports.misc import get_ident
 from future.moves.urllib.parse import urlparse
 from future.utils import PY2
 import isodate
+from oauthlib.oauth2 import TokenExpiredError
 from pygments import highlight
 from pygments.lexers.html import XmlLexer
 from pygments.formatters.terminal import TerminalFormatter
@@ -535,8 +536,8 @@ class DummyRequest(object):
 
 
 class DummyResponse(object):
-    def __init__(self, url, headers, request_headers, content=b''):
-        self.status_code = 503
+    def __init__(self, url, headers, request_headers, content=b'', status_code=503):
+        self.status_code = status_code
         self.url = url
         self.headers = headers
         self.content = content
@@ -696,6 +697,9 @@ Response data: %(xml_response)s
             except CONNECTION_ERRORS as e:
                 log.debug('Session %s thread %s: connection error POST\'ing to %s', session.session_id, thread_id, url)
                 r = DummyResponse(url=url, headers={'TimeoutException': e}, request_headers=headers)
+            except TokenExpiredError as e:
+                log.debug('Session %s thread %s: OAuth token expired; refreshing', session.session_id, thread_id)
+                r = DummyResponse(url=url, headers={'TokenExpiredError': e}, request_headers=headers, status_code=401)
             finally:
                 log_vals.update(
                     retry=retry,
@@ -709,6 +713,9 @@ Response data: %(xml_response)s
                     xml_response='[STREAMING]' if stream else r.content,
                 )
             log.debug(log_msg, log_vals)
+            if _need_new_credentials(response=r):
+                session = protocol.refresh_credentials(session)
+                continue
             if _may_retry_on_error(response=r, retry_policy=protocol.retry_policy, wait=wait):
                 log.info("Session %s thread %s: Connection error on URL %s (code %s). Cool down %s secs",
                          session.session_id, thread_id, r.url, r.status_code, wait)
@@ -776,6 +783,11 @@ def _may_retry_on_error(response, retry_policy, wait):
             or (response.status_code == 503):
         return True
     return False
+
+
+def _need_new_credentials(response):
+    return response.status_code == 401 \
+        and response.headers.get('TokenExpiredError')
 
 
 def _redirect_or_fail(response, redirects, allow_redirects):
