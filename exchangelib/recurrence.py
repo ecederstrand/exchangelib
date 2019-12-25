@@ -32,11 +32,11 @@ class AbsoluteYearlyPattern(Pattern):
     ELEMENT_NAME = 'AbsoluteYearlyRecurrence'
 
     FIELDS = [
-        # The month of the year, from 1 - 12
-        EnumField('month', field_uri='t:Month', enum=MONTHS, is_required=True),
         # The day of month of an occurrence, in range 1 -> 31. If a particular month has less days than the day_of_month
         # value, the last day in the month is assumed
         IntegerField('day_of_month', field_uri='t:DayOfMonth', min=1, max=31, is_required=True),
+        # The month of the year, from 1 - 12
+        EnumField('month', field_uri='t:Month', enum=MONTHS, is_required=True),
     ]
 
     __slots__ = tuple(f.name for f in FIELDS)
