@@ -9,7 +9,7 @@ from __future__ import unicode_literals
 
 import abc
 import logging
-from threading import Lock
+from threading import RLock
 
 from future.utils import python_2_unicode_compatible
 
@@ -34,7 +34,7 @@ class BaseCredentials(object):
 
     def __init__(self):
         super(BaseCredentials, self).__init__()
-        self._lock = Lock()
+        self._lock = RLock()
 
     @property
     def lock(self):
@@ -126,7 +126,7 @@ class OAuth2Credentials(BaseCredentials, PickleMixIn):
         self.client_secret = client_secret
         self.tenant_id = tenant_id
 
-    def refresh(self):
+    def refresh(self, session):
         # Creating a new session gets a new access token, so there's no
         # work here to refresh the credentials. This implementation just
         # makes sure we don't raise a NotImplementedError.

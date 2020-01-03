@@ -272,7 +272,9 @@ class BaseProtocol(object):
             # We don't know (or need) the Microsoft tenant ID. Use
             # common/ to let Microsoft select the appropriate tenant
             # for the provided authorization code or refresh token.
-            token_url = 'https://login.microsoftonline.com/common/oauth2/v2.0/token'
+            #
+            # Suppress looks-like-password warning from Bandit.
+            token_url = 'https://login.microsoftonline.com/common/oauth2/v2.0/token'  # nosec
 
             client_params = {}
             has_token = self.credentials.access_token is not None
@@ -290,15 +292,14 @@ class BaseProtocol(object):
                 # covers cases where the caller doesn't have access to
                 # the client secret but is working with a service that
                 # can provide it refreshed tokens on a limited basis).
-                session_params = {
-                    **session_params,
+                session_params.update({
                     'auto_refresh_kwargs': {
                         'client_id': self.credentials.client_id,
                         'client_secret': self.credentials.client_secret,
                     },
                     'auto_refresh_url': token_url,
                     'token_updater': self.credentials.on_token_auto_refreshed,
-                }
+                })
             client = WebApplicationClient(self.credentials.client_id, **client_params)
         else:
             token_url = 'https://login.microsoftonline.com/%s/oauth2/v2.0/token' % self.credentials.tenant_id
@@ -312,7 +313,7 @@ class BaseProtocol(object):
                                         **token_params)
             # Allow the credentials object to update its copy of the new
             # token, and give the application an opportunity to cache it
-            credentials.on_token_auto_refreshed(token)
+            self.credentials.on_token_auto_refreshed(token)
         session.auth = get_auth_instance(auth_type=OAUTH2, client=client)
 
         return session
