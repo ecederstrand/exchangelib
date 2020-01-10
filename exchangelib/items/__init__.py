@@ -53,36 +53,45 @@ SEARCH_SCOPE_CHOICES = (ACTIVE_DIRECTORY, ACTIVE_DIRECTORY_CONTACTS, CONTACTS, C
 
 class ReadFlagChange(Item):
     """
-    MSDN: https://msdn.microsoft.com/en-us/library/office/aa565609(v=exchg.150).aspx
+    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/readflagchange
     """
     ELEMENT_NAME = 'ReadFlagChange'
     FIELDS = Item.FIELDS
 
+    __slots__ = tuple()
+
 
 class CreateChange(Item):
     """
-    MSDN: https://msdn.microsoft.com/en-us/library/office/aa565609(v=exchg.150).aspx
+    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/create-itemsync
     """
     ELEMENT_NAME = 'Create'
-    FIELDS = Item.FIELDS + [
+    LOCAL_FIELDS = [
         EWSElementField('changed_item', field_uri='Message', value_cls=Message)
     ]
+    FIELDS = Item.FIELDS + LOCAL_FIELDS
+
+    __slots__ = tuple(f.name for f in LOCAL_FIELDS)
 
 
 class UpdateChange(Item):
     """
-    MSDN: https://msdn.microsoft.com/en-us/library/office/aa565609(v=exchg.150).aspx
+    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/update-itemsync
     """
     ELEMENT_NAME = 'Update'
     FIELDS = Item.FIELDS
 
+    __slots__ = tuple()
+
 
 class DeleteChange(Item):
     """
-    MSDN: https://msdn.microsoft.com/en-us/library/office/aa565609(v=exchg.150).aspx
+    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/delete-itemsync
     """
     ELEMENT_NAME = 'Delete'
     FIELDS = Item.FIELDS
+
+    __slots__ = tuple()
 
 
 ITEM_CLASSES = (Item, CalendarItem, Contact, DistributionList, Message, PostItem, Task, MeetingRequest, MeetingResponse,
