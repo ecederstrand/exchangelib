@@ -10,7 +10,7 @@ from operator import attrgetter
 from ..errors import ErrorAccessDenied, ErrorFolderNotFound, ErrorCannotEmptyFolder, ErrorCannotDeleteObject, \
     ErrorDeleteDistinguishedFolder
 from ..fields import IntegerField, CharField, FieldPath, EffectiveRightsField, PermissionSetField, EWSElementField, \
-    Field
+    Field, Base64Field
 from ..items import CalendarItem, RegisterMixIn, Persona, ITEM_CLASSES, ITEM_TRAVERSAL_CHOICES, SHAPE_CHOICES, \
     ID_ONLY, DELETE_TYPE_CHOICES, HARD_DELETE, ALL_ITEM_CLASSES, SHALLOW as SHALLOW_ITEMS
 from ..properties import Mailbox, FolderId, ParentFolderId, InvalidField, DistinguishedFolderId
@@ -54,6 +54,7 @@ class BaseFolder(RegisterMixIn, SearchableMixIn):
         IntegerField('total_count', field_uri='folder:TotalCount', is_read_only=True),
         IntegerField('child_folder_count', field_uri='folder:ChildFolderCount', is_read_only=True),
         IntegerField('unread_count', field_uri='folder:UnreadCount', is_read_only=True),
+        # Base64Field('sync_state', field_uri='folder:SyncState', is_read_only=True),
     ]
     FIELDS = RegisterMixIn.FIELDS + LOCAL_FIELDS
 
