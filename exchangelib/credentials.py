@@ -54,6 +54,9 @@ class BaseCredentials(object):
             + 'See class documentation on automatic refreshing, or subclass and implement refresh().'
         )
 
+    def _get_hash_values(self):
+        return (getattr(self, k) for k in self.__dict__.keys() if k != '_lock')
+
     def __eq__(self, other):
         for k in self.__dict__.keys():
             if k == '_lock':
@@ -64,7 +67,7 @@ class BaseCredentials(object):
         return True
 
     def __hash__(self):
-        return hash(tuple(getattr(self, k) for k in self.__dict__.keys() if k != '_lock'))
+        return hash(tuple(self._get_hash_values()))
 
     def __getstate__(self):
         # The lock cannot be pickled
@@ -160,6 +163,15 @@ class OAuth2Credentials(BaseCredentials, PickleMixIn):
         # being created, which could cause a race
         with self.lock:
             self.access_token = access_token
+
+    def _get_hash_values(self):
+        # access_token is a dict (or an oauthlib.oauth2.OAuth2Token,
+        # which is also a dict) and isn't hashable. Extract its
+        # access_token field, which is the important one.
+        return (
+            getattr(self, k) if k != 'access_token' else self.access_token['access_token']
+            for k in self.__dict__.keys() if k != '_lock'
+        )
 
     def __repr__(self):
         return self.__class__.__name__ + repr((self.client_id, '********'))
