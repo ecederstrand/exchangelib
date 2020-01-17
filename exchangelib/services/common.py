@@ -442,9 +442,13 @@ class PagingEWSMixIn(EWSService):
                         raise MalformedResponseError('No %s elements in ResponseMessage (%s)' % (
                             self.element_container_name, xml_to_str(rootfolder)))
                     for elem in self._get_elements_in_container(container=container):
+                        if max_items and total_item_count >= max_items:
+                            # No need to continue. Break out of elements loop
+                            log.debug("'max_items' count reached (elements)")
+                            break
                         paging_info['item_count'] += 1
+                        total_item_count += 1
                         yield elem
-                    total_item_count += paging_info['item_count']
                     if max_items and total_item_count >= max_items:
                         # No need to continue. Break out of inner loop
                         log.debug("'max_items' count reached (inner)")
@@ -455,7 +459,10 @@ class PagingEWSMixIn(EWSService):
                 # Check sanity of paging offsets, but don't fail. When we are iterating huge collections that take a
                 # long time to complete, the collection may change while we are iterating. This can affect the
                 # 'next_offset' value and make it inconsistent with the number of already collected items.
-                if paging_info['next_offset'] != paging_info['item_count']:
+                # We don't worry about If breaking early due to having reached 'max_items'.
+                if paging_info['next_offset'] != paging_info['item_count'] and (
+                    not max_items or total_item_count < max_items
+                ):
                     log.warning('Unexpected next offset: %s -> %s. Maybe the server-side collection has changed?'
                                 % (paging_info['item_count'], paging_info['next_offset']))
             # Also break out of outer loop
