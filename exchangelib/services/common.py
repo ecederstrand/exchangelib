@@ -143,7 +143,7 @@ class EWSService(metaclass=abc.ABCMeta):
             # The body may contain error messages from Exchange, but we still want to collect version info
             if header is not None:
                 try:
-                    self._update_api_version(hint=version_hint, api_version=api_version, header=header, **parse_opts)
+                    self._update_api_version(version_hint=version_hint, api_version=api_version, header=header, **parse_opts)
                 except TransportError as te:
                     log.debug('Failed to update version info (%s)', te)
             try:
