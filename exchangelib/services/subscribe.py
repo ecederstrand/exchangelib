@@ -91,3 +91,6 @@ class GetStreamingEvents(EWSAccountService):
         payload.append(ids_elem)
         add_xml_child(payload, 'm:ConnectionTimeout', 15)
         return payload
+
+    def parse_notification(self, notification):
+        raise NotImplementedError("Notification parsing is not implemented yet.")
