@@ -317,7 +317,12 @@ class EWSService(metaclass=abc.ABCMeta):
                 return True
             container = message.find(name)
             if container is None:
-                raise MalformedResponseError('No %s elements in ResponseMessage (%s)' % (name, xml_to_str(message)))
+                connection_status = get_xml_attr(response_message, '{%s}ConnectionStatus' % MNS)
+                if self.streaming and connection_status == 'OK':
+                    log.debug('Keep alive streaming message.')
+                    return True
+                else:
+                    raise MalformedResponseError('No %s elements in ResponseMessage (%s)' % (name, xml_to_str(message)))
             return container
         if response_code == 'NoError':
             return True
