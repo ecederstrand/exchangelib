@@ -63,9 +63,8 @@ class EWSService(metaclass=abc.ABCMeta):
         while True:
             try:
                 # Send the request, get the response and do basic sanity checking on the SOAP XML
-                response = self._get_response_xml(payload=payload)
                 # Read the XML and throw any general EWS error messages. Return a generator over the result elements
-                return self._get_elements_in_response(response=response)
+                return self._handle_request(payload=payload)
             except ErrorServerBusy as e:
                 self._handle_backoff(e)
                 continue
@@ -104,7 +103,23 @@ class EWSService(metaclass=abc.ABCMeta):
                             account, traceback.format_exc(20))
                 raise
 
-    def _get_response_xml(self, payload, **parse_opts):
+    def _get_session_and_response(self, payload, api_version, account):
+        log.debug('Trying API version %s for account %s', api_version, account)
+        r, session = post_ratelimited(
+            protocol=self.protocol,
+            session=self.protocol.get_session(),
+            url=self.protocol.service_endpoint,
+            headers=extra_headers(account=account),
+            data=wrap(content=payload, api_version=api_version, account=account),
+            allow_redirects=False,
+            stream=self.streaming,
+        )
+        if self.streaming:
+            # Let 'requests' decode raw data automatically
+            r.raw.decode_content = True
+        return r, session
+
+    def _handle_request(self, payload, **parse_opts):
         # Takes an XML tree and returns SOAP payload as an XML tree
         # Microsoft really doesn't want to make our lives easy. The server may report one version in our initial version
         # guessing tango, but then the server may decide that any arbitrary legacy backend server may actually process
@@ -120,83 +135,100 @@ class EWSService(metaclass=abc.ABCMeta):
             version_hint = self.protocol.config.version
         api_versions = [version_hint.api_version] + [v for v in API_VERSIONS if v != version_hint.api_version]
         for api_version in api_versions:
-            log.debug('Trying API version %s for account %s', api_version, account)
-            r, session = post_ratelimited(
-                protocol=self.protocol,
-                session=self.protocol.get_session(),
-                url=self.protocol.service_endpoint,
-                headers=extra_headers(account=account),
-                data=wrap(content=payload, api_version=api_version, account=account),
-                allow_redirects=False,
-                stream=self.streaming,
-            )
-            if self.streaming:
-                # Let 'requests' decode raw data automatically
-                r.raw.decode_content = True
-            else:
-                # If we're streaming, we want to wait to release the session until we have consumed the stream.
-                self.protocol.release_session(session)
+            r, session = self._get_session_and_response(payload, api_version, account)
             try:
-                header, body = self._get_soap_parts(response=r, **parse_opts)
-            except ParseError as e:
-                raise SOAPError('Bad SOAP response: %s' % e)
-            # The body may contain error messages from Exchange, but we still want to collect version info
-            if header is not None:
-                try:
-                    self._update_api_version(version_hint=version_hint, api_version=api_version, header=header,
-                                             **parse_opts)
-                except TransportError as te:
-                    log.debug('Failed to update version info (%s)', te)
-            try:
-                res = self._get_soap_messages(body=body, **parse_opts)
-            except (ErrorInvalidServerVersion, ErrorIncorrectSchemaVersion, ErrorInvalidRequest):
-                # The guessed server version is wrong. Try the next version
-                log.debug('API version %s was invalid', api_version)
-                continue
-            except ErrorInvalidSchemaVersionForMailboxVersion:
-                if not account:
-                    # This should never happen for non-account services
-                    raise ValueError("'account' should not be None")
-                # The guessed server version is wrong for this account. Try the next version
-                log.debug('API version %s was invalid for account %s', api_version, account)
-                continue
-            except ErrorExceededConnectionCount as e:
-                # ErrorExceededConnectionCount indicates that the connecting user has too many open TCP connections to
-                # the server. Decrease our session pool size.
-                if self.streaming:
-                    # In streaming mode, we haven't released the session yet, so we can't discard the session
-                    raise
+                if not self.streaming:
+                    res = self._process_response_content(r.iter_content(), version_hint, api_version, account,
+                                                         **parse_opts)
+                    return self._get_elements_in_response(res)
                 else:
-                    try:
-                        self.protocol.decrease_poolsize()
-                        continue
-                    except SessionPoolMinSizeReached:
-                        # We're already as low as we can go. Let the user handle this.
-                        raise e
-            except (ErrorTooManyObjectsOpened, ErrorTimeoutExpired) as e:
-                # ErrorTooManyObjectsOpened means there are too many connections to the Exchange database. This is very
-                # often a symptom of sending too many requests.
-                #
-                # ErrorTimeoutExpired can be caused by a busy server, or by overly large requests. Start by lowering the
-                # session count. This is done by downstream code.
-                if isinstance(e, ErrorTimeoutExpired) and self.protocol.session_pool_size <= 1:
-                    # We're already as low as we can go, so downstream cannot limit the session count to put less load
-                    # on the server. We don't have a way of lowering the page size of requests from
-                    # this part of the code yet. Let the user handle this.
-                    raise e
-
-                # Re-raise as an ErrorServerBusy with a default delay of 5 minutes
-                raise ErrorServerBusy(msg='Reraised from %s(%s)' % (e.__class__.__name__, e), back_off=300)
+                    log.info(f"Streaming is on ... {r.status_code}")
+                    return self._handle_response_stream(r, version_hint, api_version, account, **parse_opts)
+            except (
+                    ErrorInvalidServerVersion,
+                    ErrorIncorrectSchemaVersion,
+                    ErrorInvalidRequest,
+                    ErrorInvalidSchemaVersionForMailboxVersion
+            ):
+                continue
+            except ErrorExceededConnectionCount:
+                if not self.streaming:
+                    continue
             finally:
-                if self.streaming:
-                    # TODO: We shouldn't release the session yet if we still haven't fully consumed the stream. It seems
-                    # a Session can handle multiple unfinished streaming requests, though.
-                    self.protocol.release_session(session)
-            return res
+                self.protocol.release_session(session)
+                # NOTE: no need to call r.close() ?
         if account:
             raise ErrorInvalidSchemaVersionForMailboxVersion('Tried versions %s but all were invalid for account %s' %
                                                              (api_versions, account))
         raise ErrorInvalidServerVersion('Tried versions %s but all were invalid' % api_versions)
+
+    def _handle_response_stream(self, response, version_hint, api_version, account, **parse_opts):
+        chunk_size = 512 * 1024
+        notification = bytes()
+        for line in response.iter_content(chunk_size=chunk_size):
+            if len(line) != 1:
+                notification += line
+            else:
+                if len(notification) > 0:
+                    log.debug(f"Notification: {notification}")
+                    res = self._process_response_content(notification, version_hint, api_version,
+                                                         account, **parse_opts)
+                    notification = bytes()
+                    for elem in self._get_elements_in_response(res):
+                        yield elem
+
+    def _process_response_content(self, content, version_hint, api_version, account, **parse_opts):
+        try:
+            header, body = self._get_soap_parts(content=content, **parse_opts)
+        except ParseError as e:
+            raise SOAPError('Bad SOAP response: %s' % e)
+        # The body may contain error messages from Exchange, but we still want to collect version info
+        if header is not None:
+            try:
+                self._update_api_version(version_hint=version_hint, api_version=api_version, header=header,
+                                         **parse_opts)
+            except TransportError as te:
+                log.debug('Failed to update version info (%s)', te)
+        try:
+            res = self._get_soap_messages(body=body, **parse_opts)
+        except (ErrorInvalidServerVersion, ErrorIncorrectSchemaVersion, ErrorInvalidRequest) as e:
+            # The guessed server version is wrong. Try the next version
+            log.debug('API version %s was invalid', api_version)
+            raise e
+        except ErrorInvalidSchemaVersionForMailboxVersion as e:
+            if not account:
+                # This should never happen for non-account services
+                raise ValueError("'account' should not be None")
+            # The guessed server version is wrong for this account. Try the next version
+            log.debug('API version %s was invalid for account %s', api_version, account)
+            raise e
+        except ErrorExceededConnectionCount as e:
+            # ErrorExceededConnectionCount indicates that the connecting user has too many open TCP connections to
+            # the server. Decrease our session pool size.
+            if self.streaming:
+                # In streaming mode, we haven't released the session yet, so we can't discard the session
+                raise
+            else:
+                try:
+                    self.protocol.decrease_poolsize()
+                    raise e
+                except SessionPoolMinSizeReached:
+                    # We're already as low as we can go. Let the user handle this.
+                    raise e
+        except (ErrorTooManyObjectsOpened, ErrorTimeoutExpired) as e:
+            # ErrorTooManyObjectsOpened means there are too many connections to the Exchange database. This is very
+            # often a symptom of sending too many requests.
+            #
+            # ErrorTimeoutExpired can be caused by a busy server, or by overly large requests. Start by lowering the
+            # session count. This is done by downstream code.
+            if isinstance(e, ErrorTimeoutExpired) and self.protocol.session_pool_size <= 1:
+                # We're already as low as we can go, so downstream cannot limit the session count to put less load
+                # on the server. We don't have a way of lowering the page size of requests from
+                # this part of the code yet. Let the user handle this.
+                raise e
+            # Re-raise as an ErrorServerBusy with a default delay of 5 minutes
+            raise ErrorServerBusy(msg='Reraised from %s(%s)' % (e.__class__.__name__, e), back_off=300)
+        return res
 
     def _handle_backoff(self, e):
         log.debug('Got ErrorServerBusy (back off %s seconds)', e.back_off)
@@ -237,8 +269,8 @@ class EWSService(metaclass=abc.ABCMeta):
         return '{%s}%sResponseMessage' % (MNS, cls.SERVICE_NAME)
 
     @classmethod
-    def _get_soap_parts(cls, response, **parse_opts):
-        root = to_xml(response.iter_content())
+    def _get_soap_parts(cls, content, **parse_opts):
+        root = to_xml(content)
         header = root.find('{%s}Header' % SOAPNS)
         if header is None:
             # This is normal when the response contains SOAP-level errors
