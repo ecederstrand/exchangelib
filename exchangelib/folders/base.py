@@ -1,8 +1,6 @@
 # coding=utf-8
 from __future__ import unicode_literals
-from contextlib import contextmanager
 
-from contextlib import contextmanager
 from fnmatch import fnmatch
 import logging
 from operator import attrgetter
@@ -10,7 +8,7 @@ from operator import attrgetter
 from ..errors import ErrorAccessDenied, ErrorFolderNotFound, ErrorCannotEmptyFolder, ErrorCannotDeleteObject, \
     ErrorDeleteDistinguishedFolder
 from ..fields import IntegerField, CharField, FieldPath, EffectiveRightsField, PermissionSetField, EWSElementField, \
-    Field, Base64Field
+    Field
 from ..items import CalendarItem, RegisterMixIn, Persona, ITEM_CLASSES, ITEM_TRAVERSAL_CHOICES, SHAPE_CHOICES, \
     ID_ONLY, DELETE_TYPE_CHOICES, HARD_DELETE, ALL_ITEM_CLASSES, SHALLOW as SHALLOW_ITEMS
 from ..properties import Mailbox, FolderId, ParentFolderId, InvalidField, DistinguishedFolderId
@@ -66,7 +64,7 @@ class BaseFolder(RegisterMixIn, SearchableMixIn):
     def __init__(self, **kwargs):
         self.is_distinguished = kwargs.pop('is_distinguished', False)
         super().__init__(**kwargs)
-        self.sync_state = None
+        # self.sync_state = None
 
     @property
     def account(self):
@@ -502,31 +500,27 @@ class BaseFolder(RegisterMixIn, SearchableMixIn):
         # Unsubscribe from streaming notifications
         if not subscription_id:
             raise ValueError('Cannot unsubscribe without a subscription id')
+        log.info(f"Unsubscribing from id {subscription_id}")
         ret = UnsubscribeStreamingFolder(account=self.account).call(subscription_id)
         if isinstance(ret, Exception):
             raise ret
 
-    @contextmanager
-    def stream_events(self):
-        # Get streaming events - this will block until it hits timeout or enough data is accumulated
-        # TODO: Add stream=True for GetStreamingEvents and figure out how to accumulate data on the socket
-        subscription_ids = self.subscribe()
-        for event in GetStreamingEvents(account=self.account).call(subscription_ids):
-            yield event
-        for subscription_id in subscription_ids:
-            self.unsubscribe(subscription_id)
-
     def events(self, subscription_ids):
         # Get streaming events - this will block until it hits timeout or enough data is accumulated
         # TODO: Add stream=True for GetStreamingEvents and figure out how to accumulate data on the socket
-        subscription_ids = self.subscribe()
         for event in GetStreamingEvents(account=self.account).call(subscription_ids):
-            if isinstance(event, Exception):
+            yield event
+
+    def stream_events(self):
+        subscription_ids = self.subscribe()
+        try:
+            for event in self.events(subscription_ids):
                 yield event
-            else:
-                yield event
-        for subscription_id in subscription_ids:
-            self.unsubscribe(subscription_id)
+        except KeyboardInterrupt:
+            log.info('Stream interrupted.')
+        finally:
+            for subscription_id in subscription_ids:
+                self.unsubscribe(subscription_id)
 
     def push(self, callback_url):
         # Subscribe for push notifications from EWS to your server. Server must handle unsubcribe / re-use / validation
