@@ -33,7 +33,8 @@ class SubscribeStreamingFolder(EWSFolderService):
         payload.append(streaming_request)
         return payload
 
-    def _get_elements_in_container(self, container):
+    @staticmethod
+    def _get_elements_in_container(container):
         return [container.text]
 
 
@@ -64,7 +65,8 @@ class SubscribePushFolder(EWSFolderService):
         payload.append(streaming_request)
         return payload
 
-    def _get_elements_in_container(self, container):
+    @staticmethod
+    def _get_elements_in_container(container):
         return [container.text]
 
 
