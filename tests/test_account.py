@@ -151,7 +151,7 @@ class AccountTest(EWSTest):
         a = MockAccount(DELEGATE, 'foo@example.com', MockTZ('XXX'), protocol='foo')
 
         ws = GetDelegate(account=a)
-        header, body = ws._get_soap_parts(response=MockResponse(xml))
+        header, body = ws._get_soap_parts(content=MockResponse(xml))
         res = ws._get_elements_in_response(response=ws._get_soap_messages(body=body))
         delegates = [DelegateUser.from_xml(elem=elem, account=a) for elem in res]
         self.assertListEqual(

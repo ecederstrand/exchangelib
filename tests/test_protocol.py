@@ -174,7 +174,7 @@ class ProtocolTest(EWSTest):
         </m:GetRoomListsResponse>
     </s:Body>
 </s:Envelope>'''
-        header, body = ws._get_soap_parts(response=MockResponse(xml))
+        header, body = ws._get_soap_parts(content=MockResponse(xml))
         res = ws._get_elements_in_response(response=ws._get_soap_messages(body=body))
         self.assertSetEqual(
             {RoomList.from_xml(elem=elem, account=None).email_address for elem in res},
@@ -230,7 +230,7 @@ class ProtocolTest(EWSTest):
         </m:GetRoomsResponse>
     </s:Body>
 </s:Envelope>'''
-        header, body = ws._get_soap_parts(response=MockResponse(xml))
+        header, body = ws._get_soap_parts(content=MockResponse(xml))
         res = ws._get_elements_in_response(response=ws._get_soap_messages(body=body))
         self.assertSetEqual(
             {Room.from_xml(elem=elem, account=None).email_address for elem in res},
@@ -314,7 +314,7 @@ class ProtocolTest(EWSTest):
     </m:ResolveNamesResponse>
   </s:Body>
 </s:Envelope>'''
-        header, body = ws._get_soap_parts(response=MockResponse(xml))
+        header, body = ws._get_soap_parts(content=MockResponse(xml))
         res = ws._get_elements_in_response(response=ws._get_soap_messages(body=body))
         self.assertSetEqual(
             {Mailbox.from_xml(elem=elem.find(Mailbox.response_tag()), account=None).email_address for elem in res},

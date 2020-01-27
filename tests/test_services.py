@@ -42,7 +42,7 @@ class ServicesTest(EWSTest):
     </s:Fault>
   </s:Body>
 </s:Envelope>'''
-        header, body = ws._get_soap_parts(response=MockResponse(xml))
+        header, body = ws._get_soap_parts(content=MockResponse(xml))
         with self.assertRaises(ErrorServerBusy) as cm:
             ws._get_elements_in_response(response=ws._get_soap_messages(body=body))
         self.assertEqual(cm.exception.back_off, 297.749)
@@ -69,7 +69,7 @@ class ServicesTest(EWSTest):
     </soap:Fault>
   </soap:Body>
 </soap:Envelope>"""
-        header, body = ResolveNames._get_soap_parts(response=MockResponse(soap_xml.format(
+        header, body = ResolveNames._get_soap_parts(content=MockResponse(soap_xml.format(
                 faultcode='YYY', faultstring='AAA', responsecode='XXX', message='ZZZ'
             ).encode('utf-8')))
         with self.assertRaises(SOAPError) as e:
@@ -77,13 +77,13 @@ class ServicesTest(EWSTest):
         self.assertIn('AAA', e.exception.args[0])
         self.assertIn('YYY', e.exception.args[0])
         self.assertIn('ZZZ', e.exception.args[0])
-        header, body = ResolveNames._get_soap_parts(response=MockResponse(soap_xml.format(
+        header, body = ResolveNames._get_soap_parts(content=MockResponse(soap_xml.format(
                 faultcode='ErrorNonExistentMailbox', faultstring='AAA', responsecode='XXX', message='ZZZ'
             ).encode('utf-8')))
         with self.assertRaises(ErrorNonExistentMailbox) as e:
             ResolveNames._get_soap_messages(body=body)
         self.assertIn('AAA', e.exception.args[0])
-        header, body = ResolveNames._get_soap_parts(response=MockResponse(soap_xml.format(
+        header, body = ResolveNames._get_soap_parts(content=MockResponse(soap_xml.format(
                 faultcode='XXX', faultstring='AAA', responsecode='ErrorNonExistentMailbox', message='YYY'
             ).encode('utf-8')))
         with self.assertRaises(ErrorNonExistentMailbox) as e:
@@ -101,7 +101,7 @@ class ServicesTest(EWSTest):
   </soap:Body>
 </soap:Envelope>"""
         with self.assertRaises(MalformedResponseError):
-            ResolveNames._get_soap_parts(response=MockResponse(soap_xml))
+            ResolveNames._get_soap_parts(content=MockResponse(soap_xml))
 
         # Test bad XML (no fault)
         soap_xml = b"""\
@@ -116,7 +116,7 @@ class ServicesTest(EWSTest):
     </soap:Fault>
   </soap:Body>
 </soap:Envelope>"""
-        header, body = ResolveNames._get_soap_parts(response=MockResponse(soap_xml))
+        header, body = ResolveNames._get_soap_parts(content=MockResponse(soap_xml))
         with self.assertRaises(TransportError):
             ResolveNames._get_soap_messages(body=body)
 
@@ -135,7 +135,7 @@ class ServicesTest(EWSTest):
     </m:ResolveNamesResponse>
   </soap:Body>
 </soap:Envelope>"""
-        header, body = svc._get_soap_parts(response=MockResponse(soap_xml))
+        header, body = svc._get_soap_parts(content=MockResponse(soap_xml))
         resp = svc._get_soap_messages(body=body)
         with self.assertRaises(TransportError) as e:
             # Missing ResolutionSet elements
