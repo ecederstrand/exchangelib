@@ -274,6 +274,7 @@ class FolderTest(EWSTest):
     def test_glob(self):
         self.assertGreaterEqual(len(list(self.account.root.glob('*'))), 5)
         self.assertEqual(len(list(self.account.contacts.glob('GAL*'))), 1)
+        self.assertEqual(len(list(self.account.contacts.glob('gal*'))), 1)  # Test case-insensitivity
         self.assertGreaterEqual(len(list(self.account.contacts.glob('/'))), 5)
         self.assertGreaterEqual(len(list(self.account.contacts.glob('../*'))), 5)
         self.assertEqual(len(list(self.account.root.glob('**/%s' % self.account.contacts.name))), 1)

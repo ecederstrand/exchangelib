@@ -126,12 +126,16 @@ class BaseFolder(RegisterMixIn, SearchableMixIn):
         elif head == '**':
             # Match anything here or in any subfolder at arbitrary depth
             for c in self.walk():
-                if fnmatch(c.name, tail or '*'):
+                # fnmatch() may be case-sensitive depending on operating system:
+                # force a case-insensitive match since case appears not to
+                # matter for folders in Exchange
+                if fnmatch(c.name.lower(), (tail or '*').lower()):
                     yield c
         else:
             # Regular pattern
             for c in self.children:
-                if not fnmatch(c.name, head):
+                # See note above on fnmatch() case-sensitivity
+                if not fnmatch(c.name.lower(), head.lower()):
                     continue
                 if tail is None:
                     yield c

@@ -322,7 +322,7 @@ some_folder.root  # Returns the root of the folder structure, at any level. Same
 some_folder.children  # A generator of child folders
 some_folder.absolute  # Returns the absolute path, as a string
 some_folder.walk()  # A generator returning all subfolders at arbitrary depth this level
-# Globbing uses the normal UNIX globbing syntax
+# Globbing uses the normal UNIX globbing syntax, but case-insensitive
 some_folder.glob('foo*')  # Return child folders matching the pattern
 some_folder.glob('*/foo')  # Return subfolders named 'foo' in any child folder
 some_folder.glob('**/foo')  # Return subfolders named 'foo' at any depth
