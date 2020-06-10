@@ -343,7 +343,7 @@ class Account:
         :param items: An iterable containing the Items we want to export
         :param chunk_size: The number of items to send to the server in a single request
 
-        :return A list of strings, the exported representation of the object
+        :return: A list of strings, the exported representation of the object
         """
         return list(
             self._consume_item_service(service_cls=ExportItems, items=items, chunk_size=chunk_size, kwargs=dict())
@@ -356,7 +356,7 @@ class Account:
             string outputs of exports.
         :param chunk_size: The number of items to send to the server in a single request
 
-        :return A list of tuples with the new ids and changekeys
+        :return: A list of tuples with the new ids and changekeys
 
         Example:
         account.upload([(account.inbox, "AABBCC..."),
