@@ -78,8 +78,6 @@ class RegisterMixIn(IdChangeKeyMixIn):
           attr_name: 
           attr_cls: 
 
-        Returns:
-
         """
         if not cls.INSERT_AFTER_FIELD:
             raise ValueError('Class %s is missing INSERT_AFTER_FIELD value' % cls)
@@ -106,8 +104,6 @@ class RegisterMixIn(IdChangeKeyMixIn):
 
         Args:
           attr_name: 
-
-        Returns:
 
         """
         try:
@@ -213,8 +209,6 @@ class BaseReplyItem(EWSElement):
 
         Args:
           folder: 
-
-        Returns:
 
         """
         res = CreateItem(account=self.account).get(

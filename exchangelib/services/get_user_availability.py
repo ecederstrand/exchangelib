@@ -7,10 +7,6 @@ class GetUserAvailability(EWSService):
     MSDN:
     https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getuseravailability-operation
 
-    Args:
-
-    Returns:
-
     """
     SERVICE_NAME = 'GetUserAvailability'
 

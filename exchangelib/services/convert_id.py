@@ -13,10 +13,6 @@ class ConvertId(EWSPooledMixIn):
 
     MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/convertid-operation
 
-    Args:
-
-    Returns:
-
     """
     SERVICE_NAME = 'ConvertId'
 

@@ -158,10 +158,6 @@ class BaseFolder(RegisterMixIn, SearchableMixIn):
             ├── exchangelib issues
             └── Mom
 
-        Args:
-
-        Returns:
-
         """
         tree = '%s\n' % self.name
         children = list(self.children)
@@ -207,8 +203,6 @@ class BaseFolder(RegisterMixIn, SearchableMixIn):
 
         Args:
           container_class: 
-
-        Returns:
 
         """
         from .known_folders import Messages, Tasks, Calendar, ConversationSettings, Contacts, GALContacts, Reminders, \
@@ -461,10 +455,6 @@ class BaseFolder(RegisterMixIn, SearchableMixIn):
         """Does a simple FindItem to test (read) access to the folder. Maybe the account doesn't exist, maybe the
         service user doesn't have access to the calendar. This will throw the most common errors.
 
-        Args:
-
-        Returns:
-
         """
         self.all().exists()
         return True
@@ -529,8 +519,6 @@ class BaseFolder(RegisterMixIn, SearchableMixIn):
 
         Args:
           other: 
-
-        Returns:
 
         """
         if other == '..':
@@ -625,8 +613,6 @@ class Folder(BaseFolder):
 
         Args:
           root: 
-
-        Returns:
 
         """
         try:

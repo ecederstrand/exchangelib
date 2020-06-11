@@ -95,10 +95,6 @@ class EWSDateTime(datetime.datetime):
             2009-01-15T13:45:56Z
             2009-01-15T13:45:56+01:00
 
-        Args:
-
-        Returns:
-
         """
         if not self.tzinfo:
             raise ValueError('EWSDateTime must be timezone-aware')
@@ -200,10 +196,6 @@ class EWSTimeZone:
     """Represents a timezone as expected by the EWS TimezoneContext / TimezoneDefinition XML element, and returned by
     services.GetServerTimeZones.
 
-    Args:
-
-    Returns:
-
     """
     PYTZ_TO_MS_MAP = PYTZ_TO_MS_TIMEZONE_MAP
     MS_TO_PYTZ_MAP = MS_TIMEZONE_TO_PYTZ_MAP
@@ -287,8 +279,6 @@ class EWSTimeZone:
           func: 
           dt: 
           is_dst:  (Default value = False)
-
-        Returns:
 
         """
         # super() returns a dt.tzinfo of class pytz.tzinfo.FooBar. We need to return type EWSTimeZone

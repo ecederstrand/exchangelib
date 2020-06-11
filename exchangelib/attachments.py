@@ -15,10 +15,6 @@ class AttachmentId(EWSElement):
 
     MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/attachmentid
 
-    Args:
-
-    Returns:
-
     """
     ELEMENT_NAME = 'AttachmentId'
 

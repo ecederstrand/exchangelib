@@ -6,10 +6,6 @@ class SetUserOofSettings(EWSAccountService):
     """Set automatic replies for the specified mailbox.
     MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/setuseroofsettings-operation
 
-    Args:
-
-    Returns:
-
     """
     SERVICE_NAME = 'SetUserOofSettings'
 

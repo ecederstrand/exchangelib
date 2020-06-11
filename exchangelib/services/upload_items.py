@@ -9,10 +9,6 @@ class UploadItems(EWSAccountService, EWSPooledMixIn):
     items that do not yet exist in the database. The full spec also allows
     actions "Update" and "UpdateOrCreate".
 
-    Args:
-
-    Returns:
-
     """
     SERVICE_NAME = 'UploadItems'
     element_container_name = '{%s}ItemId' % MNS
@@ -31,8 +27,6 @@ class UploadItems(EWSAccountService, EWSPooledMixIn):
 
         Args:
           items: 
-
-        Returns:
 
         """
         from ..properties import ParentFolderId

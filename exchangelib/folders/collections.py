@@ -27,8 +27,6 @@ class FolderCollection(SearchableMixIn):
           account: An Account object
           folders: An iterable of folders, e.g. Folder.walk(), Folder.glob(), or [a.calendar, a.inbox]
 
-        Returns:
-
         """
         self.account = account
         self._folders = folders
@@ -84,8 +82,6 @@ class FolderCollection(SearchableMixIn):
           *args: 
           **kwargs: 
 
-        Returns:
-
         """
         return QuerySet(self).filter(*args, **kwargs)
 
@@ -111,8 +107,6 @@ class FolderCollection(SearchableMixIn):
           max_items:  (Default value = None)
           *args: 
           **kwargs: 
-
-        Returns:
 
         """
         qs = QuerySet(self).filter(*args, **kwargs)

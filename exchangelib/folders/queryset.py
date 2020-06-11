@@ -43,8 +43,6 @@ class FolderQuerySet:
         Args:
           *args: 
 
-        Returns:
-
         """
         from .base import Folder
         # Subfolders will always be of class Folder
@@ -67,8 +65,6 @@ class FolderQuerySet:
         Args:
           depth: 
 
-        Returns:
-
         """
         new_qs = self._copy_self()
         new_qs._depth = depth
@@ -80,8 +76,6 @@ class FolderQuerySet:
         Args:
           *args: 
           **kwargs: 
-
-        Returns:
 
 
         """
@@ -109,8 +103,6 @@ class FolderQuerySet:
         Args:
           *args: 
           **kwargs: 
-
-        Returns:
 
         """
         new_qs = self._copy_self()

@@ -105,8 +105,6 @@ class RootOfHierarchy(BaseFolder):
         Args:
           account: 
 
-        Returns:
-
         """
         if not cls.DISTINGUISHED_FOLDER_ID:
             raise ValueError('Class %s must have a DISTINGUISHED_FOLDER_ID value' % cls)
@@ -206,8 +204,6 @@ class RootOfHierarchy(BaseFolder):
         Args:
           folder_name: 
           locale: 
-
-        Returns:
 
         """
         for folder_cls in cls.WELLKNOWN_FOLDERS + NON_DELETEABLE_FOLDERS:

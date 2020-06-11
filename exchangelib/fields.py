@@ -149,10 +149,6 @@ class FieldPath:
     field and label, or field, label and subfield. This allows pointing to either the full indexed property set, a
     property with a specific label, or a particular subfield field on that property.
 
-    Args:
-
-    Returns:
-
     """
 
     def __init__(self, field, label=None, subfield=None):
@@ -465,10 +461,6 @@ class EnumField(IntegerField):
     """A field type where you can enter either the 1-based index in an enum (tuple), or the enum value. Values will be
     stored internally as integers but output in XML as strings.
 
-    Args:
-
-    Returns:
-
     """
 
     def __init__(self, *args, **kwargs):
@@ -675,10 +667,6 @@ class DateOrDateTimeField(DateTimeField):
 
     For filtering kwarg validation and other places where we must decide on a specific class, we settle on datetime.
 
-    Args:
-
-    Returns:
-
     """
 
     def __init__(self, *args, **kwargs):
@@ -789,10 +777,6 @@ class IdField(CharField):
     but we can assume 512 bytes in practice. See
     https://docs.microsoft.com/en-us/exchange/client-developer/exchange-web-services/ews-identifiers-in-exchange
 
-    Args:
-
-    Returns:
-
     """
 
     def __init__(self, *args, **kwargs):
@@ -818,10 +802,6 @@ class CharListField(CharField):
 class URIField(TextField):
     """Helper to mark strings that must conform to xsd:anyURI
     If we want an URI validator, see http://stackoverflow.com/questions/14466585/is-this-regex-correct-for-xsdanyuri
-
-    Args:
-
-    Returns:
 
     """
     pass

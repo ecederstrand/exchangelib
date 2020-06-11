@@ -16,8 +16,6 @@ def generate_map(timeout=10):
     Args:
       timeout:  (Default value = 10)
 
-    Returns:
-
     """
     r = requests.get(CLDR_WINZONE_URL, timeout=timeout)
     if r.status_code != 200:

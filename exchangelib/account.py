@@ -39,8 +39,6 @@ class Identity:
           upn:  (Default value = None)
           sid:  (Default value = None)
 
-        Returns:
-
         """
         self.primary_smtp_address = primary_smtp_address
         self.smtp_address = smtp_address
@@ -76,8 +74,6 @@ class Account:
           config: A Configuration object containing EWS endpoint information. Required if autodiscover is disabled (Default value = None)
           locale: The locale of the user, e.g. 'en_US'. Defaults to the locale of the host, if available.
           default_timezone: EWS may return some datetime values without timezone information. In this case, we will assume values to be in the provided timezone. Defaults to the timezone of the host.
-
-        Returns:
 
         """
         if '@' not in primary_smtp_address:

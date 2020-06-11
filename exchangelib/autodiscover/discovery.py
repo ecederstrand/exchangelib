@@ -67,10 +67,6 @@ class Autodiscovery:
     WARNING: The autodiscover protocol is very complicated. If you have problems autodiscovering using this
     implementation, start by doing an official test at https://testconnectivity.microsoft.com
 
-    Args:
-
-    Returns:
-
     """
 
     # When connecting to servers that may not be serving the correct endpoint, we should use a retry policy that does
@@ -87,8 +83,6 @@ class Autodiscovery:
           credentials: Credentials with authorization to make autodiscover lookups for this Account (Default value = None)
           auth_type:  (Default value = None)
           retry_policy:  (Default value = None)
-
-        Returns:
 
         """
         self.email = email
@@ -211,8 +205,6 @@ class Autodiscovery:
         Args:
           url: 
 
-        Returns:
-
         """
         if url.lower() in self._urls_visited:
             log.warning('We have already tried this URL: %s', url)
@@ -244,8 +236,6 @@ class Autodiscovery:
         Args:
           url: 
           method:  (Default value = 'post')
-
-        Returns:
 
         """
         # We are connecting to untrusted servers here, so take necessary precautions.
@@ -304,8 +294,6 @@ class Autodiscovery:
         Args:
           protocol: 
 
-        Returns:
-
         """
         # Redo the request with the correct auth
         data = Autodiscover.payload(email=self.email)
@@ -331,8 +319,6 @@ class Autodiscovery:
 
         Args:
           url: 
-
-        Returns:
 
         """
         self._urls_visited.append(url.lower())
@@ -385,8 +371,6 @@ class Autodiscovery:
         Args:
           hostname: 
 
-        Returns:
-
         """
         url = 'https://%s/Autodiscover/Autodiscover.xml' % hostname
         log.info('Step 1: Trying autodiscover on %r with email %r', url, self.email)
@@ -404,8 +388,6 @@ class Autodiscovery:
 
         Args:
           hostname: 
-
-        Returns:
 
         """
         url = 'https://autodiscover.%s/Autodiscover/Autodiscover.xml' % hostname
@@ -431,8 +413,6 @@ class Autodiscovery:
 
         Args:
           hostname: 
-
-        Returns:
 
         """
         url = 'http://autodiscover.%s/Autodiscover/Autodiscover.xml' % hostname
@@ -469,8 +449,6 @@ class Autodiscovery:
 
         Args:
           hostname: 
-
-        Returns:
 
         """
         dns_hostname = '_autodiscover._tcp.%s' % hostname
@@ -510,8 +488,6 @@ class Autodiscovery:
         Args:
           ad: 
 
-        Returns:
-
         """
         log.info('Step 5: Checking response')
         if ad.response is None:
@@ -540,10 +516,6 @@ class Autodiscovery:
         """If the client cannot contact the Autodiscover service, the client should ask the user for the Exchange server
         name and use it to construct an Exchange EWS URL. The client should try to use this URL for future requests.
 
-        Args:
-
-        Returns:
-
         """
         raise AutoDiscoverFailed(
             'All steps in the autodiscover protocol failed for email %r. If you think this is an error, consider doing '
@@ -562,8 +534,6 @@ def _get_srv_records(hostname):
 
     Args:
       hostname: 
-
-    Returns:
 
     """
     log.debug('Attempting to get SRV records for %s', hostname)
@@ -593,8 +563,6 @@ def _select_srv_host(srv_records):
 
     Args:
       srv_records: 
-
-    Returns:
 
     """
     best_record = None

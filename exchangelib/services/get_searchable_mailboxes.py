@@ -8,10 +8,6 @@ class GetSearchableMailboxes(EWSService):
     """MSDN:
     https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getsearchablemailboxes-operation
 
-    Args:
-
-    Returns:
-
     """
     SERVICE_NAME = 'GetSearchableMailboxes'
     element_container_name = '{%s}SearchableMailboxes' % MNS

@@ -41,10 +41,6 @@ class QuerySet(SearchableMixIn):
 
     Django QuerySet documentation: https://docs.djangoproject.com/en/dev/ref/models/querysets/
 
-    Args:
-
-    Returns:
-
     """
     VALUES = 'values'
     VALUES_LIST = 'values_list'
@@ -452,8 +448,6 @@ class QuerySet(SearchableMixIn):
           *args: 
           **kwargs: 
 
-        Returns:
-
 
         """
         new_qs = self._copy_self()
@@ -467,8 +461,6 @@ class QuerySet(SearchableMixIn):
         Args:
           *args: 
           **kwargs: 
-
-        Returns:
 
 
         """
@@ -488,8 +480,6 @@ class QuerySet(SearchableMixIn):
 
         Args:
           *args: 
-
-        Returns:
 
         """
         try:
@@ -534,8 +524,6 @@ class QuerySet(SearchableMixIn):
         Args:
           *args: 
 
-        Returns:
-
 
         """
         try:
@@ -578,8 +566,6 @@ class QuerySet(SearchableMixIn):
         Args:
           depth: 
 
-        Returns:
-
         """
         new_qs = self._copy_self()
         new_qs._depth = depth
@@ -607,8 +593,6 @@ class QuerySet(SearchableMixIn):
           *args: 
           **kwargs: 
 
-        Returns:
-
         """
         if self.is_cached and not args and not kwargs:
             # We can only safely use the cache if get() is called without args
@@ -635,8 +619,6 @@ class QuerySet(SearchableMixIn):
 
         Args:
           page_size:  (Default value = 1000)
-
-        Returns:
 
         """
         if self.is_cached:
@@ -671,8 +653,6 @@ class QuerySet(SearchableMixIn):
           page_size:  (Default value = 1000)
           **delete_kwargs: 
 
-        Returns:
-
         """
         if self.is_cached:
             ids = self._cache
@@ -694,8 +674,6 @@ class QuerySet(SearchableMixIn):
         Args:
           page_size:  (Default value = 1000)
           **send_kwargs: 
-
-        Returns:
 
         """
         if self.is_cached:
@@ -720,8 +698,6 @@ class QuerySet(SearchableMixIn):
           page_size:  (Default value = 1000)
           **copy_kwargs: 
 
-        Returns:
-
         """
         if self.is_cached:
             ids = self._cache
@@ -745,8 +721,6 @@ class QuerySet(SearchableMixIn):
           to_folder: 
           page_size:  (Default value = 1000)
 
-        Returns:
-
         """
         if self.is_cached:
             ids = self._cache
@@ -768,8 +742,6 @@ class QuerySet(SearchableMixIn):
         Args:
           to_folder: 
           page_size:  (Default value = 1000)
-
-        Returns:
 
         """
         if self.is_cached:

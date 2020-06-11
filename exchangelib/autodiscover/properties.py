@@ -59,10 +59,6 @@ class SimpleProtocol(AutodiscoverBase):
 
     Used for the 'Internal' and 'External' elements that may contain a stripped-down version of the Protocol element.
 
-    Args:
-
-    Returns:
-
     """
     ELEMENT_NAME = 'Protocol'
     FIELDS = Fields(
@@ -283,10 +279,6 @@ class ErrorResponse(EWSElement):
 
     Like 'Response', but with a different namespace.
 
-    Args:
-
-    Returns:
-
     """
     ELEMENT_NAME = 'Response'
     NAMESPACE = AUTODISCOVER_BASE_NS
@@ -319,8 +311,6 @@ class Autodiscover(EWSElement):
 
         Args:
           bytes_content: 
-
-        Returns:
 
         """
         if not is_xml(bytes_content):

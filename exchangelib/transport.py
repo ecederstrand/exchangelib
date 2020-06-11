@@ -55,8 +55,6 @@ def extra_headers(primary_smtp_address):
     Args:
       primary_smtp_address: 
 
-    Returns:
-
     """
     if primary_smtp_address:
         # See
@@ -83,8 +81,6 @@ def wrap(content, api_version, account_to_impersonate=None, timezone=None):
       api_version: 
       account_to_impersonate:  (Default value = None)
       timezone:  (Default value = None)
-
-    Returns:
 
     """
     envelope = create_element('s:Envelope', nsmap=ns_translation)
@@ -126,8 +122,6 @@ def get_auth_instance(auth_type, **kwargs):
     Args:
       auth_type: 
       **kwargs: 
-
-    Returns:
 
     """
     model = AUTH_TYPE_MAP[auth_type]

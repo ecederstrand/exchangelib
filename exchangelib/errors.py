@@ -127,10 +127,6 @@ class CASError(EWSError):
     """EWS will sometimes return an error message in an 'X-CasErrorCode' custom HTTP header in an HTTP 500 error code.
     This exception is for those cases. The caller may want to do something with the original response, so store that.
 
-    Args:
-
-    Returns:
-
     """
 
     def __init__(self, cas_error, response):

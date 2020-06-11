@@ -13,10 +13,6 @@ class CreateItem(EWSAccountService, EWSPooledMixIn):
 
     MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createitem
 
-    Args:
-
-    Returns:
-
     """
     SERVICE_NAME = 'CreateItem'
     element_container_name = '{%s}Items' % MNS
@@ -70,8 +66,6 @@ class CreateItem(EWSAccountService, EWSPooledMixIn):
           folder: 
           message_disposition: 
           send_meeting_invitations: 
-
-        Returns:
 
         """
         createitem = create_element(

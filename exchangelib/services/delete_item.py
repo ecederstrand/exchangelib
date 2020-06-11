@@ -11,10 +11,6 @@ class DeleteItem(EWSAccountService, EWSPooledMixIn):
 
     MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/deleteitem
 
-    Args:
-
-    Returns:
-
     """
     SERVICE_NAME = 'DeleteItem'
     element_container_name = None  # DeleteItem doesn't return a response object, just status in XML attrs

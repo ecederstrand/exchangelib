@@ -112,8 +112,6 @@ def chunkify(iterable, chunksize):
       iterable: 
       chunksize: 
 
-    Returns:
-
     """
     from .queryset import QuerySet
     if hasattr(iterable, '__getitem__') and not isinstance(iterable, QuerySet):
@@ -137,8 +135,6 @@ def peek(iterable):
 
     Args:
       iterable: 
-
-    Returns:
 
     """
     from .queryset import QuerySet
@@ -165,8 +161,6 @@ def xml_to_str(tree, encoding=None, xml_declaration=False):
       tree: 
       encoding:  (Default value = None)
       xml_declaration:  (Default value = False)
-
-    Returns:
 
     """
     if xml_declaration and not encoding:
@@ -294,10 +288,6 @@ class StreamingContentHandler(xml.sax.handler.ContentHandler):
     """A SAX content handler that returns a character data for a single element back to the parser. The parser must have
     a 'buffer' attribute we can append data to.
 
-    Args:
-
-    Returns:
-
     """
 
     def __init__(self, parser, ns, element_name):
@@ -411,10 +401,6 @@ class BytesGeneratorIO(io.RawIOBase):
     lxml tries to be smart by calling `getvalue` when present, assuming that the entire string is in memory.
     Omitting `getvalue` forces lxml to stream the request through `read` avoiding the memory duplication.
 
-    Args:
-
-    Returns:
-
     """
 
     def __init__(self, bytes_generator):
@@ -508,8 +494,6 @@ def is_xml(text):
     Args:
       text: 
 
-    Returns:
-
     """
     # BOM_UTF8 is an UTF-8 byte order mark which may precede the XML from an Exchange server
     bom_len = len(BOM_UTF8)
@@ -547,8 +531,6 @@ class PrettyXmlHandler(logging.StreamHandler):
 
         Args:
           record: 
-
-        Returns:
 
         """
         if record.levelno == logging.DEBUG and self.is_tty() and isinstance(record.args, dict):
@@ -718,8 +700,6 @@ def post_ratelimited(protocol, session, url, headers, data, allow_redirects=Fals
       data: 
       allow_redirects:  (Default value = False)
       stream:  (Default value = False)
-
-    Returns:
 
     """
     thread_id = get_ident()

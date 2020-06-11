@@ -22,10 +22,6 @@ class BaseCredentials(metaclass=abc.ABCMeta):
     OAuth, which expires tokens relatively frequently) and provides a
     lock for synchronizing access to the object around refreshes.
 
-    Args:
-
-    Returns:
-
     """
 
     def __init__(self):
@@ -44,8 +40,6 @@ class BaseCredentials(metaclass=abc.ABCMeta):
 
         Args:
           session: requests session asking for refreshed credentials
-
-        Returns:
 
         """
         raise NotImplementedError(
@@ -88,8 +82,6 @@ class Credentials(BaseCredentials):
     * WINDOMAIN\\username
     * User Principal Name (UPN)
       password: Clear-text password
-
-    Returns:
 
     """
     EMAIL = 'email'
@@ -135,8 +127,6 @@ class OAuth2Credentials(BaseCredentials):
       identity: An Identity object representing the account that these
     credentials are connected to.
 
-    Returns:
-
     """
 
     def __init__(self, client_id, client_secret, tenant_id=None, identity=None):
@@ -163,8 +153,6 @@ class OAuth2Credentials(BaseCredentials):
 
         Args:
           access_token: New token obtained by refreshing
-
-        Returns:
 
         """
         # Ensure we don't update the object in the middle of a new session
@@ -230,8 +218,6 @@ class OAuth2AuthorizationCodeCredentials(OAuth2Credentials):
     opts not to handle it), this parameter alone is sufficient.
       identity: An Identity object representing the account that these
     credentials are connected to.
-
-    Returns:
 
     """
 

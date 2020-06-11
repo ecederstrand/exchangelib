@@ -162,10 +162,6 @@ class BaseProtocol:
         """Decreases the session pool size in response to error messages from the server requesting to rate-limit
         requests. We decrease by one session per call.
 
-        Args:
-
-        Returns:
-
         """
         # Take a single session from the pool and discard it. We need to protect this with a lock while we are changing
         # the pool size variable, to avoid race conditions. We must keep at least one session in the pool.
@@ -657,10 +653,6 @@ class FailFast(RetryPolicy):
 class FaultTolerance(RetryPolicy):
     """Enables fault-tolerant error handling. Tells internal methods to do an exponential back off when requests start
     failing, and wait up to max_wait seconds before failing.
-
-    Args:
-
-    Returns:
 
     """
 

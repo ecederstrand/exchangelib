@@ -278,8 +278,6 @@ class Item(BaseItem):
         Args:
           attachments: 
 
-        Returns:
-
         """
         if not is_iterable(attachments, generators_allowed=True):
             attachments = [attachments]
@@ -301,8 +299,6 @@ class Item(BaseItem):
 
         Args:
           attachments: 
-
-        Returns:
 
         """
         if not is_iterable(attachments, generators_allowed=True):

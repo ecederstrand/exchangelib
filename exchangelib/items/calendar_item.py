@@ -141,8 +141,6 @@ class CalendarItem(Item, AcceptDeclineMixIn):
     def recurring_master(self):
         """
 
-        Args:
-
         Returns:
           other field values are fetched from the server.
 
@@ -275,10 +273,6 @@ class BaseMeetingItem(Item):
         when you send a calendar item to attendees; they are not explicitly created.
 
     Therefore BaseMeetingItem inherits from  EWSElement has no save() or send() method
-
-    Args:
-
-    Returns:
 
     """
     LOCAL_FIELDS = Message.LOCAL_FIELDS[:-2] + Fields(

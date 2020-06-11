@@ -65,10 +65,6 @@ class AutodiscoverCache:
 
     'shelve' is supposedly thread-safe and process-safe, which suits our needs.
 
-    Args:
-
-    Returns:
-
     """
 
     def __init__(self):

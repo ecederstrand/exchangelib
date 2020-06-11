@@ -112,8 +112,6 @@ class Build:
         Args:
           s: 
 
-        Returns:
-
         """
         bin_s = '{:032b}'.format(int(s, 16))  # Convert string to 32-bit binary string
         major_version = int(bin_s[4:10], 2)
@@ -215,8 +213,6 @@ class Version:
         Args:
           protocol: 
           api_version_hint:  (Default value = None)
-
-        Returns:
 
         """
         from .services import ResolveNames
