@@ -8,11 +8,15 @@ log = logging.getLogger(__name__)
 
 
 class CreateItem(EWSAccountService, EWSPooledMixIn):
-    """
-    Takes folder and a list of items. Returns result of creation as a list of tuples (success[True|False],
+    """Takes folder and a list of items. Returns result of creation as a list of tuples (success[True|False],
     errormessage), in the same order as the input list.
 
     MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createitem
+
+    Args:
+
+    Returns:
+
     """
     SERVICE_NAME = 'CreateItem'
     element_container_name = '{%s}Items' % MNS
@@ -48,8 +52,7 @@ class CreateItem(EWSAccountService, EWSPooledMixIn):
         ))
 
     def get_payload(self, items, folder, message_disposition, send_meeting_invitations):
-        """
-        Takes a list of Item objects (CalendarItem, Message etc) and returns the XML for a CreateItem request.
+        """Takes a list of Item objects (CalendarItem, Message etc) and returns the XML for a CreateItem request.
         convert items to XML Elements
 
         MessageDisposition is only applicable to email messages, where it is required.
@@ -61,6 +64,15 @@ class CreateItem(EWSAccountService, EWSPooledMixIn):
         invitation accepts (see
         https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createitem-acceptsharinginvitation
         ). The last two are not supported yet.
+
+        Args:
+          items: 
+          folder: 
+          message_disposition: 
+          send_meeting_invitations: 
+
+        Returns:
+
         """
         createitem = create_element(
             'm:%s' % self.SERVICE_NAME,

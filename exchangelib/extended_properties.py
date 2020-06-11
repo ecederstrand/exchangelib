@@ -11,9 +11,7 @@ log = logging.getLogger(__name__)
 
 
 class ExtendedProperty(EWSElement):
-    """
-    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/extendedproperty
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/extendedproperty"""
     ELEMENT_NAME = 'ExtendedProperty'
 
     # Enum values: https://docs.microsoft.com/en-us/dotnet/api/exchangewebservices.distinguishedpropertysettype
@@ -307,6 +305,11 @@ class ExtendedProperty(EWSElement):
 class ExternId(ExtendedProperty):
     """This is a custom extended property defined by us. It's useful for synchronization purposes, to attach a unique ID
     from an external system.
+
+    Args:
+
+    Returns:
+
     """
     property_set_id = 'c11ff724-aa03-4555-9952-8fa248a11c3e'  # This is arbitrary. We just want a unique UUID.
     property_name = 'External ID'
@@ -320,6 +323,11 @@ class Flag(ExtendedProperty):
 
     For a description of each status, see:
     https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/flagstatus
+
+    Args:
+
+    Returns:
+
     """
     property_tag = 0x1090
     property_type = 'Integer'

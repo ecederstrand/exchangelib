@@ -4,18 +4,20 @@ from .common import EWSAccountService, EWSPooledMixIn, create_folder_ids_element
 
 
 class ArchiveItem(EWSAccountService, EWSPooledMixIn):
-    """
-    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/archiveitem-operation
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/archiveitem-operation"""
     SERVICE_NAME = 'ArchiveItem'
     element_container_name = '{%s}Items' % MNS
 
     def call(self, items, to_folder):
-        """
-        Move a list of items to a specific folder in the archive mailbox.
+        """Move a list of items to a specific folder in the archive mailbox.
 
-        :param items: a list of (id, changekey) tuples or Item objects
-        :return: None
+        Args:
+          items: a list of (id, changekey) tuples or Item objects
+          to_folder: 
+
+        Returns:
+          None
+
         """
         if self.protocol.version.build < EXCHANGE_2013:
             raise NotImplementedError('%s is only supported for Exchange 2013 servers and later' % self.SERVICE_NAME)

@@ -491,10 +491,7 @@ class Q:
 
 
 class Restriction:
-    """
-    Implements an EWS Restriction type.
-
-    """
+    """Implements an EWS Restriction type."""
 
     # The type of item the restriction applies to
     FOLDERS = 'folders'
@@ -520,7 +517,5 @@ class Restriction:
         return self.q.to_xml(folders=self.folders, version=version, applies_to=self.applies_to)
 
     def __str__(self):
-        """
-        Prints the XML syntax tree
-        """
+        """Prints the XML syntax tree"""
         return xml_to_str(self.to_xml(version=self.folders[0].account.version))

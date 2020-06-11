@@ -25,8 +25,7 @@ class Pattern(EWSElement):
 
 
 class AbsoluteYearlyPattern(Pattern):
-    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/absoluteyearlyrecurrence
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/absoluteyearlyrecurrence"""
     ELEMENT_NAME = 'AbsoluteYearlyRecurrence'
 
     FIELDS = Fields(
@@ -44,8 +43,7 @@ class AbsoluteYearlyPattern(Pattern):
 
 
 class RelativeYearlyPattern(Pattern):
-    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/relativeyearlyrecurrence
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/relativeyearlyrecurrence"""
     ELEMENT_NAME = 'RelativeYearlyRecurrence'
 
     FIELDS = Fields(
@@ -71,8 +69,7 @@ class RelativeYearlyPattern(Pattern):
 
 
 class AbsoluteMonthlyPattern(Pattern):
-    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/absolutemonthlyrecurrence
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/absolutemonthlyrecurrence"""
     ELEMENT_NAME = 'AbsoluteMonthlyRecurrence'
 
     FIELDS = Fields(
@@ -90,8 +87,7 @@ class AbsoluteMonthlyPattern(Pattern):
 
 
 class RelativeMonthlyPattern(Pattern):
-    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/relativemonthlyrecurrence
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/relativemonthlyrecurrence"""
     ELEMENT_NAME = 'RelativeMonthlyRecurrence'
 
     FIELDS = Fields(
@@ -117,8 +113,7 @@ class RelativeMonthlyPattern(Pattern):
 
 
 class WeeklyPattern(Pattern):
-    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/weeklyrecurrence
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/weeklyrecurrence"""
     ELEMENT_NAME = 'WeeklyRecurrence'
 
     FIELDS = Fields(
@@ -145,8 +140,7 @@ class WeeklyPattern(Pattern):
 
 
 class DailyPattern(Pattern):
-    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/dailyrecurrence
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/dailyrecurrence"""
     ELEMENT_NAME = 'DailyRecurrence'
 
     FIELDS = Fields(
@@ -166,8 +160,7 @@ class Boundary(EWSElement):
 
 
 class NoEndPattern(Boundary):
-    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/noendrecurrence
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/noendrecurrence"""
     ELEMENT_NAME = 'NoEndRecurrence'
 
     FIELDS = Fields(
@@ -179,8 +172,7 @@ class NoEndPattern(Boundary):
 
 
 class EndDatePattern(Boundary):
-    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/enddaterecurrence
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/enddaterecurrence"""
     ELEMENT_NAME = 'EndDateRecurrence'
 
     FIELDS = Fields(
@@ -260,8 +252,7 @@ BOUNDARY_CLASSES = NoEndPattern, EndDatePattern, NumberedPattern
 
 
 class Recurrence(EWSElement):
-    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/recurrence-recurrencetype
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/recurrence-recurrencetype"""
     ELEMENT_NAME = 'Recurrence'
 
     FIELDS = Fields(

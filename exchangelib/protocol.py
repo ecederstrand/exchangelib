@@ -161,6 +161,11 @@ class BaseProtocol:
     def decrease_poolsize(self):
         """Decreases the session pool size in response to error messages from the server requesting to rate-limit
         requests. We decrease by one session per call.
+
+        Args:
+
+        Returns:
+
         """
         # Take a single session from the pool and discard it. We need to protect this with a lock while we are changing
         # the pool size variable, to avoid race conditions. We must keep at least one session in the pool.
@@ -421,28 +426,36 @@ class Protocol(BaseProtocol, metaclass=CachingProtocol):
         return self.config.version
 
     def get_timezones(self, timezones=None, return_full_timezone_data=False):
-        """ Get timezone definitions from the server
+        """Get timezone definitions from the server
 
-        :param timezones: A list of EWSDateTime instances. If None, fetches all timezones from server
-        :param return_full_timezone_data: If true, also returns periods and transitions
-        :return: A list of (tz_id, name, periods, transitions) tuples
+        Args:
+          timezones: A list of EWSDateTime instances. If None, fetches all timezones from server (Default value = None)
+          return_full_timezone_data: If true, also returns periods and transitions (Default value = False)
+
+        Returns:
+          A list of (tz_id, name, periods, transitions) tuples
+
         """
         return GetServerTimeZones(protocol=self).call(
             timezones=timezones, return_full_timezone_data=return_full_timezone_data
         )
 
     def get_free_busy_info(self, accounts, start, end, merged_free_busy_interval=30, requested_view='DetailedMerged'):
-        """ Returns free/busy information for a list of accounts
+        """Returns free/busy information for a list of accounts
 
-        :param accounts: A list of (account, attendee_type, exclude_conflicts) tuples, where account is either an
+        Args:
+          accounts: A list of (account, attendee_type, exclude_conflicts) tuples, where account is either an
         Account object or a string, attendee_type is a MailboxData.attendee_type choice, and exclude_conflicts is a
         boolean.
-        :param start: The start datetime of the request
-        :param end: The end datetime of the request
-        :param merged_free_busy_interval: The interval, in minutes, of merged free/busy information
-        :param requested_view: The type of information returned. Possible values are defined in the
-               FreeBusyViewOptions.requested_view choices.
-        :return: A generator of FreeBusyView objects
+          start: The start datetime of the request
+          end: The end datetime of the request
+          merged_free_busy_interval: The interval, in minutes, of merged free/busy information (Default value = 30)
+          requested_view: The type of information returned. Possible values are defined in the
+        FreeBusyViewOptions.requested_view choices. (Default value = 'DetailedMerged')
+
+        Returns:
+          A generator of FreeBusyView objects
+
         """
         from .account import Account
         for account, attendee_type, exclude_conflicts in accounts:
@@ -490,13 +503,17 @@ class Protocol(BaseProtocol, metaclass=CachingProtocol):
         return GetRooms(protocol=self).call(roomlist=RoomList(email_address=roomlist))
 
     def resolve_names(self, names, return_full_contact_data=False, search_scope=None, shape=None):
-        """ Resolve accounts on the server using partial account data, e.g. an email address or initials
+        """Resolve accounts on the server using partial account data, e.g. an email address or initials
 
-        :param names: A list of identifiers to query
-        :param return_full_contact_data: If True, returns full contact data
-        :param search_scope: The scope to perform the search. Must be one of SEARCH_SCOPE_CHOICES
-        :param shape:
-        :return: A list of Mailbox items or, if return_full_contact_data is True, tuples of (Mailbox, Contact) items
+        Args:
+          names: A list of identifiers to query
+          return_full_contact_data: If True, returns full contact data (Default value = False)
+          search_scope: The scope to perform the search. Must be one of SEARCH_SCOPE_CHOICES (Default value = None)
+          shape: return: A list of Mailbox items or, if return_full_contact_data is True, tuples of (Mailbox, Contact) items (Default value = None)
+
+        Returns:
+          A list of Mailbox items or, if return_full_contact_data is True, tuples of (Mailbox, Contact) items
+
         """
         return list(ResolveNames(protocol=self).call(
             unresolved_entries=names, return_full_contact_data=return_full_contact_data, search_scope=search_scope,
@@ -504,10 +521,14 @@ class Protocol(BaseProtocol, metaclass=CachingProtocol):
         ))
 
     def expand_dl(self, distribution_list):
-        """ Expand distribution list into it's members
+        """Expand distribution list into it's members
 
-        :param distribution_list: SMTP address of the distribution list to expand, or a DLMailbox representing the list
-        :return: List of Mailbox items that are members of the distribution list
+        Args:
+          distribution_list: SMTP address of the distribution list to expand, or a DLMailbox representing the list
+
+        Returns:
+          List of Mailbox items that are members of the distribution list
+
         """
         from .properties import DLMailbox
         if isinstance(distribution_list, str):
@@ -518,9 +539,13 @@ class Protocol(BaseProtocol, metaclass=CachingProtocol):
         """This method is only available to users who have been assigned the Discovery Management RBAC role. See
         https://docs.microsoft.com/en-us/exchange/permissions-exo/permissions-exo
 
-        :param search_filter: Is set, must be a single email alias
-        :param expand_group_membership: If True, returned distribution lists are expanded
-        :return: a list of SearchableMailbox, FailedMailbox or Exception instances
+        Args:
+          search_filter: Is set, must be a single email alias (Default value = None)
+          expand_group_membership: If True, returned distribution lists are expanded (Default value = False)
+
+        Returns:
+          a list of SearchableMailbox, FailedMailbox or Exception instances
+
         """
         return list(GetSearchableMailboxes(protocol=self).call(
             search_filter=search_filter,
@@ -530,9 +555,13 @@ class Protocol(BaseProtocol, metaclass=CachingProtocol):
     def convert_ids(self, ids, destination_format):
         """Converts item and folder IDs between multiple formats
 
-        :param ids: a list of AlternateId, AlternatePublicFolderId or AlternatePublicFolderItemId instances
-        :param destination_format: A string
-        :return: a generator of AlternateId, AlternatePublicFolderId or AlternatePublicFolderItemId instances
+        Args:
+          ids: a list of AlternateId, AlternatePublicFolderId or AlternatePublicFolderItemId instances
+          destination_format: A string
+
+        Returns:
+          a generator of AlternateId, AlternatePublicFolderId or AlternatePublicFolderItemId instances
+
         """
         from .properties import AlternateId, AlternatePublicFolderId, AlternatePublicFolderItemId
         cls_map = {cls.response_tag(): cls for cls in (
@@ -578,6 +607,7 @@ EWS auth: %s''' % (self.service_endpoint, fullname, api_version, build, self.aut
 
 class NoVerifyHTTPAdapter(requests.adapters.HTTPAdapter):
     """An HTTP adapter that ignores TLS validation errors. Use at own risk."""
+
     def cert_verify(self, conn, url, verify, cert):
         # pylint: disable=unused-argument
         # We're overiding a method so we have to keep the signature
@@ -627,7 +657,13 @@ class FailFast(RetryPolicy):
 class FaultTolerance(RetryPolicy):
     """Enables fault-tolerant error handling. Tells internal methods to do an exponential back off when requests start
     failing, and wait up to max_wait seconds before failing.
+
+    Args:
+
+    Returns:
+
     """
+
     def __init__(self, max_wait=3600):
         self.max_wait = max_wait
         self._back_off_until = None

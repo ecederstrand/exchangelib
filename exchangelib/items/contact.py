@@ -11,9 +11,7 @@ log = logging.getLogger(__name__)
 
 
 class Contact(Item):
-    """
-    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/contact
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/contact"""
     ELEMENT_NAME = 'Contact'
     LOCAL_FIELDS = Fields(
         TextField('file_as', field_uri='contacts:FileAs'),
@@ -108,9 +106,7 @@ class Persona(IdChangeKeyMixIn):
 
 
 class DistributionList(Item):
-    """
-    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/distributionlist
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/distributionlist"""
     ELEMENT_NAME = 'DistributionList'
     LOCAL_FIELDS = Fields(
         CharField('display_name', field_uri='contacts:DisplayName', is_required=True),

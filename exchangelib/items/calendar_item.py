@@ -54,9 +54,7 @@ class AcceptDeclineMixIn:
 
 
 class CalendarItem(Item, AcceptDeclineMixIn):
-    """
-    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/calendaritem
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/calendaritem"""
     ELEMENT_NAME = 'CalendarItem'
     LOCAL_FIELDS = Fields(
         TextField('uid', field_uri='calendar:UID', is_required_after_save=True, is_searchable=False),
@@ -123,10 +121,16 @@ class CalendarItem(Item, AcceptDeclineMixIn):
     __slots__ = tuple(f.name for f in LOCAL_FIELDS)
 
     def occurrence(self, index):
-        """Return a new CalendarItem instance with an ID pointing to the n'th occurrence in the recurrence. The index
-        is 1-based. No other field values are fetched from the server.
+        """
 
-        Only call this method on a recurring master.
+        Args:
+          index: 
+
+        Returns:
+          is 1-based. No other field values are fetched from the server.
+
+          Only call this method on a recurring master.
+
         """
         return self.__class__(
             account=self.account,
@@ -135,10 +139,15 @@ class CalendarItem(Item, AcceptDeclineMixIn):
         )
 
     def recurring_master(self):
-        """Return a new CalendarItem instance with an ID pointing to the recurring master item of this occurrence. No
-        other field values are fetched from the server.
+        """
 
-        Only call this method on an occurrence of a recurring master.
+        Args:
+
+        Returns:
+          other field values are fetched from the server.
+
+          Only call this method on an occurrence of a recurring master.
+
         """
         return self.__class__(
             account=self.account,
@@ -259,14 +268,17 @@ class CalendarItem(Item, AcceptDeclineMixIn):
 
 
 class BaseMeetingItem(Item):
-    """
-    A base class for meeting requests that share the same fields (Message, Request, Response, Cancellation)
+    """A base class for meeting requests that share the same fields (Message, Request, Response, Cancellation)
 
     MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/responsecode
         Certain types are created as a side effect of doing something else. Meeting messages, for example, are created
         when you send a calendar item to attendees; they are not explicitly created.
 
     Therefore BaseMeetingItem inherits from  EWSElement has no save() or send() method
+
+    Args:
+
+    Returns:
 
     """
     LOCAL_FIELDS = Message.LOCAL_FIELDS[:-2] + Fields(
@@ -286,9 +298,7 @@ class BaseMeetingItem(Item):
 
 
 class MeetingRequest(BaseMeetingItem, AcceptDeclineMixIn):
-    """
-    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/meetingrequest
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/meetingrequest"""
     ELEMENT_NAME = 'MeetingRequest'
     LOCAL_FIELDS = Fields(
         ChoiceField('meeting_request_type', field_uri='meetingRequest:MeetingRequestType',

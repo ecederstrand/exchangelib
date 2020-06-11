@@ -15,6 +15,7 @@ log = logging.getLogger(__name__)
 
 class SearchableMixIn:
     """Implements a search API for inheritance"""
+
     def get(self, *args, **kwargs):
         raise NotImplementedError()
 
@@ -35,11 +36,15 @@ class SearchableMixIn:
 
 
 class QuerySet(SearchableMixIn):
-    """
-    A Django QuerySet-like class for querying items. Defers queries until the QuerySet is consumed. Supports chaining to
+    """A Django QuerySet-like class for querying items. Defers queries until the QuerySet is consumed. Supports chaining to
     build up complex queries.
 
     Django QuerySet documentation: https://docs.djangoproject.com/en/dev/ref/models/querysets/
+
+    Args:
+
+    Returns:
+
     """
     VALUES = 'values'
     VALUES_LIST = 'values_list'
@@ -430,38 +435,63 @@ class QuerySet(SearchableMixIn):
     # foo_qs.filter(foo='baz')  # Should not be affected by the previous statement
     #
     def all(self):
-        """ Return everything, without restrictions """
+        """ """
         new_qs = self._copy_self()
         return new_qs
 
     def none(self):
-        """ Return a query that is guaranteed to be empty  """
+        """ """
         new_qs = self._copy_self()
         new_qs.q = None
         return new_qs
 
     def filter(self, *args, **kwargs):
-        """ Return everything that matches these search criteria """
+        """
+
+        Args:
+          *args: 
+          **kwargs: 
+
+        Returns:
+
+
+        """
         new_qs = self._copy_self()
         q = Q(*args, **kwargs)
         new_qs.q = q if new_qs.q is None else new_qs.q & q
         return new_qs
 
     def exclude(self, *args, **kwargs):
-        """ Return everything that does NOT match these search criteria """
+        """
+
+        Args:
+          *args: 
+          **kwargs: 
+
+        Returns:
+
+
+        """
         new_qs = self._copy_self()
         q = ~Q(*args, **kwargs)
         new_qs.q = q if new_qs.q is None else new_qs.q & q
         return new_qs
 
     def people(self):
-        """ Changes the queryset to search the folder for Personas instead of Items """
+        """Changes the queryset to search the folder for Personas instead of Items"""
         new_qs = self._copy_self()
         new_qs.request_type = self.PERSONA
         return new_qs
 
     def only(self, *args):
-        """ Fetch only the specified field names. All other item fields will be 'None' """
+        """Fetch only the specified field names. All other item fields will be 'None'
+
+        Args:
+          *args: 
+
+        Returns:
+
+        """
         try:
             only_fields = tuple(self._get_field_path(arg) for arg in args)
         except ValueError as e:
@@ -471,9 +501,16 @@ class QuerySet(SearchableMixIn):
         return new_qs
 
     def order_by(self, *args):
-        """ Return the query result sorted by the specified field names. Field names prefixed with '-' will be sorted
-        in reverse order. EWS only supports server-side sorting on a single field. Sorting on multiple fields is
-        implemented client-side and will therefore make the query greedy """
+        """
+
+        Args:
+          *args: 
+
+        Returns:
+          in reverse order. EWS only supports server-side sorting on a single field. Sorting on multiple fields is
+          implemented client-side and will therefore make the query greedy
+
+        """
         try:
             order_fields = tuple(self._get_field_order(arg) for arg in args)
         except ValueError as e:
@@ -483,7 +520,7 @@ class QuerySet(SearchableMixIn):
         return new_qs
 
     def reverse(self):
-        """ Return the entire query result in reverse order """
+        """ """
         if not self.order_fields:
             raise ValueError('Reversing only makes sense if there are order_by fields')
         new_qs = self._copy_self()
@@ -492,7 +529,15 @@ class QuerySet(SearchableMixIn):
         return new_qs
 
     def values(self, *args):
-        """ Return the values of the specified field names as dicts """
+        """
+
+        Args:
+          *args: 
+
+        Returns:
+
+
+        """
         try:
             only_fields = tuple(self._get_field_path(arg) for arg in args)
         except ValueError as e:
@@ -503,10 +548,16 @@ class QuerySet(SearchableMixIn):
         return new_qs
 
     def values_list(self, *args, **kwargs):
-        """ Return the values of the specified field names as lists. If called with flat=True and only one field name,
-        return only this value instead of a list.
+        """Return the values of the specified field names as lists. If called with flat=True and only one field name,
 
-        Allow an arbitrary list of fields in *args, possibly ending with flat=True|False"""
+        Args:
+          *args: 
+          **kwargs: 
+
+        Returns:
+          Allow an arbitrary list of fields in *args, possibly ending with flat=True|False
+
+        """
         flat = kwargs.pop('flat', False)
         if kwargs:
             raise AttributeError('Unknown kwargs: %s' % kwargs)
@@ -523,6 +574,12 @@ class QuerySet(SearchableMixIn):
 
     def depth(self, depth):
         """Specify the search depth (SHALLOW, ASSOCIATED or DEEP)
+
+        Args:
+          depth: 
+
+        Returns:
+
         """
         new_qs = self._copy_self()
         new_qs._depth = depth
@@ -535,7 +592,7 @@ class QuerySet(SearchableMixIn):
     ###########################
 
     def iterator(self):
-        """ Return the query result as an iterator, without caching the result """
+        """ """
         if self.q is None:
             return []
         if self.is_cached:
@@ -544,7 +601,15 @@ class QuerySet(SearchableMixIn):
         return self._format_items(items=self._query(), return_format=self.return_format)
 
     def get(self, *args, **kwargs):
-        """ Assume the query will return exactly one item. Return that item """
+        """Assume the query will return exactly one item. Return that item
+
+        Args:
+          *args: 
+          **kwargs: 
+
+        Returns:
+
+        """
         if self.is_cached and not args and not kwargs:
             # We can only safely use the cache if get() is called without args
             items = self._cache
@@ -565,8 +630,15 @@ class QuerySet(SearchableMixIn):
         return items[0]
 
     def count(self, page_size=1000):
-        """ Get the query count, with as little effort as possible 'page_size' is the number of items to
-        fetch from the server per request. We're only fetching the IDs, so keep it high"""
+        """Get the query count, with as little effort as possible 'page_size' is the number of items to
+        fetch from the server per request. We're only fetching the IDs, so keep it high
+
+        Args:
+          page_size:  (Default value = 1000)
+
+        Returns:
+
+        """
         if self.is_cached:
             return len(self._cache)
         new_qs = self._copy_self()
@@ -577,7 +649,7 @@ class QuerySet(SearchableMixIn):
         return len(list(new_qs.__iter__()))
 
     def exists(self):
-        """ Find out if the query contains any hits, with as little effort as possible """
+        """Find out if the query contains any hits, with as little effort as possible"""
         if self.is_cached:
             return len(self._cache) > 0
         new_qs = self._copy_self()
@@ -592,8 +664,16 @@ class QuerySet(SearchableMixIn):
         return new_qs
 
     def delete(self, page_size=1000, **delete_kwargs):
-        """ Delete the items matching the query, with as little effort as possible. 'page_size' is the number of items
-        to fetch and delete per request. We're only fetching the IDs, so keep it high"""
+        """Delete the items matching the query, with as little effort as possible. 'page_size' is the number of items
+        to fetch and delete per request. We're only fetching the IDs, so keep it high
+
+        Args:
+          page_size:  (Default value = 1000)
+          **delete_kwargs: 
+
+        Returns:
+
+        """
         if self.is_cached:
             ids = self._cache
         else:
@@ -608,8 +688,16 @@ class QuerySet(SearchableMixIn):
         return res
 
     def send(self, page_size=1000, **send_kwargs):
-        """ Send the items matching the query, with as little effort as possible. 'page_size' is the number of items
-        to fetch and send per request. We're only fetching the IDs, so keep it high"""
+        """Send the items matching the query, with as little effort as possible. 'page_size' is the number of items
+        to fetch and send per request. We're only fetching the IDs, so keep it high
+
+        Args:
+          page_size:  (Default value = 1000)
+          **send_kwargs: 
+
+        Returns:
+
+        """
         if self.is_cached:
             ids = self._cache
         else:
@@ -624,8 +712,17 @@ class QuerySet(SearchableMixIn):
         return res
 
     def copy(self, to_folder, page_size=1000, **copy_kwargs):
-        """ Copy the items matching the query, with as little effort as possible. 'page_size' is the number of items
-        to fetch and copy per request. We're only fetching the IDs, so keep it high"""
+        """Copy the items matching the query, with as little effort as possible. 'page_size' is the number of items
+        to fetch and copy per request. We're only fetching the IDs, so keep it high
+
+        Args:
+          to_folder: 
+          page_size:  (Default value = 1000)
+          **copy_kwargs: 
+
+        Returns:
+
+        """
         if self.is_cached:
             ids = self._cache
         else:
@@ -641,8 +738,16 @@ class QuerySet(SearchableMixIn):
         return res
 
     def move(self, to_folder, page_size=1000):
-        """ Move the items matching the query, with as little effort as possible. 'page_size' is the number of items
-        to fetch and move per request. We're only fetching the IDs, so keep it high"""
+        """Move the items matching the query, with as little effort as possible. 'page_size' is the number of items
+        to fetch and move per request. We're only fetching the IDs, so keep it high
+
+        Args:
+          to_folder: 
+          page_size:  (Default value = 1000)
+
+        Returns:
+
+        """
         if self.is_cached:
             ids = self._cache
         else:
@@ -657,8 +762,16 @@ class QuerySet(SearchableMixIn):
         return res
 
     def archive(self, to_folder, page_size=1000):
-        """ Archive the items matching the query, with as little effort as possible. 'page_size' is the number of items
-        to fetch and move per request. We're only fetching the IDs, so keep it high"""
+        """Archive the items matching the query, with as little effort as possible. 'page_size' is the number of items
+        to fetch and move per request. We're only fetching the IDs, so keep it high
+
+        Args:
+          to_folder: 
+          page_size:  (Default value = 1000)
+
+        Returns:
+
+        """
         if self.is_cached:
             ids = self._cache
         else:

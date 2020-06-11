@@ -11,7 +11,14 @@ DEFAULT_TERRITORY = '001'
 
 
 def generate_map(timeout=10):
-    """ Helper method to update the map if the CLDR database is updated """
+    """Helper method to update the map if the CLDR database is updated
+
+    Args:
+      timeout:  (Default value = 10)
+
+    Returns:
+
+    """
     r = requests.get(CLDR_WINZONE_URL, timeout=timeout)
     if r.status_code != 200:
         raise ValueError('Unexpected response: %s' % r)

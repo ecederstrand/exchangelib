@@ -5,9 +5,7 @@ from .common import EWSAccountService, EWSPooledMixIn, parse_folder_elem, create
 
 
 class GetFolder(EWSAccountService, EWSPooledMixIn):
-    """
-    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getfolder
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getfolder"""
     SERVICE_NAME = 'GetFolder'
     element_container_name = '{%s}Folders' % MNS
     ERRORS_TO_CATCH_IN_RESPONSE = EWSAccountService.ERRORS_TO_CATCH_IN_RESPONSE + (
@@ -15,13 +13,16 @@ class GetFolder(EWSAccountService, EWSPooledMixIn):
     )
 
     def call(self, folders, additional_fields, shape):
-        """
-        Takes a folder ID and returns the full information for that folder.
+        """Takes a folder ID and returns the full information for that folder.
 
-        :param folders: a list of Folder objects
-        :param additional_fields: the extra fields that should be returned with the folder, as FieldPath objects
-        :param shape: The set of attributes to return
-        :return: XML elements for the folders, in stable order
+        Args:
+          folders: a list of Folder objects
+          additional_fields: the extra fields that should be returned with the folder, as FieldPath objects
+          shape: The set of attributes to return
+
+        Returns:
+          XML elements for the folders, in stable order
+
         """
         # We can't easily find the correct folder class from the returned XML. Instead, return objects with the same
         # class as the folder instance it was requested with.

@@ -60,11 +60,17 @@ WEEKDAYS = WEEKDAY_NAMES + EXTRA_WEEKDAY_OPTIONS
 
 
 def split_field_path(field_path):
-    """Return the individual parts of a field path that may, apart from the fieldname, have label and subfield parts.
-    Examples:
-        'start' -> ('start', None, None)
-        'phone_numbers__PrimaryPhone' -> ('phone_numbers', 'PrimaryPhone', None)
-        'physical_addresses__Home__street' -> ('physical_addresses', 'Home', 'street')
+    """
+
+    Args:
+      field_path: 
+
+    Returns:
+      Examples:
+      'start' -> ('start', None, None)
+      'phone_numbers__PrimaryPhone' -> ('phone_numbers', 'PrimaryPhone', None)
+      'physical_addresses__Home__street' -> ('physical_addresses', 'Home', 'street')
+
     """
     if not isinstance(field_path, str):
         raise ValueError("Field path %r must be a string" % field_path)
@@ -139,9 +145,16 @@ def resolve_field_path(field_path, folder, strict=True):
 
 
 class FieldPath:
-    """ Holds values needed to point to a single field. For indexed properties, we allow setting either field,
+    """Holds values needed to point to a single field. For indexed properties, we allow setting either field,
     field and label, or field, label and subfield. This allows pointing to either the full indexed property set, a
-    property with a specific label, or a particular subfield field on that property. """
+    property with a specific label, or a particular subfield field on that property.
+
+    Args:
+
+    Returns:
+
+    """
+
     def __init__(self, field, label=None, subfield=None):
         # 'label' and 'subfield' are only used for IndexedField fields
         if not isinstance(field, (FieldURIField, ExtendedPropertyField)):
@@ -215,7 +228,8 @@ class FieldPath:
 
 
 class FieldOrder:
-    """ Holds values needed to call server-side sorting on a single field path """
+    """Holds values needed to call server-side sorting on a single field path"""
+
     def __init__(self, field_path, reverse=False):
         if not isinstance(field_path, FieldPath):
             raise ValueError("'field_path' %r must be a FieldPath instance" % field_path)
@@ -238,9 +252,7 @@ class FieldOrder:
 
 
 class Field(metaclass=abc.ABCMeta):
-    """
-    Holds information related to an item field
-    """
+    """Holds information related to an item field"""
     value_cls = None
     is_list = False
     # Is the field a complex EWS type? Quoting the EWS FindItem docs:
@@ -452,7 +464,13 @@ class DecimalField(IntegerField):
 class EnumField(IntegerField):
     """A field type where you can enter either the 1-based index in an enum (tuple), or the enum value. Values will be
     stored internally as integers but output in XML as strings.
+
+    Args:
+
+    Returns:
+
     """
+
     def __init__(self, *args, **kwargs):
         self.enum = kwargs.pop('enum')
         # Set different min/max defaults than IntegerField
@@ -516,6 +534,7 @@ class EnumListField(EnumField):
 
 class EnumAsIntField(EnumField):
     """Like EnumField, but communicates values with EWS in integers"""
+
     def from_xml(self, elem, account):
         val = self._get_val_from_elem(elem)
         if val is not None:
@@ -655,7 +674,13 @@ class DateOrDateTimeField(DateTimeField):
     For all-day items, we assume both start and end dates are inclusive.
 
     For filtering kwarg validation and other places where we must decide on a specific class, we settle on datetime.
+
+    Args:
+
+    Returns:
+
     """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Create internal field to handle date-only logic
@@ -763,7 +788,13 @@ class IdField(CharField):
     """A field to hold the 'Id' and 'Changekey' attributes on 'ItemId' type items. There is no guaranteed max length,
     but we can assume 512 bytes in practice. See
     https://docs.microsoft.com/en-us/exchange/client-developer/exchange-web-services/ews-identifiers-in-exchange
+
+    Args:
+
+    Returns:
+
     """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.max_length = 512  # This is above the normal 255 limit, but this is actually an attribute, not a field
@@ -787,6 +818,11 @@ class CharListField(CharField):
 class URIField(TextField):
     """Helper to mark strings that must conform to xsd:anyURI
     If we want an URI validator, see http://stackoverflow.com/questions/14466585/is-this-regex-correct-for-xsdanyuri
+
+    Args:
+
+    Returns:
+
     """
     pass
 
@@ -803,6 +839,7 @@ class CultureField(CharField):
 
 class Choice:
     """Implements versioned choices for the ChoiceField field"""
+
     def __init__(self, value, supported_from=None):
         self.value = value
         self.supported_from = supported_from
@@ -1084,6 +1121,7 @@ class AttachmentField(EWSElementListField):
 
 class LabelField(ChoiceField):
     """A field to hold the label on an IndexedElement"""
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.is_attribute = True

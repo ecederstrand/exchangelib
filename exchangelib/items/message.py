@@ -12,9 +12,7 @@ log = logging.getLogger(__name__)
 
 
 class Message(Item):
-    """
-    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/message-ex15websvcsotherref
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/message-ex15websvcsotherref"""
     ELEMENT_NAME = 'Message'
     LOCAL_FIELDS = Fields(
         MailboxField('sender', field_uri='message:Sender', is_read_only=True, is_read_only_after_send=True),

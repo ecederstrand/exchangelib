@@ -16,13 +16,18 @@ ACCESS_TYPES = (IMPERSONATION, DELEGATE)
 
 
 class BaseCredentials(metaclass=abc.ABCMeta):
-    """
-    Base for credential storage.
+    """Base for credential storage.
 
     Establishes a method for refreshing credentials (mostly useful with
     OAuth, which expires tokens relatively frequently) and provides a
     lock for synchronizing access to the object around refreshes.
+
+    Args:
+
+    Returns:
+
     """
+
     def __init__(self):
         self._lock = RLock()
 
@@ -32,13 +37,16 @@ class BaseCredentials(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def refresh(self, session):
-        """
-        Obtain a new set of valid credentials. This is mostly intended
+        """Obtain a new set of valid credentials. This is mostly intended
         to support OAuth token refreshing, which can happen in long-
         running applications or those that cache access tokens and so
         might start with a token close to expiration.
 
-        :param session: requests session asking for refreshed credentials
+        Args:
+          session: requests session asking for refreshed credentials
+
+        Returns:
+
         """
         raise NotImplementedError(
             'Credentials object does not support refreshing. '
@@ -72,15 +80,17 @@ class BaseCredentials(metaclass=abc.ABCMeta):
 
 
 class Credentials(BaseCredentials):
-    """
-    Keeps login info the way Exchange likes it.
+    """Keeps login info the way Exchange likes it.
 
-    :param username: Usernames for authentication are of one of these forms:
+    Args:
+      username: Usernames for authentication are of one of these forms:
     * PrimarySMTPAddress
     * WINDOMAIN\\username
     * User Principal Name (UPN)
+      password: Clear-text password
 
-    :param password: Clear-text password
+    Returns:
+
     """
     EMAIL = 'email'
     DOMAIN = 'domain'
@@ -108,8 +118,7 @@ class Credentials(BaseCredentials):
 
 
 class OAuth2Credentials(BaseCredentials):
-    """
-    Login info for OAuth 2.0 client credentials authentication, as well
+    """Login info for OAuth 2.0 client credentials authentication, as well
     as a base for other OAuth 2.0 grant types.
 
     This is primarily useful for in-house applications accessing data
@@ -119,11 +128,15 @@ class OAuth2Credentials(BaseCredentials):
     the appropriate account. Use OAuth2AuthorizationCodeCredentials and
     the associated auth code grant type for multi-tenant applications.
 
-    :param client_id: ID of an authorized OAuth application
-    :param client_secret: Secret associated with the OAuth application
-    :param tenant_id: Microsoft tenant ID of the account to access
-    :param identity: An Identity object representing the account that these
+    Args:
+      client_id: ID of an authorized OAuth application
+      client_secret: Secret associated with the OAuth application
+      tenant_id: Microsoft tenant ID of the account to access
+      identity: An Identity object representing the account that these
     credentials are connected to.
+
+    Returns:
+
     """
 
     def __init__(self, client_id, client_secret, tenant_id=None, identity=None):
@@ -142,14 +155,17 @@ class OAuth2Credentials(BaseCredentials):
         pass
 
     def on_token_auto_refreshed(self, access_token):
-        """
-        Called after the access token is refreshed (requests-oauthlib
+        """Called after the access token is refreshed (requests-oauthlib
         can automatically refresh tokens if given an OAuth client ID and
         secret, so this is how our copy of the token stays up-to-date).
         Applications that cache access tokens can override this to store
         the new token - just remember to call the super() method!
 
-        :param access_token: New token obtained by refreshing
+        Args:
+          access_token: New token obtained by refreshing
+
+        Returns:
+
         """
         # Ensure we don't update the object in the middle of a new session
         # being created, which could cause a race
@@ -185,8 +201,7 @@ class OAuth2Credentials(BaseCredentials):
 
 
 class OAuth2AuthorizationCodeCredentials(OAuth2Credentials):
-    """
-    Login info for OAuth 2.0 authentication using the authorization code
+    """Login info for OAuth 2.0 authentication using the authorization code
     grant type. This can be used in one of several ways:
     * Given an authorization code, client ID, and client secret, fetch a
       token ourselves and refresh it as needed if supplied with a refresh
@@ -203,17 +218,21 @@ class OAuth2AuthorizationCodeCredentials(OAuth2Credentials):
     token (and the authorization code used to get the access token) is
     restricted to a single tenant.
 
-    :param client_id: ID of an authorized OAuth application, required
-        for automatic token fetching and refreshing
-    :param client_secret: Secret associated with the OAuth application
-    :params authorization_code: Code obtained when authorizing the
-        application to access an account. In combination with client_id
-        and client_secret, will be used to obtain an access token.
-    :param access_token: Previously-obtained access token. If a token
-        exists and the application will handle refreshing by itself (or
-        opts not to handle it), this parameter alone is sufficient.
-    :param identity: An Identity object representing the account that these
+    Args:
+      client_id: ID of an authorized OAuth application, required
+    for automatic token fetching and refreshing
+      client_secret: Secret associated with the OAuth application
+      s: authorization_code: Code obtained when authorizing the
+    application to access an account. In combination with client_id
+    and client_secret, will be used to obtain an access token.
+      access_token: Previously-obtained access token. If a token
+    exists and the application will handle refreshing by itself (or
+    opts not to handle it), this parameter alone is sufficient.
+      identity: An Identity object representing the account that these
     credentials are connected to.
+
+    Returns:
+
     """
 
     def __init__(self, authorization_code=None, access_token=None, **kwargs):

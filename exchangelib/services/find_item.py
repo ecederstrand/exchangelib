@@ -5,27 +5,28 @@ from .common import EWSFolderService, PagingEWSMixIn, create_shape_element
 
 
 class FindItem(EWSFolderService, PagingEWSMixIn):
-    """
-    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/finditem
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/finditem"""
     SERVICE_NAME = 'FindItem'
     element_container_name = '{%s}Items' % TNS
 
     def call(self, additional_fields, restriction, order_fields, shape, query_string, depth, calendar_view, max_items,
              offset):
-        """
-        Find items in an account.
+        """Find items in an account.
 
-        :param additional_fields: the extra fields that should be returned with the item, as FieldPath objects
-        :param restriction: a Restriction object for
-        :param order_fields: the fields to sort the results by
-        :param shape: The set of attributes to return
-        :param query_string: a QueryString object
-        :param depth: How deep in the folder structure to search for items
-        :param calendar_view: If set, returns recurring calendar items unfolded
-        :param max_items: the max number of items to return
-        :param offset: the offset relative to the first item in the item collection. Usually 0.
-        :return: XML elements for the matching items
+        Args:
+          additional_fields: the extra fields that should be returned with the item, as FieldPath objects
+          restriction: a Restriction object for
+          order_fields: the fields to sort the results by
+          shape: The set of attributes to return
+          query_string: a QueryString object
+          depth: How deep in the folder structure to search for items
+          calendar_view: If set, returns recurring calendar items unfolded
+          max_items: the max number of items to return
+          offset: the offset relative to the first item in the item collection. Usually 0.
+
+        Returns:
+          XML elements for the matching items
+
         """
         return self._paged_call(payload_func=self.get_payload, max_items=max_items, **dict(
             additional_fields=additional_fields,

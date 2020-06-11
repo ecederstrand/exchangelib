@@ -148,8 +148,7 @@ class BaseFolder(RegisterMixIn, SearchableMixIn):
         return FolderCollection(account=self.account, folders=self._glob(pattern))
 
     def tree(self):
-        """
-        Returns a string representation of the folder structure of this folder. Example:
+        """Returns a string representation of the folder structure of this folder. Example:
 
         root
         ├── inbox
@@ -158,6 +157,11 @@ class BaseFolder(RegisterMixIn, SearchableMixIn):
             ├── Last Job
             ├── exchangelib issues
             └── Mom
+
+        Args:
+
+        Returns:
+
         """
         tree = '%s\n' % self.name
         children = list(self.children)
@@ -200,6 +204,12 @@ class BaseFolder(RegisterMixIn, SearchableMixIn):
     def folder_cls_from_container_class(container_class):
         """Returns a reasonable folder class given a container class, e.g. 'IPF.Note'. Don't iterate WELLKNOWN_FOLDERS
         because many folder classes have the same CONTAINER_CLASS.
+
+        Args:
+          container_class: 
+
+        Returns:
+
         """
         from .known_folders import Messages, Tasks, Calendar, ConversationSettings, Contacts, GALContacts, Reminders, \
             RecipientCache, RSSFeeds
@@ -306,19 +316,22 @@ class BaseFolder(RegisterMixIn, SearchableMixIn):
 
     def find_people(self, q, shape=ID_ONLY, depth=None, additional_fields=None, order_fields=None,
                     page_size=None, max_items=None, offset=0):
-        """
-        Private method to call the FindPeople service
+        """Private method to call the FindPeople service
 
-        :param q: a Q instance containing any restrictions
-        :param shape: controls whether to return (id, chanegkey) tuples or Persona objects. If additional_fields is
-               non-null, we always return Persona objects.
-        :param depth: controls the whether to return soft-deleted items or not.
-        :param additional_fields: the extra properties we want on the return objects. Default is no properties.
-        :param order_fields: the SortOrder fields, if any
-        :param page_size: the requested number of items per page
-        :param max_items: the max number of items to return
-        :param offset: the offset relative to the first item in the item collection
-        :return: a generator for the returned personas
+        Args:
+          q: a Q instance containing any restrictions
+          shape: controls whether to return (id, chanegkey) tuples or Persona objects. If additional_fields is
+        non-null, we always return Persona objects. (Default value = ID_ONLY)
+          depth: controls the whether to return soft-deleted items or not. (Default value = None)
+          additional_fields: the extra properties we want on the return objects. Default is no properties.
+          order_fields: the SortOrder fields, if any (Default value = None)
+          page_size: the requested number of items per page (Default value = None)
+          max_items: the max number of items to return (Default value = None)
+          offset: the offset relative to the first item in the item collection (Default value = 0)
+
+        Returns:
+          a generator for the returned personas
+
         """
         if shape not in SHAPE_CHOICES:
             raise ValueError("'shape' %s must be one of %s" % (shape, SHAPE_CHOICES))
@@ -445,9 +458,13 @@ class BaseFolder(RegisterMixIn, SearchableMixIn):
                     log.warning('Tried to delete a distinguished folder (%s)', f)
 
     def test_access(self):
-        """
-        Does a simple FindItem to test (read) access to the folder. Maybe the account doesn't exist, maybe the
+        """Does a simple FindItem to test (read) access to the folder. Maybe the account doesn't exist, maybe the
         service user doesn't have access to the calendar. This will throw the most common errors.
+
+        Args:
+
+        Returns:
+
         """
         self.all().exists()
         return True
@@ -508,7 +525,14 @@ class BaseFolder(RegisterMixIn, SearchableMixIn):
     def __floordiv__(self, other):
         """Same as __truediv__ but does not touch the folder cache.
 
-        This is useful if the folder hierarchy contains a huge number of folders and you don't want to fetch them all"""
+        This is useful if the folder hierarchy contains a huge number of folders and you don't want to fetch them all
+
+        Args:
+          other: 
+
+        Returns:
+
+        """
         if other == '..':
             raise ValueError('Cannot get parent without a folder cache')
 
@@ -597,7 +621,14 @@ class Folder(BaseFolder):
 
     @classmethod
     def get_distinguished(cls, root):
-        """Gets the distinguished folder for this folder class"""
+        """Gets the distinguished folder for this folder class
+
+        Args:
+          root: 
+
+        Returns:
+
+        """
         try:
             return cls.resolve(
                 account=root.account,

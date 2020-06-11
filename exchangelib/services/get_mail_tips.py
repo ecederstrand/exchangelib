@@ -3,9 +3,7 @@ from .common import EWSService
 
 
 class GetMailTips(EWSService):
-    """
-    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getmailtips-operation
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getmailtips-operation"""
     SERVICE_NAME = 'GetMailTips'
 
     def call(self, sending_as, recipients, mail_tips_requested):

@@ -3,12 +3,16 @@ from .common import EWSAccountService, EWSPooledMixIn
 
 
 class UploadItems(EWSAccountService, EWSPooledMixIn):
-    """
-    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/uploaditems-operation
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/uploaditems-operation
 
     This currently has the existing limitation of only being able to upload
     items that do not yet exist in the database. The full spec also allows
     actions "Update" and "UpdateOrCreate".
+
+    Args:
+
+    Returns:
+
     """
     SERVICE_NAME = 'UploadItems'
     element_container_name = '{%s}ItemId' % MNS
@@ -24,6 +28,12 @@ class UploadItems(EWSAccountService, EWSPooledMixIn):
         instance representing the ParentFolder that the item will be placed in
         and the second element is a Data string returned from an ExportItems
         call.
+
+        Args:
+          items: 
+
+        Returns:
+
         """
         from ..properties import ParentFolderId
         uploaditems = create_element('m:%s' % self.SERVICE_NAME)

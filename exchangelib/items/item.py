@@ -15,9 +15,7 @@ log = logging.getLogger(__name__)
 
 
 class Item(BaseItem):
-    """
-    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/item
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/item"""
     ELEMENT_NAME = 'Item'
 
     LOCAL_FIELDS = Fields(
@@ -276,6 +274,12 @@ class Item(BaseItem):
         be created on the server when the item is saved.
 
         Adding attachments to an existing item will update the changekey of the item.
+
+        Args:
+          attachments: 
+
+        Returns:
+
         """
         if not is_iterable(attachments, generators_allowed=True):
             attachments = [attachments]
@@ -294,6 +298,12 @@ class Item(BaseItem):
         simply not be created on the server the item is saved.
 
         Removing attachments from an existing item will update the changekey of the item.
+
+        Args:
+          attachments: 
+
+        Returns:
+
         """
         if not is_iterable(attachments, generators_allowed=True):
             attachments = [attachments]

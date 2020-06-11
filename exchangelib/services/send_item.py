@@ -3,9 +3,7 @@ from .common import EWSAccountService, create_item_ids_element
 
 
 class SendItem(EWSAccountService):
-    """
-    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/senditem-operation
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/senditem-operation"""
     SERVICE_NAME = 'SendItem'
     element_container_name = None  # SendItem doesn't return a response object, just status in XML attrs
 

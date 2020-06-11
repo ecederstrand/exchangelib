@@ -15,8 +15,8 @@ log = logging.getLogger(__name__)
 
 
 class FolderQuerySet:
-    """A QuerySet-like class for finding subfolders of a folder collection
-    """
+    """A QuerySet-like class for finding subfolders of a folder collection"""
+
     def __init__(self, folder_collection):
         from .collections import FolderCollection
         if not isinstance(folder_collection, FolderCollection):
@@ -30,8 +30,7 @@ class FolderQuerySet:
         return self.__class__(folder_collection=self.folder_collection)
 
     def _copy_self(self):
-        """Chaining operations must make a copy of self before making any modifications
-        """
+        """Chaining operations must make a copy of self before making any modifications"""
         new_qs = self._copy_cls()
         new_qs.only_fields = self.only_fields
         new_qs._depth = self._depth
@@ -40,6 +39,12 @@ class FolderQuerySet:
 
     def only(self, *args):
         """Restrict the fields returned. 'name' and 'folder_class' are always returned.
+
+        Args:
+          *args: 
+
+        Returns:
+
         """
         from .base import Folder
         # Subfolders will always be of class Folder
@@ -58,13 +63,27 @@ class FolderQuerySet:
 
     def depth(self, depth):
         """Specify the search depth (SHALLOW or DEEP)
+
+        Args:
+          depth: 
+
+        Returns:
+
         """
         new_qs = self._copy_self()
         new_qs._depth = depth
         return new_qs
 
     def get(self, *args, **kwargs):
-        """Return the single folder matching the specified filter
+        """
+
+        Args:
+          *args: 
+          **kwargs: 
+
+        Returns:
+
+
         """
         if args or kwargs:
             folders = list(self.filter(*args, **kwargs))
@@ -80,13 +99,19 @@ class FolderQuerySet:
         return f
 
     def all(self):
-        """Return all child folders at the depth specified
-        """
+        """ """
         new_qs = self._copy_self()
         return new_qs
 
     def filter(self, *args, **kwargs):
         """Add restrictions to the folder search
+
+        Args:
+          *args: 
+          **kwargs: 
+
+        Returns:
+
         """
         new_qs = self._copy_self()
         q = Q(*args, **kwargs)
@@ -145,8 +170,8 @@ class FolderQuerySet:
 
 
 class SingleFolderQuerySet(FolderQuerySet):
-    """A helper class with simpler argument types
-    """
+    """A helper class with simpler argument types"""
+
     def __init__(self, account, folder):
         from .collections import FolderCollection
         folder_collection = FolderCollection(account=account, folders=[folder])

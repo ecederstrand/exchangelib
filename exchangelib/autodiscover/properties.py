@@ -58,6 +58,11 @@ class SimpleProtocol(AutodiscoverBase):
     """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/protocol-pox
 
     Used for the 'Internal' and 'External' elements that may contain a stripped-down version of the Protocol element.
+
+    Args:
+
+    Returns:
+
     """
     ELEMENT_NAME = 'Protocol'
     FIELDS = Fields(
@@ -277,6 +282,11 @@ class ErrorResponse(EWSElement):
     """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/response-pox
 
     Like 'Response', but with a different namespace.
+
+    Args:
+
+    Returns:
+
     """
     ELEMENT_NAME = 'Response'
     NAMESPACE = AUTODISCOVER_BASE_NS
@@ -306,6 +316,12 @@ class Autodiscover(EWSElement):
     def from_bytes(cls, bytes_content):
         """An Autodiscover request and response example is available at:
         https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/pox-autodiscover-response-for-exchange
+
+        Args:
+          bytes_content: 
+
+        Returns:
+
         """
         if not is_xml(bytes_content):
             raise ValueError('Response is not XML: %s' % bytes_content)

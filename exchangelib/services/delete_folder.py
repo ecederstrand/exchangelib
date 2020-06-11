@@ -3,9 +3,7 @@ from .common import EWSAccountService, create_folder_ids_element
 
 
 class DeleteFolder(EWSAccountService):
-    """
-    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/deletefolder-operation
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/deletefolder-operation"""
     SERVICE_NAME = 'DeleteFolder'
     element_container_name = None  # DeleteFolder doesn't return a response object, just status in XML attrs
 

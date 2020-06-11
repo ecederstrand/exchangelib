@@ -9,9 +9,7 @@ log = logging.getLogger(__name__)
 
 
 class PostItem(Item):
-    """
-    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/postitem
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/postitem"""
     ELEMENT_NAME = 'PostItem'
     LOCAL_FIELDS = Message.LOCAL_FIELDS[6:11] + Fields(
         DateTimeField('posted_time', field_uri='postitem:PostedTime', is_read_only=True),
@@ -24,9 +22,7 @@ class PostItem(Item):
 
 
 class PostReplyItem(Item):
-    """
-    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/postreplyitem
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/postreplyitem"""
     # TODO: Untested and unfinished.
     ELEMENT_NAME = 'PostReplyItem'
 

@@ -3,9 +3,7 @@ from .common import EWSService, to_item_id
 
 
 class GetPersona(EWSService):
-    """
-    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getpersona-operation
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getpersona-operation"""
     SERVICE_NAME = 'GetPersona'
 
     def call(self, persona):

@@ -7,9 +7,7 @@ log = logging.getLogger(__name__)
 
 
 class UpdateFolder(EWSAccountService):
-    """
-    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/updatefolder-operation
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/updatefolder-operation"""
     SERVICE_NAME = 'UpdateFolder'
     element_container_name = '{%s}Folders' % MNS
 

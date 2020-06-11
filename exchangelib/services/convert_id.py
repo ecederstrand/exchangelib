@@ -8,11 +8,14 @@ log = logging.getLogger(__name__)
 
 
 class ConvertId(EWSPooledMixIn):
-    """
-    Takes a list of IDs to convert. Returns a list of converted IDs or exception instances, in the same order as the
+    """Takes a list of IDs to convert. Returns a list of converted IDs or exception instances, in the same order as the
     input list.
 
     MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/convertid-operation
+
+    Args:
+
+    Returns:
 
     """
     SERVICE_NAME = 'ConvertId'

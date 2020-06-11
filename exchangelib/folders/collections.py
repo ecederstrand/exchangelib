@@ -21,10 +21,14 @@ class FolderCollection(SearchableMixIn):
     REQUIRED_FOLDER_FIELDS = ('name', 'folder_class')
 
     def __init__(self, account, folders):
-        """ Implements a search API on a collection of folders
+        """Implements a search API on a collection of folders
 
-        :param account: An Account object
-        :param folders: An iterable of folders, e.g. Folder.walk(), Folder.glob(), or [a.calendar, a.inbox]
+        Args:
+          account: An Account object
+          folders: An iterable of folders, e.g. Folder.walk(), Folder.glob(), or [a.calendar, a.inbox]
+
+        Returns:
+
         """
         self.account = account
         self._folders = folders
@@ -51,8 +55,7 @@ class FolderCollection(SearchableMixIn):
         return QuerySet(self).none()
 
     def filter(self, *args, **kwargs):
-        """
-        Finds items in the folder(s).
+        """Finds items in the folder(s).
 
         Non-keyword args may be a list of Q instances.
 
@@ -76,6 +79,13 @@ class FolderCollection(SearchableMixIn):
         'endswith' and 'iendswith' could be emulated by searching with 'contains' or 'icontains' and then
         post-processing items. Fetch the field in question with additional_fields and remove items where the search
         string is not a postfix.
+
+        Args:
+          *args: 
+          **kwargs: 
+
+        Returns:
+
         """
         return QuerySet(self).filter(*args, **kwargs)
 
@@ -83,7 +93,7 @@ class FolderCollection(SearchableMixIn):
         return QuerySet(self).exclude(*args, **kwargs)
 
     def view(self, start, end, max_items=None, *args, **kwargs):
-        """ Implements the CalendarView option to FindItem. The difference between filter() and view() is that filter()
+        """Implements the CalendarView option to FindItem. The difference between filter() and view() is that filter()
         only returns the master CalendarItem for recurring items, while view() unfolds recurring items and returns all
         CalendarItem occurrences as one would normally expect when presenting a calendar.
 
@@ -94,6 +104,16 @@ class FolderCollection(SearchableMixIn):
         EWS does not allow combining CalendarView with search restrictions (filter and exclude).
 
         'max_items' defines the maximum number of items returned in this view. Optional.
+
+        Args:
+          start: 
+          end: 
+          max_items:  (Default value = None)
+          *args: 
+          **kwargs: 
+
+        Returns:
+
         """
         qs = QuerySet(self).filter(*args, **kwargs)
         qs.calendar_view = CalendarView(start=start, end=end, max_items=max_items)
@@ -123,21 +143,24 @@ class FolderCollection(SearchableMixIn):
 
     def find_items(self, q, shape=ID_ONLY, depth=None, additional_fields=None, order_fields=None,
                    calendar_view=None, page_size=None, max_items=None, offset=0):
-        """
-        Private method to call the FindItem service
+        """Private method to call the FindItem service
 
-        :param q: a Q instance containing any restrictions
-        :param shape: controls whether to return (id, chanegkey) tuples or Item objects. If additional_fields is
-               non-null, we always return Item objects.
-        :param depth: controls the whether to return soft-deleted items or not.
-        :param additional_fields: the extra properties we want on the return objects. Default is no properties. Be
-               aware that complex fields can only be fetched with fetch() (i.e. the GetItem service).
-        :param order_fields: the SortOrder fields, if any
-        :param calendar_view: a CalendarView instance, if any
-        :param page_size: the requested number of items per page
-        :param max_items: the max number of items to return
-        :param offset: the offset relative to the first item in the item collection
-        :return: a generator for the returned item IDs or items
+        Args:
+          q: a Q instance containing any restrictions
+          shape: controls whether to return (id, chanegkey) tuples or Item objects. If additional_fields is
+        non-null, we always return Item objects. (Default value = ID_ONLY)
+          depth: controls the whether to return soft-deleted items or not. (Default value = None)
+          additional_fields: the extra properties we want on the return objects. Default is no properties. Be
+        aware that complex fields can only be fetched with fetch() (i.e. the GetItem service).
+          order_fields: the SortOrder fields, if any (Default value = None)
+          calendar_view: a CalendarView instance, if any (Default value = None)
+          page_size: the requested number of items per page (Default value = None)
+          max_items: the max number of items to return (Default value = None)
+          offset: the offset relative to the first item in the item collection (Default value = 0)
+
+        Returns:
+          a generator for the returned item IDs or items
+
         """
         from .base import BaseFolder
         if not self.folders:

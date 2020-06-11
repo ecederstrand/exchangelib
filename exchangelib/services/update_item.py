@@ -10,9 +10,7 @@ log = logging.getLogger(__name__)
 
 
 class UpdateItem(EWSAccountService, EWSPooledMixIn):
-    """
-    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/updateitem
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/updateitem"""
     SERVICE_NAME = 'UpdateItem'
     element_container_name = '{%s}Items' % MNS
 

@@ -3,9 +3,7 @@ from .common import EWSAccountService, create_attachment_ids_element
 
 
 class DeleteAttachment(EWSAccountService):
-    """
-    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/deleteattachment-operation
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/deleteattachment-operation"""
     SERVICE_NAME = 'DeleteAttachment'
 
     def call(self, items):

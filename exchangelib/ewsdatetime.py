@@ -13,16 +13,12 @@ log = logging.getLogger(__name__)
 
 
 class EWSDate(datetime.date):
-    """
-    Extends the normal date implementation to satisfy EWS
-    """
+    """Extends the normal date implementation to satisfy EWS"""
 
     __slots__ = '_year', '_month', '_day', '_hashcode'
 
     def ewsformat(self):
-        """
-        ISO 8601 format to satisfy xs:date as interpreted by EWS. Example: 2009-01-15
-        """
+        """ISO 8601 format to satisfy xs:date as interpreted by EWS. Example: 2009-01-15"""
         return self.isoformat()
 
     def __add__(self, other):
@@ -77,9 +73,7 @@ class EWSDate(datetime.date):
 
 
 class EWSDateTime(datetime.datetime):
-    """
-    Extends the normal datetime implementation to satisfy EWS
-    """
+    """Extends the normal datetime implementation to satisfy EWS"""
 
     __slots__ = '_year', '_month', '_day', '_hour', '_minute', '_second', '_microsecond', '_tzinfo', '_hashcode'
 
@@ -97,10 +91,14 @@ class EWSDateTime(datetime.datetime):
         return super().__new__(cls, *args, **kwargs)
 
     def ewsformat(self):
-        """
-        ISO 8601 format to satisfy xs:datetime as interpreted by EWS. Examples:
+        """ISO 8601 format to satisfy xs:datetime as interpreted by EWS. Examples:
             2009-01-15T13:45:56Z
             2009-01-15T13:45:56+01:00
+
+        Args:
+
+        Returns:
+
         """
         if not self.tzinfo:
             raise ValueError('EWSDateTime must be timezone-aware')
@@ -199,9 +197,13 @@ class EWSDateTime(datetime.datetime):
 
 
 class EWSTimeZone:
-    """
-    Represents a timezone as expected by the EWS TimezoneContext / TimezoneDefinition XML element, and returned by
+    """Represents a timezone as expected by the EWS TimezoneContext / TimezoneDefinition XML element, and returned by
     services.GetServerTimeZones.
+
+    Args:
+
+    Returns:
+
     """
     PYTZ_TO_MS_MAP = PYTZ_TO_MS_TIMEZONE_MAP
     MS_TO_PYTZ_MAP = MS_TIMEZONE_TO_PYTZ_MAP
@@ -280,6 +282,14 @@ class EWSTimeZone:
 
     def _localize_or_normalize(self, func, dt, is_dst=False):
         """localize() and normalize() have common code paths
+
+        Args:
+          func: 
+          dt: 
+          is_dst:  (Default value = False)
+
+        Returns:
+
         """
         # super() returns a dt.tzinfo of class pytz.tzinfo.FooBar. We need to return type EWSTimeZone
         if is_dst is not False:

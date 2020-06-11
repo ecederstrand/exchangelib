@@ -4,9 +4,7 @@ from .common import EWSAccountService, create_attachment_ids_element
 
 
 class GetAttachment(EWSAccountService):
-    """
-    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getattachment-operation
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getattachment-operation"""
     SERVICE_NAME = 'GetAttachment'
     element_container_name = '{%s}Attachments' % MNS
     streaming = True

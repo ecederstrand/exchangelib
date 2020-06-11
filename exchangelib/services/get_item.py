@@ -3,20 +3,21 @@ from .common import EWSAccountService, EWSPooledMixIn, create_item_ids_element, 
 
 
 class GetItem(EWSAccountService, EWSPooledMixIn):
-    """
-    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getitem
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getitem"""
     SERVICE_NAME = 'GetItem'
     element_container_name = '{%s}Items' % MNS
 
     def call(self, items, additional_fields, shape):
-        """
-        Returns all items in an account that correspond to a list of ID's, in stable order.
+        """Returns all items in an account that correspond to a list of ID's, in stable order.
 
-        :param items: a list of (id, changekey) tuples or Item objects
-        :param additional_fields: the extra fields that should be returned with the item, as FieldPath objects
-        :param shape: The shape of returned objects
-        :return: XML elements for the items, in stable order
+        Args:
+          items: a list of (id, changekey) tuples or Item objects
+          additional_fields: the extra fields that should be returned with the item, as FieldPath objects
+          shape: The shape of returned objects
+
+        Returns:
+          XML elements for the items, in stable order
+
         """
         return self._pool_requests(payload_func=self.get_payload, **dict(
             items=items,

@@ -88,9 +88,13 @@ def is_iterable(value, generators_allowed=False):
     callers don't necessarily guarantee that they only iterate the value once. Take care to not match string types and
     bytes.
 
-    :param value: any type of object
-    :param generators_allowed: if True, generators will be treated as iterable
-    :return: True or False
+    Args:
+      value: any type of object
+      generators_allowed: if True, generators will be treated as iterable (Default value = False)
+
+    Returns:
+      True or False
+
     """
     if generators_allowed:
         if not isinstance(value, (bytes, str)) and hasattr(value, '__iter__'):
@@ -102,7 +106,15 @@ def is_iterable(value, generators_allowed=False):
 
 
 def chunkify(iterable, chunksize):
-    """Splits an iterable into chunks of size ``chunksize``. The last chunk may be smaller than ``chunksize``."""
+    """Splits an iterable into chunks of size ``chunksize``. The last chunk may be smaller than ``chunksize``.
+
+    Args:
+      iterable: 
+      chunksize: 
+
+    Returns:
+
+    """
     from .queryset import QuerySet
     if hasattr(iterable, '__getitem__') and not isinstance(iterable, QuerySet):
         # tuple, list. QuerySet has __getitem__ but that evaluates the entire query greedily. We don't want that here.
@@ -121,7 +133,14 @@ def chunkify(iterable, chunksize):
 
 
 def peek(iterable):
-    """Checks if an iterable is empty and returns status and the rewinded iterable"""
+    """Checks if an iterable is empty and returns status and the rewinded iterable
+
+    Args:
+      iterable: 
+
+    Returns:
+
+    """
     from .queryset import QuerySet
     if isinstance(iterable, QuerySet):
         # QuerySet has __len__ but that evaluates the entire query greedily. We don't want that here. Instead, peek()
@@ -140,7 +159,16 @@ def peek(iterable):
 
 
 def xml_to_str(tree, encoding=None, xml_declaration=False):
-    """Serialize an XML tree. Returns unicode if 'encoding' is None. Otherwise, we return encoded 'bytes'."""
+    """Serialize an XML tree. Returns unicode if 'encoding' is None. Otherwise, we return encoded 'bytes'.
+
+    Args:
+      tree: 
+      encoding:  (Default value = None)
+      xml_declaration:  (Default value = False)
+
+    Returns:
+
+    """
     if xml_declaration and not encoding:
         raise ValueError("'xml_declaration' is not supported when 'encoding' is None")
     if encoding:
@@ -265,7 +293,13 @@ def add_xml_child(tree, name, value):
 class StreamingContentHandler(xml.sax.handler.ContentHandler):
     """A SAX content handler that returns a character data for a single element back to the parser. The parser must have
     a 'buffer' attribute we can append data to.
+
+    Args:
+
+    Returns:
+
     """
+
     def __init__(self, parser, ns, element_name):
         xml.sax.handler.ContentHandler.__init__(self)
         self._parser = parser
@@ -313,6 +347,7 @@ def safe_b64decode(data):
 
 class StreamingBase64Parser(DefusedExpatParser):
     """A SAX parser that returns a generator of base64-decoded character content"""
+
     def __init__(self, *args, **kwargs):
         DefusedExpatParser.__init__(self, *args, **kwargs)
         self._namespaces = True
@@ -375,7 +410,13 @@ class BytesGeneratorIO(io.RawIOBase):
     """A BytesIO that can produce bytes from a streaming HTTP request. Expects r.iter_content() as input
     lxml tries to be smart by calling `getvalue` when present, assuming that the entire string is in memory.
     Omitting `getvalue` forces lxml to stream the request through `read` avoiding the memory duplication.
+
+    Args:
+
+    Returns:
+
     """
+
     def __init__(self, bytes_generator):
         self._bytes_generator = bytes_generator
         self._next = bytearray()
@@ -462,8 +503,13 @@ def to_xml(bytes_content):
 
 
 def is_xml(text):
-    """
-    Helper function. Lightweight test if response is an XML doc
+    """Helper function. Lightweight test if response is an XML doc
+
+    Args:
+      text: 
+
+    Returns:
+
     """
     # BOM_UTF8 is an UTF-8 byte order mark which may precede the XML from an Exchange server
     bom_len = len(BOM_UTF8)
@@ -498,6 +544,12 @@ class PrettyXmlHandler(logging.StreamHandler):
            * This is a DEBUG message
            * We're outputting to a terminal
            * The log message args is a dict containing keys starting with 'xml_' and values as bytes
+
+        Args:
+          record: 
+
+        Returns:
+
         """
         if record.levelno == logging.DEBUG and self.is_tty() and isinstance(record.args, dict):
             for key, value in record.args.items():
@@ -524,6 +576,7 @@ class PrettyXmlHandler(logging.StreamHandler):
 
 class AnonymizingXmlHandler(PrettyXmlHandler):
     """A steaming log handler that prettifies and anonymizes log statements containing XML when output is a terminal"""
+
     def __init__(self, forbidden_strings, *args, **kwargs):
         self.forbidden_strings = forbidden_strings
         super().__init__(*args, **kwargs)
@@ -633,8 +686,7 @@ except ImportError:
 
 
 def post_ratelimited(protocol, session, url, headers, data, allow_redirects=False, stream=False):
-    """
-    There are two error-handling policies implemented here: a fail-fast policy intended for stand-alone scripts which
+    """There are two error-handling policies implemented here: a fail-fast policy intended for stand-alone scripts which
     fails on all responses except HTTP 200. The other policy is intended for long-running tasks that need to respect
     rate-limiting errors from the server and paper over outages of up to 1 hour.
 
@@ -657,6 +709,18 @@ def post_ratelimited(protocol, session, url, headers, data, allow_redirects=Fals
 
     An additional resource on handling throttling policies and client back off strategies:
         https://docs.microsoft.com/en-us/exchange/client-developer/exchange-web-services/ews-throttling-in-exchange
+
+    Args:
+      protocol: 
+      session: 
+      url: 
+      headers: 
+      data: 
+      allow_redirects:  (Default value = False)
+      stream:  (Default value = False)
+
+    Returns:
+
     """
     thread_id = get_ident()
     wait = RETRY_WAIT  # Initial retry wait. We double the value on each retry

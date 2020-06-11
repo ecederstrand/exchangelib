@@ -6,22 +6,24 @@ from .common import EWSFolderService, PagingEWSMixIn, create_shape_element
 
 
 class FindFolder(EWSFolderService, PagingEWSMixIn):
-    """
-    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/findfolder
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/findfolder"""
     SERVICE_NAME = 'FindFolder'
     element_container_name = '{%s}Folders' % TNS
 
     def call(self, additional_fields, restriction, shape, depth, max_items, offset):
-        """
-        Find subfolders of a folder.
+        """Find subfolders of a folder.
 
-        :param additional_fields: the extra fields that should be returned with the folder, as FieldPath objects
-        :param shape: The set of attributes to return
-        :param depth: How deep in the folder structure to search for folders
-        :param max_items: The maximum number of items to return
-        :param offset: the offset relative to the first item in the item collection. Usually 0.
-        :return: XML elements for the matching folders
+        Args:
+          additional_fields: the extra fields that should be returned with the folder, as FieldPath objects
+          shape: The set of attributes to return
+          depth: How deep in the folder structure to search for folders
+          max_items: The maximum number of items to return
+          offset: the offset relative to the first item in the item collection. Usually 0.
+          restriction: 
+
+        Returns:
+          XML elements for the matching folders
+
         """
         from ..folders import Folder
         roots = {f.root for f in self.folders}

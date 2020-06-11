@@ -39,9 +39,7 @@ API_VERSIONS = sorted({v[0] for v in VERSIONS.values()}, reverse=True)
 
 
 class Build:
-    """
-    Holds methods for working with build numbers
-    """
+    """Holds methods for working with build numbers"""
 
     # List of build numbers here: https://docs.microsoft.com/en-us/exchange/new-features/build-numbers-and-release-dates
     API_VERSION_MAP = {
@@ -110,6 +108,12 @@ class Build:
             * The next 6 bits contain the minor version number
             * The next bit contains a flag. Can be ignored
             * The next 15 bits contain the major build number
+
+        Args:
+          s: 
+
+        Returns:
+
         """
         bin_s = '{:032b}'.format(int(s, 16))  # Convert string to 32-bit binary string
         major_version = int(bin_s[4:10], 2)
@@ -181,9 +185,7 @@ EXCHANGE_O365 = Build(15, 20)
 
 
 class Version:
-    """
-    Holds information about the server version
-    """
+    """Holds information about the server version"""
     __slots__ = ('build', 'api_version')
 
     def __init__(self, build, api_version=None):
@@ -203,13 +205,19 @@ class Version:
 
     @classmethod
     def guess(cls, protocol, api_version_hint=None):
-        """
-        Tries to ask the server which version it has. We haven't set up an Account object yet, so we generate requests
+        """Tries to ask the server which version it has. We haven't set up an Account object yet, so we generate requests
         by hand. We only need a response header containing a ServerVersionInfo element.
 
         To get API version and build numbers from the server, we need to send a valid SOAP request. We can't do that
         without a valid API version. To solve this chicken-and-egg problem, we try all possible API versions that this
         package supports, until we get a valid response.
+
+        Args:
+          protocol: 
+          api_version_hint:  (Default value = None)
+
+        Returns:
+
         """
         from .services import ResolveNames
         # The protocol doesn't have a version yet, so default to latest supported version if we don't have a hint.

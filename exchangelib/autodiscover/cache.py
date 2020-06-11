@@ -64,7 +64,13 @@ class AutodiscoverCache:
     If an autodiscover lookup fails for any reason, the corresponding cache entry must be purged.
 
     'shelve' is supposedly thread-safe and process-safe, which suits our needs.
+
+    Args:
+
+    Returns:
+
     """
+
     def __init__(self):
         self._protocols = {}  # Mapping from (domain, credentials) to AutodiscoverProtocol
         self._lock = RLock()

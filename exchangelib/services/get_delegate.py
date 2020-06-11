@@ -4,9 +4,7 @@ from .common import EWSAccountService, EWSPooledMixIn
 
 
 class GetDelegate(EWSAccountService, EWSPooledMixIn):
-    """
-    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getdelegate-operation
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getdelegate-operation"""
     SERVICE_NAME = 'GetDelegate'
 
     def call(self, user_ids, include_permissions):
