@@ -440,14 +440,11 @@ class Protocol(BaseProtocol, metaclass=CachingProtocol):
         """Returns free/busy information for a list of accounts
 
         Args:
-          accounts: A list of (account, attendee_type, exclude_conflicts) tuples, where account is either an
-        Account object or a string, attendee_type is a MailboxData.attendee_type choice, and exclude_conflicts is a
-        boolean.
+          accounts: A list of (account, attendee_type, exclude_conflicts) tuples, where account is either an Account object or a string, attendee_type is a MailboxData.attendee_type choice, and exclude_conflicts is a boolean.
           start: The start datetime of the request
           end: The end datetime of the request
           merged_free_busy_interval: The interval, in minutes, of merged free/busy information (Default value = 30)
-          requested_view: The type of information returned. Possible values are defined in the
-        FreeBusyViewOptions.requested_view choices. (Default value = 'DetailedMerged')
+          requested_view: The type of information returned. Possible values are defined in the FreeBusyViewOptions.requested_view choices. (Default value = 'DetailedMerged')
 
         Returns:
           A generator of FreeBusyView objects

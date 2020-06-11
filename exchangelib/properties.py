@@ -752,8 +752,7 @@ class TimeZone(EWSElement):
         may be multiple matches. If so, we return a random timezone ID.
 
         Args:
-          timezones: A list of server timezones, as returned by
-        list(account.protocol.get_timezones(return_full_timezone_data=True))
+          timezones: A list of server timezones, as returned by list(account.protocol.get_timezones(return_full_timezone_data=True))
           for_year: return: A Microsoft timezone ID, as a string
 
         Returns:

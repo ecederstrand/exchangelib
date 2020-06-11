@@ -359,8 +359,7 @@ class Account:
         """Adds objects retrieved from export into the given folders
 
         Args:
-          data: An iterable of tuples containing the folder we want to upload the data to and the
-        string outputs of exports.
+          data: An iterable of tuples containing the folder we want to upload the data to and the string outputs of exports.
           chunk_size: The number of items to send to the server in a single request (Default value = None)
 
         Returns:
@@ -384,10 +383,8 @@ class Account:
         Args:
           folder: the folder to create the items in
           items: an iterable of Item objects
-          message_disposition: only applicable to Message items. Possible values are specified in
-        MESSAGE_DISPOSITION_CHOICES (Default value = SAVE_ONLY)
-          send_meeting_invitations: only applicable to CalendarItem items. Possible values are specified in
-        SEND_MEETING_INVITATIONS_CHOICES (Default value = SEND_TO_NONE)
+          message_disposition: only applicable to Message items. Possible values are specified in MESSAGE_DISPOSITION_CHOICES (Default value = SAVE_ONLY)
+          send_meeting_invitations: only applicable to CalendarItem items. Possible values are specified in SEND_MEETING_INVITATIONS_CHOICES (Default value = SEND_TO_NONE)
           chunk_size: The number of items to send to the server in a single request (Default value = None)
 
         Returns:
@@ -422,13 +419,10 @@ class Account:
         """Bulk updates existing items
 
         Args:
-          items: a list of (Item, fieldnames) tuples, where 'Item' is an Item object, and 'fieldnames' is a list
-        containing the attributes on this Item object that we want to be updated.
+          items: a list of (Item, fieldnames) tuples, where 'Item' is an Item object, and 'fieldnames' is a list containing the attributes on this Item object that we want to be updated.
           conflict_resolution: Possible values are specified in CONFLICT_RESOLUTION_CHOICES (Default value = AUTO_RESOLVE)
-          message_disposition: only applicable to Message items. Possible values are specified in
-        MESSAGE_DISPOSITION_CHOICES (Default value = SAVE_ONLY)
-          send_meeting_invitations_or_cancellations: only applicable to CalendarItem items. Possible values are
-        specified in SEND_MEETING_INVITATIONS_AND_CANCELLATIONS_CHOICES (Default value = SEND_TO_NONE)
+          message_disposition: only applicable to Message items. Possible values are specified in MESSAGE_DISPOSITION_CHOICES (Default value = SAVE_ONLY)
+          send_meeting_invitations_or_cancellations: only applicable to CalendarItem items. Possible values are specified in SEND_MEETING_INVITATIONS_AND_CANCELLATIONS_CHOICES (Default value = SEND_TO_NONE)
           suppress_read_receipts: nly supported from Exchange 2013. True or False (Default value = True)
           chunk_size: The number of items to send to the server in a single request (Default value = None)
 
@@ -465,10 +459,8 @@ class Account:
         Args:
           ids: an iterable of either (id, changekey) tuples or Item objects.
           delete_type: the type of delete to perform. Possible values are specified in DELETE_TYPE_CHOICES (Default value = HARD_DELETE)
-          send_meeting_cancellations: only applicable to CalendarItem. Possible values are specified in
-        SEND_MEETING_CANCELLATIONS_CHOICES. (Default value = SEND_TO_NONE)
-          affected_task_occurrences: only applicable for recurring Task items. Possible values are specified in
-        AFFECTED_TASK_OCCURRENCES_CHOICES. (Default value = ALL_OCCURRENCIES)
+          send_meeting_cancellations: only applicable to CalendarItem. Possible values are specified in SEND_MEETING_CANCELLATIONS_CHOICES. (Default value = SEND_TO_NONE)
+          affected_task_occurrences: only applicable for recurring Task items. Possible values are specified in AFFECTED_TASK_OCCURRENCES_CHOICES. (Default value = ALL_OCCURRENCIES)
           suppress_read_receipts: only supported from Exchange 2013. True or False. (Default value = True)
           chunk_size: The number of items to send to the server in a single request (Default value = None)
 

@@ -314,8 +314,7 @@ class BaseFolder(RegisterMixIn, SearchableMixIn):
 
         Args:
           q: a Q instance containing any restrictions
-          shape: controls whether to return (id, chanegkey) tuples or Persona objects. If additional_fields is
-        non-null, we always return Persona objects. (Default value = ID_ONLY)
+          shape: controls whether to return (id, chanegkey) tuples or Persona objects. If additional_fields is non-null, we always return Persona objects. (Default value = ID_ONLY)
           depth: controls the whether to return soft-deleted items or not. (Default value = None)
           additional_fields: the extra properties we want on the return objects. Default is no properties.
           order_fields: the SortOrder fields, if any (Default value = None)
