@@ -41,7 +41,7 @@ class BaseProtocol:
     SESSION_POOLSIZE = 1
     # We want only 1 TCP connection per Session object. We may have lots of different credentials hitting the server and
     # each credential needs its own session (NTLM auth will only send credentials once and then secure the connection,
-    # so a connection can only handle requests for one credential). Having multiple connections ser Session could
+    # so a connection can only handle requests for one credential). Having multiple connections per Session could
     # quickly exhaust the maximum number of concurrent connections the Exchange server allows from one client.
     CONNECTIONS_PER_SESSION = 1
     # The number of times a session may be reused before creating a new session object. 'None' means "infinite".
