@@ -315,10 +315,10 @@ class ExternId(ExtendedProperty):
 
 
 class Flag(ExtendedProperty):
-    """This property returns 0 for Not Flagged messages, 1 for Flagged messages and 2 for Completed messages.
+    """This property returns None for Not Flagged messages, 1 for Completed messages and 2 for Flagged messages.
 
     For a description of each status, see:
-    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/flagstatus
+    https://docs.microsoft.com/en-us/openspecs/exchange_server_protocols/ms-oxoflag/eda9fd25-6407-4cec-9e62-26e4f9d6a098
 
     """
     property_tag = 0x1090
