@@ -9,6 +9,7 @@ from .properties import InvalidField
 from .restriction import Q
 from .services import CHUNK_SIZE
 from .version import EXCHANGE_2010
+from .ewsdatetime import EWSDate, EWSDateTime, EWSTimeZone
 
 log = logging.getLogger(__name__)
 
@@ -774,6 +775,11 @@ def _get_value_or_default(item, field_order):
     val = field_order.field_path.get_value(item)
     if val is None:
         return _default_field_value(field_order.field_path.field)
+    if isinstance(val, EWSDate):
+		tz = getattr(item, '_meeting_timezone', getattr(item, '_start_timezone'), None)
+		if tz is None:
+			tz = EWSTimeZone.timezone('GMT')
+        val = tz.localize(EWSDateTime(val.year, val.month, val.day))
     return val
 
 
