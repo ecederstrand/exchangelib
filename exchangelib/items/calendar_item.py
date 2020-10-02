@@ -227,15 +227,22 @@ class CalendarItem(Item, AcceptDeclineMixIn):
             setattr(item, field_name, val.astimezone(tz).date())
         return item
 
+    def tz_field_for_field_name(self, field_name):
+        meeting_tz_field, start_tz_field, end_tz_field = CalendarItem.timezone_fields()
+        if self.account.version.build < EXCHANGE_2010:
+            return meeting_tz_field
+        if field_name == 'start':
+            return start_tz_field
+        elif field_name == 'end':
+            return end_tz_field
+        raise ValueError('Unsupported field_name')
+
     def date_to_datetime(self, field_name):
         # EWS always expects a datetime. If we have a date value, then convert it to datetime in the local
         # timezone. Additionally, if this the end field, add 1 day to the date. We could add 12 hours to both
         # start and end values and let EWS apply its logic, but that seems hacky.
         value = getattr(self, field_name)
-        if self.account.version.build < EXCHANGE_2010:
-            tz = self._meeting_timezone
-        else:
-            tz = getattr(self, '_%s_timezone' % field_name)
+        tz = getattr(self, self.tz_field_for_field_name(field_name).name)
         value = EWSDateTime.combine(value, datetime.time(0, 0)).replace(tzinfo=tz)
         if field_name == 'end':
             value += datetime.timedelta(days=1)

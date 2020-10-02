@@ -3,7 +3,7 @@ import logging
 
 from ..ewsdatetime import EWSDate
 from ..util import create_element, set_xml_value, MNS
-from ..version import EXCHANGE_2010, EXCHANGE_2013_SP1
+from ..version import EXCHANGE_2013_SP1
 from .common import EWSAccountService, EWSPooledMixIn, to_item_id
 
 log = logging.getLogger(__name__)
@@ -76,22 +76,16 @@ class UpdateItem(EWSAccountService, EWSPooledMixIn):
         if item.__class__ == CalendarItem:
             # For CalendarItem items where we update 'start' or 'end', we want to update internal timezone fields
             item.clean_timezone_fields(version=self.account.version)  # Possibly also sets timezone values
-            meeting_tz_field, start_tz_field, end_tz_field = CalendarItem.timezone_fields()
-            if self.account.version.build < EXCHANGE_2010:
-                if 'start' in fieldnames_copy or 'end' in fieldnames_copy:
-                    fieldnames_copy.append(meeting_tz_field.name)
-            else:
-                if 'start' in fieldnames_copy:
-                    fieldnames_copy.append(start_tz_field.name)
-                if 'end' in fieldnames_copy:
-                    fieldnames_copy.append(end_tz_field.name)
-        else:
-            meeting_tz_field, start_tz_field, end_tz_field = None, None, None
+            for field_name in ('start', 'end'):
+                if field_name in fieldnames_copy:
+                    tz_field_name = item.tz_field_for_field_name(field_name).name
+                    if tz_field_name not in fieldnames_copy:
+                        fieldnames_copy.append(tz_field_name)
 
         for field in self._sorted_fields(item_model=item.__class__, fieldnames=fieldnames_copy):
             if field.is_read_only:
                 raise ValueError('%s is a read-only field' % field.name)
-            value = self._get_item_value(item, field, meeting_tz_field, start_tz_field, end_tz_field)
+            value = self._get_item_value(item, field)
             if value is None or (field.is_list and not value):
                 # A value of None or [] means we want to remove this field from the item
                 for elem in self._get_delete_item_elems(field=field):
@@ -100,22 +94,17 @@ class UpdateItem(EWSAccountService, EWSPooledMixIn):
                 for elem in self._get_set_item_elems(item_model=item.__class__, field=field, value=value):
                     yield elem
 
-    def _get_item_value(self, item, field, meeting_tz_field, start_tz_field, end_tz_field):
+    def _get_item_value(self, item, field):
         from ..items import CalendarItem
         value = field.clean(getattr(item, field.name), version=self.account.version)  # Make sure the value is OK
         if item.__class__ == CalendarItem:
             # For CalendarItem items where we update 'start' or 'end', we want to send values in the local timezone
-            if field.name in ('start', 'end') and type(value) == EWSDate:
-                # EWS always expects a datetime
-                return item.date_to_datetime(field_name=field.name)
-            if self.account.version.build < EXCHANGE_2010:
-                if field.name in ('start', 'end'):
-                    value = value.astimezone(getattr(item, meeting_tz_field.name))
-            else:
-                if field.name == 'start':
-                    value = value.astimezone(getattr(item, start_tz_field.name))
-                elif field.name == 'end':
-                    value = value.astimezone(getattr(item, end_tz_field.name))
+            if field.name in ('start', 'end'):
+                if type(value) == EWSDate:
+                    # EWS always expects a datetime
+                    return item.date_to_datetime(field_name=field.name)
+                tz_field_name = item.tz_field_for_field_name(field.name).name
+                return value.astimezone(getattr(item, tz_field_name))
         return value
 
     def _get_delete_item_elems(self, field):
