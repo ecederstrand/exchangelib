@@ -261,7 +261,7 @@ class EWSTimeZone(zoneinfo.ZoneInfo):
         return dt
 
     def localize(self, dt, is_dst=False):
-        warnings.warn('replace localize() with dt.replace(tzinfo=tz)', DeprecationWarning, stacklevel=2)
+        warnings.warn('replace tz.localize() with dt.replace(tzinfo=tz)', DeprecationWarning, stacklevel=2)
         if dt.tzinfo is not None:
             raise ValueError('%r must be timezone-unaware' % dt)
         dt = dt.replace(tzinfo=self)

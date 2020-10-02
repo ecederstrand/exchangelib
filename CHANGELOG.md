@@ -6,7 +6,7 @@ HEAD
 -   Switch `EWSTimeZone` to be implemented on top of the new `zoneinfo` module in Python 3.9 instead
     of `pytz`. `backports.zoneinfo` is used for earlier versions of Python. This means that the
     `ÈWSTimeZone` methods `timezone()`, `normalize()` and `localize()` methods are now deprecated.
--   Add `EWSTimeZone.from_dateutil()` to support converting `dateutil` timezones to `EWSTimeZone`.
+-   Add `EWSTimeZone.from_dateutil()` to support converting `dateutil.tz` timezones to `EWSTimeZone`.
 -   Dropped support for Python 3.5 which is EOL per September 2020.
 
 
