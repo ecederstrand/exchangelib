@@ -1,7 +1,7 @@
 import datetime
 
 from exchangelib.errors import ErrorInvalidOperation, ErrorItemNotFound
-from exchangelib.ewsdatetime import EWSDateTime, UTC
+from exchangelib.ewsdatetime import EWSDateTime, EWSDate, UTC
 from exchangelib.folders import Calendar
 from exchangelib.items import CalendarItem, BulkCreateResult
 from exchangelib.items.calendar_item import SINGLE, OCCURRENCE, EXCEPTION, RECURRING_MASTER
@@ -197,6 +197,34 @@ class CalendarTest(CommonItemTest):
             [i for i in qs.order_by('subject').values('subject') if i['subject'] in (item1.subject, item2.subject)],
             [{'subject': s} for s in sorted([item1.subject, item2.subject])]
         )
+
+    def test_client_side_ordering_on_mixed_all_day_and_normal(self):
+        # Test that client-side ordering on start and end fields works for items that are a mix of normal an all-day
+        # items. This requires us to compare EWSDateTime -> EWSDate values which is not allowed by default (EWSDate ->
+        # EWSDateTime *is* allowed).
+        start = EWSDateTime(2016, 1, 1, 8, tzinfo=self.account.default_timezone)
+        end = EWSDateTime(2016, 1, 1, 10, tzinfo=self.account.default_timezone)
+        all_day_date = (start - datetime.timedelta(days=1)).date()
+        item1 = self.ITEM_CLASS(
+            account=self.account,
+            folder=self.test_folder,
+            subject=get_random_string(16),
+            start=all_day_date,
+            end=all_day_date,
+            is_all_day=True,
+            categories=self.categories,
+        )
+        item2 = self.ITEM_CLASS(
+            account=self.account,
+            folder=self.test_folder,
+            subject=get_random_string(16),
+            start=start,
+            end=end,
+            categories=self.categories,
+        )
+        self.test_folder.bulk_create(items=[item1, item2])
+        list(self.test_folder.view(start=start - datetime.timedelta(days=1), end=end).order_by('start'))
+        list(self.test_folder.view(start=start - datetime.timedelta(days=1), end=end).order_by('-start'))
 
     def test_recurring_item(self):
         # Create a recurring calendar item. Test that occurrence fields are correct on the master item

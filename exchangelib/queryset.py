@@ -771,7 +771,7 @@ def _get_value_or_default(item, field_order):
     # value.
     if isinstance(item, Exception):
         return _default_field_value(field_order.field_path.field)
-    val = field_order.field_path.get_value(item)
+    val = field_order.field_path.get_sort_value(item)
     if val is None:
         return _default_field_value(field_order.field_path.field)
     return val

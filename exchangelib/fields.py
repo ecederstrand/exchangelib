@@ -180,6 +180,13 @@ class FieldPath:
             return None  # No item with this label
         return getattr(item, self.field.name)
 
+    def get_sort_value(self, item):
+        # For fields that allow values of different types, we need to return a value that is
+        val = self.get_value(item)
+        if isinstance(self.field, DateOrDateTimeField) and isinstance(val, EWSDate):
+            return item.date_to_datetime(field_name=self.field.name)
+        return val
+
     def to_xml(self):
         if isinstance(self.field, IndexedField):
             if not self.label or not self.subfield:
