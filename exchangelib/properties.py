@@ -10,9 +10,9 @@ from threading import Lock
 from .fields import SubField, TextField, EmailAddressField, ChoiceField, DateTimeField, EWSElementField, MailboxField, \
     Choice, BooleanField, IdField, ExtendedPropertyField, IntegerField, TimeField, EnumField, CharField, EmailField, \
     EWSElementListField, EnumListField, FreeBusyStatusField, UnknownEntriesField, MessageField, RecipientAddressField, \
-    RoutingTypeField, WEEKDAY_NAMES, FieldPath, Field
+    RoutingTypeField, WEEKDAY_NAMES, FieldPath, Field, AssociatedCalendarItemIdField
 from .util import get_xml_attr, create_element, set_xml_value, value_to_xml_text, MNS, TNS
-from .version import Version, EXCHANGE_2013
+from .version import Version, EXCHANGE_2013, Build
 
 log = logging.getLogger(__name__)
 
@@ -1358,6 +1358,21 @@ class ExceptionFieldURI(EWSElement):
     ELEMENT_NAME = 'ExceptionFieldURI'
     FIELDS = Fields(
         CharField('field_uri', field_uri='FieldURI', is_attribute=True, is_required=True),
+    )
+
+    __slots__ = tuple(f.name for f in FIELDS)
+
+
+class ReminderMessageData(EWSElement):
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/remindermessagedata"""
+    ELEMENT_NAME = 'ReminderMessageData'
+    FIELDS = Fields(
+        CharField('reminder_text', field_uri='ReminderText'),
+        CharField('location', field_uri='Location'),
+        TimeField('start_time', field_uri='StartTime'),
+        TimeField('end_time', field_uri='EndTime'),
+        AssociatedCalendarItemIdField('associated_calendar_item_id', field_uri='AssociatedCalendarItemId',
+                                      supported_from=Build(15, 0, 913, 9)),
     )
 
     __slots__ = tuple(f.name for f in FIELDS)

@@ -1,10 +1,10 @@
 import logging
 
-from ..fields import BooleanField, Base64Field, TextField, MailboxField, MailboxListField, CharField
-from ..properties import ReferenceItemId, Fields
+from ..fields import BooleanField, Base64Field, TextField, MailboxField, MailboxListField, CharField, EWSElementField
+from ..properties import ReferenceItemId, ReminderMessageData, Fields
 from ..services import SendItem
 from ..util import require_account, require_id
-from ..version import EXCHANGE_2013
+from ..version import EXCHANGE_2013, EXCHANGE_2013_SP1
 from .base import BaseReplyItem
 from .item import Item, AUTO_RESOLVE, SEND_TO_NONE, SEND_ONLY, SEND_AND_SAVE_COPY
 
@@ -38,7 +38,8 @@ class Message(Item):
         MailboxListField('reply_to', field_uri='message:ReplyTo', is_read_only_after_send=True, is_searchable=False),
         MailboxField('received_by', field_uri='message:ReceivedBy', is_read_only=True),
         MailboxField('received_representing', field_uri='message:ReceivedRepresenting', is_read_only=True),
-        # Placeholder for ReminderMessageData
+        EWSElementField('reminder_message_data', field_uri='message:ReminderMessageData',
+                        value_cls=ReminderMessageData, supported_from=EXCHANGE_2013_SP1, is_read_only=True),
     )
     FIELDS = Item.FIELDS + LOCAL_FIELDS
 

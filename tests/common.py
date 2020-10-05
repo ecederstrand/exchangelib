@@ -26,7 +26,8 @@ from exchangelib.fields import BooleanField, IntegerField, DecimalField, TextFie
     MailboxListField, EWSElementField, CultureField, CharField, TextListField, PermissionSetField, MimeContentField, \
     DateField, DateTimeBackedDateField
 from exchangelib.indexed_properties import EmailAddress, PhysicalAddress, PhoneNumber
-from exchangelib.properties import Attendee, Mailbox, PermissionSet, Permission, UserId
+from exchangelib.properties import Attendee, Mailbox, PermissionSet, Permission, UserId,\
+    ReminderMessageData
 from exchangelib.protocol import BaseProtocol, NoVerifyHTTPAdapter, FaultTolerance
 from exchangelib.recurrence import Recurrence, DailyPattern
 from exchangelib.util import DummyResponse
@@ -225,6 +226,15 @@ class EWSTest(TimedTestCase):
         if isinstance(field, EWSElementField):
             if field.value_cls == Recurrence:
                 return Recurrence(pattern=DailyPattern(interval=5), start=get_random_date(), number=7)
+            if field.value_cls == ReminderMessageData:
+                start = get_random_time()
+                end = get_random_time(start_time=start)
+                return ReminderMessageData(
+                    reminder_text=get_random_string(16),
+                    location=get_random_string(16),
+                    start_time=start,
+                    end_time=end,
+                )
         if isinstance(field, TimeZoneField):
             while True:
                 try:
@@ -296,6 +306,16 @@ def get_random_email():
         lambda i: get_random_string(i, spaces=False, special=False).lower(),
         (account_len, domain_len, tld_len)
     ))
+
+
+def _total_minutes(tm):
+    return (tm.hour * 60) + tm.minute
+
+
+def get_random_time(start_time=datetime.time.min, end_time=datetime.time.max):
+    # Create a random time with minute precision.
+    random_minutes = random.randint(_total_minutes(start_time), _total_minutes(end_time))
+    return datetime.time(hour=random_minutes // 60, minute=random_minutes % 60)
 
 
 # The timezone we're testing (CET/CEST) had a DST date change in 1996 (see

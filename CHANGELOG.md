@@ -10,6 +10,7 @@ HEAD
 -   Dropped support for Python 3.5 which is EOL per September 2020.
 -   Added support for `CalendaItem.appointment_state`, `CalendaItem.conflicting_meetings` and
     `CalendarItem.adjacent_meetings` fields.
+-   Added support for the `Message.reminder_message_data` field.
 
 
 3.2.1
