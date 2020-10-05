@@ -8,6 +8,8 @@ HEAD
     `ÈWSTimeZone` methods `timezone()`, `normalize()` and `localize()` methods are now deprecated.
 -   Add `EWSTimeZone.from_dateutil()` to support converting `dateutil.tz` timezones to `EWSTimeZone`.
 -   Dropped support for Python 3.5 which is EOL per September 2020.
+-   Added support for `CalendaItem.appointment_state`, `CalendaItem.conflicting_meetings` and
+    `CalendarItem.adjacent_meetings` fields.
 
 
 3.2.1

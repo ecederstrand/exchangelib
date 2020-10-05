@@ -4,6 +4,7 @@ import binascii
 from collections import OrderedDict
 import datetime
 from decimal import Decimal, InvalidOperation
+from importlib import import_module
 import logging
 
 from .errors import ErrorInvalidServerVersion
@@ -549,6 +550,26 @@ class EnumAsIntField(EnumField):
         return set_xml_value(field_elem, value, version=version)
 
 
+class AppointmentStateField(IntegerField):
+    # MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/appointmentstate
+    NONE = 'None'
+    MEETING = 'Meeting'
+    RECEIVED = 'Received'
+    CANCELLED = 'Cancelled'
+    STATES = {
+        NONE: 0x0000,
+        MEETING: 0x0001,
+        RECEIVED: 0x0002,
+        CANCELLED: 0x0004,
+    }
+
+    def from_xml(self, elem, account):
+        val = super().from_xml(elem=elem, account=account)
+        if val is None:
+            return val
+        return tuple(name for name, mask in self.STATES.items() if bool(val & mask))
+
+
 class Base64Field(FieldURIField):
     value_cls = bytes
     is_complex = True
@@ -914,9 +935,18 @@ class BodyField(TextField):
 
 class EWSElementField(FieldURIField):
     def __init__(self, *args, **kwargs):
-        self.value_cls = kwargs.pop('value_cls')
-        kwargs['namespace'] = kwargs.get('namespace', self.value_cls.NAMESPACE)
+        self._value_cls = kwargs.pop('value_cls')
+        if 'namespace' not in kwargs:
+            kwargs['namespace'] = self.value_cls.NAMESPACE
         super().__init__(*args, **kwargs)
+
+    @property
+    def value_cls(self):
+        if isinstance(self._value_cls, str):
+            # Support 'value_cls' as string to allow self-referencing classes. The class must be importable from the
+            # top-level module.
+            self._value_cls = getattr(import_module(self.__module__.split('.')[0]), self._value_cls)
+        return self._value_cls
 
     def from_xml(self, elem, account):
         if self.is_list:

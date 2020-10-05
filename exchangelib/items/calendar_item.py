@@ -5,7 +5,7 @@ from ..ewsdatetime import EWSDate, EWSDateTime
 from ..fields import BooleanField, IntegerField, TextField, ChoiceField, URIField, BodyField, DateTimeField, \
     MessageHeaderField, AttachmentField, RecurrenceField, MailboxField, AttendeesField, Choice, OccurrenceField, \
     OccurrenceListField, TimeZoneField, CharField, EnumAsIntField, FreeBusyStatusField, ReferenceItemIdField, \
-    AssociatedCalendarItemIdField, DateOrDateTimeField
+    AssociatedCalendarItemIdField, DateOrDateTimeField, EWSElementListField, AppointmentStateField
 from ..properties import Attendee, ReferenceItemId, AssociatedCalendarItemId, OccurrenceItemId, RecurringMasterItemId, \
     Fields
 from ..recurrence import FirstOccurrence, LastOccurrence, Occurrence, DeletedOccurrence
@@ -83,15 +83,14 @@ class CalendarItem(Item, AcceptDeclineMixIn):
         AttendeesField('resources', field_uri='calendar:Resources', is_searchable=False),
         IntegerField('conflicting_meeting_count', field_uri='calendar:ConflictingMeetingCount', is_read_only=True),
         IntegerField('adjacent_meeting_count', field_uri='calendar:AdjacentMeetingCount', is_read_only=True),
-        # Placeholder for ConflictingMeetings
-        # Placeholder for AdjacentMeetings
+        EWSElementListField('conflicting_meetings', field_uri='calendar:ConflictingMeetings', value_cls='CalendarItem',
+                            namespace=Item.NAMESPACE, is_read_only=True),
+        EWSElementListField('adjacent_meetings', field_uri='calendar:AdjacentMeetings', value_cls='CalendarItem',
+                            namespace=Item.NAMESPACE, is_read_only=True),
         CharField('duration', field_uri='calendar:Duration', is_read_only=True),
         DateTimeField('appointment_reply_time', field_uri='calendar:AppointmentReplyTime', is_read_only=True),
         IntegerField('appointment_sequence_number', field_uri='calendar:AppointmentSequenceNumber', is_read_only=True),
-        # Placeholder for AppointmentState
-        # AppointmentState is an EnumListField-like field, but with bitmask values:
-        #    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/appointmentstate
-        # We could probably subclass EnumListField to implement this field.
+        AppointmentStateField('appointment_state', field_uri='calendar:AppointmentState', is_read_only=True),
         RecurrenceField('recurrence', field_uri='calendar:Recurrence', is_searchable=False),
         OccurrenceField('first_occurrence', field_uri='calendar:FirstOccurrence', value_cls=FirstOccurrence,
                         is_read_only=True),
@@ -282,7 +281,7 @@ class BaseMeetingItem(Item):
     Therefore BaseMeetingItem inherits from  EWSElement has no save() or send() method
 
     """
-    LOCAL_FIELDS = Message.LOCAL_FIELDS[:-2] + Fields(
+    LOCAL_FIELDS = Message.LOCAL_FIELDS[:14] + Fields(
         AssociatedCalendarItemIdField('associated_calendar_item_id', field_uri='meeting:AssociatedCalendarItemId',
                                       value_cls=AssociatedCalendarItemId),
         BooleanField('is_delegated', field_uri='meeting:IsDelegated', is_read_only=True, default=False),
