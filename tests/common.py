@@ -26,7 +26,7 @@ from exchangelib.fields import BooleanField, IntegerField, DecimalField, TextFie
     MailboxListField, EWSElementField, CultureField, CharField, TextListField, PermissionSetField, MimeContentField, \
     DateField, DateTimeBackedDateField
 from exchangelib.indexed_properties import EmailAddress, PhysicalAddress, PhoneNumber
-from exchangelib.properties import Attendee, Mailbox, PermissionSet, Permission, UserId,\
+from exchangelib.properties import Attendee, Mailbox, PermissionSet, Permission, UserId, CompleteName,\
     ReminderMessageData
 from exchangelib.protocol import BaseProtocol, NoVerifyHTTPAdapter, FaultTolerance
 from exchangelib.recurrence import Recurrence, DailyPattern
@@ -235,6 +235,19 @@ class EWSTest(TimedTestCase):
                     start_time=start,
                     end_time=end,
                 )
+        if field.value_cls == CompleteName:
+            return CompleteName(
+                title=get_random_string(16),
+                first_name=get_random_string(16),
+                middle_name=get_random_string(16),
+                last_name=get_random_string(16),
+                suffix=get_random_string(16),
+                initials=get_random_string(16),
+                full_name=get_random_string(16),
+                nickname=get_random_string(16),
+                yomi_first_name=get_random_string(16),
+                yomi_last_name=get_random_string(16),
+            )
         if isinstance(field, TimeZoneField):
             while True:
                 try:

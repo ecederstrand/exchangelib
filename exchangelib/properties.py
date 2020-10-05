@@ -1363,6 +1363,25 @@ class ExceptionFieldURI(EWSElement):
     __slots__ = tuple(f.name for f in FIELDS)
 
 
+class CompleteName(EWSElement):
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/completename"""
+    ELEMENT_NAME = 'CompleteName'
+    FIELDS = Fields(
+        CharField('title', field_uri='Title'),
+        CharField('first_name', field_uri='FirstName'),
+        CharField('middle_name', field_uri='MiddleName'),
+        CharField('last_name', field_uri='LastName'),
+        CharField('suffix', field_uri='Suffix'),
+        CharField('initials', field_uri='Initials'),
+        CharField('full_name', field_uri='FullName'),
+        CharField('nickname', field_uri='Nickname'),
+        CharField('yomi_first_name', field_uri='YomiFirstName'),
+        CharField('yomi_last_name', field_uri='YomiLastName'),
+    )
+
+    __slots__ = tuple(f.name for f in FIELDS)
+
+
 class ReminderMessageData(EWSElement):
     """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/remindermessagedata"""
     ELEMENT_NAME = 'ReminderMessageData'

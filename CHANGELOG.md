@@ -11,6 +11,7 @@ HEAD
 -   Added support for `CalendaItem.appointment_state`, `CalendaItem.conflicting_meetings` and
     `CalendarItem.adjacent_meetings` fields.
 -   Added support for the `Message.reminder_message_data` field.
+-   Added support for `Contact.manager_mailbox`, `Contact.direct_reports` and `Contact.complete_name` fields.
 
 
 3.2.1

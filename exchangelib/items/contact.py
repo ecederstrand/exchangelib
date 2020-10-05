@@ -2,9 +2,9 @@ import logging
 
 from ..fields import BooleanField, Base64Field, TextField, ChoiceField, URIField, DateTimeBackedDateField, \
     PhoneNumberField, EmailAddressesField, PhysicalAddressField, Choice, MemberListField, CharField, TextListField, \
-    EmailAddressField, IdElementField
-from ..properties import PersonaId, IdChangeKeyMixIn, Fields
-from ..version import EXCHANGE_2010, EXCHANGE_2013
+    EmailAddressField, IdElementField, EWSElementField
+from ..properties import PersonaId, IdChangeKeyMixIn, Fields, CompleteName
+from ..version import EXCHANGE_2010, EXCHANGE_2010_SP2, EXCHANGE_2013
 from .item import Item
 
 log = logging.getLogger(__name__)
@@ -28,7 +28,7 @@ class Contact(Item):
         TextField('initials', field_uri='contacts:Initials'),
         CharField('middle_name', field_uri='contacts:MiddleName'),
         TextField('nickname', field_uri='contacts:Nickname'),
-        # Placeholder for CompleteName
+        EWSElementField('complete_name', field_uri='contacts:CompleteName', value_cls=CompleteName, is_read_only=True),
         TextField('company_name', field_uri='contacts:CompanyName'),
         EmailAddressesField('email_addresses', field_uri='contacts:EmailAddress'),
         PhysicalAddressField('physical_addresses', field_uri='contacts:PhysicalAddress'),
@@ -73,8 +73,10 @@ class Contact(Item):
         # Placeholder for UserSMIMECertificate
         # Placeholder for MSExchangeCertificate
         TextField('directory_id', field_uri='contacts:DirectoryId', supported_from=EXCHANGE_2013, is_read_only=True),
-        # Placeholder for ManagerMailbox
-        # Placeholder for DirectReports
+        CharField('manager_mailbox', field_uri='contacts:ManagerMailbox', supported_from=EXCHANGE_2010_SP2,
+                  is_read_only=True),
+        CharField('direct_reports', field_uri='contacts:DirectReports', supported_from=EXCHANGE_2010_SP2,
+                  is_read_only=True),
     )
     FIELDS = Item.FIELDS + LOCAL_FIELDS
 
