@@ -12,6 +12,7 @@ HEAD
     `CalendarItem.adjacent_meetings` fields.
 -   Added support for the `Message.reminder_message_data` field.
 -   Added support for `Contact.manager_mailbox`, `Contact.direct_reports` and `Contact.complete_name` fields.
+-   Added support for `Item.response_objects` field.
 
 
 3.2.1

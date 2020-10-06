@@ -10,7 +10,7 @@ from threading import Lock
 from .fields import SubField, TextField, EmailAddressField, ChoiceField, DateTimeField, EWSElementField, MailboxField, \
     Choice, BooleanField, IdField, ExtendedPropertyField, IntegerField, TimeField, EnumField, CharField, EmailField, \
     EWSElementListField, EnumListField, FreeBusyStatusField, UnknownEntriesField, MessageField, RecipientAddressField, \
-    RoutingTypeField, WEEKDAY_NAMES, FieldPath, Field, AssociatedCalendarItemIdField
+    RoutingTypeField, WEEKDAY_NAMES, FieldPath, Field, AssociatedCalendarItemIdField, ReferenceItemIdField
 from .util import get_xml_attr, create_element, set_xml_value, value_to_xml_text, MNS, TNS
 from .version import Version, EXCHANGE_2013, Build
 
@@ -1392,6 +1392,65 @@ class ReminderMessageData(EWSElement):
         TimeField('end_time', field_uri='EndTime'),
         AssociatedCalendarItemIdField('associated_calendar_item_id', field_uri='AssociatedCalendarItemId',
                                       supported_from=Build(15, 0, 913, 9)),
+    )
+
+    __slots__ = tuple(f.name for f in FIELDS)
+
+
+class AcceptSharingInvitation(EWSElement):
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/acceptsharinginvitation"""
+    ELEMENT_NAME = 'AcceptSharingInvitation'
+    FIELDS = Fields(
+        ReferenceItemIdField('reference_item_id', field_uri='item:ReferenceItemId'),
+    )
+
+    __slots__ = tuple(f.name for f in FIELDS)
+
+
+class SuppressReadReceipt(EWSElement):
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/suppressreadreceipt"""
+    ELEMENT_NAME = 'SuppressReadReceipt'
+    FIELDS = Fields(
+        ReferenceItemIdField('reference_item_id', field_uri='item:ReferenceItemId'),
+    )
+
+    __slots__ = tuple(f.name for f in FIELDS)
+
+
+class RemoveItem(EWSElement):
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/removeitem"""
+    ELEMENT_NAME = 'RemoveItem'
+    FIELDS = Fields(
+        ReferenceItemIdField('reference_item_id', field_uri='item:ReferenceItemId'),
+    )
+
+    __slots__ = tuple(f.name for f in FIELDS)
+
+
+class ResponseObjects(EWSElement):
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/responseobjects"""
+    ELEMENT_NAME = 'ResponseObjects'
+    FIELDS = Fields(
+        EWSElementField('accept_item', field_uri='AcceptItem', value_cls='AcceptItem',
+                        namespace=EWSElement.NAMESPACE),
+        EWSElementField('tentatively_accept_item', field_uri='TentativelyAcceptItem', value_cls='TentativelyAcceptItem',
+                        namespace=EWSElement.NAMESPACE),
+        EWSElementField('decline_item', field_uri='DeclineItem', value_cls='DeclineItem',
+                        namespace=EWSElement.NAMESPACE),
+        EWSElementField('reply_to_item', field_uri='ReplyToItem', value_cls='ReplyToItem',
+                        namespace=EWSElement.NAMESPACE),
+        EWSElementField('forward_item', field_uri='ForwardItem', value_cls='ForwardItem',
+                        namespace=EWSElement.NAMESPACE),
+        EWSElementField('reply_all_to_item', field_uri='ReplyAllToItem', value_cls='ReplyAllToItem',
+                        namespace=EWSElement.NAMESPACE),
+        EWSElementField('cancel_calendar_item', field_uri='CancelCalendarItem', value_cls='CancelCalendarItem',
+                        namespace=EWSElement.NAMESPACE),
+        EWSElementField('remove_item', field_uri='RemoveItem', value_cls=RemoveItem),
+        EWSElementField('post_reply_item', field_uri='PostReplyItem', value_cls='PostReplyItem',
+                        namespace=EWSElement.NAMESPACE),
+        EWSElementField('success_read_receipt', field_uri='SuppressReadReceipt', value_cls=SuppressReadReceipt),
+        EWSElementField('accept_sharing_invitation', field_uri='AcceptSharingInvitation',
+                        value_cls=AcceptSharingInvitation),
     )
 
     __slots__ = tuple(f.name for f in FIELDS)

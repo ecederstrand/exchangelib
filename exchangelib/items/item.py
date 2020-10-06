@@ -4,7 +4,7 @@ from ..fields import BooleanField, IntegerField, TextField, CharListField, Choic
     DateTimeField, MessageHeaderField, AttachmentField, Choice, EWSElementField, EffectiveRightsField, CultureField, \
     CharField, MimeContentField, FieldPath
 from ..properties import ConversationId, ParentFolderId, ReferenceItemId, OccurrenceItemId, RecurringMasterItemId,\
-    Fields
+    ResponseObjects, Fields
 from ..services import GetItem, CreateItem, UpdateItem, DeleteItem, MoveItem, CopyItem, ArchiveItem
 from ..util import is_iterable, require_account, require_id
 from ..version import EXCHANGE_2010, EXCHANGE_2013
@@ -45,6 +45,8 @@ class Item(BaseItem):
         MessageHeaderField('headers', field_uri='item:InternetMessageHeaders', is_read_only=True),
         DateTimeField('datetime_sent', field_uri='item:DateTimeSent', is_read_only=True),
         DateTimeField('datetime_created', field_uri='item:DateTimeCreated', is_read_only=True),
+        EWSElementField('response_objects', field_uri='item:ResponseObjects', value_cls=ResponseObjects,
+                        is_read_only=True,),
         # Placeholder for ResponseObjects
         DateTimeField('reminder_due_by', field_uri='item:ReminderDueBy', is_required_after_save=True,
                       is_searchable=False),

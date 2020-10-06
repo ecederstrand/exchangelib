@@ -8,7 +8,7 @@ from .ewsdatetime import EWSDate, EWSDateTime, EWSTimeZone, UTC, UTC_NOW
 from .extended_properties import ExtendedProperty
 from .folders import Folder, RootOfHierarchy, FolderCollection, SHALLOW, DEEP
 from .items import AcceptItem, TentativelyAcceptItem, DeclineItem, CalendarItem, CancelCalendarItem, Contact, \
-    DistributionList, Message, PostItem, Task
+    DistributionList, Message, PostItem, Task, ForwardItem, ReplyToItem, ReplyAllToItem
 from .properties import Body, HTMLBody, ItemId, Mailbox, Attendee, Room, RoomList, UID, DLMailbox
 from .protocol import FaultTolerance, FailFast, BaseProtocol, NoVerifyHTTPAdapter, TLSClientAuth
 from .settings import OofSettings
@@ -29,7 +29,7 @@ __all__ = [
     'ExtendedProperty',
     'Folder', 'RootOfHierarchy', 'FolderCollection', 'SHALLOW', 'DEEP',
     'AcceptItem', 'TentativelyAcceptItem', 'DeclineItem', 'CalendarItem', 'CancelCalendarItem', 'Contact',
-    'DistributionList', 'Message', 'PostItem', 'Task',
+    'DistributionList', 'Message', 'PostItem', 'Task', 'ForwardItem', 'ReplyToItem', 'ReplyAllToItem',
     'ItemId', 'Mailbox', 'DLMailbox', 'Attendee', 'Room', 'RoomList', 'Body', 'HTMLBody', 'UID',
     'FailFast', 'FaultTolerance', 'BaseProtocol', 'NoVerifyHTTPAdapter', 'TLSClientAuth',
     'OofSettings',

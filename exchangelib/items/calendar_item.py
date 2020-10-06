@@ -379,7 +379,7 @@ class BaseMeetingReplyItem(BaseItem):
         AttachmentField('attachments', field_uri='item:Attachments'),  # ItemAttachment or FileAttachment
         MessageHeaderField('headers', field_uri='item:InternetMessageHeaders', is_read_only=True),
     ) + Message.LOCAL_FIELDS[:6] + Fields(
-        ReferenceItemIdField('reference_item_id', field_uri='item:ReferenceItemId', value_cls=ReferenceItemId),
+        ReferenceItemIdField('reference_item_id', field_uri='item:ReferenceItemId'),
         MailboxField('received_by', field_uri='message:ReceivedBy', is_read_only=True),
         MailboxField('received_representing', field_uri='message:ReceivedRepresenting', is_read_only=True),
         DateTimeField('proposed_start', field_uri='meeting:ProposedStart', supported_from=EXCHANGE_2013),
