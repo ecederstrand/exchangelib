@@ -158,6 +158,66 @@ class DailyPattern(Pattern):
         return 'Occurs every %s day(s)' % self.interval
 
 
+class YearlyRegeneration(Pattern):
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/yearlyregeneration"""
+    ELEMENT_NAME = 'YearlyRegeneration'
+
+    FIELDS = Fields(
+        # Interval, in years
+        IntegerField('interval', field_uri='Interval', min=1, is_required=True),
+    )
+
+    __slots__ = tuple(f.name for f in FIELDS)
+
+    def __str__(self):
+        return 'Occurs every %s year(s)' % self.interval
+
+
+class MonthlyRegeneration(Pattern):
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/monthlyregeneration"""
+    ELEMENT_NAME = 'MonthlyRegeneration'
+
+    FIELDS = Fields(
+        # Interval, in months
+        IntegerField('interval', field_uri='Interval', min=1, is_required=True),
+    )
+
+    __slots__ = tuple(f.name for f in FIELDS)
+
+    def __str__(self):
+        return 'Occurs every %s month(s)' % self.interval
+
+
+class WeeklyRegeneration(Pattern):
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/weeklyregeneration"""
+    ELEMENT_NAME = 'WeeklyRegeneration'
+
+    FIELDS = Fields(
+        # Interval, in weeks
+        IntegerField('interval', field_uri='Interval', min=1, is_required=True),
+    )
+
+    __slots__ = tuple(f.name for f in FIELDS)
+
+    def __str__(self):
+        return 'Occurs every %s week(s)' % self.interval
+
+
+class DailyRegeneration(Pattern):
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/dailyregeneration"""
+    ELEMENT_NAME = 'DailyRegeneration'
+
+    FIELDS = Fields(
+        # Interval, in days
+        IntegerField('interval', field_uri='Interval', min=1, is_required=True),
+    )
+
+    __slots__ = tuple(f.name for f in FIELDS)
+
+    def __str__(self):
+        return 'Occurs every %s day(s)' % self.interval
+
+
 class Boundary(EWSElement):
     """Base class for all classes implementing recurring boundary elements"""
     __slots__ = tuple()
