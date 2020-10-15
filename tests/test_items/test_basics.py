@@ -498,7 +498,7 @@ class CommonItemTest(BaseItemTest):
         self.assertEqual(len(find_ids[0]), 2, find_ids[0])
         self.assertEqual(insert_ids, find_ids)
         # Test with generator as argument
-        item = self.get_item_by_id((i for i in find_ids))
+        item = list(self.account.fetch(ids=(i for i in find_ids)))[0]
         for f in self.ITEM_CLASS.FIELDS:
             with self.subTest(f=f):
                 if not f.supports_version(self.account.version):
