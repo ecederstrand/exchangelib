@@ -7,6 +7,8 @@ from decimal import Decimal, InvalidOperation
 from importlib import import_module
 import logging
 
+import dateutil.parser
+
 from .errors import ErrorInvalidServerVersion
 from .ewsdatetime import EWSDateTime, EWSDate, EWSTimeZone, NaiveDateTimeNotAllowed, UnknownTimeZone, UTC
 from .util import create_element, get_xml_attrs, set_xml_value, value_to_xml_text, is_iterable, safe_b64decode, TNS
@@ -620,21 +622,31 @@ class DateTimeBackedDateField(FieldURIField):
     value_cls = datetime.date
 
     def __init__(self, *args, **kwargs):
+        # Not all fields assume a default tim of 00:00, so make this configurable
+        self._default_time = kwargs.pop('default_time', datetime.time(0, 0))
         super().__init__(*args, **kwargs)
         # Create internal field to handle datetime-only logic
         self._datetime_field = DateTimeField(*args, **kwargs)
 
     def date_to_datetime(self, value):
-        return self._datetime_field.value_cls.combine(value, datetime.time(11, 59)).replace(tzinfo=UTC)
+        return self._datetime_field.value_cls.combine(value, self._default_time).replace(tzinfo=UTC)
 
     def from_xml(self, elem, account):
+        val = self._get_val_from_elem(elem)
+        if val is not None and len(val) == 25:
+            # This is a datetime string with timezone info. We don't want to have datetime values converted to UTC
+            # before converting to date. EWSDateTime.from_string() insists on converting to UTC, but we don't have an
+            # EWSTimeZone we can convert the timezone info to. Instead, parse the string manually when we have a
+            # datetime string with timezone info.
+            return EWSDate.from_date(dateutil.parser.parse(val).date())
+        # Revert to default parsing of datetime strings
         res = self._datetime_field.from_xml(elem=elem, account=account)
         if res is None:
             return res
         return res.date()
 
     def to_xml(self, value, version):
-        # Convert date to datetime. EWS changes all values to have a time of 11:59 local time, so let's send that.
+        # Convert date to datetime
         value = self.date_to_datetime(value)
         return self._datetime_field.to_xml(value=value, version=version)
 
@@ -689,9 +701,11 @@ class DateTimeField(FieldURIField):
 
 class DateOrDateTimeField(DateTimeField):
     """This field can handle both EWSDate and EWSDateTime. Used for calendar items where 'start' and 'end'
-    values are conceptually dates when the calendar item is an all-day event, but datetimes in all other cases.
+    values are conceptually dates when the calendar item is an all-day event, but datetimes in all other cases, and
+    for recurrences where the returned 'start' and 'end' values may be either dates or datetimes depending on whether
+    the recurring item is a task or a calendar item.
 
-    For all-day items, we assume both start and end dates are inclusive.
+    For all-day calendar items, we assume both start and end dates are inclusive.
 
     For filtering kwarg validation and other places where we must decide on a specific class, we settle on datetime.
 
@@ -708,6 +722,13 @@ class DateOrDateTimeField(DateTimeField):
         if type(value) == EWSDate:
             return self._date_field.clean(value=value, version=version)
         return super().clean(value=value, version=version)
+
+    def from_xml(self, elem, account):
+        val = self._get_val_from_elem(elem)
+        if val is not None and len(val) == 16:
+            # This is a date format with timezone info, as sent by task recurrences. Eg: '2006-01-09+01:00'
+            return self._date_field.from_xml(elem=elem, account=account)
+        return super().from_xml(elem=elem, account=account)
 
 
 class TimeZoneField(FieldURIField):
