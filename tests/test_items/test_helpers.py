@@ -69,7 +69,7 @@ class ItemHelperTest(BaseItemTest):
         self.assertEqual(self.test_folder.filter(categories__contains=item.categories).count(), 0)
         # Test that the item moved to trash
         item = self.account.trash.get(categories__contains=item.categories)
-        moved_item = list(self.account.fetch(ids=[item]))[0]
+        moved_item = self.get_item_by_id(item)
         # The item was copied, so the ItemId has changed. Let's compare the subject instead
         self.assertEqual(item.subject, moved_item.subject)
 

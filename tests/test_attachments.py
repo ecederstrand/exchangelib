@@ -71,7 +71,7 @@ class AttachmentsTest(BaseItemTest):
         item.attach(att1)
         self.assertEqual(len(item.attachments), 1)
         item.save()
-        fresh_item = list(self.account.fetch(ids=[item]))[0]
+        fresh_item = self.get_item_by_id(item)
         self.assertEqual(len(fresh_item.attachments), 1)
         fresh_attachments = sorted(fresh_item.attachments, key=lambda a: a.name)
         self.assertEqual(fresh_attachments[0].name, 'my_file_1.txt')
@@ -90,7 +90,7 @@ class AttachmentsTest(BaseItemTest):
         self.assertEqual(len(item.attachments), 1)
         item.attach(att2)
         self.assertEqual(len(item.attachments), 2)
-        fresh_item = list(self.account.fetch(ids=[item]))[0]
+        fresh_item = self.get_item_by_id(item)
         self.assertEqual(len(fresh_item.attachments), 2)
         fresh_attachments = sorted(fresh_item.attachments, key=lambda a: a.name)
         self.assertEqual(fresh_attachments[0].name, 'my_file_1.txt')
@@ -102,7 +102,7 @@ class AttachmentsTest(BaseItemTest):
         item.detach(att1)
         self.assertTrue(att1.attachment_id is None)
         self.assertTrue(att1.parent_item is None)
-        fresh_item = list(self.account.fetch(ids=[item]))[0]
+        fresh_item = self.get_item_by_id(item)
         self.assertEqual(len(fresh_item.attachments), 1)
         fresh_attachments = sorted(fresh_item.attachments, key=lambda a: a.name)
         self.assertEqual(fresh_attachments[0].name, 'my_file_2.txt')
@@ -116,12 +116,12 @@ class AttachmentsTest(BaseItemTest):
         item.save()
 
         # Test streaming file content
-        fresh_item = list(self.account.fetch(ids=[item]))[0]
+        fresh_item = self.get_item_by_id(item)
         with fresh_item.attachments[0].fp as fp:
             self.assertEqual(fp.read(), large_binary_file_content)
 
         # Test partial reads of streaming file content
-        fresh_item = list(self.account.fetch(ids=[item]))[0]
+        fresh_item = self.get_item_by_id(item)
         with fresh_item.attachments[0].fp as fp:
             chunked_reads = []
             buffer = fp.read(7)
@@ -157,7 +157,7 @@ class AttachmentsTest(BaseItemTest):
         att1 = FileAttachment(name='empty_file.txt', content=b'')
         item.attach(att1)
         item.save()
-        fresh_item = list(self.account.fetch(ids=[item]))[0]
+        fresh_item = self.get_item_by_id(item)
         self.assertEqual(
             fresh_item.attachments[0].content,
             b''
@@ -172,7 +172,7 @@ class AttachmentsTest(BaseItemTest):
         item.attach(file_attachment)
         item.save()
 
-        fresh_item = list(self.account.fetch(ids=[item]))[0]
+        fresh_item = self.get_item_by_id(item)
         self.assertSetEqual(
             {a.name for a in fresh_item.attachments},
             {'item_attachment', 'file_attachment'}

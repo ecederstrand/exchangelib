@@ -29,7 +29,7 @@ from exchangelib.indexed_properties import EmailAddress, PhysicalAddress, PhoneN
 from exchangelib.properties import Attendee, Mailbox, PermissionSet, Permission, UserId, CompleteName,\
     ReminderMessageData
 from exchangelib.protocol import BaseProtocol, NoVerifyHTTPAdapter, FaultTolerance
-from exchangelib.recurrence import Recurrence, DailyPattern
+from exchangelib.recurrence import Recurrence, TaskRecurrence, DailyPattern, DailyRegeneration
 from exchangelib.util import DummyResponse
 
 mock_account = namedtuple('mock_account', ('protocol', 'version'))
@@ -226,6 +226,8 @@ class EWSTest(TimedTestCase):
         if isinstance(field, EWSElementField):
             if field.value_cls == Recurrence:
                 return Recurrence(pattern=DailyPattern(interval=5), start=get_random_date(), number=7)
+            if field.value_cls == TaskRecurrence:
+                return TaskRecurrence(pattern=DailyRegeneration(interval=5), start=get_random_date(), number=7)
             if field.value_cls == ReminderMessageData:
                 start = get_random_time()
                 end = get_random_time(start_time=start)

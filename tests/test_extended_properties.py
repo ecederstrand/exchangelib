@@ -152,12 +152,12 @@ class ExtendedPropertyTest(BaseItemTest):
             prop_val = item.my_meeting
             self.assertTrue(isinstance(prop_val, bytes))
             item.save()
-            item = list(self.account.fetch(ids=[(item.id, item.changekey)]))[0]
+            item = self.get_item_by_id((item.id, item.changekey))
             self.assertEqual(prop_val, item.my_meeting, (prop_val, item.my_meeting))
             new_prop_val = self.random_val(self.ITEM_CLASS.get_field_by_fieldname(attr_name))
             item.my_meeting = new_prop_val
             item.save()
-            item = list(self.account.fetch(ids=[(item.id, item.changekey)]))[0]
+            item = self.get_item_by_id((item.id, item.changekey))
             self.assertEqual(new_prop_val, item.my_meeting)
         finally:
             self.ITEM_CLASS.deregister(attr_name=attr_name)
@@ -177,12 +177,12 @@ class ExtendedPropertyTest(BaseItemTest):
             prop_val = item.my_meeting_array
             self.assertTrue(isinstance(prop_val, list))
             item.save()
-            item = list(self.account.fetch(ids=[(item.id, item.changekey)]))[0]
+            item = self.get_item_by_id((item.id, item.changekey))
             self.assertEqual(prop_val, item.my_meeting_array)
             new_prop_val = self.random_val(self.ITEM_CLASS.get_field_by_fieldname(attr_name))
             item.my_meeting_array = new_prop_val
             item.save()
-            item = list(self.account.fetch(ids=[(item.id, item.changekey)]))[0]
+            item = self.get_item_by_id((item.id, item.changekey))
             self.assertEqual(new_prop_val, item.my_meeting_array)
         finally:
             self.ITEM_CLASS.deregister(attr_name=attr_name)

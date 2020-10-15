@@ -784,7 +784,7 @@ class GenericItemTest(CommonItemTest):
 
         self.assertEqual(len(item.attachments), 1)
         item.save()
-        fresh_item = list(self.account.fetch(ids=[item]))[0]
+        fresh_item = self.get_item_by_id(item)
         self.assertEqual(len(fresh_item.attachments), 1)
         fresh_attachments = sorted(fresh_item.attachments, key=lambda a: a.name)
         self.assertEqual(fresh_attachments[0].name, 'attachment1')
@@ -824,7 +824,7 @@ class GenericItemTest(CommonItemTest):
         item.attach(attachment2)
 
         self.assertEqual(len(item.attachments), 2)
-        fresh_item = list(self.account.fetch(ids=[item]))[0]
+        fresh_item = self.get_item_by_id(item)
         self.assertEqual(len(fresh_item.attachments), 2)
         fresh_attachments = sorted(fresh_item.attachments, key=lambda a: a.name)
         self.assertEqual(fresh_attachments[0].name, 'attachment1')
@@ -888,7 +888,7 @@ class GenericItemTest(CommonItemTest):
         item.detach(attachment2)
         self.assertTrue(attachment2.attachment_id is None)
         self.assertTrue(attachment2.parent_item is None)
-        fresh_item = list(self.account.fetch(ids=[item]))[0]
+        fresh_item = self.get_item_by_id(item)
         self.assertEqual(len(fresh_item.attachments), 1)
         fresh_attachments = sorted(fresh_item.attachments, key=lambda a: a.name)
 

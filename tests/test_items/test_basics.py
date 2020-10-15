@@ -8,7 +8,6 @@ import unittest.util
 from dateutil.relativedelta import relativedelta
 from exchangelib.errors import ErrorItemNotFound, ErrorUnsupportedPathForQuery, ErrorInvalidValueForProperty, \
     ErrorPropertyUpdate, ErrorInvalidPropertySet
-from exchangelib.ewsdatetime import UTC_NOW
 from exchangelib.extended_properties import ExternId
 from exchangelib.fields import TextField, BodyField, FieldPath, CultureField, IdField, ChoiceField, AttachmentField,\
     BooleanField
@@ -19,7 +18,7 @@ from exchangelib.queryset import Q
 from exchangelib.util import value_to_xml_text
 
 from ..common import EWSTest, get_random_string, get_random_datetime_range, get_random_date, \
-    get_random_decimal, get_random_choice, get_random_int
+    get_random_decimal, get_random_choice, get_random_int, get_random_datetime
 
 
 class BaseItemTest(EWSTest):
@@ -90,9 +89,6 @@ class BaseItemTest(EWSTest):
             if f.name == 'recurrence':
                 continue
             if f.name == 'due_date':
-                # start_date must be before due_date
-                insert_kwargs['start_date'], insert_kwargs[f.name] = \
-                    get_random_datetime_range(tz=self.account.default_timezone)
                 continue
             if f.name == 'start_date':
                 continue
@@ -116,7 +112,6 @@ class BaseItemTest(EWSTest):
 
     def get_random_update_kwargs(self, item, insert_kwargs):
         update_kwargs = {}
-        now = UTC_NOW()
         for f in self.ITEM_CLASS.FIELDS:
             if not f.supports_version(self.account.version):
                 # Cannot be used with this EWS version
@@ -156,14 +151,11 @@ class BaseItemTest(EWSTest):
             if f.name == 'recurrence':
                 continue
             if f.name == 'due_date':
-                # start_date must be before due_date, and before complete_date which must be in the past
-                update_kwargs['start_date'], update_kwargs[f.name] = \
-                    get_random_datetime_range(end_date=now.date(), tz=self.account.default_timezone)
                 continue
             if f.name == 'start_date':
                 continue
             if f.name == 'status':
-                # Update task to a completed state. complete_date must be a date in the past, and < than start_date
+                # Update task to a completed state
                 update_kwargs[f.name] = Task.COMPLETED
                 update_kwargs['percent_complete'] = Decimal(100)
                 continue
@@ -199,6 +191,14 @@ class BaseItemTest(EWSTest):
         item_kwargs = self.get_random_insert_kwargs()
         item_kwargs['categories'] = categories or self.categories
         return self.ITEM_CLASS(folder=folder or self.test_folder, **item_kwargs)
+
+    def get_item_by_id(self, item):
+        res = list(self.account.fetch(ids=[item]))
+        assert len(res) == 1
+        res = res[0]
+        if isinstance(res, Exception):
+            raise res
+        return res
 
 
 class CommonItemTest(BaseItemTest):
@@ -413,7 +413,7 @@ class CommonItemTest(BaseItemTest):
         for k, v in insert_kwargs.items():
             self.assertEqual(getattr(item, k), v, (k, getattr(item, k), v))
         # Test that whatever we have locally also matches whatever is in the DB
-        fresh_item = list(self.account.fetch(ids=[item]))[0]
+        fresh_item = self.get_item_by_id(item)
         for f in self.ITEM_CLASS.FIELDS:
             with self.subTest(f=f):
                 old, new = getattr(item, f.name), getattr(fresh_item, f.name)
@@ -438,7 +438,7 @@ class CommonItemTest(BaseItemTest):
         for k, v in update_kwargs.items():
             self.assertEqual(getattr(item, k), v, (k, getattr(item, k), v))
         # Test that whatever we have locally also matches whatever is in the DB
-        fresh_item = list(self.account.fetch(ids=[item]))[0]
+        fresh_item = self.get_item_by_id(item)
         for f in self.ITEM_CLASS.FIELDS:
             with self.subTest(f=f):
                 old, new = getattr(item, f.name), getattr(fresh_item, f.name)
@@ -498,7 +498,7 @@ class CommonItemTest(BaseItemTest):
         self.assertEqual(len(find_ids[0]), 2, find_ids[0])
         self.assertEqual(insert_ids, find_ids)
         # Test with generator as argument
-        item = list(self.account.fetch(ids=(i for i in find_ids)))[0]
+        item = self.get_item_by_id((i for i in find_ids))
         for f in self.ITEM_CLASS.FIELDS:
             with self.subTest(f=f):
                 if not f.supports_version(self.account.version):
@@ -534,7 +534,7 @@ class CommonItemTest(BaseItemTest):
         self.assertEqual(len(update_ids[0]), 2, update_ids)
         self.assertEqual(insert_ids[0].id, update_ids[0][0])  # ID should be the same
         self.assertNotEqual(insert_ids[0].changekey, update_ids[0][1])  # Changekey should change when item is updated
-        item = list(self.account.fetch(update_ids))[0]
+        item = self.get_item_by_id(update_ids)
         for f in self.ITEM_CLASS.FIELDS:
             with self.subTest(f=f):
                 if not f.supports_version(self.account.version):
@@ -601,7 +601,7 @@ class CommonItemTest(BaseItemTest):
         self.assertEqual(insert_ids[0].id, wipe_ids[0][0])  # ID should be the same
         self.assertNotEqual(insert_ids[0].changekey,
                             wipe_ids[0][1])  # Changekey should not be the same when item is updated
-        item = list(self.account.fetch(wipe_ids))[0]
+        item = self.get_item_by_id(wipe_ids)
         for f in self.ITEM_CLASS.FIELDS:
             with self.subTest(f=f):
                 if not f.supports_version(self.account.version):
@@ -629,7 +629,7 @@ class CommonItemTest(BaseItemTest):
             self.assertEqual(len(wipe2_ids[0]), 2, wipe2_ids)
             self.assertEqual(insert_ids[0].id, wipe2_ids[0][0])  # ID must be the same
             self.assertNotEqual(insert_ids[0].changekey, wipe2_ids[0][1])  # Changekey must change when item is updated
-            item = list(self.account.fetch(wipe2_ids))[0]
+            item = self.get_item_by_id(wipe2_ids)
             self.assertEqual(item.extern_id, extern_id)
         finally:
             self.ITEM_CLASS.deregister('extern_id')
