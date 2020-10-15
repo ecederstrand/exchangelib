@@ -15,6 +15,7 @@ HEAD
 -   Added support for `Item.response_objects` field.
 -   Changed `Task.due_date` and `Tas.start_date` fields from datetime to date fields, since the time
     was being truncated anyway by the server.
+-   Added support for `Task.recurrence` field.
 
 
 3.2.1

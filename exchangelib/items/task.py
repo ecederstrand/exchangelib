@@ -4,7 +4,7 @@ import logging
 
 from ..ewsdatetime import EWSDateTime, UTC, UTC_NOW
 from ..fields import BooleanField, IntegerField, DecimalField, TextField, ChoiceField, DateTimeField, Choice, \
-    CharField, TextListField, DateTimeBackedDateField
+    CharField, TextListField, TaskRecurrenceField, DateTimeBackedDateField
 from ..properties import Fields
 from .item import Item
 
@@ -38,7 +38,7 @@ class Task(Item):
         CharField('owner', field_uri='task:Owner', is_read_only=True),
         DecimalField('percent_complete', field_uri='task:PercentComplete', is_required=True, default=Decimal(0.0),
                      min=Decimal(0), max=Decimal(100), is_searchable=False),
-        # Placeholder for Recurrence
+        TaskRecurrenceField('recurrence', field_uri='task:Recurrence', is_searchable=False),
         DateTimeBackedDateField('start_date', field_uri='task:StartDate'),
         ChoiceField('status', field_uri='task:Status', choices={
             Choice(NOT_STARTED), Choice('InProgress'), Choice(COMPLETED), Choice('WaitingOnOthers'), Choice('Deferred')

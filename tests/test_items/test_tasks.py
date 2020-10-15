@@ -4,6 +4,7 @@ from decimal import Decimal
 from exchangelib.ewsdatetime import EWSDate, EWSDateTime, EWSTimeZone, UTC_NOW
 from exchangelib.folders import Tasks
 from exchangelib.items import Task
+from exchangelib.recurrence import TaskRecurrence, DailyPattern, DailyRegeneration
 
 from .test_basics import CommonItemTest
 
@@ -52,3 +53,88 @@ class TasksTest(CommonItemTest):
         item.refresh()
         self.assertEqual(item.status, Task.COMPLETED)
         self.assertEqual(item.percent_complete, Decimal(100))
+
+    def test_recurring_item(self):
+        """Changes to an occurrence of a recurring task cause one-off tasks to be generated when the following updates
+        are made:
+        * The status property of a regenerating or nonregenerating recurrent task is set to Completed.
+        * The start date or end date of a nonregenerating recurrent task is changed.
+        """
+
+        # Create a master non-regenerating item with 4 daily occurrences
+        start = EWSDate(2016, 1, 1)
+        recurrence = TaskRecurrence(pattern=DailyPattern(interval=1), start=start, number=4)
+        nonregenerating_item = self.ITEM_CLASS(
+            folder=self.test_folder,
+            categories=self.categories,
+            recurrence=recurrence,
+        ).save()
+        nonregenerating_item.refresh()
+        master_item_id = nonregenerating_item.id
+        self.assertEqual(nonregenerating_item.is_recurring, True)
+        self.assertEqual(nonregenerating_item.change_count, 1)
+        self.assertEqual(self.test_folder.filter(categories__contains=self.categories).count(), 1)
+
+        # Change the start date. We should see a new task appear.
+        master_item = self.get_item_by_id((master_item_id, None))
+        master_item.recurrence.boundary.start = EWSDate(2016, 2, 1)
+        occurrence_item = master_item.save()
+        occurrence_item.refresh()
+        self.assertEqual(occurrence_item.is_recurring, False)  # This is now the occurrence
+        self.assertEqual(self.test_folder.filter(categories__contains=self.categories).count(), 2)
+
+        # Check fields on the recurring item
+        master_item = self.get_item_by_id((master_item_id, None))
+        self.assertEqual(master_item.change_count, 2)
+        self.assertEqual(master_item.due_date, EWSDate(2016, 1, 2))  # This is the next occurrence
+        self.assertEqual(master_item.recurrence.boundary.number, 3)  # One less
+
+        # Change the status to 'Completed'. We should see a new task appear.
+        master_item.status = Task.COMPLETED
+        occurrence_item = master_item.save()
+        occurrence_item.refresh()
+        self.assertEqual(occurrence_item.is_recurring, False)  # This is now the occurrence
+        self.assertEqual(self.test_folder.filter(categories__contains=self.categories).count(), 3)
+
+        # Check fields on the recurring item
+        master_item = self.get_item_by_id((master_item_id, None))
+        self.assertEqual(master_item.change_count, 3)
+        self.assertEqual(master_item.due_date, EWSDate(2016, 2, 1))  # This is the next occurrence
+        self.assertEqual(master_item.recurrence.boundary.number, 2)  # One less
+
+        self.test_folder.filter(categories__contains=self.categories).delete()
+
+        # Create a master regenerating item with 4 daily occurrences
+        recurrence = TaskRecurrence(pattern=DailyRegeneration(interval=1), start=start, number=4)
+        regenerating_item = self.ITEM_CLASS(
+            folder=self.test_folder,
+            categories=self.categories,
+            recurrence=recurrence,
+        ).save()
+        regenerating_item.refresh()
+        master_item_id = regenerating_item.id
+        self.assertEqual(regenerating_item.is_recurring, True)
+        self.assertEqual(regenerating_item.change_count, 1)
+        self.assertEqual(self.test_folder.filter(categories__contains=self.categories).count(), 1)
+
+        # Change the start date. We should *not* see a new task appear.
+        master_item = self.get_item_by_id((master_item_id, None))
+        master_item.recurrence.boundary.start = EWSDate(2016, 1, 2)
+        occurrence_item = master_item.save()
+        occurrence_item.refresh()
+        self.assertEqual(occurrence_item.id, master_item.id)  # This is not an occurrence. No new task was created
+        self.assertEqual(self.test_folder.filter(categories__contains=self.categories).count(), 1)
+
+        # Change the status to 'Completed'. We should see a new task appear.
+        master_item.status = Task.COMPLETED
+        occurrence_item = master_item.save()
+        occurrence_item.refresh()
+        self.assertEqual(occurrence_item.is_recurring, False)  # This is now the occurrence
+        self.assertEqual(self.test_folder.filter(categories__contains=self.categories).count(), 2)
+
+        # Check fields on the recurring item
+        master_item = self.get_item_by_id((master_item_id, None))
+        self.assertEqual(master_item.change_count, 2)
+        # The due date is the next occurrence after today
+        self.assertEqual(master_item.due_date, EWSDate.today() + datetime.timedelta(days=1))
+        self.assertEqual(master_item.recurrence.boundary.number, 3)  # One less
