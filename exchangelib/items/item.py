@@ -92,6 +92,7 @@ class Item(BaseItem):
             self.attachments = []
 
     def save(self, update_fields=None, conflict_resolution=AUTO_RESOLVE, send_meeting_invitations=SEND_TO_NONE):
+        from .task import Task
         if self.id:
             item_id, changekey = self._update(
                 update_fieldnames=update_fields,
@@ -99,9 +100,14 @@ class Item(BaseItem):
                 conflict_resolution=conflict_resolution,
                 send_meeting_invitations=send_meeting_invitations
             )
-            if self.id != item_id and not isinstance(self._id, (OccurrenceItemId, RecurringMasterItemId)):
+            if self.id != item_id \
+                    and not isinstance(self._id, (OccurrenceItemId, RecurringMasterItemId)) \
+                    and not isinstance(self, Task):
                 # When we update an item with an OccurrenceItemId as ID, EWS returns the ID of the occurrence, so
                 # the ID of this item changes.
+                #
+                # When we update certain fields on a task, the ID may change. A full description is available at
+                # https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/updateitem-operation-task
                 raise ValueError("'id' mismatch in returned update response")
             # Don't check that changekeys are different. No-op saves will sometimes leave the changekey intact
             self._id = self.ID_ELEMENT_CLS(item_id, changekey)
