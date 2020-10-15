@@ -13,6 +13,8 @@ HEAD
 -   Added support for the `Message.reminder_message_data` field.
 -   Added support for `Contact.manager_mailbox`, `Contact.direct_reports` and `Contact.complete_name` fields.
 -   Added support for `Item.response_objects` field.
+-   Changed `Task.due_date` and `Tas.start_date` fields from datetime to date fields, since the time
+    was being truncated anyway by the server.
 
 
 3.2.1

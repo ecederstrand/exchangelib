@@ -79,6 +79,12 @@ class BaseItemTest(EWSTest):
                 insert_kwargs['recurrence'] = self.random_val(self.ITEM_CLASS.get_field_by_fieldname('recurrence'))
                 insert_kwargs['recurrence'].boundary.start = insert_kwargs[f.name].date()
                 continue
+            if f.name == 'start_date':
+                insert_kwargs[f.name] = get_random_datetime().date()
+                insert_kwargs['due_date'] = insert_kwargs[f.name]
+                # Don't set 'recurrence' here. It's difficult to test updates so we'll test task recurrence separately
+                insert_kwargs['recurrence'] = None
+                continue
             if f.name == 'end':
                 continue
             if f.name == 'is_all_day':
@@ -145,6 +151,12 @@ class BaseItemTest(EWSTest):
                     get_random_datetime_range(start_date=start, end_date=start, tz=self.account.default_timezone)
                 update_kwargs['recurrence'] = self.random_val(self.ITEM_CLASS.get_field_by_fieldname('recurrence'))
                 update_kwargs['recurrence'].boundary.start = update_kwargs[f.name].date()
+                continue
+            if f.name == 'start_date':
+                update_kwargs[f.name] = get_random_datetime().date()
+                update_kwargs['due_date'] = update_kwargs[f.name]
+                # Don't set 'recurrence' here. It's difficult to test updates so we'll test task recurrence separately
+                update_kwargs['recurrence'] = None
                 continue
             if f.name == 'end':
                 continue
@@ -534,7 +546,7 @@ class CommonItemTest(BaseItemTest):
         self.assertEqual(len(update_ids[0]), 2, update_ids)
         self.assertEqual(insert_ids[0].id, update_ids[0][0])  # ID should be the same
         self.assertNotEqual(insert_ids[0].changekey, update_ids[0][1])  # Changekey should change when item is updated
-        item = self.get_item_by_id(update_ids)
+        item = self.get_item_by_id(update_ids[0])
         for f in self.ITEM_CLASS.FIELDS:
             with self.subTest(f=f):
                 if not f.supports_version(self.account.version):
@@ -601,7 +613,7 @@ class CommonItemTest(BaseItemTest):
         self.assertEqual(insert_ids[0].id, wipe_ids[0][0])  # ID should be the same
         self.assertNotEqual(insert_ids[0].changekey,
                             wipe_ids[0][1])  # Changekey should not be the same when item is updated
-        item = self.get_item_by_id(wipe_ids)
+        item = self.get_item_by_id(wipe_ids[0])
         for f in self.ITEM_CLASS.FIELDS:
             with self.subTest(f=f):
                 if not f.supports_version(self.account.version):
@@ -629,7 +641,7 @@ class CommonItemTest(BaseItemTest):
             self.assertEqual(len(wipe2_ids[0]), 2, wipe2_ids)
             self.assertEqual(insert_ids[0].id, wipe2_ids[0][0])  # ID must be the same
             self.assertNotEqual(insert_ids[0].changekey, wipe2_ids[0][1])  # Changekey must change when item is updated
-            item = self.get_item_by_id(wipe2_ids)
+            item = self.get_item_by_id(wipe2_ids[0])
             self.assertEqual(item.extern_id, extern_id)
         finally:
             self.ITEM_CLASS.deregister('extern_id')

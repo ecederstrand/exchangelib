@@ -1,9 +1,10 @@
+import datetime
 from decimal import Decimal
 import logging
 
-from ..ewsdatetime import UTC_NOW
+from ..ewsdatetime import EWSDateTime, UTC, UTC_NOW
 from ..fields import BooleanField, IntegerField, DecimalField, TextField, ChoiceField, DateTimeField, Choice, \
-    CharField, TextListField
+    CharField, TextListField, DateTimeBackedDateField
 from ..properties import Fields
 from .item import Item
 
@@ -28,7 +29,7 @@ class Task(Item):
             Choice('NoMatch'), Choice('OwnNew'), Choice('Owned'), Choice('Accepted'), Choice('Declined'), Choice('Max')
         }, is_read_only=True),
         CharField('delegator', field_uri='task:Delegator', is_read_only=True),
-        DateTimeField('due_date', field_uri='task:DueDate'),
+        DateTimeBackedDateField('due_date', field_uri='task:DueDate'),
         BooleanField('is_editable', field_uri='task:IsAssignmentEditable', is_read_only=True),
         BooleanField('is_complete', field_uri='task:IsComplete', is_read_only=True),
         BooleanField('is_recurring', field_uri='task:IsRecurring', is_read_only=True),
@@ -38,7 +39,7 @@ class Task(Item):
         DecimalField('percent_complete', field_uri='task:PercentComplete', is_required=True, default=Decimal(0.0),
                      min=Decimal(0), max=Decimal(100), is_searchable=False),
         # Placeholder for Recurrence
-        DateTimeField('start_date', field_uri='task:StartDate'),
+        DateTimeBackedDateField('start_date', field_uri='task:StartDate'),
         ChoiceField('status', field_uri='task:Status', choices={
             Choice(NOT_STARTED), Choice('InProgress'), Choice(COMPLETED), Choice('WaitingOnOthers'), Choice('Deferred')
         }, is_required=True, is_searchable=False, default=NOT_STARTED),
@@ -67,10 +68,10 @@ class Task(Item):
                 # 'complete_date' can be set automatically by the server. Allow some grace between local and server time
                 log.warning("'complete_date' must be in the past (%s vs %s). Resetting", self.complete_date, now)
                 self.complete_date = now
-            if self.start_date and self.complete_date < self.start_date:
+            if self.start_date and self.complete_date.date() < self.start_date:
                 log.warning("'complete_date' must be greater than 'start_date' (%s vs %s). Resetting",
                             self.complete_date, self.start_date)
-                self.complete_date = self.start_date
+                self.complete_date = EWSDateTime.combine(self.start_date, datetime.time(0, 0)).replace(tzinfo=UTC)
         if self.percent_complete is not None:
             if self.status == self.COMPLETED and self.percent_complete != Decimal(100):
                 # percent_complete must be 100% if task is complete
