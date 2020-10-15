@@ -35,7 +35,7 @@ def generate_map(timeout=10):
 # This map is generated irregularly from generate_map(). Do not edit manually - make corrections to
 # IANA_TO_MS_TIMEZONE_MAP instead. We provide this map to avoid hammering the CLDR_WINZONE_URL.
 #
-# This list was generated from CLDR_WINZONE_URL version 2019b.
+# This list was generated from CLDR_WINZONE_URL version 2020a.
 CLDR_TO_MS_TIMEZONE_MAP = {
     'Africa/Abidjan': ('Greenwich Standard Time', 'CI'),
     'Africa/Accra': ('Greenwich Standard Time', 'GH'),
@@ -238,10 +238,10 @@ CLDR_TO_MS_TIMEZONE_MAP = {
     'America/Winnipeg': ('Central Standard Time', 'CA'),
     'America/Yakutat': ('Alaskan Standard Time', 'US'),
     'America/Yellowknife': ('Mountain Standard Time', 'CA'),
-    'Antarctica/Casey': ('Singapore Standard Time', 'AQ'),
+    'Antarctica/Casey': ('Central Pacific Standard Time', 'AQ'),
     'Antarctica/Davis': ('SE Asia Standard Time', 'AQ'),
     'Antarctica/DumontDUrville': ('West Pacific Standard Time', 'AQ'),
-    'Antarctica/Macquarie': ('Central Pacific Standard Time', 'AU'),
+    'Antarctica/Macquarie': ('Tasmania Standard Time', 'AU'),
     'Antarctica/Mawson': ('West Asia Standard Time', 'AQ'),
     'Antarctica/McMurdo': ('New Zealand Standard Time', 'AQ'),
     'Antarctica/Palmer': ('SA Eastern Standard Time', 'AQ'),
