@@ -1,3 +1,4 @@
+import datetime
 import logging
 
 from ..fields import BooleanField, Base64Field, TextField, ChoiceField, URIField, DateTimeBackedDateField, \
@@ -34,7 +35,7 @@ class Contact(Item):
         PhysicalAddressField('physical_addresses', field_uri='contacts:PhysicalAddress'),
         PhoneNumberField('phone_numbers', field_uri='contacts:PhoneNumber'),
         TextField('assistant_name', field_uri='contacts:AssistantName'),
-        DateTimeBackedDateField('birthday', field_uri='contacts:Birthday'),
+        DateTimeBackedDateField('birthday', field_uri='contacts:Birthday', default_time=datetime.time(11, 59)),
         URIField('business_homepage', field_uri='contacts:BusinessHomePage'),
         TextListField('children', field_uri='contacts:Children'),
         TextListField('companies', field_uri='contacts:Companies', is_searchable=False),
@@ -54,7 +55,8 @@ class Contact(Item):
         TextField('profession', field_uri='contacts:Profession'),
         TextField('spouse_name', field_uri='contacts:SpouseName'),
         CharField('surname', field_uri='contacts:Surname'),
-        DateTimeBackedDateField('wedding_anniversary', field_uri='contacts:WeddingAnniversary'),
+        DateTimeBackedDateField('wedding_anniversary', field_uri='contacts:WeddingAnniversary',
+                                default_time=datetime.time(11, 59)),
         BooleanField('has_picture', field_uri='contacts:HasPicture', supported_from=EXCHANGE_2010, is_read_only=True),
         TextField('phonetic_full_name', field_uri='contacts:PhoneticFullName', supported_from=EXCHANGE_2013,
                   is_read_only=True),
