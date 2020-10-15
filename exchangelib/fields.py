@@ -1020,6 +1020,18 @@ class RecurrenceField(EWSElementField):
         return value.to_xml(version=version)
 
 
+class TaskRecurrenceField(EWSElementField):
+    is_complex = True
+
+    def __init__(self, *args, **kwargs):
+        from .recurrence import TaskRecurrence
+        kwargs['value_cls'] = TaskRecurrence
+        super().__init__(*args, **kwargs)
+
+    def to_xml(self, value, version):
+        return value.to_xml(version=version)
+
+
 class ReferenceItemIdField(EWSElementField):
     is_complex = True
 

@@ -1,6 +1,6 @@
 import logging
 
-from .fields import IntegerField, EnumField, EnumListField, DateField, DateTimeField, EWSElementField, \
+from .fields import IntegerField, EnumField, EnumListField, DateOrDateTimeField, DateTimeField, EWSElementField, \
     IdElementField, MONTHS, WEEK_NUMBERS, WEEKDAYS
 from .properties import EWSElement, IdChangeKeyMixIn, ItemId, Fields
 
@@ -21,6 +21,11 @@ def _week_number_to_str(week_number):
 
 class Pattern(EWSElement):
     """Base class for all classes implementing recurring pattern elements"""
+    __slots__ = tuple()
+
+
+class Regeneration(Pattern):
+    """Base class for all classes implementing recurring regeneration elements"""
     __slots__ = tuple()
 
 
@@ -158,7 +163,7 @@ class DailyPattern(Pattern):
         return 'Occurs every %s day(s)' % self.interval
 
 
-class YearlyRegeneration(Pattern):
+class YearlyRegeneration(Regeneration):
     """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/yearlyregeneration"""
     ELEMENT_NAME = 'YearlyRegeneration'
 
@@ -170,10 +175,10 @@ class YearlyRegeneration(Pattern):
     __slots__ = tuple(f.name for f in FIELDS)
 
     def __str__(self):
-        return 'Occurs every %s year(s)' % self.interval
+        return 'Regenerates every %s year(s)' % self.interval
 
 
-class MonthlyRegeneration(Pattern):
+class MonthlyRegeneration(Regeneration):
     """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/monthlyregeneration"""
     ELEMENT_NAME = 'MonthlyRegeneration'
 
@@ -185,10 +190,10 @@ class MonthlyRegeneration(Pattern):
     __slots__ = tuple(f.name for f in FIELDS)
 
     def __str__(self):
-        return 'Occurs every %s month(s)' % self.interval
+        return 'Regenerates every %s month(s)' % self.interval
 
 
-class WeeklyRegeneration(Pattern):
+class WeeklyRegeneration(Regeneration):
     """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/weeklyregeneration"""
     ELEMENT_NAME = 'WeeklyRegeneration'
 
@@ -200,10 +205,10 @@ class WeeklyRegeneration(Pattern):
     __slots__ = tuple(f.name for f in FIELDS)
 
     def __str__(self):
-        return 'Occurs every %s week(s)' % self.interval
+        return 'Regenerates every %s week(s)' % self.interval
 
 
-class DailyRegeneration(Pattern):
+class DailyRegeneration(Regeneration):
     """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/dailyregeneration"""
     ELEMENT_NAME = 'DailyRegeneration'
 
@@ -215,7 +220,7 @@ class DailyRegeneration(Pattern):
     __slots__ = tuple(f.name for f in FIELDS)
 
     def __str__(self):
-        return 'Occurs every %s day(s)' % self.interval
+        return 'Regenerates every %s day(s)' % self.interval
 
 
 class Boundary(EWSElement):
@@ -228,11 +233,14 @@ class NoEndPattern(Boundary):
     ELEMENT_NAME = 'NoEndRecurrence'
 
     FIELDS = Fields(
-        # Start date, as EWSDate
-        DateField('start', field_uri='StartDate', is_required=True),
+        # Start date, as EWSDate or EWSDateTime
+        DateOrDateTimeField('start', field_uri='StartDate', is_required=True),
     )
 
     __slots__ = tuple(f.name for f in FIELDS)
+
+    def __str__(self):
+        return 'Starts on %s' % self.start
 
 
 class EndDatePattern(Boundary):
@@ -240,13 +248,16 @@ class EndDatePattern(Boundary):
     ELEMENT_NAME = 'EndDateRecurrence'
 
     FIELDS = Fields(
-        # Start date, as EWSDate
-        DateField('start', field_uri='StartDate', is_required=True),
+        # Start date, as EWSDate or EWSDateTime
+        DateOrDateTimeField('start', field_uri='StartDate', is_required=True),
         # End date, as EWSDate
-        DateField('end', field_uri='EndDate', is_required=True),
+        DateOrDateTimeField('end', field_uri='EndDate', is_required=True),
     )
 
     __slots__ = tuple(f.name for f in FIELDS)
+
+    def __str__(self):
+        return 'Starts on %s, ends on %s' % (self.start, self.end)
 
 
 class NumberedPattern(Boundary):
@@ -254,13 +265,16 @@ class NumberedPattern(Boundary):
     ELEMENT_NAME = 'NumberedRecurrence'
 
     FIELDS = Fields(
-        # Start date, as EWSDate
-        DateField('start', field_uri='StartDate', is_required=True),
+        # Start date, as EWSDate or EWSDateTime
+        DateOrDateTimeField('start', field_uri='StartDate', is_required=True),
         # The number of occurrences in this pattern, in range 1 -> 999
         IntegerField('number', field_uri='NumberOfOccurrences', min=1, max=999, is_required=True),
     )
 
     __slots__ = tuple(f.name for f in FIELDS)
+
+    def __str__(self):
+        return 'Starts on %s and occurs %s times' % (self.start, self.number)
 
 
 class Occurrence(IdChangeKeyMixIn):
@@ -312,6 +326,7 @@ class DeletedOccurrence(EWSElement):
 
 PATTERN_CLASSES = AbsoluteYearlyPattern, RelativeYearlyPattern, AbsoluteMonthlyPattern, RelativeMonthlyPattern, \
                    WeeklyPattern, DailyPattern
+REGENERATION_CLASSES = YearlyRegeneration, MonthlyRegeneration, WeeklyRegeneration, DailyRegeneration
 BOUNDARY_CLASSES = NoEndPattern, EndDatePattern, NumberedPattern
 
 
@@ -324,6 +339,7 @@ class Recurrence(EWSElement):
         EWSElementField('pattern', value_cls=Pattern),
         EWSElementField('boundary', value_cls=Boundary),
     )
+    PATTERN_CLASSES = PATTERN_CLASSES
 
     __slots__ = tuple(f.name for f in FIELDS)
 
@@ -347,7 +363,7 @@ class Recurrence(EWSElement):
 
     @classmethod
     def from_xml(cls, elem, account):
-        for pattern_cls in PATTERN_CLASSES:
+        for pattern_cls in cls.PATTERN_CLASSES:
             pattern_elem = elem.find(pattern_cls.response_tag())
             if pattern_elem is None:
                 continue
@@ -367,3 +383,11 @@ class Recurrence(EWSElement):
 
     def __str__(self):
         return 'Pattern: %s, Boundary: %s' % (self.pattern, self.boundary)
+
+
+class TaskRecurrence(Recurrence):
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/recurrence-taskrecurrencetype
+    """
+    PATTERN_CLASSES = PATTERN_CLASSES + REGENERATION_CLASSES
+
+    __slots__ = tuple()
