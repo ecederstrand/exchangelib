@@ -1400,9 +1400,3 @@ python -m unittest -k test_folder.FolderTest.test_refresh
 # Or, if you want extreme levels of debug output:
 python -m unittest -k test_folder.FolderTest.test_refresh -v
 ```
-
-
-## Notes
-
-Almost all item fields are supported. The remaining ones are tracked in
-<https://github.com/ecederstrand/exchangelib/issues/203>.

@@ -16,6 +16,8 @@ HEAD
 -   Changed `Task.due_date` and `Tas.start_date` fields from datetime to date fields, since the time
     was being truncated anyway by the server.
 -   Added support for `Task.recurrence` field.
+-   Added read-only support for `Contact.user_smime_certificate` and `Contact.ms_exchange_certificate`.
+    This means that all fields on all item types are now supported.
 
 
 3.2.1

@@ -72,8 +72,10 @@ class Contact(Item):
         # adds photos as FileAttachments on the contact item (with 'is_contact_photo=True'), which automatically flips
         # the 'has_picture' field.
         Base64Field('photo', field_uri='contacts:Photo', is_read_only=True),
-        # Placeholder for UserSMIMECertificate
-        # Placeholder for MSExchangeCertificate
+        Base64Field('user_smime_certificate', field_uri='contacts:UserSMIMECertificate', is_read_only=True,
+                    supported_from=EXCHANGE_2010_SP2),
+        Base64Field('ms_exchange_certificate', field_uri='contacts:MSExchangeCertificate', is_read_only=True,
+                    supported_from=EXCHANGE_2010_SP2),
         TextField('directory_id', field_uri='contacts:DirectoryId', supported_from=EXCHANGE_2013, is_read_only=True),
         CharField('manager_mailbox', field_uri='contacts:ManagerMailbox', supported_from=EXCHANGE_2010_SP2,
                   is_read_only=True),
