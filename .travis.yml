@@ -24,7 +24,7 @@ install:
 - if [[ "$( python --version | grep '[a|b]' )" ]] ; then python -m pip install git+https://github.com/yaml/pyyaml.git ; fi
 - python -m pip install .
 # Install test dependencies manually since we're calling tests/__init__.py directly in the 'script' section
-- python -m pip install PyYAML requests_mock psutil coverage coveralls flake8
+- python -m pip install PyYAML requests_mock psutil coverage coveralls flake8 python-dateutil
 
 script:
 - coverage run --source=exchangelib -m unittest
