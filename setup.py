@@ -40,16 +40,16 @@ setup(
     license='BSD',
     keywords='ews exchange autodiscover microsoft outlook exchange-web-services o365 office365',
     install_requires=['requests>=2.7', 'requests_ntlm>=0.2.0', 'dnspython>=2.0.0', 'lxml>3.0',
-                      'cached_property', 'tzlocal', 'python-dateutil', 'pygments', 'defusedxml>=0.6.0',
+                      'cached_property', 'tzlocal', 'pygments', 'defusedxml>=0.6.0',
                       'isodate', 'oauthlib', 'requests_oauthlib', 'backports.zoneinfo;python_version<"3.9"',
-                      'tzdata'],
+                      'backports-datetime-fromisoformat;python_version<"3.7"', 'tzdata'],
     extras_require={
         'kerberos': ['requests_kerberos'],
         'sspi': ['requests_negotiate_sspi'],  # Only for Win32 environments
         'complete': ['requests_kerberos', 'requests_negotiate_sspi'],  # Only for Win32 environments
     },
     packages=find_packages(exclude=('tests', 'tests.*')),
-    tests_require=['PyYAML', 'requests_mock', 'psutil', 'flake8'],
+    tests_require=['PyYAML', 'requests_mock', 'psutil', 'flake8', 'python-dateutil'],
     python_requires=">=3.6",
     test_suite='tests',
     zip_safe=False,

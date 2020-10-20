@@ -7,8 +7,6 @@ from decimal import Decimal, InvalidOperation
 from importlib import import_module
 import logging
 
-import dateutil.parser
-
 from .errors import ErrorInvalidServerVersion
 from .ewsdatetime import EWSDateTime, EWSDate, EWSTimeZone, NaiveDateTimeNotAllowed, UnknownTimeZone, UTC
 from .util import create_element, get_xml_attrs, set_xml_value, value_to_xml_text, is_iterable, safe_b64decode, TNS
@@ -638,7 +636,7 @@ class DateTimeBackedDateField(FieldURIField):
             # before converting to date. EWSDateTime.from_string() insists on converting to UTC, but we don't have an
             # EWSTimeZone we can convert the timezone info to. Instead, parse the string manually when we have a
             # datetime string with timezone info.
-            return EWSDate.from_date(dateutil.parser.parse(val).date())
+            return EWSDate.from_date(datetime.datetime.fromisoformat(val).date())
         # Revert to default parsing of datetime strings
         res = self._datetime_field.from_xml(elem=elem, account=account)
         if res is None:

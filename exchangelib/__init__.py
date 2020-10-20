@@ -1,3 +1,5 @@
+import sys
+
 from .account import Account, Identity
 from .attachments import FileAttachment, ItemAttachment
 from .autodiscover import discover
@@ -41,6 +43,11 @@ __all__ = [
 # Set a default user agent, e.g. "exchangelib/3.1.1 (python-requests/2.22.0)"
 import requests.utils
 BaseProtocol.USERAGENT = "%s/%s (%s)" % (__name__, __version__, requests.utils.default_user_agent())
+
+# Support fromisoformat() in Python < 3.7
+if sys.version_info[:2] < (3, 7):
+    from backports.datetime_fromisoformat import MonkeyPatch
+    MonkeyPatch.patch_fromisoformat()
 
 
 def close_connections():

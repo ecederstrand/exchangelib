@@ -2,7 +2,6 @@ import datetime
 import logging
 import warnings
 
-import dateutil.parser
 try:
     import zoneinfo
 except ImportError:
@@ -148,10 +147,8 @@ class EWSDateTime(datetime.datetime):
             # This is probably a naive datetime. Don't allow this, but signal caller with an appropriate error
             local_dt = super().strptime(date_string, '%Y-%m-%dT%H:%M:%S')
             raise NaiveDateTimeNotAllowed(local_dt)
-        # This is probably a datetime value with timezone information. This comes in the form '+/-HH:MM' but the Python
-        # strptime '%z' directive cannot yet handle full ISO8601 formatted timezone information (see
-        # http://bugs.python.org/issue15873). Use the 'dateutil' package instead.
-        aware_dt = dateutil.parser.parse(date_string).astimezone(UTC).replace(tzinfo=UTC)
+        # This is probably a datetime value with timezone information. This comes in the form '+/-HH:MM'.
+        aware_dt = datetime.datetime.fromisoformat(date_string).astimezone(UTC).replace(tzinfo=UTC)
         if isinstance(aware_dt, cls):
             return aware_dt
         return cls.from_datetime(aware_dt)
