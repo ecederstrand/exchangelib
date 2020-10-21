@@ -154,7 +154,13 @@ account = Account(primary_smtp_address='john@example.com', credentials=credentia
 # different 'access_type':
 account = Account(primary_smtp_address='john@example.com', credentials=credentials,
                   autodiscover=True, access_type=IMPERSONATION)
+
+# Autodiscover needs to make some DNS queries. We use the dnspython package for that. Here's
+# an example of customizing the way the dns.resolver.Resolver object is created:
+from exchangelib.autodiscover import Autodiscovery
+Autodiscovery.DNS_RESOLVER_ATTRS['edns'] = False  # Disable EDNS queries
 ```
+
 
 ### Optimizing connections
 ```python
