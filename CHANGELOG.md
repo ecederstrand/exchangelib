@@ -3,6 +3,7 @@ Change Log
 
 HEAD
 ----
+-   Allow overriding `dns.resolver.Resolver` class attributes via `Autodiscovery.DNS_RESOLVER_ATTRS`.
 
 
 3.3.0
