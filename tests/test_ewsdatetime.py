@@ -1,10 +1,12 @@
 import datetime
 
+import dateutil.tz
+import pytz
+import requests_mock
 try:
     import zoneinfo
 except ImportError:
     from backports import zoneinfo
-import requests_mock
 
 from exchangelib import EWSDateTime, EWSDate, EWSTimeZone, UTC
 from exchangelib.errors import UnknownTimeZone, NaiveDateTimeNotAllowed
@@ -146,7 +148,21 @@ class EWSDateTimeTest(TimedTestCase):
         self.assertIsInstance(dt - datetime.timedelta(days=1), EWSDateTime)
         self.assertIsInstance(dt - EWSDateTime.now(tz=tz), datetime.timedelta)
         self.assertIsInstance(EWSDateTime.now(tz=tz), EWSDateTime)
-        self.assertEqual(dt, EWSDateTime.from_datetime(datetime.datetime(2000, 1, 2, 3, 4, 5, tzinfo=tz)))
+
+        # Test various input for from_datetime()
+        self.assertEqual(dt, EWSDateTime.from_datetime(
+            datetime.datetime(2000, 1, 2, 3, 4, 5, tzinfo=EWSTimeZone('Europe/Copenhagen'))
+        ))
+        self.assertEqual(dt, EWSDateTime.from_datetime(
+            datetime.datetime(2000, 1, 2, 3, 4, 5, tzinfo=zoneinfo.ZoneInfo('Europe/Copenhagen'))
+        ))
+        self.assertEqual(dt, EWSDateTime.from_datetime(
+            datetime.datetime(2000, 1, 2, 3, 4, 5, tzinfo=dateutil.tz.gettz('Europe/Copenhagen'))
+        ))
+        self.assertEqual(dt, EWSDateTime.from_datetime(
+            datetime.datetime(2000, 1, 2, 3, 4, 5, tzinfo=pytz.timezone('Europe/Copenhagen'))
+        ))
+
         self.assertEqual(dt.ewsformat(), '2000-01-02T03:04:05+01:00')
         utc_tz = EWSTimeZone('UTC')
         self.assertEqual(dt.astimezone(utc_tz).ewsformat(), '2000-01-02T02:04:05Z')

@@ -106,7 +106,17 @@ class EWSDateTime(datetime.datetime):
         elif isinstance(d.tzinfo, EWSTimeZone):
             tz = d.tzinfo
         else:
-            tz = EWSTimeZone(d.tzinfo.key)
+            # Support some more tzinfo implementations. We could use isinstance(), but then we'd have to have pytz
+            # and dateutil as dependencies for this package.
+            tz_module = d.tzinfo.__class__.__module__.split('.')[0]
+            if tz_module == 'pytz':
+                tz = EWSTimeZone.from_pytz(d.tzinfo)
+            elif tz_module == 'dateutil':
+                tz = EWSTimeZone.from_dateutil(d.tzinfo)
+            elif tz_module in ('backports', 'zoneinfo'):
+                tz = EWSTimeZone(d.tzinfo.key)
+            else:
+                raise ValueError('Unsupported tzinfo value: %r' % d.tzinfo)
         return cls(d.year, d.month, d.day, d.hour, d.minute, d.second, d.microsecond, tzinfo=tz)
 
     def astimezone(self, tz=None):
