@@ -418,7 +418,7 @@ class EWSService(metaclass=abc.ABCMeta):
                 except (TypeError, AttributeError):
                     pass
                 raise ErrorServerBusy(msg, back_off=back_off)
-            elif code == 'ErrorSchemaValidation' and msg_xml is not None:
+            if code == 'ErrorSchemaValidation' and msg_xml is not None:
                 violation = get_xml_attr(msg_xml, '{%s}Violation' % TNS)
                 if violation is not None:
                     msg = '%s %s' % (msg, violation)
@@ -588,7 +588,7 @@ class EWSService(metaclass=abc.ABCMeta):
         raised.
         """
         if cls.returns_elements:
-            return [elem for elem in container]
+            return list(container)
         return [True]
 
     def _get_elems_from_page(self, elem, max_items, total_item_count):
@@ -776,7 +776,7 @@ def create_folder_ids_element(tag, folders, version):
         if not isinstance(folder, FolderId):
             folder = to_item_id(folder, FolderId, version=version)
         set_xml_value(folder_ids, folder, version=version)
-    if not len(folder_ids):
+    if not folder_ids:
         raise ValueError('"folders" must not be empty')
     return folder_ids
 
@@ -785,7 +785,7 @@ def create_item_ids_element(items, version, tag='m:ItemIds'):
     item_ids = create_element(tag)
     for item in items:
         set_xml_value(item_ids, to_item_id(item, ItemId, version=version), version=version)
-    if not len(item_ids):
+    if not item_ids:
         raise ValueError('"items" must not be empty')
     return item_ids
 
@@ -796,7 +796,7 @@ def create_attachment_ids_element(items, version):
     for item in items:
         attachment_id = item if isinstance(item, AttachmentId) else AttachmentId(id=item)
         set_xml_value(attachment_ids, attachment_id, version=version)
-    if not len(attachment_ids):
+    if not attachment_ids:
         raise ValueError('"items" must not be empty')
     return attachment_ids
 

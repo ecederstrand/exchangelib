@@ -80,7 +80,7 @@ class GetStreamingEvents(EWSAccountService):
         subscriptions_elem = create_element('m:SubscriptionIds')
         for subscription_id in subscription_ids:
             add_xml_child(subscriptions_elem, 't:SubscriptionId', subscription_id)
-        if not len(subscriptions_elem):
+        if not subscriptions_elem:
             raise ValueError('"subscription_ids" must not be empty')
 
         getstreamingevents.append(subscriptions_elem)

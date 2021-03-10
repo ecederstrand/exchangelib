@@ -180,7 +180,7 @@ class UpdateItem(EWSAccountService):
                 updates.append(elem)
             itemchange.append(updates)
             itemchanges.append(itemchange)
-        if not len(itemchanges):
+        if not itemchanges:
             raise ValueError('"items" must not be empty')
         updateitem.append(itemchanges)
         return updateitem

@@ -63,7 +63,7 @@ class ItemQuerySetTest(BaseItemTest):
         with self.assertRaises(ValueError):
             list(qs.values([]))
         self.assertEqual(
-            [i for i in qs.order_by('subject').values('subject')],
+            list(qs.order_by('subject').values('subject')),
             [{'subject': 'Item 0'}, {'subject': 'Item 1'}, {'subject': 'Item 2'}, {'subject': 'Item 3'}]
         )
 

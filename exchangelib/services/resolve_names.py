@@ -74,6 +74,6 @@ class ResolveNames(EWSService):
             set_xml_value(parentfolderids, parent_folders, version=self.protocol.version)
         for entry in unresolved_entries:
             add_xml_child(payload, 'm:UnresolvedEntry', entry)
-        if not len(payload):
+        if not payload:
             raise ValueError('"unresolved_entries" must not be empty')
         return payload

@@ -34,7 +34,7 @@ class ConvertId(EWSService):
             if not isinstance(item, supported_item_classes):
                 raise ValueError("'item' value %r must be an instance of %r" % (item, supported_item_classes))
             set_xml_value(item_ids, item, version=self.protocol.version)
-        if not len(item_ids):
+        if not item_ids:
             raise ValueError('"items" must not be empty')
         convertid.append(item_ids)
         return convertid

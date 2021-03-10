@@ -155,8 +155,7 @@ def get_service_authtype(service_endpoint, retry_policy, api_versions, name):
                         retry_policy.back_off(wait)
                         retry += 1
                         continue
-                    else:
-                        raise TransportError(str(e)) from e
+                    raise TransportError(str(e)) from e
         if r.status_code not in (200, 401):
             log.debug('Unexpected response: %s %s', r.status_code, r.reason)
             continue
@@ -206,7 +205,7 @@ def _tokenize(val):
                 auth_methods.append(auth_method)
             auth_method = ''
             continue
-        elif c == '"':
+        if c == '"':
             auth_method += c
             if quote:
                 auth_methods.append(auth_method)

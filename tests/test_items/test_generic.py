@@ -176,11 +176,11 @@ class GenericItemTest(CommonItemTest):
             folder_collection=FolderCollection(account=self.account, folders=[self.test_folder])
         ).filter(categories__contains=self.categories)
         self.assertEqual(
-            [i for i in qs.order_by('subject').values_list('subject', flat=True)],
+            list(qs.order_by('subject').values_list('subject', flat=True)),
             ['Subj 0', 'Subj 1', 'Subj 2', 'Subj 3']
         )
         self.assertEqual(
-            [i for i in qs.order_by('-subject').values_list('subject', flat=True)],
+            list(qs.order_by('-subject').values_list('subject', flat=True)),
             ['Subj 3', 'Subj 2', 'Subj 1', 'Subj 0']
         )
         self.bulk_delete(qs)
@@ -198,11 +198,11 @@ class GenericItemTest(CommonItemTest):
                 folder_collection=FolderCollection(account=self.account, folders=[self.test_folder])
             ).filter(categories__contains=self.categories)
             self.assertEqual(
-                [i for i in qs.order_by('extern_id').values_list('extern_id', flat=True)],
+                list(qs.order_by('extern_id').values_list('extern_id', flat=True)),
                 ['ID 0', 'ID 1', 'ID 2', 'ID 3']
             )
             self.assertEqual(
-                [i for i in qs.order_by('-extern_id').values_list('extern_id', flat=True)],
+                list(qs.order_by('-extern_id').values_list('extern_id', flat=True)),
                 ['ID 3', 'ID 2', 'ID 1', 'ID 0']
             )
         finally:
@@ -224,28 +224,28 @@ class GenericItemTest(CommonItemTest):
                 folder_collection=FolderCollection(account=self.account, folders=[self.test_folder])
             ).filter(categories__contains=self.categories)
             self.assertEqual(
-                [i for i in qs.order_by('subject', 'extern_id').values('subject', 'extern_id')],
+                list(qs.order_by('subject', 'extern_id').values('subject', 'extern_id')),
                 [{'subject': 'Subj 0', 'extern_id': 'ID 0'},
                  {'subject': 'Subj 0', 'extern_id': 'ID 1'},
                  {'subject': 'Subj 1', 'extern_id': 'ID 0'},
                  {'subject': 'Subj 1', 'extern_id': 'ID 1'}]
             )
             self.assertEqual(
-                [i for i in qs.order_by('-subject', 'extern_id').values('subject', 'extern_id')],
+                list(qs.order_by('-subject', 'extern_id').values('subject', 'extern_id')),
                 [{'subject': 'Subj 1', 'extern_id': 'ID 0'},
                  {'subject': 'Subj 1', 'extern_id': 'ID 1'},
                  {'subject': 'Subj 0', 'extern_id': 'ID 0'},
                  {'subject': 'Subj 0', 'extern_id': 'ID 1'}]
             )
             self.assertEqual(
-                [i for i in qs.order_by('subject', '-extern_id').values('subject', 'extern_id')],
+                list(qs.order_by('subject', '-extern_id').values('subject', 'extern_id')),
                 [{'subject': 'Subj 0', 'extern_id': 'ID 1'},
                  {'subject': 'Subj 0', 'extern_id': 'ID 0'},
                  {'subject': 'Subj 1', 'extern_id': 'ID 1'},
                  {'subject': 'Subj 1', 'extern_id': 'ID 0'}]
             )
             self.assertEqual(
-                [i for i in qs.order_by('-subject', '-extern_id').values('subject', 'extern_id')],
+                list(qs.order_by('-subject', '-extern_id').values('subject', 'extern_id')),
                 [{'subject': 'Subj 1', 'extern_id': 'ID 1'},
                  {'subject': 'Subj 1', 'extern_id': 'ID 0'},
                  {'subject': 'Subj 0', 'extern_id': 'ID 1'},
@@ -269,11 +269,11 @@ class GenericItemTest(CommonItemTest):
             folder_collection=FolderCollection(account=self.account, folders=[self.test_folder])
         ).filter(categories__contains=self.categories)
         self.assertEqual(
-            [i for i in qs.order_by('subject').values_list('subject', flat=True)],
+            list(qs.order_by('subject').values_list('subject', flat=True)),
             [None, None, 'Subj 0', 'Subj 2']
         )
         self.assertEqual(
-            [i for i in qs.order_by('-subject').values_list('subject', flat=True)],
+            list(qs.order_by('-subject').values_list('subject', flat=True)),
             ['Subj 2', 'Subj 0', None, None]
         )
 
@@ -293,11 +293,11 @@ class GenericItemTest(CommonItemTest):
             folder_collection=FolderCollection(account=self.account, folders=[self.test_folder])
         ).filter(subject=self.categories[0])
         self.assertEqual(
-            [i for i in qs.order_by('categories').values_list('categories', flat=True)],
+            list(qs.order_by('categories').values_list('categories', flat=True)),
             [None, None, ['Cat 0'], ['Cat 2']]
         )
         self.assertEqual(
-            [i for i in qs.order_by('-categories').values_list('categories', flat=True)],
+            list(qs.order_by('-categories').values_list('categories', flat=True)),
             [['Cat 2'], ['Cat 0'], None, None]
         )
 
@@ -698,7 +698,7 @@ class GenericItemTest(CommonItemTest):
                 if f.name == 'reminder_due_by' and not item.reminder_is_set:
                     # We delete the due date if reminder is not set
                     continue
-                elif f.is_read_only:
+                if f.is_read_only:
                     continue
                 self.assertIsNotNone(getattr(item, f.name), (f, getattr(item, f.name)))
         only_fields = ('subject', 'body', 'categories')

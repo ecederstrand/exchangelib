@@ -86,7 +86,7 @@ class CreateItem(EWSAccountService):
             if not item.account:
                 item.account = self.account
             set_xml_value(item_elems, item, version=self.account.version)
-        if not len(item_elems):
+        if not item_elems:
             raise ValueError('"items" must not be empty')
         createitem.append(item_elems)
         return createitem

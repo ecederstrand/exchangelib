@@ -71,7 +71,7 @@ class UpdateFolder(EWSAccountService):
                 updates.append(elem)
             folderchange.append(updates)
             folderchanges.append(folderchange)
-        if not len(folderchanges):
+        if not folderchanges:
             raise ValueError('"folders" must not be empty')
         updatefolder.append(folderchanges)
         return updatefolder
