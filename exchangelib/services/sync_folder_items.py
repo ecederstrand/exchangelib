@@ -51,7 +51,7 @@ class SyncFolderItems(SyncFolder):
             if change_type == self.READ_FLAG_CHANGE:
                 item = (
                     ItemId.from_xml(elem=elem.find(ItemId.response_tag()), account=self.account),
-                    xml_text_to_value(elem.find('t:IsRead').text, bool)
+                    xml_text_to_value(elem.find('{%s}IsRead' % TNS).text, bool)
                 )
             elif change_type == self.DELETE:
                 item = ItemId.from_xml(elem=elem.find(ItemId.response_tag()), account=self.account)
