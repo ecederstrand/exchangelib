@@ -91,6 +91,16 @@ class SyncTest(BaseItemTest):
         self.assertEqual(change_type, 'update')
         self.assertEqual(i.id, i1.id)
 
+        # Test that we see a read_flag_change event
+        i1.is_read = True
+        i1.save(update_fields=['is_read'])
+        changes = list(test_folder.sync_items())
+        self.assertEqual(len(changes), 1)
+        change_type, (i, read_state) = changes[0]
+        self.assertEqual(change_type, 'read_flag_change')
+        self.assertEqual(i.id, i1.id)
+        self.assertEqual(read_state, True)
+
         # Test that we see a delete event
         i1_id = i1.id
         i1.delete()
