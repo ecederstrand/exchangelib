@@ -1736,7 +1736,7 @@ class MovedEvent(OldTimestampEvent):
     ELEMENT_NAME = 'MovedEvent'
 
 
-class NewMailEvent(Event):
+class NewMailEvent(TimestampEvent):
     """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/newmailevent"""
 
     ELEMENT_NAME = 'NewMailEvent'
