@@ -32,26 +32,26 @@ CALENDAR_ITEM_CHOICES = (SINGLE, OCCURRENCE, EXCEPTION, RECURRING_MASTER)
 
 
 class AcceptDeclineMixIn:
-    def accept(self, **kwargs):
+    def accept(self, message_disposition=None, **kwargs):
         return AcceptItem(
             account=self.account,
             reference_item_id=ReferenceItemId(id=self.id, changekey=self.changekey),
             **kwargs
-        ).send()
+        ).send(message_disposition)
 
-    def decline(self, **kwargs):
+    def decline(self, message_disposition=None, **kwargs):
         return DeclineItem(
             account=self.account,
             reference_item_id=ReferenceItemId(id=self.id, changekey=self.changekey),
             **kwargs
-        ).send()
+        ).send(message_disposition)
 
-    def tentatively_accept(self, **kwargs):
+    def tentatively_accept(self, message_disposition=None, **kwargs):
         return TentativelyAcceptItem(
             account=self.account,
             reference_item_id=ReferenceItemId(id=self.id, changekey=self.changekey),
             **kwargs
-        ).send()
+        ).send(message_disposition)
 
 
 class CalendarItem(Item, AcceptDeclineMixIn):
@@ -389,11 +389,11 @@ class BaseMeetingReplyItem(BaseItem, metaclass=abc.ABCMeta):
     __slots__ = tuple(f.name for f in FIELDS)
 
     @require_account
-    def send(self, message_disposition=SEND_AND_SAVE_COPY):
+    def send(self, message_disposition=None):
         return CreateItem(account=self.account).get(
             items=[self],
             folder=self.folder,
-            message_disposition=message_disposition,
+            message_disposition=message_disposition or SEND_AND_SAVE_COPY,
             send_meeting_invitations=SEND_TO_NONE,
         )
 
