@@ -52,7 +52,7 @@ setup(
         'requests_ntlm>=0.2.0',
         'requests_oauthlib',
         'tzdata',
-        'tzlocal',
+        'tzlocal==2.1',
     ],
     extras_require={
         'kerberos': ['requests_gssapi'],
