@@ -110,9 +110,9 @@ class Contact(Item):
     ms_exchange_certificate = Base64Field(field_uri=&#39;contacts:MSExchangeCertificate&#39;, supported_from=EXCHANGE_2010_SP2,
                                           is_read_only=True)
     directory_id = TextField(field_uri=&#39;contacts:DirectoryId&#39;, supported_from=EXCHANGE_2010_SP2, is_read_only=True)
-    manager_mailbox = CharField(field_uri=&#39;contacts:ManagerMailbox&#39;, supported_from=EXCHANGE_2010_SP2,
+    manager_mailbox = MailboxField(field_uri=&#39;contacts:ManagerMailbox&#39;, supported_from=EXCHANGE_2010_SP2,
                                 is_read_only=True)
-    direct_reports = CharField(field_uri=&#39;contacts:DirectReports&#39;, supported_from=EXCHANGE_2010_SP2,
+    direct_reports = MailboxListField(field_uri=&#39;contacts:DirectReports&#39;, supported_from=EXCHANGE_2010_SP2,
                                is_read_only=True)
 
 
@@ -326,9 +326,9 @@ we use folder.account.</p></div>
     ms_exchange_certificate = Base64Field(field_uri=&#39;contacts:MSExchangeCertificate&#39;, supported_from=EXCHANGE_2010_SP2,
                                           is_read_only=True)
     directory_id = TextField(field_uri=&#39;contacts:DirectoryId&#39;, supported_from=EXCHANGE_2010_SP2, is_read_only=True)
-    manager_mailbox = CharField(field_uri=&#39;contacts:ManagerMailbox&#39;, supported_from=EXCHANGE_2010_SP2,
+    manager_mailbox = MailboxField(field_uri=&#39;contacts:ManagerMailbox&#39;, supported_from=EXCHANGE_2010_SP2,
                                 is_read_only=True)
-    direct_reports = CharField(field_uri=&#39;contacts:DirectReports&#39;, supported_from=EXCHANGE_2010_SP2,
+    direct_reports = MailboxListField(field_uri=&#39;contacts:DirectReports&#39;, supported_from=EXCHANGE_2010_SP2,
                                is_read_only=True)</code></pre>
 </details>
 <h3>Ancestors</h3>

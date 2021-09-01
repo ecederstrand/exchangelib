@@ -6,7 +6,8 @@ from ..fields import BooleanField, Base64Field, TextField, ChoiceField, URIField
     PhoneNumberField, EmailAddressesField, PhysicalAddressField, Choice, MemberListField, CharField, TextListField, \
     EmailAddressField, IdElementField, EWSElementField, DateTimeField, EWSElementListField, \
     BodyContentAttributedValueField, StringAttributedValueField, PhoneNumberAttributedValueField, \
-    PersonaPhoneNumberField, EmailAddressAttributedValueField, PostalAddressAttributedValueField
+    PersonaPhoneNumberField, EmailAddressAttributedValueField, PostalAddressAttributedValueField, MailboxField, \
+    MailboxListField
 from ..properties import PersonaId, IdChangeKeyMixIn, CompleteName, Attribution, EmailAddress, Address, FolderId
 from ..util import TNS
 from ..version import EXCHANGE_2010, EXCHANGE_2010_SP2
@@ -82,9 +83,9 @@ class Contact(Item):
     ms_exchange_certificate = Base64Field(field_uri='contacts:MSExchangeCertificate', supported_from=EXCHANGE_2010_SP2,
                                           is_read_only=True)
     directory_id = TextField(field_uri='contacts:DirectoryId', supported_from=EXCHANGE_2010_SP2, is_read_only=True)
-    manager_mailbox = CharField(field_uri='contacts:ManagerMailbox', supported_from=EXCHANGE_2010_SP2,
+    manager_mailbox = MailboxField(field_uri='contacts:ManagerMailbox', supported_from=EXCHANGE_2010_SP2,
                                 is_read_only=True)
-    direct_reports = CharField(field_uri='contacts:DirectReports', supported_from=EXCHANGE_2010_SP2,
+    direct_reports = MailboxListField(field_uri='contacts:DirectReports', supported_from=EXCHANGE_2010_SP2,
                                is_read_only=True)
 
 
