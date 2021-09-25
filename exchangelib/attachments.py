@@ -1,6 +1,6 @@
+import io
 import logging
 import mimetypes
-from io import BytesIO
 
 from .fields import BooleanField, TextField, IntegerField, URIField, DateTimeField, EWSElementField, Base64Field, \
     ItemField, IdField, FieldPath
@@ -218,40 +218,32 @@ class ItemAttachment(Attachment):
         return cls(**kwargs)
 
 
-class FileAttachmentIO(BytesIO):
+class FileAttachmentIO(io.RawIOBase):
     """A BytesIO where the stream of data comes from the GetAttachment service."""
 
     def __init__(self, *args, **kwargs):
         self._attachment = kwargs.pop('attachment')
-        super().__init__(*args, **kwargs)
+
+    def readable(self):
+        return True
+
+    def readinto(self, b):
+        try:
+            l = len(b)  # We can't return more than l bytes
+            chunk = self._overflow or next(self._stream)
+            output, self._overflow = chunk[:l], chunk[l:]
+            b[:len(output)] = output
+            return len(output)
+        except StopIteration:
+            return 0
 
     def __enter__(self):
         self._stream = GetAttachment(account=self._attachment.parent_item.account).stream_file_content(
             attachment_id=self._attachment.attachment_id
         )
-        self._overflow = b''
-        return self
+        self._overflow = None
+        return io.BufferedReader(self, buffer_size=io.DEFAULT_BUFFER_SIZE)
 
     def __exit__(self, *args, **kwargs):
         self._stream = None
         self._overflow = None
-
-    def read(self, size=-1):
-        if size < 0:
-            # Return everything
-            return b''.join(self._stream)
-        # Return only 'size' bytes
-        buffer = [self._overflow]
-        read_size = len(self._overflow)
-        while True:
-            if read_size >= size:
-                break
-            try:
-                next_chunk = next(self._stream)
-            except StopIteration:
-                break
-            buffer.append(next_chunk)
-            read_size += len(next_chunk)
-        res = b''.join(buffer)
-        self._overflow = res[size:]
-        return res[:size]
