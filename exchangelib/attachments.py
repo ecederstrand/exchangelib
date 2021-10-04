@@ -221,21 +221,22 @@ class ItemAttachment(Attachment):
 class FileAttachmentIO(io.RawIOBase):
     """A BytesIO where the stream of data comes from the GetAttachment service."""
 
-    def __init__(self, *args, **kwargs):
-        self._attachment = kwargs.pop('attachment')
+    def __init__(self, attachment):
+        self._attachment = attachment
 
     def readable(self):
         return True
 
     def readinto(self, b):
+        l = len(b)  # We can't return more than l bytes
         try:
-            l = len(b)  # We can't return more than l bytes
             chunk = self._overflow or next(self._stream)
+        except StopIteration:
+            return 0
+        else:
             output, self._overflow = chunk[:l], chunk[l:]
             b[:len(output)] = output
             return len(output)
-        except StopIteration:
-            return 0
 
     def __enter__(self):
         self._stream = GetAttachment(account=self._attachment.parent_item.account).stream_file_content(
