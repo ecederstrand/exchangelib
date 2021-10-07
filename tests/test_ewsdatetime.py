@@ -137,28 +137,28 @@ class EWSDateTimeTest(TimedTestCase):
     def test_ewsdatetime(self):
         # Test a static timezone
         tz = EWSTimeZone('Etc/GMT-5')
-        dt = EWSDateTime(2000, 1, 2, 3, 4, 5, tzinfo=tz)
+        dt = EWSDateTime(2000, 1, 2, 3, 4, 5, 678901, tzinfo=tz)
         self.assertIsInstance(dt, EWSDateTime)
         self.assertIsInstance(dt.tzinfo, EWSTimeZone)
         self.assertEqual(dt.tzinfo.ms_id, tz.ms_id)
         self.assertEqual(dt.tzinfo.ms_name, tz.ms_name)
-        self.assertEqual(str(dt), '2000-01-02 03:04:05+05:00')
+        self.assertEqual(str(dt), '2000-01-02 03:04:05.678901+05:00')
         self.assertEqual(
             repr(dt),
-            "EWSDateTime(2000, 1, 2, 3, 4, 5, tzinfo=EWSTimeZone(key='Etc/GMT-5'))"
+            "EWSDateTime(2000, 1, 2, 3, 4, 5, 678901, tzinfo=EWSTimeZone(key='Etc/GMT-5'))"
         )
 
         # Test a DST timezone
         tz = EWSTimeZone('Europe/Copenhagen')
-        dt = EWSDateTime(2000, 1, 2, 3, 4, 5, tzinfo=tz)
+        dt = EWSDateTime(2000, 1, 2, 3, 4, 5, 678901, tzinfo=tz)
         self.assertIsInstance(dt, EWSDateTime)
         self.assertIsInstance(dt.tzinfo, EWSTimeZone)
         self.assertEqual(dt.tzinfo.ms_id, tz.ms_id)
         self.assertEqual(dt.tzinfo.ms_name, tz.ms_name)
-        self.assertEqual(str(dt), '2000-01-02 03:04:05+01:00')
+        self.assertEqual(str(dt), '2000-01-02 03:04:05.678901+01:00')
         self.assertEqual(
             repr(dt),
-            "EWSDateTime(2000, 1, 2, 3, 4, 5, tzinfo=EWSTimeZone(key='Europe/Copenhagen'))"
+            "EWSDateTime(2000, 1, 2, 3, 4, 5, 678901, tzinfo=EWSTimeZone(key='Europe/Copenhagen'))"
         )
 
         # Test from_string
@@ -183,24 +183,24 @@ class EWSDateTimeTest(TimedTestCase):
 
         # Test various input for from_datetime()
         self.assertEqual(dt, EWSDateTime.from_datetime(
-            datetime.datetime(2000, 1, 2, 3, 4, 5, tzinfo=EWSTimeZone('Europe/Copenhagen'))
+            datetime.datetime(2000, 1, 2, 3, 4, 5, 678901, tzinfo=EWSTimeZone('Europe/Copenhagen'))
         ))
         self.assertEqual(dt, EWSDateTime.from_datetime(
-            datetime.datetime(2000, 1, 2, 3, 4, 5, tzinfo=zoneinfo.ZoneInfo('Europe/Copenhagen'))
+            datetime.datetime(2000, 1, 2, 3, 4, 5, 678901, tzinfo=zoneinfo.ZoneInfo('Europe/Copenhagen'))
         ))
         self.assertEqual(dt, EWSDateTime.from_datetime(
-            datetime.datetime(2000, 1, 2, 3, 4, 5, tzinfo=dateutil.tz.gettz('Europe/Copenhagen'))
+            datetime.datetime(2000, 1, 2, 3, 4, 5, 678901, tzinfo=dateutil.tz.gettz('Europe/Copenhagen'))
         ))
         self.assertEqual(dt, EWSDateTime.from_datetime(
-            datetime.datetime(2000, 1, 2, 3, 4, 5, tzinfo=pytz.timezone('Europe/Copenhagen'))
+            datetime.datetime(2000, 1, 2, 3, 4, 5, 678901, tzinfo=pytz.timezone('Europe/Copenhagen'))
         ))
 
-        self.assertEqual(dt.ewsformat(), '2000-01-02T03:04:05+01:00')
+        self.assertEqual(dt.ewsformat(), '2000-01-02T03:04:05.678901+01:00')
         utc_tz = EWSTimeZone('UTC')
-        self.assertEqual(dt.astimezone(utc_tz).ewsformat(), '2000-01-02T02:04:05Z')
+        self.assertEqual(dt.astimezone(utc_tz).ewsformat(), '2000-01-02T02:04:05.678901Z')
         # Test summertime
-        dt = EWSDateTime(2000, 8, 2, 3, 4, 5, tzinfo=tz)
-        self.assertEqual(dt.astimezone(utc_tz).ewsformat(), '2000-08-02T01:04:05Z')
+        dt = EWSDateTime(2000, 8, 2, 3, 4, 5, 678901, tzinfo=tz)
+        self.assertEqual(dt.astimezone(utc_tz).ewsformat(), '2000-08-02T01:04:05.678901Z')
 
         # Test in-place add and subtract
         dt = EWSDateTime(2000, 1, 2, 3, 4, 5, tzinfo=tz)

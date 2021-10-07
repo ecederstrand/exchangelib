@@ -3,12 +3,13 @@ Change Log
 
 HEAD
 ----
+-   Support microsecond precision in `EWSDateTime.ewsformat()`
 
 4.5.2
 -----
-- Make `FileAttachment.fp` a proper `BytesIO` implementation
-- Add missing `CalendarItem.recurrence_id` field
-- Add `SingleFolderQuerySet.resolve()` to aid accessing a folder shared by a different account:
+-   Make `FileAttachment.fp` a proper `BytesIO` implementation
+-   Add missing `CalendarItem.recurrence_id` field
+-   Add `SingleFolderQuerySet.resolve()` to aid accessing a folder shared by a different account:
 ```python
 from exchangelib import Account
 from exchangelib.folders import Calendar, SingleFolderQuerySet

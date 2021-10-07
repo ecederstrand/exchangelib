@@ -92,9 +92,7 @@ class EWSDateTime(datetime.datetime):
         if not isinstance(tzinfo, (EWSTimeZone, type(None))):
             raise ValueError('tzinfo %r must be an EWSTimeZone instance' % tzinfo)
         if len(args) == 8:
-            args = list(args)
-            args[7] = tzinfo
-            args = tuple(args)
+            args = args[:7] + (tzinfo,)
         else:
             kwargs['tzinfo'] = tzinfo
         return super().__new__(cls, *args, **kwargs)
@@ -107,8 +105,10 @@ class EWSDateTime(datetime.datetime):
         if not self.tzinfo:
             raise ValueError('%r must be timezone-aware' % self)
         if self.tzinfo.key == 'UTC':
+            if self.microsecond:
+                return self.strftime('%Y-%m-%dT%H:%M:%S.%fZ')
             return self.strftime('%Y-%m-%dT%H:%M:%SZ')
-        return self.replace(microsecond=0).isoformat()
+        return self.isoformat()
 
     @classmethod
     def from_datetime(cls, d):
