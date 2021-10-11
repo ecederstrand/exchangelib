@@ -17,7 +17,8 @@ from ..errors import EWSWarning, TransportError, SOAPError, ErrorTimeoutExpired,
     ErrorNoPublicFolderReplicaAvailable, MalformedResponseError, ErrorExceededConnectionCount, \
     SessionPoolMinSizeReached, ErrorIncorrectSchemaVersion, ErrorInvalidRequest, ErrorCorruptData, \
     ErrorCannotEmptyFolder, ErrorDeleteDistinguishedFolder, ErrorInvalidSubscription, ErrorInvalidWatermark, \
-    ErrorInvalidSyncStateData, ErrorNameResolutionNoResults, ErrorNameResolutionMultipleResults
+    ErrorInvalidSyncStateData, ErrorNameResolutionNoResults, ErrorNameResolutionMultipleResults, \
+    ErrorConnectionFailedTransientError
 from ..properties import FieldURI, IndexedFieldURI, ExtendedFieldURI, ExceptionFieldURI, ItemId
 from ..transport import wrap
 from ..util import chunkify, create_element, add_xml_child, get_xml_attr, to_xml, post_ratelimited, \
@@ -35,6 +36,7 @@ KNOWN_EXCEPTIONS = (
     ErrorCannotDeleteObject,
     ErrorCannotEmptyFolder,
     ErrorConnectionFailed,
+    ErrorConnectionFailedTransientError,
     ErrorCreateItemAccessDenied,
     ErrorDeleteDistinguishedFolder,
     ErrorExceededConnectionCount,
