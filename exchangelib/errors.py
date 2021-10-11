@@ -208,6 +208,7 @@ class ErrorChangeKeyRequired(ResponseMessageError): pass
 class ErrorChangeKeyRequiredForWriteOperations(ResponseMessageError): pass
 class ErrorClientDisconnected(ResponseMessageError): pass
 class ErrorConnectionFailed(ResponseMessageError): pass
+class ErrorConnectionFailedTransientError(ResponseMessageError): pass
 class ErrorContainsFilterWrongType(ResponseMessageError): pass
 class ErrorContentConversionFailed(ResponseMessageError): pass
 class ErrorCorruptData(ResponseMessageError): pass
