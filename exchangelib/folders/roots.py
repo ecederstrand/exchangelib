@@ -19,7 +19,7 @@ class LambdaLock():
     """Memory lock placeholder for execution on AWS Lambda.
     Required due to lack of /dev/shm in Lambda and hence errors when trying to lock the memory.
     """
-    
+
     def __init__(self):
         return None
 
