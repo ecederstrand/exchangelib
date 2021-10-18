@@ -1,5 +1,6 @@
 import logging
 from multiprocessing import Lock
+import os # For checking if executing on AWS Lambda
 
 from .base import BaseFolder, MISSING_FOLDER_ERRORS
 from .collections import FolderCollection
@@ -13,6 +14,15 @@ from ..version import EXCHANGE_2007_SP1, EXCHANGE_2010_SP1
 
 log = logging.getLogger(__name__)
 
+class LambdaLock(object):
+    ''' Memory lock placeholder for execution on AWS Lambda.
+    Required due to lack of /dev/shm in Lambda and hence errors when trying to lock the memory.'''
+    def __init__(self):
+        return None
+    def __enter__(self):
+        return None
+    def __exit__(self, *args):
+        return None
 
 class RootOfHierarchy(BaseFolder, metaclass=EWSMeta):
     """Base class for folders that implement the root of a folder hierarchy."""
@@ -23,7 +33,20 @@ class RootOfHierarchy(BaseFolder, metaclass=EWSMeta):
     # 'RootOfHierarchy' subclasses must not be in this list.
     WELLKNOWN_FOLDERS = []
 
-    _subfolders_lock = Lock()
+    # AWS Lambda does not have access to /dev/shm which multiprocessing.Lock requires.
+    # If Lock() is called on Lambda, an error will be raised ... OSError: [Errno 38] Function not implemented
+    # Instead we switch the Lock object with a placeholder class if executing on Lambda.
+    # This Lock was implemented in v4.1.0 to overcome concurrency issues, so such issues may resurface on 
+    # Lambda with this fix.
+    if os.environ.get("AWS_EXECUTION_ENV") is not None:
+        log.debug(f'''AWS Lambda execution detected. 
+            AWS_EXECUTION_ENV = {os.environ.get("AWS_EXECUTION_ENV")}.
+            Placeholder lock used.
+            This may cause concurrency issues.''')
+        _subfolders_lock = LambdaLock()
+    else:
+        log.debug(f'Not operating on AWS Lambda. multiprocessing.Lock used.')
+        _subfolders_lock = Lock()
 
     # This folder type also has 'folder:PermissionSet' on some server versions, but requesting it sometimes causes
     # 'ErrorAccessDenied', as reported by some users. Ignore it entirely for root folders - it's usefulness is
