@@ -102,6 +102,10 @@ class EWSDateTimeTest(TimedTestCase):
             EWSTimeZone('UTC'),
             EWSTimeZone.from_timezone(dateutil.tz.UTC)
         )
+        self.assertEqual(
+            EWSTimeZone('UTC'),
+            EWSTimeZone.from_timezone(datetime.timezone.utc)
+        )
 
     def test_localize(self):
         # Test some corner cases around DST

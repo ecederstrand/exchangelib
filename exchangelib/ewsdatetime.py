@@ -251,6 +251,11 @@ class EWSTimeZone(zoneinfo.ZoneInfo):
         return cls(tz.zone)
 
     @classmethod
+    def from_datetime(cls, tz):
+        """Convert from a standard library `datetime.timezone` instance."""
+        return cls(tz.tzname(None))
+
+    @classmethod
     def from_dateutil(cls, tz):
         # Objects returned by dateutil.tz.tzlocal() and dateutil.tz.gettz() are not supported. They
         # don't contain enough information to reliably match them with a CLDR timezone.
@@ -272,6 +277,7 @@ class EWSTimeZone(zoneinfo.ZoneInfo):
             return {
                 cls.__module__.split('.')[0]: lambda z: z,
                 'backports': cls.from_zoneinfo,
+                'datetime': cls.from_datetime,
                 'dateutil': cls.from_dateutil,
                 'pytz': cls.from_pytz,
                 'zoneinfo': cls.from_zoneinfo,
