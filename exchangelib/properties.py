@@ -1864,18 +1864,6 @@ class Period(EWSElement):
     name = CharField(field_uri="Name", is_attribute=True)
     bias = TimeDeltaField(field_uri="Bias", is_attribute=True)
 
-    def _split_id(self):
-        to_year, to_type = self.id.rsplit("/", 1)[1].split("-")
-        return int(to_year), to_type
-
-    @property
-    def year(self):
-        return self._split_id()[0]
-
-    @property
-    def type(self):
-        return self._split_id()[1]
-
     @property
     def bias_in_minutes(self):
         return int(self.bias.total_seconds()) // 60  # Convert to minutes
@@ -1906,17 +1894,14 @@ class TimeZoneDefinition(EWSElement):
     def from_xml(cls, elem, account):
         return super().from_xml(elem, account)
 
-    def _get_standard_period(self, for_year):
-        # Look through periods and pick a relevant period according to the 'for_year' value
+    def _get_standard_period(self, transitions_group):
+        # Find the first standard period referenced from transitions_group
         valid_period = None
-        for period in sorted(self.periods, key=lambda p: (p.year, p.type)):
-            if period.year > for_year:
+        standard_periods_map = {p.id: p for p in self.periods if p.name == "Standard"}
+        for transition in transitions_group.transitions:
+            valid_period = standard_periods_map.get(transition.to)
+            if valid_period:
                 break
-            if period.type != "Standard":
-                continue
-            valid_period = period
-        if valid_period is None:
-            raise TimezoneDefinitionInvalidForYear(f"Year {for_year} not included in periods {self.periods}")
         return valid_period
 
     def _get_transitions_group(self, for_year):
@@ -1939,7 +1924,9 @@ class TimeZoneDefinition(EWSElement):
         if not 0 <= len(transitions_group.transitions) <= 2:
             raise ValueError(f"Expected 0-2 transitions in transitions group {transitions_group}")
 
-        standard_period = self._get_standard_period(for_year)
+        standard_period = self._get_standard_period(transitions_group)
+        if standard_period is None:
+            raise TimezoneDefinitionInvalidForYear(f"Period {for_year} not included in periods {self.periods}")
         periods_map = {p.id: p for p in self.periods}
         standard_time, daylight_time = None, None
         if len(transitions_group.transitions) == 1:
