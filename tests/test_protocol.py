@@ -33,14 +33,17 @@ from exchangelib.properties import (
     ID_FORMATS,
     AlternateId,
     DLMailbox,
+    DaylightTime,
     FailedMailbox,
     FreeBusyView,
     FreeBusyViewOptions,
     ItemId,
     Mailbox,
     MailboxData,
+    Period,
     RoomList,
     SearchableMailbox,
+    StandardTime,
     TimeZone,
 )
 from exchangelib.protocol import BaseProtocol, FailFast, FaultTolerance, NoVerifyHTTPAdapter, Protocol
@@ -49,6 +52,7 @@ from exchangelib.services import (
     GetRoomLists,
     GetRooms,
     GetSearchableMailboxes,
+    GetServerTimeZones,
     ResolveNames,
     SetUserOofSettings,
 )
@@ -264,7 +268,78 @@ EWS auth: NTLM""",
                 self.assertEqual(tz.bias, tz_definition.get_std_and_dst(for_year=2018)[2].bias_in_minutes)
             except TimezoneDefinitionInvalidForYear:
                 pass
-
+    
+    def test_get_timezones_parsing(self):
+        # Test static XML since it's non-standard
+        xml = b"""\
+<?xml version='1.0' encoding='utf-8'?>
+<soap:Envelope
+    xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Header xmlns="http://schemas.xmlsoap.org/soap/envelope/">
+    <ServerVersionInfo xmlns="http://schemas.microsoft.com/exchange/services/2006/types" MajorVersion="14" MinorVersion="2" MajorBuildNumber="390" MinorBuildNumber="3" Version="Exchange2010_SP2"/>
+  </Header>
+  <soap:Body>
+    <m:GetServerTimeZonesResponse
+    xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types"
+    xmlns:m="http://schemas.microsoft.com/exchange/services/2006/messages">
+      <m:ResponseMessages>
+        <m:GetServerTimeZonesResponseMessage ResponseClass="Success">
+          <m:ResponseCode>NoError</m:ResponseCode>
+          <m:TimeZoneDefinitions>
+            <t:TimeZoneDefinition Id="W. Europe Standard Time" Name="(UTC+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna">
+              <t:Periods>
+                <t:Period Bias="-PT60M" Name="Standard" Id="std"/>
+                <t:Period Bias="-PT120M" Name="Daylight" Id="dlt"/>
+              </t:Periods>
+              <t:TransitionsGroups>
+                <t:TransitionsGroup Id="0">
+                  <t:RecurringDayTransition>
+                    <t:To Kind="Period">std</t:To>
+                    <t:TimeOffset>PT180M</t:TimeOffset>
+                    <t:Month>10</t:Month>
+                    <t:DayOfWeek>Sunday</t:DayOfWeek>
+                    <t:Occurrence>-1</t:Occurrence>
+                  </t:RecurringDayTransition>
+                  <t:RecurringDayTransition>
+                    <t:To Kind="Period">dlt</t:To>
+                    <t:TimeOffset>PT120M</t:TimeOffset>
+                    <t:Month>3</t:Month>
+                    <t:DayOfWeek>Sunday</t:DayOfWeek>
+                    <t:Occurrence>-1</t:Occurrence>
+                  </t:RecurringDayTransition>
+                </t:TransitionsGroup>
+              </t:TransitionsGroups>
+              <t:Transitions>
+                <t:Transition>
+                  <t:To Kind="Group">0</t:To>
+                </t:Transition>
+              </t:Transitions>
+            </t:TimeZoneDefinition>
+          </m:TimeZoneDefinitions>
+        </m:GetServerTimeZonesResponseMessage>
+      </m:ResponseMessages>
+    </m:GetServerTimeZonesResponse>
+  </soap:Body>
+</soap:Envelope>"""
+        ws = GetServerTimeZones(self.account.protocol)
+        timezones = list(ws.parse(xml))
+        self.assertEqual(1, len(timezones))
+        (standard_transition, daylight_transition, standard_period) = timezones[0].get_std_and_dst(2022)
+        self.assertEqual(
+            standard_transition,
+            StandardTime(bias=0, time=datetime.time(hour=3), occurrence=5, iso_month=10, weekday=7),
+        )
+        self.assertEqual(
+            daylight_transition,
+            DaylightTime(bias=-60, time=datetime.time(hour=2), occurrence=5, iso_month=3, weekday=7),
+        )
+        self.assertEqual(
+            standard_period,
+            Period(id="std", name="Standard", bias=datetime.timedelta(minutes=-60)),
+        )
+        
     def test_get_free_busy_info(self):
         tz = self.account.default_timezone
         server_timezones = list(self.account.protocol.get_timezones(return_full_timezone_data=True))

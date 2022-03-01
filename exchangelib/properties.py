@@ -1894,15 +1894,14 @@ class TimeZoneDefinition(EWSElement):
     def from_xml(cls, elem, account):
         return super().from_xml(elem, account)
 
-    def _get_standard_period(self, transitions_group):
+    def _get_standard_period(self, transitions_group, for_year):
         # Find the first standard period referenced from transitions_group
-        valid_period = None
         standard_periods_map = {p.id: p for p in self.periods if p.name == "Standard"}
-        for transition in transitions_group.transitions:
-            valid_period = standard_periods_map.get(transition.to)
-            if valid_period:
-                break
-        return valid_period
+        standard_transitions = (t for t in transitions_group.transitions if t.to in standard_periods_map)
+        try:
+            return standard_periods_map[next(standard_transitions).to]
+        except StopIteration:
+            raise TimezoneDefinitionInvalidForYear(f"Year {for_year} not included in periods {self.periods}")
 
     def _get_transitions_group(self, for_year):
         # Look through the transitions, and pick the relevant transition group according to the 'for_year' value
@@ -1924,9 +1923,7 @@ class TimeZoneDefinition(EWSElement):
         if not 0 <= len(transitions_group.transitions) <= 2:
             raise ValueError(f"Expected 0-2 transitions in transitions group {transitions_group}")
 
-        standard_period = self._get_standard_period(transitions_group)
-        if standard_period is None:
-            raise TimezoneDefinitionInvalidForYear(f"Period {for_year} not included in periods {self.periods}")
+        standard_period = self._get_standard_period(transitions_group, for_year)
         periods_map = {p.id: p for p in self.periods}
         standard_time, daylight_time = None, None
         if len(transitions_group.transitions) == 1:
