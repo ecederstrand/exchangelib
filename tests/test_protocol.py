@@ -24,7 +24,6 @@ from exchangelib.errors import (
     RateLimitError,
     SessionPoolMaxSizeReached,
     SessionPoolMinSizeReached,
-    TimezoneDefinitionInvalidForYear,
     TransportError,
 )
 from exchangelib.items import SEARCH_SCOPE_CHOICES, CalendarItem
@@ -266,7 +265,7 @@ EWS auth: NTLM""",
                     for_year=2018,
                 )
                 self.assertEqual(tz.bias, tz_definition.get_std_and_dst(for_year=2018)[2].bias_in_minutes)
-            except TimezoneDefinitionInvalidForYear:
+            except ValueError:
                 pass
     
     def test_get_timezones_parsing(self):

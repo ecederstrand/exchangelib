@@ -7,7 +7,7 @@ import struct
 from inspect import getmro
 from threading import Lock
 
-from .errors import InvalidTypeError, TimezoneDefinitionInvalidForYear
+from .errors import InvalidTypeError
 from .fields import (
     WEEKDAY_NAMES,
     AssociatedCalendarItemIdField,
@@ -1894,14 +1894,15 @@ class TimeZoneDefinition(EWSElement):
     def from_xml(cls, elem, account):
         return super().from_xml(elem, account)
 
-    def _get_standard_period(self, transitions_group, for_year):
+    def _get_standard_period(self, transitions_group):
         # Find the first standard period referenced from transitions_group
         standard_periods_map = {p.id: p for p in self.periods if p.name == "Standard"}
-        standard_transitions = (t for t in transitions_group.transitions if t.to in standard_periods_map)
-        try:
-            return standard_periods_map[next(standard_transitions).to]
-        except StopIteration:
-            raise TimezoneDefinitionInvalidForYear(f"Year {for_year} not included in periods {self.periods}")
+        for transition in transitions_group.transitions:
+            try:
+                return standard_periods_map[transition.to]
+            except KeyError:
+                continue
+        raise ValueError(f"No standard period matching transition reference {transition.to}")
 
     def _get_transitions_group(self, for_year):
         # Look through the transitions, and pick the relevant transition group according to the 'for_year' value
@@ -1923,7 +1924,7 @@ class TimeZoneDefinition(EWSElement):
         if not 0 <= len(transitions_group.transitions) <= 2:
             raise ValueError(f"Expected 0-2 transitions in transitions group {transitions_group}")
 
-        standard_period = self._get_standard_period(transitions_group, for_year)
+        standard_period = self._get_standard_period(transitions_group)
         periods_map = {p.id: p for p in self.periods}
         standard_time, daylight_time = None, None
         if len(transitions_group.transitions) == 1:
