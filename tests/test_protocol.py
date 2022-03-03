@@ -267,7 +267,7 @@ EWS auth: NTLM""",
                 self.assertEqual(tz.bias, tz_definition.get_std_and_dst(for_year=2018)[2].bias_in_minutes)
             except ValueError:
                 pass
-    
+
     def test_get_timezones_parsing(self):
         # Test static XML since it's non-standard
         xml = b"""\
@@ -338,7 +338,7 @@ EWS auth: NTLM""",
             standard_period,
             Period(id="std", name="Standard", bias=datetime.timedelta(minutes=-60)),
         )
-        
+
     def test_get_free_busy_info(self):
         tz = self.account.default_timezone
         server_timezones = list(self.account.protocol.get_timezones(return_full_timezone_data=True))
