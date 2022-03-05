@@ -20,6 +20,7 @@ from exchangelib.configuration import Configuration
 from exchangelib.credentials import Credentials, OAuth2AuthorizationCodeCredentials, OAuth2Credentials
 from exchangelib.errors import (
     ErrorAccessDenied,
+    ErrorMailRecipientNotFound,
     ErrorNameResolutionNoResults,
     RateLimitError,
     SessionPoolMaxSizeReached,
@@ -389,6 +390,28 @@ EWS auth: NTLM""",
             accounts=[(self.account.primary_smtp_address, "Organizer", False)], start=start, end=end
         ):
             self.assertIsInstance(view_info, FreeBusyView)
+
+        # Test non-existing address
+        for view_info in self.account.protocol.get_free_busy_info(
+            accounts=[(f"unlikely-to-exist-{self.account.primary_smtp_address}", "Organizer", False)],
+            start=start,
+            end=end,
+        ):
+            self.assertIsInstance(view_info, ErrorMailRecipientNotFound)
+
+        # Test non-existing and existing address
+        view_infos = list(
+            self.account.protocol.get_free_busy_info(
+                accounts=[
+                    (f"unlikely-to-exist-{self.account.primary_smtp_address}", "Organizer", False),
+                    (self.account.primary_smtp_address, "Organizer", False),
+                ],
+                start=start,
+                end=end,
+            )
+        )
+        self.assertIsInstance(view_infos[0], ErrorMailRecipientNotFound)
+        self.assertIsInstance(view_infos[1], FreeBusyView)
 
     def test_get_roomlists(self):
         # The test server is not guaranteed to have any room lists which makes this test less useful

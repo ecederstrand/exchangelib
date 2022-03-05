@@ -43,9 +43,11 @@ class GetUserAvailability(EWSService):
 
     def _get_elements_in_response(self, response):
         for msg in response:
-            # Just check the response code and raise errors
-            self._get_element_container(message=msg.find(f"{{{MNS}}}ResponseMessage"))
-            yield from self._get_elements_in_container(container=msg)
+            container_or_exc = self._get_element_container(message=msg.find(f"{{{MNS}}}ResponseMessage"))
+            if isinstance(container_or_exc, Exception):
+                yield container_or_exc
+            else:
+                yield from self._get_elements_in_container(container=msg)
 
     @classmethod
     def _get_elements_in_container(cls, container):
