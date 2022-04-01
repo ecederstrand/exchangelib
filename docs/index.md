@@ -1557,7 +1557,7 @@ for occurrence in a.calendar.view(
 ):
     # Delete or update random occurrences. This will affect
     # 'modified_occurrences' and  'deleted_occurrences' of the master item.
-    if occurrence.start.milliseconds % 2:
+    if occurrence.start.microseconds % 2:
         # We receive timestamps as UTC but want to write back as local timezone
         occurrence.start = occurrence.start.astimezone(a.default_timezone)
         occurrence.start += datetime.timedelta(minutes=30)
@@ -1578,7 +1578,7 @@ third_occurrence.start += datetime.timedelta(hours=3)
 third_occurrence.save(update_fields=['start'])
 
 # Similarly, you can reach the master recurrence from the occurrence
-master = third_occurrence.master_recurrence()
+master = third_occurrence.recurring_master()
 master.subject = 'An update'
 master.save(update_fields=['subject'])
 ```
