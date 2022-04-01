@@ -1557,7 +1557,7 @@ for occurrence in a.calendar.view(
 ):
     # Delete or update random occurrences. This will affect
     # 'modified_occurrences' and  'deleted_occurrences' of the master item.
-    if occurrence.start.microseconds % 2:
+    if occurrence.start.microsecond % 2:
         # We receive timestamps as UTC but want to write back as local timezone
         occurrence.start = occurrence.start.astimezone(a.default_timezone)
         occurrence.start += datetime.timedelta(minutes=30)
