@@ -22,6 +22,7 @@ from oauthlib.oauth2 import TokenExpiredError
 from pygments import highlight
 from pygments.formatters.terminal import TerminalFormatter
 from pygments.lexers.html import XmlLexer
+from requests_oauthlib import OAuth2Session
 
 from .errors import (
     InvalidTypeError,
@@ -839,10 +840,12 @@ Response XML: %(xml_response)s"""
             d_start = time.monotonic()
             # Always create a dummy response for logging purposes, in case we fail in the following
             r = DummyResponse(url=url, request_headers=headers)
+            kwargs = dict(url=url, headers=headers, data=data, allow_redirects=False, timeout=timeout, stream=stream)
+            if isinstance(session, OAuth2Session):
+                # Fix token refreshing bug. Reported as https://github.com/requests/requests-oauthlib/issues/498
+                kwargs.update(session.auto_refresh_kwargs)
             try:
-                r = session.post(
-                    url=url, headers=headers, data=data, allow_redirects=False, timeout=timeout, stream=stream
-                )
+                r = session.post(**kwargs)
             except TLS_ERRORS as e:
                 # Don't retry on TLS errors. They will most likely be persistent.
                 raise TransportError(str(e))
