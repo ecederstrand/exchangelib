@@ -3,10 +3,15 @@ Change Log
 
 HEAD
 ----
+
+
+4.7.5
+-----
 - Fixed `Protocol.get_free_busy_info()` when called with +100 accounts.
 - Allowed configuring DNS timeout for a single nameserver
   (`Autodiscovery.DNS_RESOLVER_ATTRS["timeout""]`) and the total query lifetime
   (`Autodiscovery.DNS_RESOLVER_LIFETIME`) separately.
+- Fixed token refresh bug with OAuth2 authentication
 
 
 4.7.4

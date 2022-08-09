@@ -276,8 +276,12 @@ class BaseProtocol:
             session = self.renew_session(session)
         self._session_pool.put(session, block=False)
 
-    @staticmethod
-    def close_session(session):
+    def close_session(self, session):
+        if isinstance(self.credentials, OAuth2Credentials) and not isinstance(
+            self.credentials, OAuth2AuthorizationCodeCredentials
+        ):
+            # Reset token if client is of type BackendApplicationClient
+            self.credentials.access_token = None
         session.close()
         del session
 
@@ -533,7 +537,6 @@ class Protocol(BaseProtocol, metaclass=CachingProtocol):
 
         tz_definition = list(self.get_timezones(timezones=[start.tzinfo], return_full_timezone_data=True))[0]
         return GetUserAvailability(self).call(
-            timezone=TimeZone.from_server_timezone(tz_definition=tz_definition, for_year=start.year),
             mailbox_data=[
                 MailboxData(
                     email=account.primary_smtp_address if isinstance(account, Account) else account,
@@ -542,6 +545,7 @@ class Protocol(BaseProtocol, metaclass=CachingProtocol):
                 )
                 for account, attendee_type, exclude_conflicts in accounts
             ],
+            timezone=TimeZone.from_server_timezone(tz_definition=tz_definition, for_year=start.year),
             free_busy_view_options=FreeBusyViewOptions(
                 time_window=TimeWindow(start=start, end=end),
                 merged_free_busy_interval=merged_free_busy_interval,
@@ -1054,8 +1058,12 @@ class FaultTolerance(RetryPolicy):
             session = self.renew_session(session)
         self._session_pool.put(session, block=False)
 
-    @staticmethod
-    def close_session(session):
+    def close_session(self, session):
+        if isinstance(self.credentials, OAuth2Credentials) and not isinstance(
+            self.credentials, OAuth2AuthorizationCodeCredentials
+        ):
+            # Reset token if client is of type BackendApplicationClient
+            self.credentials.access_token = None
         session.close()
         del session
 
@@ -1235,21 +1243,6 @@ s.mount('http://', a)</p>
 </dl>
 <h3>Static methods</h3>
 <dl>
-<dt id="exchangelib.protocol.BaseProtocol.close_session"><code class="name flex">
-<span>def <span class="ident">close_session</span></span>(<span>session)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@staticmethod
-def close_session(session):
-    session.close()
-    del session</code></pre>
-</details>
-</dd>
 <dt id="exchangelib.protocol.BaseProtocol.get_adapter"><code class="name flex">
 <span>def <span class="ident">get_adapter</span></span>(<span>)</span>
 </code></dt>
@@ -1390,6 +1383,25 @@ def session_pool_size(self):
             self._session_pool_size -= 1
         except Empty:
             break</code></pre>
+</details>
+</dd>
+<dt id="exchangelib.protocol.BaseProtocol.close_session"><code class="name flex">
+<span>def <span class="ident">close_session</span></span>(<span>self, session)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def close_session(self, session):
+    if isinstance(self.credentials, OAuth2Credentials) and not isinstance(
+        self.credentials, OAuth2AuthorizationCodeCredentials
+    ):
+        # Reset token if client is of type BackendApplicationClient
+        self.credentials.access_token = None
+    session.close()
+    del session</code></pre>
 </details>
 </dd>
 <dt id="exchangelib.protocol.BaseProtocol.create_oauth2_session"><code class="name flex">
@@ -2103,7 +2115,6 @@ services that are not tied to an account.</p></div>
 
         tz_definition = list(self.get_timezones(timezones=[start.tzinfo], return_full_timezone_data=True))[0]
         return GetUserAvailability(self).call(
-            timezone=TimeZone.from_server_timezone(tz_definition=tz_definition, for_year=start.year),
             mailbox_data=[
                 MailboxData(
                     email=account.primary_smtp_address if isinstance(account, Account) else account,
@@ -2112,6 +2123,7 @@ services that are not tied to an account.</p></div>
                 )
                 for account, attendee_type, exclude_conflicts in accounts
             ],
+            timezone=TimeZone.from_server_timezone(tz_definition=tz_definition, for_year=start.year),
             free_busy_view_options=FreeBusyViewOptions(
                 time_window=TimeWindow(start=start, end=end),
                 merged_free_busy_interval=merged_free_busy_interval,
@@ -2319,7 +2331,6 @@ FreeBusyViewOptions.requested_view choices. (Default value = 'DetailedMerged')</
 
     tz_definition = list(self.get_timezones(timezones=[start.tzinfo], return_full_timezone_data=True))[0]
     return GetUserAvailability(self).call(
-        timezone=TimeZone.from_server_timezone(tz_definition=tz_definition, for_year=start.year),
         mailbox_data=[
             MailboxData(
                 email=account.primary_smtp_address if isinstance(account, Account) else account,
@@ -2328,6 +2339,7 @@ FreeBusyViewOptions.requested_view choices. (Default value = 'DetailedMerged')</
             )
             for account, attendee_type, exclude_conflicts in accounts
         ],
+        timezone=TimeZone.from_server_timezone(tz_definition=tz_definition, for_year=start.year),
         free_busy_view_options=FreeBusyViewOptions(
             time_window=TimeWindow(start=start, end=end),
             merged_free_busy_interval=merged_free_busy_interval,

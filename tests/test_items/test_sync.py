@@ -426,7 +426,7 @@ class SyncTest(BaseItemTest):
             # Invalid status
             ws.get_payload(status="XXX")
         self.assertEqual(
-            PrettyXmlHandler.prettify_xml(ws.ok_payload()),
+            PrettyXmlHandler().prettify_xml(ws.ok_payload()),
             b"""\
 <?xml version='1.0' encoding='utf-8'?>
 <s:Envelope
@@ -442,7 +442,7 @@ class SyncTest(BaseItemTest):
 """,
         )
         self.assertEqual(
-            PrettyXmlHandler.prettify_xml(ws.unsubscribe_payload()),
+            PrettyXmlHandler().prettify_xml(ws.unsubscribe_payload()),
             b"""\
 <?xml version='1.0' encoding='utf-8'?>
 <s:Envelope

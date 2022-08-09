@@ -574,15 +574,13 @@ def is_xml(text, expected_prefix=b"<?xml"):
 class PrettyXmlHandler(logging.StreamHandler):
     """A steaming log handler that prettifies log statements containing XML when output is a terminal."""
 
-    @staticmethod
-    def parse_bytes(xml_bytes):
+    def parse_bytes(self, xml_bytes):
         return to_xml(xml_bytes)
 
-    @classmethod
-    def prettify_xml(cls, xml_bytes):
+    def prettify_xml(self, xml_bytes):
         """Re-format an XML document to a consistent style."""
         return (
-            lxml.etree.tostring(cls.parse_bytes(xml_bytes), xml_declaration=True, encoding="utf-8", pretty_print=True)
+            lxml.etree.tostring(self.parse_bytes(xml_bytes), xml_declaration=True, encoding="utf-8", pretty_print=True)
             .replace(b"\t", b"    ")
             .replace(b" xmlns:", b"\n    xmlns:")
         )

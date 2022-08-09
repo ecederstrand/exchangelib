@@ -95,7 +95,7 @@ class TransportTest(TimedTestCase):
         account = MockAccount(access_type=DELEGATE, identity=None, default_timezone=MockTZ("XXX"))
         wrapped = wrap(content=content, api_version=api_version, timezone=account.default_timezone)
         self.assertEqual(
-            PrettyXmlHandler.prettify_xml(wrapped),
+            PrettyXmlHandler().prettify_xml(wrapped),
             b"""<?xml version='1.0' encoding='utf-8'?>
 <s:Envelope
     xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"
@@ -130,7 +130,7 @@ class TransportTest(TimedTestCase):
                 timezone=account.default_timezone,
             )
             self.assertEqual(
-                PrettyXmlHandler.prettify_xml(wrapped),
+                PrettyXmlHandler().prettify_xml(wrapped),
                 f"""<?xml version='1.0' encoding='utf-8'?>
 <s:Envelope
     xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"

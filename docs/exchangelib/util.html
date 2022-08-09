@@ -601,8 +601,7 @@ def is_xml(text, expected_prefix=b&#34;&lt;?xml&#34;):
 class PrettyXmlHandler(logging.StreamHandler):
     &#34;&#34;&#34;A steaming log handler that prettifies log statements containing XML when output is a terminal.&#34;&#34;&#34;
 
-    @staticmethod
-    def parse_bytes(xml_bytes):
+    def parse_bytes(self, xml_bytes):
         return to_xml(xml_bytes)
 
     @classmethod
@@ -2224,8 +2223,7 @@ Omitting <code>getvalue</code> forces lxml to stream the request through <code>r
 <pre><code class="python">class PrettyXmlHandler(logging.StreamHandler):
     &#34;&#34;&#34;A steaming log handler that prettifies log statements containing XML when output is a terminal.&#34;&#34;&#34;
 
-    @staticmethod
-    def parse_bytes(xml_bytes):
+    def parse_bytes(self, xml_bytes):
         return to_xml(xml_bytes)
 
     @classmethod
@@ -2297,20 +2295,6 @@ Omitting <code>getvalue</code> forces lxml to stream the request through <code>r
 def highlight_xml(xml_str):
     &#34;&#34;&#34;Highlight a string containing XML, using terminal color codes.&#34;&#34;&#34;
     return highlight(xml_str, XmlLexer(), TerminalFormatter()).rstrip()</code></pre>
-</details>
-</dd>
-<dt id="exchangelib.util.PrettyXmlHandler.parse_bytes"><code class="name flex">
-<span>def <span class="ident">parse_bytes</span></span>(<span>xml_bytes)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@staticmethod
-def parse_bytes(xml_bytes):
-    return to_xml(xml_bytes)</code></pre>
 </details>
 </dd>
 <dt id="exchangelib.util.PrettyXmlHandler.prettify_xml"><code class="name flex">
@@ -2387,6 +2371,19 @@ def prettify_xml(cls, xml_bytes):
         return self.stream.isatty()
     except AttributeError:
         return False</code></pre>
+</details>
+</dd>
+<dt id="exchangelib.util.PrettyXmlHandler.parse_bytes"><code class="name flex">
+<span>def <span class="ident">parse_bytes</span></span>(<span>self, xml_bytes)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def parse_bytes(self, xml_bytes):
+    return to_xml(xml_bytes)</code></pre>
 </details>
 </dd>
 </dl>

@@ -57,7 +57,7 @@ from .settings import OofSettings
 from .transport import BASIC, CBA, DIGEST, GSSAPI, NTLM, OAUTH2, SSPI
 from .version import Build, Version
 
-__version__ = &#34;4.7.4&#34;
+__version__ = &#34;4.7.5&#34;
 
 __all__ = [
     &#34;__version__&#34;,
@@ -2870,8 +2870,12 @@ account.upload([
             session = self.renew_session(session)
         self._session_pool.put(session, block=False)
 
-    @staticmethod
-    def close_session(session):
+    def close_session(self, session):
+        if isinstance(self.credentials, OAuth2Credentials) and not isinstance(
+            self.credentials, OAuth2AuthorizationCodeCredentials
+        ):
+            # Reset token if client is of type BackendApplicationClient
+            self.credentials.access_token = None
         session.close()
         del session
 
@@ -3051,21 +3055,6 @@ s.mount('http://', a)</p>
 </dl>
 <h3>Static methods</h3>
 <dl>
-<dt id="exchangelib.BaseProtocol.close_session"><code class="name flex">
-<span>def <span class="ident">close_session</span></span>(<span>session)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@staticmethod
-def close_session(session):
-    session.close()
-    del session</code></pre>
-</details>
-</dd>
 <dt id="exchangelib.BaseProtocol.get_adapter"><code class="name flex">
 <span>def <span class="ident">get_adapter</span></span>(<span>)</span>
 </code></dt>
@@ -3206,6 +3195,25 @@ def session_pool_size(self):
             self._session_pool_size -= 1
         except Empty:
             break</code></pre>
+</details>
+</dd>
+<dt id="exchangelib.BaseProtocol.close_session"><code class="name flex">
+<span>def <span class="ident">close_session</span></span>(<span>self, session)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def close_session(self, session):
+    if isinstance(self.credentials, OAuth2Credentials) and not isinstance(
+        self.credentials, OAuth2AuthorizationCodeCredentials
+    ):
+        # Reset token if client is of type BackendApplicationClient
+        self.credentials.access_token = None
+    session.close()
+    del session</code></pre>
 </details>
 </dd>
 <dt id="exchangelib.BaseProtocol.create_oauth2_session"><code class="name flex">

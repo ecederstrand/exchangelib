@@ -4193,21 +4193,22 @@ MSDN:
 
     SERVICE_NAME = &#34;GetUserAvailability&#34;
 
-    def call(self, timezone, mailbox_data, free_busy_view_options):
+    def call(self, mailbox_data, timezone, free_busy_view_options):
         # TODO: Also supports SuggestionsViewOptions, see
         #  https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/suggestionsviewoptions
         return self._elems_to_objs(
-            self._get_elements(
-                payload=self.get_payload(
-                    timezone=timezone, mailbox_data=mailbox_data, free_busy_view_options=free_busy_view_options
-                )
+            self._chunked_get_elements(
+                self.get_payload,
+                items=mailbox_data,
+                timezone=timezone,
+                free_busy_view_options=free_busy_view_options,
             )
         )
 
     def _elem_to_obj(self, elem):
         return FreeBusyView.from_xml(elem=elem, account=None)
 
-    def get_payload(self, timezone, mailbox_data, free_busy_view_options):
+    def get_payload(self, mailbox_data, timezone, free_busy_view_options):
         payload = create_element(f&#34;m:{self.SERVICE_NAME}Request&#34;)
         set_xml_value(payload, timezone, version=self.protocol.version)
         mailbox_data_array = create_element(&#34;m:MailboxDataArray&#34;)
@@ -4249,7 +4250,7 @@ MSDN:
 <h3>Methods</h3>
 <dl>
 <dt id="exchangelib.services.GetUserAvailability.call"><code class="name flex">
-<span>def <span class="ident">call</span></span>(<span>self, timezone, mailbox_data, free_busy_view_options)</span>
+<span>def <span class="ident">call</span></span>(<span>self, mailbox_data, timezone, free_busy_view_options)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4257,20 +4258,21 @@ MSDN:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def call(self, timezone, mailbox_data, free_busy_view_options):
+<pre><code class="python">def call(self, mailbox_data, timezone, free_busy_view_options):
     # TODO: Also supports SuggestionsViewOptions, see
     #  https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/suggestionsviewoptions
     return self._elems_to_objs(
-        self._get_elements(
-            payload=self.get_payload(
-                timezone=timezone, mailbox_data=mailbox_data, free_busy_view_options=free_busy_view_options
-            )
+        self._chunked_get_elements(
+            self.get_payload,
+            items=mailbox_data,
+            timezone=timezone,
+            free_busy_view_options=free_busy_view_options,
         )
     )</code></pre>
 </details>
 </dd>
 <dt id="exchangelib.services.GetUserAvailability.get_payload"><code class="name flex">
-<span>def <span class="ident">get_payload</span></span>(<span>self, timezone, mailbox_data, free_busy_view_options)</span>
+<span>def <span class="ident">get_payload</span></span>(<span>self, mailbox_data, timezone, free_busy_view_options)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4278,7 +4280,7 @@ MSDN:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get_payload(self, timezone, mailbox_data, free_busy_view_options):
+<pre><code class="python">def get_payload(self, mailbox_data, timezone, free_busy_view_options):
     payload = create_element(f&#34;m:{self.SERVICE_NAME}Request&#34;)
     set_xml_value(payload, timezone, version=self.protocol.version)
     mailbox_data_array = create_element(&#34;m:MailboxDataArray&#34;)

@@ -389,8 +389,9 @@ implementation, start by doing an official test at <a href="https://testconnecti
     MAX_REDIRECTS = 10  # Maximum number of URL redirects before we give up
     DNS_RESOLVER_KWARGS = {}
     DNS_RESOLVER_ATTRS = {
-        &#34;timeout&#34;: AutodiscoverProtocol.TIMEOUT,
+        &#34;timeout&#34;: AutodiscoverProtocol.TIMEOUT / 2.5,  # Timeout for query to a single nameserver
     }
+    DNS_RESOLVER_LIFETIME = AutodiscoverProtocol.TIMEOUT  # Total timeout for a query in case of multiple nameservers
 
     def __init__(self, email, credentials=None):
         &#34;&#34;&#34;
@@ -665,7 +666,7 @@ implementation, start by doing an official test at <a href="https://testconnecti
     def _is_valid_hostname(self, hostname):
         log.debug(&#34;Checking if %s can be looked up in DNS&#34;, hostname)
         try:
-            self.resolver.resolve(f&#34;{hostname}.&#34;, &#34;A&#34;, lifetime=self.DNS_RESOLVER_ATTRS.get(&#34;timeout&#34;))
+            self.resolver.resolve(f&#34;{hostname}.&#34;, &#34;A&#34;, lifetime=self.DNS_RESOLVER_LIFETIME)
         except DNS_LOOKUP_ERRORS as e:
             log.debug(&#34;DNS A lookup failure: %s&#34;, e)
             return False
@@ -687,7 +688,7 @@ implementation, start by doing an official test at <a href="https://testconnecti
         log.debug(&#34;Attempting to get SRV records for %s&#34;, hostname)
         records = []
         try:
-            answers = self.resolver.resolve(f&#34;{hostname}.&#34;, &#34;SRV&#34;, lifetime=self.DNS_RESOLVER_ATTRS.get(&#34;timeout&#34;))
+            answers = self.resolver.resolve(f&#34;{hostname}.&#34;, &#34;SRV&#34;, lifetime=self.DNS_RESOLVER_LIFETIME)
         except DNS_LOOKUP_ERRORS as e:
             log.debug(&#34;DNS SRV lookup failure: %s&#34;, e)
             return records
@@ -864,6 +865,10 @@ implementation, start by doing an official test at <a href="https://testconnecti
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="exchangelib.autodiscover.Autodiscovery.DNS_RESOLVER_LIFETIME"><code class="name">var <span class="ident">DNS_RESOLVER_LIFETIME</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="exchangelib.autodiscover.Autodiscovery.INITIAL_RETRY_POLICY"><code class="name">var <span class="ident">INITIAL_RETRY_POLICY</span></code></dt>
 <dd>
 <div class="desc"></div>
@@ -1021,6 +1026,7 @@ implementation, start by doing an official test at <a href="https://testconnecti
 <ul class="">
 <li><code><a title="exchangelib.autodiscover.Autodiscovery.DNS_RESOLVER_ATTRS" href="#exchangelib.autodiscover.Autodiscovery.DNS_RESOLVER_ATTRS">DNS_RESOLVER_ATTRS</a></code></li>
 <li><code><a title="exchangelib.autodiscover.Autodiscovery.DNS_RESOLVER_KWARGS" href="#exchangelib.autodiscover.Autodiscovery.DNS_RESOLVER_KWARGS">DNS_RESOLVER_KWARGS</a></code></li>
+<li><code><a title="exchangelib.autodiscover.Autodiscovery.DNS_RESOLVER_LIFETIME" href="#exchangelib.autodiscover.Autodiscovery.DNS_RESOLVER_LIFETIME">DNS_RESOLVER_LIFETIME</a></code></li>
 <li><code><a title="exchangelib.autodiscover.Autodiscovery.INITIAL_RETRY_POLICY" href="#exchangelib.autodiscover.Autodiscovery.INITIAL_RETRY_POLICY">INITIAL_RETRY_POLICY</a></code></li>
 <li><code><a title="exchangelib.autodiscover.Autodiscovery.MAX_REDIRECTS" href="#exchangelib.autodiscover.Autodiscovery.MAX_REDIRECTS">MAX_REDIRECTS</a></code></li>
 <li><code><a title="exchangelib.autodiscover.Autodiscovery.RETRY_WAIT" href="#exchangelib.autodiscover.Autodiscovery.RETRY_WAIT">RETRY_WAIT</a></code></li>

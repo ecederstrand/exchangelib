@@ -245,8 +245,12 @@ class BaseProtocol:
             session = self.renew_session(session)
         self._session_pool.put(session, block=False)
 
-    @staticmethod
-    def close_session(session):
+    def close_session(self, session):
+        if isinstance(self.credentials, OAuth2Credentials) and not isinstance(
+            self.credentials, OAuth2AuthorizationCodeCredentials
+        ):
+            # Reset token if client is of type BackendApplicationClient
+            self.credentials.access_token = None
         session.close()
         del session
 

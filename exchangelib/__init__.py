@@ -29,7 +29,7 @@ from .settings import OofSettings
 from .transport import BASIC, CBA, DIGEST, GSSAPI, NTLM, OAUTH2, SSPI
 from .version import Build, Version
 
-__version__ = "4.7.4"
+__version__ = "4.7.5"
 
 __all__ = [
     "__version__",
