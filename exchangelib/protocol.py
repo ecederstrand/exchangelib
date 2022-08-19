@@ -339,7 +339,7 @@ class BaseProtocol:
         else:
             client = BackendApplicationClient(client_id=self.credentials.client_id)
 
-        session = self.raw_session(self.service_endpoint, oauth2_client=client, oauth2_session_params=session_params)
+        session = self.raw_session(self.service_endpoint, oauth2_client=client, oauth2_session_params=session_params, oauth2_token_endpoint=self.credentials.token_url)
         if not session.token:
             # Fetch the token explicitly -- it doesn't occur implicitly
             token = session.fetch_token(
@@ -358,7 +358,7 @@ class BaseProtocol:
         return session
 
     @classmethod
-    def raw_session(cls, prefix, oauth2_client=None, oauth2_session_params=None):
+    def raw_session(cls, prefix, oauth2_client=None, oauth2_session_params=None, oauth2_token_endpoint=None):
         if oauth2_client:
             session = OAuth2Session(client=oauth2_client, **(oauth2_session_params or {}))
         else:
@@ -366,6 +366,8 @@ class BaseProtocol:
         session.headers.update(DEFAULT_HEADERS)
         session.headers["User-Agent"] = cls.USERAGENT
         session.mount(prefix, adapter=cls.get_adapter())
+        if oauth2_token_endpoint:
+            session.mount(oauth2_token_endpoint, adapter=cls.get_adapter())
         return session
 
     def __repr__(self):
