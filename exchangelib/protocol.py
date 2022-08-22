@@ -339,7 +339,12 @@ class BaseProtocol:
         else:
             client = BackendApplicationClient(client_id=self.credentials.client_id)
 
-        session = self.raw_session(self.service_endpoint, oauth2_client=client, oauth2_session_params=session_params, oauth2_token_endpoint=self.credentials.token_url)
+        session = self.raw_session(
+            self.service_endpoint,
+            oauth2_client=client,
+            oauth2_session_params=session_params,
+            oauth2_token_endpoint=self.credentials.token_url,
+        )
         if not session.token:
             # Fetch the token explicitly -- it doesn't occur implicitly
             token = session.fetch_token(
