@@ -2,7 +2,14 @@ from .account import Account, Identity
 from .attachments import FileAttachment, ItemAttachment
 from .autodiscover import discover
 from .configuration import Configuration
-from .credentials import DELEGATE, IMPERSONATION, Credentials, OAuth2AuthorizationCodeCredentials, OAuth2Credentials
+from .credentials import (
+    DELEGATE,
+    IMPERSONATION,
+    Credentials,
+    OAuth2AuthorizationCodeCredentials,
+    OAuth2Credentials,
+    OAuth2LegacyCredentials,
+)
 from .ewsdatetime import UTC, UTC_NOW, EWSDate, EWSDateTime, EWSTimeZone
 from .extended_properties import ExtendedProperty
 from .folders import DEEP, SHALLOW, Folder, FolderCollection, RootOfHierarchy
@@ -75,6 +82,7 @@ __all__ = [
     "OAUTH2",
     "OAuth2AuthorizationCodeCredentials",
     "OAuth2Credentials",
+    "OAuth2LegacyCredentials",
     "OofSettings",
     "PostItem",
     "PostReplyItem",

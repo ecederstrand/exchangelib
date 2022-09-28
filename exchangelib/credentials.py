@@ -177,6 +177,17 @@ class OAuth2Credentials(BaseCredentials):
         return self.client_id
 
 
+class OAuth2LegacyCredentials(OAuth2Credentials):
+    def __init__(self, username, password, **kwargs):
+        super().__init__(**kwargs)
+        self.username = username
+        self.password = password
+
+    @property
+    def scope(self):
+        return ["https://outlook.office365.com/EWS.AccessAsUser.All"]
+
+
 class OAuth2AuthorizationCodeCredentials(OAuth2Credentials):
     """Login info for OAuth 2.0 authentication using the authorization code grant type. This can be used in one of
     several ways:

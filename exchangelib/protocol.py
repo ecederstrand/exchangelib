@@ -13,10 +13,10 @@ from threading import Lock
 
 import requests.adapters
 import requests.sessions
-from oauthlib.oauth2 import BackendApplicationClient, WebApplicationClient
+from oauthlib.oauth2 import BackendApplicationClient, LegacyApplicationClient, WebApplicationClient
 from requests_oauthlib import OAuth2Session
 
-from .credentials import OAuth2AuthorizationCodeCredentials, OAuth2Credentials
+from .credentials import OAuth2AuthorizationCodeCredentials, OAuth2Credentials, OAuth2LegacyCredentials
 from .errors import (
     CASError,
     ErrorInvalidSchemaVersionForMailboxVersion,
@@ -336,6 +336,10 @@ class BaseProtocol:
                     }
                 )
             client = WebApplicationClient(client_id=self.credentials.client_id)
+        elif isinstance(self.credentials, OAuth2LegacyCredentials):
+            client = LegacyApplicationClient(client_id=self.credentials.client_id)
+            token_params["username"] = self.credentials.username
+            token_params["password"] = self.credentials.password
         else:
             client = BackendApplicationClient(client_id=self.credentials.client_id)
 
