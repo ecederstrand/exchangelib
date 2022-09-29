@@ -2,7 +2,7 @@ import logging
 
 from cached_property import threaded_cached_property
 
-from .credentials import BaseCredentials, OAuth2AuthorizationCodeCredentials, OAuth2Credentials
+from .credentials import BaseCredentials, OAuth2AuthorizationCodeCredentials, OAuth2Credentials, OAuth2LegacyCredentials
 from .errors import InvalidEnumValue, InvalidTypeError
 from .protocol import FailFast, RetryPolicy
 from .transport import AUTH_TYPE_MAP, CREDENTIALS_REQUIRED, OAUTH2
@@ -14,6 +14,7 @@ log = logging.getLogger(__name__)
 DEFAULT_AUTH_TYPE = {
     # This type of credentials *must* use the OAuth auth type
     OAuth2Credentials: OAUTH2,
+    OAuth2LegacyCredentials: OAUTH2,
     OAuth2AuthorizationCodeCredentials: OAUTH2,
 }
 

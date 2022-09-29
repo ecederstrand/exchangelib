@@ -1,7 +1,12 @@
 import pickle
 
 from exchangelib.account import Identity
-from exchangelib.credentials import Credentials, OAuth2AuthorizationCodeCredentials, OAuth2Credentials
+from exchangelib.credentials import (
+    Credentials,
+    OAuth2AuthorizationCodeCredentials,
+    OAuth2Credentials,
+    OAuth2LegacyCredentials,
+)
 
 from .common import TimedTestCase
 
@@ -30,6 +35,9 @@ class CredentialsTest(TimedTestCase):
             Credentials("XXX", "YYY"),
             OAuth2Credentials(client_id="XXX", client_secret="YYY", tenant_id="ZZZZ"),
             OAuth2Credentials(client_id="XXX", client_secret="YYY", tenant_id="ZZZZ", identity=Identity("AAA")),
+            OAuth2LegacyCredentials(
+                client_id="XXX", client_secret="YYY", tenant_id="ZZZZ", username="AAA", password="BBB"
+            ),
             OAuth2AuthorizationCodeCredentials(client_id="WWW", client_secret="XXX", authorization_code="YYY"),
             OAuth2AuthorizationCodeCredentials(
                 client_id="WWW", client_secret="XXX", access_token={"access_token": "ZZZ"}

@@ -121,6 +121,8 @@ supported, if your server expects that.
 from exchangelib import Credentials
 
 credentials = Credentials(username='MYWINDOMAIN\\myuser', password='topsecret')
+# For Office365
+credentials = Credentials(username='myuser@example.com', password='topsecret')
 ```
 If you're running long-running jobs, you may want to enable fault-tolerance.
 Fault-tolerance means that requests to the server do an exponential backoff
@@ -305,8 +307,8 @@ config = Configuration(auth_type=CBA)
 
 ### OAuth authentication
 OAuth is supported via the OAUTH2 auth type and the OAuth2Credentials class.
-Use OAuth2AuthorizationCodeCredentials for the authorization code flow (useful
-for applications that access multiple accounts).
+Use OAuth2AuthorizationCodeCredentials instead for the authorization code flow
+(useful for applications that access multiple accounts).
 
 ```python
 from exchangelib import OAuth2Credentials
@@ -314,6 +316,20 @@ from exchangelib import OAuth2Credentials
 credentials = OAuth2Credentials(
   client_id='MY_ID', client_secret='MY_SECRET', tenant_id='TENANT_ID'
 )
+```
+
+If you need to support legacy password-based authentication using OAuth and
+delegated permissions, use the OAuth2LegacyCredentials class instead:
+
+```python
+from exchangelib import OAuth2LegacyCredentials
+
+credentials = OAuth2LegacyCredentials(
+  client_id='MY_ID', client_secret='MY_SECRET', tenant_id='TENANT_ID',
+  username='myuser@example.com', password='topsecret'
+)
+config = Configuration(credentials=credentials, ...)
+account = Account('myuser@example.com', config=config, access_type=DELEGATE)
 ```
 
 The OAuth2 flow may need to have impersonation headers set. If you get
