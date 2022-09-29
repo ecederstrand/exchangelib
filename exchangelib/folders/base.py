@@ -1,5 +1,6 @@
 import abc
 import logging
+from contextlib import suppress
 from fnmatch import fnmatch
 from operator import attrgetter
 
@@ -329,10 +330,8 @@ class BaseFolder(RegisterMixIn, SearchableMixIn, metaclass=EWSMeta):
     @classmethod
     def get_item_field_by_fieldname(cls, fieldname):
         for item_model in cls.supported_item_models:
-            try:
+            with suppress(InvalidField):
                 return item_model.get_field_by_fieldname(fieldname)
-            except InvalidField:
-                pass
         raise InvalidField(f"{fieldname!r} is not a valid field name on {cls.supported_item_models}")
 
     def get(self, *args, **kwargs):
@@ -443,7 +442,7 @@ class BaseFolder(RegisterMixIn, SearchableMixIn, metaclass=EWSMeta):
         has_distinguished_subfolders = any(f.is_distinguished for f in self.children)
         try:
             if has_distinguished_subfolders:
-                self.empty(delete_sub_folders=False)
+                self.empty()
             else:
                 self.empty(delete_sub_folders=True)
         except ErrorRecoverableItemsAccessDenied:
@@ -453,7 +452,7 @@ class BaseFolder(RegisterMixIn, SearchableMixIn, metaclass=EWSMeta):
             try:
                 if has_distinguished_subfolders:
                     raise  # We already tried this
-                self.empty(delete_sub_folders=False)
+                self.empty()
             except DELETE_FOLDER_ERRORS:
                 log.warning("Not allowed to empty %s. Trying to delete items instead", self)
                 kwargs = {}
@@ -914,20 +913,16 @@ class Folder(BaseFolder):
             # The returned XML may contain neither folder class nor name. In that case, we default to the generic
             # Folder class.
             if folder.name:
-                try:
+                with suppress(KeyError):
                     # TODO: fld_class.LOCALIZED_NAMES is most definitely neither complete nor authoritative
                     folder_cls = root.folder_cls_from_folder_name(folder_name=folder.name, locale=root.account.locale)
                     log.debug("Folder class %s matches localized folder name %s", folder_cls, folder.name)
-                except KeyError:
-                    pass
             if folder.folder_class and folder_cls == Folder:
-                try:
+                with suppress(KeyError):
                     folder_cls = cls.folder_cls_from_container_class(container_class=folder.folder_class)
                     log.debug(
                         "Folder class %s matches container class %s (%s)", folder_cls, folder.folder_class, folder.name
                     )
-                except KeyError:
-                    pass
             if folder_cls == Folder:
                 log.debug("Fallback to class Folder (folder_class %s, name %s)", folder.folder_class, folder.name)
         return folder_cls(root=root, **{f.name: getattr(folder, f.name) for f in folder.FIELDS})

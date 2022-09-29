@@ -1,5 +1,6 @@
 import abc
 import logging
+from contextlib import suppress
 from itertools import chain
 
 from .. import errors
@@ -127,13 +128,11 @@ class EWSService(metaclass=abc.ABCMeta):
 
     def __del__(self):
         # pylint: disable=bare-except
-        try:
+        with suppress(Exception):
+            # __del__ should never fail
             if self.streaming:
                 # Make sure to clean up lingering resources
                 self.stop_streaming()
-        except Exception:  # nosec
-            # __del__ should never fail
-            pass
 
     # The following two methods are the minimum required to be implemented by subclasses, but the name and number of
     # kwargs differs between services. Therefore, we cannot make these methods abstract.
@@ -305,7 +304,6 @@ class EWSService(metaclass=abc.ABCMeta):
                 account_to_impersonate=self._account_to_impersonate,
                 timezone=self._timezone,
             ),
-            allow_redirects=False,
             stream=self.streaming,
             timeout=self.timeout or self.protocol.TIMEOUT,
         )
@@ -388,10 +386,8 @@ class EWSService(metaclass=abc.ABCMeta):
         """
         log.debug("Got ErrorServerBusy (back off %s seconds)", e.back_off)
         # ErrorServerBusy is very often a symptom of sending too many requests. Scale back connections if possible.
-        try:
+        with suppress(SessionPoolMinSizeReached):
             self.protocol.decrease_poolsize()
-        except SessionPoolMinSizeReached:
-            pass
         if self.protocol.retry_policy.fail_fast:
             raise e
         self.protocol.retry_policy.back_off(e.back_off)
@@ -477,12 +473,10 @@ class EWSService(metaclass=abc.ABCMeta):
             msg_xml = detail.find(f"{{{TNS}}}MessageXml")  # Crazy. Here, it's in the TNS namespace
             if code == "ErrorServerBusy":
                 back_off = None
-                try:
+                with suppress(TypeError, AttributeError):
                     value = msg_xml.find(f"{{{TNS}}}Value")
                     if value.get("Name") == "BackOffMilliseconds":
                         back_off = int(value.text) / 1000.0  # Convert to seconds
-                except (TypeError, AttributeError):
-                    pass
                 raise ErrorServerBusy(msg, back_off=back_off)
             if code == "ErrorSchemaValidation" and msg_xml is not None:
                 line_number = get_xml_attr(msg_xml, f"{{{TNS}}}LineNumber")
@@ -496,10 +490,8 @@ class EWSService(metaclass=abc.ABCMeta):
                 raise vars(errors)[code](msg)
             except KeyError:
                 detail = f"{cls.SERVICE_NAME}: code: {code} msg: {msg} ({xml_to_str(detail)})"
-        try:
+        with suppress(KeyError):
             raise vars(errors)[fault_code](fault_string)
-        except KeyError:
-            pass
         raise SOAPError(f"SOAP error code: {fault_code} string: {fault_string} actor: {fault_actor} detail: {detail}")
 
     def _get_element_container(self, message, name=None):

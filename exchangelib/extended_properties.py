@@ -1,4 +1,5 @@
 import logging
+from contextlib import suppress
 from decimal import Decimal
 
 from .errors import InvalidEnumValue
@@ -199,10 +200,8 @@ class ExtendedProperty(EWSElement):
         try:
             obj.property_set_id = cls.DISTINGUISHED_SET_NAME_TO_ID_MAP[obj.distinguished_property_set_id]
         except KeyError:
-            try:
+            with suppress(KeyError):
                 obj.distinguished_property_set_id = cls.DISTINGUISHED_SET_ID_TO_NAME_MAP[obj.property_set_id]
-            except KeyError:
-                pass
         return obj
 
     @classmethod

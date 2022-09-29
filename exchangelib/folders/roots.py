@@ -1,4 +1,5 @@
 import logging
+from contextlib import suppress
 from threading import Lock
 
 from ..errors import ErrorAccessDenied, ErrorFolderNotFound, ErrorInvalidOperation
@@ -87,10 +88,8 @@ class RootOfHierarchy(BaseFolder, metaclass=EWSMeta):
     def remove_folder(self, folder):
         if not folder.id:
             raise ValueError("'folder' must have an ID")
-        try:
+        with suppress(KeyError):
             del self._folders_map[folder.id]
-        except KeyError:
-            pass
 
     def clear_cache(self):
         with self._subfolders_lock:
@@ -241,10 +240,8 @@ class Root(RootOfHierarchy):
         return self.get_default_folder(MsgFolderRoot)
 
     def get_default_folder(self, folder_cls):
-        try:
+        with suppress(MISSING_FOLDER_ERRORS):
             return super().get_default_folder(folder_cls)
-        except MISSING_FOLDER_ERRORS:
-            pass
 
         # Try to pick a suitable default folder. we do this by:
         #  1. Searching the full folder list for a folder with the distinguished folder name
@@ -262,11 +259,9 @@ class Root(RootOfHierarchy):
 
         # Try direct children of TOIS first, unless we're trying to get the TOIS folder
         if folder_cls != MsgFolderRoot:
-            try:
+            with suppress(MISSING_FOLDER_ERRORS):
                 return self._get_candidate(folder_cls=folder_cls, folder_coll=self.tois.children)
-            except MISSING_FOLDER_ERRORS:
-                # No candidates, or TOIS does not exist, or we don't have access to TOIS
-                pass
+            # No candidates, or TOIS does not exist, or we don't have access to TOIS
 
         # Finally, try direct children of root
         return self._get_candidate(folder_cls=folder_cls, folder_coll=self.children)
@@ -314,7 +309,7 @@ class PublicFoldersRoot(RootOfHierarchy):
             return
 
         children_map = {}
-        try:
+        with suppress(ErrorAccessDenied):
             for f in (
                 SingleFolderQuerySet(account=self.account, folder=folder)
                 .depth(self.DEFAULT_FOLDER_TRAVERSAL_DEPTH)
@@ -326,9 +321,6 @@ class PublicFoldersRoot(RootOfHierarchy):
                 if isinstance(f, Exception):
                     raise f
                 children_map[f.id] = f
-        except ErrorAccessDenied:
-            # No access to this folder
-            pass
 
         # Let's update the cache atomically, to avoid partial reads of the cache.
         with self._subfolders_lock:

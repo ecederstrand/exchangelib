@@ -980,7 +980,7 @@ class FreeBusyView(EWSElement):
         kwargs = {}
         working_hours_elem = elem.find(f"{{{TNS}}}WorkingHours")
         for f in cls.FIELDS:
-            if f.name in ["working_hours", "working_hours_timezone"]:
+            if f.name in ("working_hours", "working_hours_timezone"):
                 if working_hours_elem is None:
                     continue
                 kwargs[f.name] = f.from_xml(elem=working_hours_elem, account=account)

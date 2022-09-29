@@ -8,6 +8,7 @@ import time
 import xml.sax.handler  # nosec
 from base64 import b64decode, b64encode
 from codecs import BOM_UTF8
+from contextlib import suppress
 from decimal import Decimal
 from functools import wraps
 from threading import get_ident
@@ -538,10 +539,8 @@ def to_xml(bytes_content):
             msg = f'{e}\nOffending text: [...]{offending_excerpt.decode("utf-8", errors="ignore")}[...]'
             raise ParseError(msg, "<not from file>", e.lineno, e.offset)
     except TypeError:
-        try:
+        with suppress(IndexError, io.UnsupportedOperation):
             stream.seek(0)
-        except (IndexError, io.UnsupportedOperation):
-            pass
         raise ParseError(f"This is not XML: {stream.read()!r}", "<not from file>", -1, 0)
 
     if res.getroot() is None:
@@ -581,8 +580,8 @@ class PrettyXmlHandler(logging.StreamHandler):
         """Re-format an XML document to a consistent style."""
         return (
             lxml.etree.tostring(self.parse_bytes(xml_bytes), xml_declaration=True, encoding="utf-8", pretty_print=True)
-            .replace(b"\t", b"    ")
             .replace(b" xmlns:", b"\n    xmlns:")
+            .expandtabs()
         )
 
     @staticmethod
@@ -730,13 +729,11 @@ CONNECTION_ERRORS = (
 
 # A collection of error classes we want to handle as TLS verification errors
 TLS_ERRORS = (requests.exceptions.SSLError,)
-try:
+with suppress(ImportError):
     # If pyOpenSSL is installed, requests will use it and throw this class on TLS errors
     import OpenSSL.SSL
 
     TLS_ERRORS += (OpenSSL.SSL.Error,)
-except ImportError:
-    pass
 
 
 def post_ratelimited(protocol, session, url, headers, data, allow_redirects=False, stream=False, timeout=None):

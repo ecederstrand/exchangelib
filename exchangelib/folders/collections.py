@@ -331,7 +331,7 @@ class FolderCollection(SearchableMixIn):
             else:
                 resolveable_folders.append(f)
         # Fetch all properties for the remaining folders of folder IDs
-        additional_fields = self.get_folder_fields(target_cls=self._get_target_cls(), is_complex=None)
+        additional_fields = self.get_folder_fields(target_cls=self._get_target_cls())
         yield from self.__class__(account=self.account, folders=resolveable_folders).get_folders(
             additional_fields=additional_fields
         )

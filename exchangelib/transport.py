@@ -1,5 +1,6 @@
 import logging
 import time
+from contextlib import suppress
 
 import requests.auth
 import requests_ntlm
@@ -41,20 +42,16 @@ AUTH_TYPE_MAP = {
     CBA: None,
     NOAUTH: None,
 }
-try:
+with suppress(ImportError):
+    # Kerberos auth is optional
     import requests_gssapi
 
     AUTH_TYPE_MAP[GSSAPI] = requests_gssapi.HTTPSPNEGOAuth
-except ImportError:
-    # Kerberos auth is optional
-    pass
-try:
+with suppress(ImportError):
+    # SSPI auth is optional
     import requests_negotiate_sspi
 
     AUTH_TYPE_MAP[SSPI] = requests_negotiate_sspi.HttpNegotiateAuth
-except ImportError:
-    # SSPI auth is optional
-    pass
 
 DEFAULT_ENCODING = "utf-8"
 DEFAULT_HEADERS = {"Content-Type": f"text/xml; charset={DEFAULT_ENCODING}", "Accept-Encoding": "gzip, deflate"}

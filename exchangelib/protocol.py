@@ -8,6 +8,7 @@ import abc
 import datetime
 import logging
 import random
+from contextlib import suppress
 from queue import Empty, LifoQueue
 from threading import Lock
 
@@ -142,11 +143,9 @@ class BaseProtocol:
 
     def __del__(self):
         # pylint: disable=bare-except
-        try:
-            self.close()
-        except Exception:  # nosec
+        with suppress(Exception):
             # __del__ should never fail
-            pass
+            self.close()
 
     def close(self):
         log.debug("Server %s: Closing sessions", self.server)
@@ -221,10 +220,8 @@ class BaseProtocol:
             session = self._session_pool.get(block=False)
             log.debug("Server %s: Got session immediately", self.server)
         except Empty:
-            try:
+            with suppress(SessionPoolMaxSizeReached):
                 self.increase_poolsize()
-            except SessionPoolMaxSizeReached:
-                pass
             while True:
                 try:
                     log.debug("Server %s: Waiting for session", self.server)

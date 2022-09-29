@@ -1,5 +1,6 @@
 import abc
 import logging
+from contextlib import suppress
 from copy import deepcopy
 from itertools import islice
 
@@ -110,10 +111,8 @@ class QuerySet(SearchableMixIn):
         if self.request_type == self.PERSONA:
             return FieldPath(field=Persona.get_field_by_fieldname(field_path))
         for folder in self.folder_collection:
-            try:
+            with suppress(InvalidField):
                 return FieldPath.from_string(field_path=field_path, folder=folder)
-            except InvalidField:
-                pass
         raise InvalidField(f"Unknown field path {field_path!r} on folders {self.folder_collection.folders}")
 
     def _get_field_order(self, field_path):
@@ -125,10 +124,8 @@ class QuerySet(SearchableMixIn):
                 reverse=field_path.startswith("-"),
             )
         for folder in self.folder_collection:
-            try:
+            with suppress(InvalidField):
                 return FieldOrder.from_string(field_path=field_path, folder=folder)
-            except InvalidField:
-                pass
         raise InvalidField(f"Unknown field path {field_path!r} on folders {self.folder_collection.folders}")
 
     @property

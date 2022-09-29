@@ -5,7 +5,7 @@ import os
 import shelve
 import sys
 import tempfile
-from contextlib import contextmanager
+from contextlib import contextmanager, suppress
 from threading import RLock
 
 from ..configuration import Configuration
@@ -39,13 +39,10 @@ def shelve_open_with_failover(filename):
     # We don't know which file caused the error, so just delete them all.
     try:
         shelve_handle = shelve.open(filename)
-        # Try to actually use the shelve. Some implementations may allow opening the file but then throw
+        # Try to actually use the file. Some implementations may allow opening the file but then throw
         # errors on access.
-        try:
+        with suppress(KeyError):
             _ = shelve_handle[""]
-        except KeyError:
-            # The entry doesn't exist. This is expected.
-            pass
     except Exception as e:
         for f in glob.glob(filename + "*"):
             log.warning("Deleting invalid cache file %s (%r)", f, e)
@@ -121,14 +118,10 @@ class AutodiscoverCache:
         # multiple times due to race conditions.
         domain = key[0]
         with shelve_open_with_failover(self._storage_file) as db:
-            try:
+            with suppress(KeyError):
                 del db[str(domain)]
-            except KeyError:
-                pass
-        try:
+        with suppress(KeyError):
             del self._protocols[key]
-        except KeyError:
-            pass
 
     def close(self):
         # Close all open connections
@@ -146,11 +139,9 @@ class AutodiscoverCache:
 
     def __del__(self):
         # pylint: disable=bare-except
-        try:
-            self.close()
-        except Exception:  # nosec
+        with suppress(Exception):
             # __del__ should never fail
-            pass
+            self.close()
 
     def __str__(self):
         return str(self._protocols)

@@ -307,8 +307,6 @@ class Autodiscovery:
                 url=protocol.service_endpoint,
                 headers=headers,
                 data=data,
-                allow_redirects=False,
-                stream=False,
             )
             protocol.release_session(session)
         except UnauthorizedError as e:

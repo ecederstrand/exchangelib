@@ -1,4 +1,5 @@
 import logging
+from contextlib import suppress
 from copy import copy
 
 from .errors import InvalidEnumValue
@@ -93,7 +94,7 @@ class Q:
         self.children.extend(args)
 
         # Parse keyword args and extract the filter
-        is_single_kwarg = len(args) == 0 and len(kwargs) == 1
+        is_single_kwarg = not args and len(kwargs) == 1
         for key, value in kwargs.items():
             self.children.extend(self._get_children_from_kwarg(key=key, value=value, is_single_kwarg=is_single_kwarg))
 
@@ -505,13 +506,11 @@ class Q:
                 self.LT: self.GTE,
                 self.LTE: self.GT,
             }
-            try:
+            with suppress(KeyError):
                 new = copy(self)
                 new.op = inverse_ops[self.op]
                 new.reduce()
                 return new
-            except KeyError:
-                pass
         return self.__class__(self, conn_type=self.NOT)
 
     def __eq__(self, other):

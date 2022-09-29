@@ -1,6 +1,7 @@
 import abc
 import datetime
 import logging
+from contextlib import suppress
 from decimal import Decimal, InvalidOperation
 from importlib import import_module
 
@@ -653,14 +654,12 @@ class TimeField(FieldURIField):
     def from_xml(self, elem, account):
         val = self._get_val_from_elem(elem)
         if val is not None:
-            try:
+            with suppress(ValueError):
                 if ":" in val:
                     # Assume a string of the form HH:MM:SS
                     return datetime.datetime.strptime(val, "%H:%M:%S").time()
                 # Assume an integer in minutes since midnight
                 return (datetime.datetime(2000, 1, 1) + datetime.timedelta(minutes=int(val))).time()
-            except ValueError:
-                pass
         return self.default
 
 
