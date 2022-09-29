@@ -178,7 +178,17 @@ class OAuth2Credentials(BaseCredentials):
 
 
 class OAuth2LegacyCredentials(OAuth2Credentials):
+    """Login info for OAuth 2.0 authentication using delegated permissions and application permissions.
+
+    This requires the app to acquire username and password from the user and pass that when requesting authentication
+    tokens for the given user. This allows the app to act as the signed-in user.
+    """
+
     def __init__(self, username, password, **kwargs):
+        """
+        :param username: The username of the user to act as
+        :poram password: The password of the user to act as
+        """
         super().__init__(**kwargs)
         self.username = username
         self.password = password
