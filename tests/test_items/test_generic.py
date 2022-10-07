@@ -10,7 +10,7 @@ from exchangelib.errors import ErrorInternalServerError, ErrorItemNotFound
 from exchangelib.extended_properties import ExtendedProperty, ExternId
 from exchangelib.fields import CharField, ExtendedPropertyField
 from exchangelib.folders import Folder, FolderCollection, Root
-from exchangelib.items import CalendarItem, Item, Message
+from exchangelib.items import CalendarItem, Item
 from exchangelib.queryset import QuerySet
 from exchangelib.restriction import Q, Restriction
 from exchangelib.services import CreateItem, DeleteItem, FindItem, FindPeople, UpdateItem
@@ -355,6 +355,7 @@ class GenericItemTest(CommonItemTest):
 
     def test_order_by(self):
         # Test order_by() on normal field
+
         test_items = []
         for i in range(4):
             item = self.get_test_item()
@@ -372,17 +373,20 @@ class GenericItemTest(CommonItemTest):
         )
         self.bulk_delete(qs)
 
+        # Register the extended property on the correct item class
+        item = self.get_item_by_id(self.get_test_item().save())  # An Item saved in Inbox becomes a Message
+        item.__class__.register("extern_id", ExternId)
+        item.delete()
+
         try:
-            self.ITEM_CLASS.register("extern_id", ExternId)
-            if self.ITEM_CLASS == Item:
-                # An Item saved in Inbox becomes a Message
-                Message.register("extern_id", ExternId)
             # Test order_by() on ExtendedProperty
             test_items = []
             for i in range(4):
-                item = self.get_test_item()
-                item.extern_id = f"ID {i}"
-                test_items.append(item)
+                item_kwargs = self.get_random_insert_kwargs()
+                item_kwargs["categories"] = self.categories
+                test_item = item.__class__(folder=self.test_folder, **item_kwargs)
+                test_item.extern_id = f"ID {i}"
+                test_items.append(test_item)
             self.test_folder.bulk_create(items=test_items)
             qs = QuerySet(folder_collection=FolderCollection(account=self.account, folders=[self.test_folder])).filter(
                 categories__contains=self.categories
@@ -394,26 +398,29 @@ class GenericItemTest(CommonItemTest):
                 list(qs.order_by("-extern_id").values_list("extern_id", flat=True)), ["ID 3", "ID 2", "ID 1", "ID 0"]
             )
         finally:
-            self.ITEM_CLASS.deregister("extern_id")
-            if self.ITEM_CLASS == Item:
-                # An Item saved in Inbox becomes a Message
-                Message.deregister("extern_id")
+            item.__class__.deregister("extern_id")
         self.bulk_delete(qs)
 
+    def test_order_by_on_multiple_fields(self):
         # Test sorting on multiple fields
+
+        # Register the extended property on the correct item class
+        item = self.get_item_by_id(self.get_test_item().save())  # An Item saved in Inbox becomes a Message
+        item.__class__.register("extern_id", ExternId)
+        item.delete()
+
+        test_items = []
+        for i in range(2):
+            for j in range(2):
+                item_kwargs = self.get_random_insert_kwargs()
+                item_kwargs["categories"] = self.categories
+                test_item = item.__class__(folder=self.test_folder, **item_kwargs)
+                test_item.subject = f"Subj {i}"
+                test_item.extern_id = f"ID {j}"
+                test_items.append(test_item)
+        self.test_folder.bulk_create(items=test_items)
+
         try:
-            self.ITEM_CLASS.register("extern_id", ExternId)
-            if self.ITEM_CLASS == Item:
-                # An Item saved in Inbox becomes a Message
-                Message.register("extern_id", ExternId)
-            test_items = []
-            for i in range(2):
-                for j in range(2):
-                    item = self.get_test_item()
-                    item.subject = f"Subj {i}"
-                    item.extern_id = f"ID {j}"
-                    test_items.append(item)
-            self.test_folder.bulk_create(items=test_items)
             qs = QuerySet(folder_collection=FolderCollection(account=self.account, folders=[self.test_folder])).filter(
                 categories__contains=self.categories
             )
@@ -454,10 +461,7 @@ class GenericItemTest(CommonItemTest):
                 ],
             )
         finally:
-            self.ITEM_CLASS.deregister("extern_id")
-            if self.ITEM_CLASS == Item:
-                # An Item saved in Inbox becomes a Message
-                Message.deregister("extern_id")
+            item.__class__.deregister("extern_id")
 
     def test_order_by_with_empty_values(self):
         # Test order_by() when some values are empty

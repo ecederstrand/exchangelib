@@ -601,7 +601,7 @@ class CommonItemTest(BaseItemTest):
         items = self.test_folder.filter(categories__contains=item.categories)
         self.assertEqual(items.count(), 0)
 
-    def test_item(self):
+    def test_item_insert(self):
         # Test insert
         insert_kwargs = self.get_random_insert_kwargs()
         insert_kwargs["categories"] = self.categories
@@ -637,7 +637,11 @@ class CommonItemTest(BaseItemTest):
                     old, new = set(old or ()), set(new or ())
                 self.assertEqual(old, new, (f.name, old, new))
 
+    def test_item_update(self):
         # Test update
+        insert_kwargs = self.get_random_insert_kwargs()
+        insert_kwargs["categories"] = self.categories
+        item = self.ITEM_CLASS(folder=self.test_folder, **insert_kwargs).save()
         update_kwargs = self.get_random_update_kwargs(item=item, insert_kwargs=insert_kwargs)
         if self.ITEM_CLASS in (Contact, DistributionList):
             # Contact and DistributionList don't support mime_type updates at all
@@ -649,8 +653,8 @@ class CommonItemTest(BaseItemTest):
         update_ids = self.account.bulk_update(items=(i for i in [(item, update_fieldnames)]))
         self.assertEqual(len(update_ids), 1)
         self.assertEqual(len(update_ids[0]), 2, update_ids)
-        self.assertEqual(insert_ids[0].id, update_ids[0][0])  # ID should be the same
-        self.assertNotEqual(insert_ids[0].changekey, update_ids[0][1])  # Changekey should change when item is updated
+        self.assertEqual(item.id, update_ids[0][0])  # ID should be the same
+        self.assertNotEqual(item.changekey, update_ids[0][1])  # Changekey should change when item is updated
         item = self.get_item_by_id(update_ids[0])
         for f in self.ITEM_CLASS.FIELDS:
             with self.subTest(f=f):
@@ -694,7 +698,16 @@ class CommonItemTest(BaseItemTest):
                     old, new = set(old or ()), set(new or ())
                 self.assertEqual(old, new, (f.name, old, new))
 
+    def test_item_update_wipe(self):
         # Test wiping or removing fields
+        insert_kwargs = self.get_random_insert_kwargs()
+        insert_kwargs["categories"] = self.categories
+        item = self.ITEM_CLASS(folder=self.test_folder, **insert_kwargs).save()
+        update_kwargs = self.get_random_update_kwargs(item=item, insert_kwargs=insert_kwargs)
+        if self.ITEM_CLASS in (Contact, DistributionList):
+            # Contact and DistributionList don't support mime_type updates at all
+            update_kwargs.pop("mime_content", None)
+        update_fieldnames = [f for f in update_kwargs if f != "attachments"]
         wipe_kwargs = {}
         for f in self.ITEM_CLASS.FIELDS:
             if not f.supports_version(self.account.version):
@@ -715,10 +728,8 @@ class CommonItemTest(BaseItemTest):
         wipe_ids = self.account.bulk_update([(item, update_fieldnames)])
         self.assertEqual(len(wipe_ids), 1)
         self.assertEqual(len(wipe_ids[0]), 2, wipe_ids)
-        self.assertEqual(insert_ids[0].id, wipe_ids[0][0])  # ID should be the same
-        self.assertNotEqual(
-            insert_ids[0].changekey, wipe_ids[0][1]
-        )  # Changekey should not be the same when item is updated
+        self.assertEqual(item.id, wipe_ids[0][0])  # ID should be the same
+        self.assertNotEqual(item.changekey, wipe_ids[0][1])  # Changekey should not be the same when item is updated
         item = self.get_item_by_id(wipe_ids[0])
         for f in self.ITEM_CLASS.FIELDS:
             with self.subTest(f=f):
@@ -737,17 +748,21 @@ class CommonItemTest(BaseItemTest):
                     old, new = set(old or ()), set(new or ())
                 self.assertEqual(old, new, (f.name, old, new))
 
+    def test_item_update_extended_properties(self):
+        item = self.get_test_item().save()
+        item = self.get_item_by_id(item)  # An Item saved in Inbox becomes a Message
+        item.__class__.register("extern_id", ExternId)
+
         try:
-            item.__class__.register("extern_id", ExternId)
             # Test extern_id = None, which deletes the extended property entirely
             extern_id = None
             item.extern_id = extern_id
             wipe2_ids = self.account.bulk_update([(item, ["extern_id"])])
             self.assertEqual(len(wipe2_ids), 1)
             self.assertEqual(len(wipe2_ids[0]), 2, wipe2_ids)
-            self.assertEqual(insert_ids[0].id, wipe2_ids[0][0])  # ID must be the same
-            self.assertNotEqual(insert_ids[0].changekey, wipe2_ids[0][1])  # Changekey must change when item is updated
-            item = self.get_item_by_id(wipe2_ids[0])
-            self.assertEqual(item.extern_id, extern_id)
+            self.assertEqual(item.id, wipe2_ids[0][0])  # ID must be the same
+            self.assertNotEqual(item.changekey, wipe2_ids[0][1])  # Changekey must change when item is updated
+            updated_item = self.get_item_by_id(wipe2_ids[0])
+            self.assertEqual(updated_item.extern_id, extern_id)
         finally:
             item.__class__.deregister("extern_id")
