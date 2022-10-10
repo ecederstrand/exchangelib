@@ -62,7 +62,7 @@ class CredentialsTest(TimedTestCase):
                 self.assertEqual(str(o), str(unpickled_o))
 
     def test_plain(self):
-        Credentials("XXX", "YYY").refresh("XXX")  # No-op
+        OAuth2Credentials("XXX", "YYY", "ZZZZ").refresh("XXX")  # No-op
 
     def test_oauth_validation(self):
         with self.assertRaises(TypeError) as e:

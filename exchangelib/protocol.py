@@ -14,10 +14,10 @@ from threading import Lock
 
 import requests.adapters
 import requests.sessions
-from oauthlib.oauth2 import BackendApplicationClient, LegacyApplicationClient, WebApplicationClient
+from oauthlib.oauth2 import BackendApplicationClient
 from requests_oauthlib import OAuth2Session
 
-from .credentials import OAuth2AuthorizationCodeCredentials, OAuth2Credentials, OAuth2LegacyCredentials
+from .credentials import BaseOAuth2Credentials
 from .errors import (
     CASError,
     ErrorInvalidSchemaVersionForMailboxVersion,
@@ -245,11 +245,12 @@ class BaseProtocol:
         self._session_pool.put(session, block=False)
 
     def close_session(self, session):
-        if isinstance(self.credentials, OAuth2Credentials) and not isinstance(
-            self.credentials, OAuth2AuthorizationCodeCredentials
+        if isinstance(self.credentials, BaseOAuth2Credentials) and isinstance(
+            self.credentials.client, BackendApplicationClient
         ):
-            # Reset token if client is of type BackendApplicationClient
-            self.credentials.access_token = None
+            # Reset access token
+            with self.credentials.lock:
+                self.credentials.access_token = None
         session.close()
         del session
 
@@ -286,24 +287,22 @@ class BaseProtocol:
             session = self.raw_session(self.service_endpoint)
             session.auth = get_auth_instance(auth_type=self.auth_type)
         else:
-            with self.credentials.lock:
-                if isinstance(self.credentials, OAuth2Credentials):
+            if isinstance(self.credentials, BaseOAuth2Credentials):
+                with self.credentials.lock:
                     session = self.create_oauth2_session()
-                    # Keep track of the credentials used to create this session. If
-                    # and when we need to renew credentials (for example, refreshing
-                    # an OAuth access token), this lets us easily determine whether
-                    # the credentials have already been refreshed in another thread
-                    # by the time this session tries.
+                    # Keep track of the credentials used to create this session. If and when we need to renew
+                    # credentials (for example, refreshing an OAuth access token), this lets us easily determine whether
+                    # the credentials have already been refreshed in another thread by the time this session tries.
                     session.credentials_sig = self.credentials.sig()
+            else:
+                if self.auth_type == NTLM and self.credentials.type == self.credentials.EMAIL:
+                    username = "\\" + self.credentials.username
                 else:
-                    if self.auth_type == NTLM and self.credentials.type == self.credentials.EMAIL:
-                        username = "\\" + self.credentials.username
-                    else:
-                        username = self.credentials.username
-                    session = self.raw_session(self.service_endpoint)
-                    session.auth = get_auth_instance(
-                        auth_type=self.auth_type, username=username, password=self.credentials.password
-                    )
+                    username = self.credentials.username
+                session = self.raw_session(self.service_endpoint)
+                session.auth = get_auth_instance(
+                    auth_type=self.auth_type, username=username, password=self.credentials.password
+                )
 
         # Add some extra info
         session.session_id = random.randint(10000, 99999)  # Used for debugging messages in services
@@ -312,40 +311,10 @@ class BaseProtocol:
         return session
 
     def create_oauth2_session(self):
-        session_params = {"token": self.credentials.access_token}  # Token may be None
-        token_params = {"include_client_id": True}
-
-        if isinstance(self.credentials, OAuth2AuthorizationCodeCredentials):
-            token_params["code"] = self.credentials.authorization_code  # Auth code may be None
-            self.credentials.authorization_code = None  # We can only use the code once
-
-            if self.credentials.client_id and self.credentials.client_secret:
-                # If we're given a client ID and secret, we have enough to refresh access tokens ourselves. In other
-                # cases the session will raise TokenExpiredError, and we'll need to ask the calling application to
-                # refresh the token (that covers cases where the caller doesn't have access to the client secret but
-                # is working with a service that can provide it refreshed tokens on a limited basis).
-                session_params.update(
-                    {
-                        "auto_refresh_kwargs": {
-                            "client_id": self.credentials.client_id,
-                            "client_secret": self.credentials.client_secret,
-                        },
-                        "auto_refresh_url": self.credentials.token_url,
-                        "token_updater": self.credentials.on_token_auto_refreshed,
-                    }
-                )
-            client = WebApplicationClient(client_id=self.credentials.client_id)
-        elif isinstance(self.credentials, OAuth2LegacyCredentials):
-            client = LegacyApplicationClient(client_id=self.credentials.client_id)
-            token_params["username"] = self.credentials.username
-            token_params["password"] = self.credentials.password
-        else:
-            client = BackendApplicationClient(client_id=self.credentials.client_id)
-
         session = self.raw_session(
             self.service_endpoint,
-            oauth2_client=client,
-            oauth2_session_params=session_params,
+            oauth2_client=self.credentials.client,
+            oauth2_session_params=self.credentials.session_params(),
             oauth2_token_endpoint=self.credentials.token_url,
         )
         if not session.token:
@@ -356,12 +325,12 @@ class BaseProtocol:
                 client_secret=self.credentials.client_secret,
                 scope=self.credentials.scope,
                 timeout=self.TIMEOUT,
-                **token_params,
+                **self.credentials.token_params(),
             )
             # Allow the credentials object to update its copy of the new token, and give the application an opportunity
             # to cache it.
             self.credentials.on_token_auto_refreshed(token)
-        session.auth = get_auth_instance(auth_type=OAUTH2, client=client)
+        session.auth = get_auth_instance(auth_type=OAUTH2, client=self.credentials.client)
 
         return session
 

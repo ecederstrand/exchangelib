@@ -8,7 +8,8 @@ import abc
 import logging
 from threading import RLock
 
-from oauthlib.oauth2 import OAuth2Token
+from cached_property import threaded_cached_property
+from oauthlib.oauth2 import BackendApplicationClient, LegacyApplicationClient, OAuth2Token, WebApplicationClient
 
 from .errors import InvalidTypeError
 
@@ -20,48 +21,13 @@ ACCESS_TYPES = (IMPERSONATION, DELEGATE)
 
 
 class BaseCredentials(metaclass=abc.ABCMeta):
-    """Base for credential storage.
-
-    Establishes a method for refreshing credentials (mostly useful with OAuth, which expires tokens relatively
-    frequently) and provides a lock for synchronizing access to the object around refreshes.
-    """
-
-    def __init__(self):
-        self._lock = RLock()
-
-    @property
-    def lock(self):
-        return self._lock
-
-    @abc.abstractmethod
-    def refresh(self, session):
-        """Obtain a new set of valid credentials. This is mostly intended to support OAuth token refreshing, which can
-        happen in long-running applications or those that cache access tokens and so might start with a token close to
-        expiration.
-
-        :param session: requests session asking for refreshed credentials
-        :return:
-        """
-
-    def _get_hash_values(self):
-        return (getattr(self, k) for k in self.__dict__ if k != "_lock")
+    """Base class for credential storage."""
 
     def __eq__(self, other):
-        return all(getattr(self, k) == getattr(other, k) for k in self.__dict__ if k != "_lock")
+        return all(getattr(self, k) == getattr(other, k) for k in self.__dict__)
 
     def __hash__(self):
-        return hash(tuple(self._get_hash_values()))
-
-    def __getstate__(self):
-        # The lock cannot be pickled
-        state = self.__dict__.copy()
-        del state["_lock"]
-        return state
-
-    def __setstate__(self, state):
-        # Restore the lock
-        self.__dict__.update(state)
-        self._lock = RLock()
+        return hash(tuple((getattr(self, k) for k in self.__dict__)))
 
 
 class Credentials(BaseCredentials):
@@ -89,9 +55,6 @@ class Credentials(BaseCredentials):
         self.username = username
         self.password = password
 
-    def refresh(self, session):
-        pass
-
     def __repr__(self):
         return self.__class__.__name__ + repr((self.username, "********"))
 
@@ -99,14 +62,8 @@ class Credentials(BaseCredentials):
         return self.username
 
 
-class OAuth2Credentials(BaseCredentials):
-    """Login info for OAuth 2.0 client credentials authentication, as well as a base for other OAuth 2.0 grant types.
-
-    This is primarily useful for in-house applications accessing data from a single Microsoft account. For applications
-    that will access multiple tenants' data, the client credentials flow does not give the application enough
-    information to restrict end users' access to the appropriate account. Use OAuth2AuthorizationCodeCredentials and
-    the associated auth code grant type for multi-tenant applications.
-    """
+class BaseOAuth2Credentials(BaseCredentials):
+    """Base class for all classes that implement OAuth 2.0 authentication"""
 
     def __init__(self, client_id, client_secret, tenant_id=None, identity=None, access_token=None):
         """
@@ -124,9 +81,31 @@ class OAuth2Credentials(BaseCredentials):
         self.identity = identity
         self.access_token = access_token
 
+        self._lock = RLock()
+
+    @property
+    def lock(self):
+        return self._lock
+
+    @property
+    def access_token(self):
+        return self._access_token
+
+    @access_token.setter
+    def access_token(self, access_token):
+        if access_token is not None and not isinstance(access_token, dict):
+            raise InvalidTypeError("access_token", access_token, OAuth2Token)
+        self._access_token = access_token
+
     def refresh(self, session):
-        # Creating a new session gets a new access token, so there's no work here to refresh the credentials. This
-        # implementation just makes sure we don't raise a NotImplementedError.
+        """Obtain a new set of valid credentials. This is intended to support OAuth token refreshing, which can
+        happen in long-running applications or those that cache access tokens and so might start with a token close to
+        expiration.
+
+        :param session: requests session asking for refreshed credentials
+        :return:
+        """
+        # Creating a new session gets a new access token, so there's no work here to refresh the credentials.
         pass
 
     def on_token_auto_refreshed(self, access_token):
@@ -138,16 +117,9 @@ class OAuth2Credentials(BaseCredentials):
         :param access_token: New token obtained by refreshing
         """
         # Ensure we don't update the object in the middle of a new session being created, which could cause a race.
-        if not isinstance(access_token, dict):
-            raise InvalidTypeError("access_token", access_token, OAuth2Token)
         with self.lock:
             log.debug("%s auth token for %s", "Refreshing" if self.access_token else "Setting", self.client_id)
             self.access_token = access_token
-
-    def _get_hash_values(self):
-        # 'access_token' may be refreshed once in a while. This should not affect the hash signature.
-        # 'identity' is just informational and should also not affect the hash signature.
-        return (getattr(self, k) for k in self.__dict__ if k not in ("_lock", "identity", "access_token"))
 
     def sig(self):
         # Like hash(self), but pulls in the access token. Protocol.refresh_credentials() uses this to find out
@@ -156,11 +128,69 @@ class OAuth2Credentials(BaseCredentials):
         for k in self.__dict__:
             if k in ("_lock", "identity"):
                 continue
-            if k == "access_token":
+            if k == "_access_token":
                 res.append(self.access_token["access_token"] if self.access_token else None)
                 continue
             res.append(getattr(self, k))
         return hash(tuple(res))
+
+    @property
+    @abc.abstractmethod
+    def token_url(self):
+        """The URL to request tokens from"""
+
+    @property
+    @abc.abstractmethod
+    def scope(self):
+        """The scope we ask for the token to have"""
+
+    def session_params(self):
+        """Extra parameters to use when creating the session"""
+        return {"token": self.access_token}  # Token may be None
+
+    def token_params(self):
+        """Extra parameters when requesting the token"""
+        return {"include_client_id": True}
+
+    @threaded_cached_property
+    @abc.abstractmethod
+    def client(self):
+        """The client implementation to use for this credential class"""
+
+    def __eq__(self, other):
+        return all(getattr(self, k) == getattr(other, k) for k in self.__dict__ if k != "_lock")
+
+    def __hash__(self):
+        # 'access_token' may be refreshed once in a while. This should not affect the hash signature.
+        # 'identity' is just informational and should also not affect the hash signature.
+        return hash(tuple(getattr(self, k) for k in self.__dict__ if k not in ("_lock", "identity", "_access_token")))
+
+    def __str__(self):
+        return self.client_id
+
+    def __repr__(self):
+        return self.__class__.__name__ + repr((self.client_id, "********"))
+
+    def __getstate__(self):
+        # The lock cannot be pickled
+        state = self.__dict__.copy()
+        del state["_lock"]
+        return state
+
+    def __setstate__(self, state):
+        # Restore the lock
+        self.__dict__.update(state)
+        self._lock = RLock()
+
+
+class OAuth2Credentials(BaseOAuth2Credentials):
+    """Login info for OAuth 2.0 client credentials authentication, as well as a base for other OAuth 2.0 grant types.
+
+    This is primarily useful for in-house applications accessing data from a single Microsoft account. For applications
+    that will access multiple tenants' data, the client credentials flow does not give the application enough
+    information to restrict end users' access to the appropriate account. Use OAuth2AuthorizationCodeCredentials and
+    the associated auth code grant type for multi-tenant applications.
+    """
 
     @property
     def token_url(self):
@@ -170,11 +200,9 @@ class OAuth2Credentials(BaseCredentials):
     def scope(self):
         return ["https://outlook.office365.com/.default"]
 
-    def __repr__(self):
-        return self.__class__.__name__ + repr((self.client_id, "********"))
-
-    def __str__(self):
-        return self.client_id
+    @threaded_cached_property
+    def client(self):
+        return BackendApplicationClient(client_id=self.client_id)
 
 
 class OAuth2LegacyCredentials(OAuth2Credentials):
@@ -187,18 +215,32 @@ class OAuth2LegacyCredentials(OAuth2Credentials):
     def __init__(self, username, password, **kwargs):
         """
         :param username: The username of the user to act as
-        :poram password: The password of the user to act as
+        :param password: The password of the user to act as
         """
         super().__init__(**kwargs)
         self.username = username
         self.password = password
+
+    def token_params(self):
+        res = super().token_params()
+        res.update(
+            {
+                "username": self.username,
+                "password": self.password,
+            }
+        )
+        return res
+
+    @threaded_cached_property
+    def client(self):
+        return LegacyApplicationClient(client_id=self.client_id)
 
     @property
     def scope(self):
         return ["https://outlook.office365.com/EWS.AccessAsUser.All"]
 
 
-class OAuth2AuthorizationCodeCredentials(OAuth2Credentials):
+class OAuth2AuthorizationCodeCredentials(BaseOAuth2Credentials):
     """Login info for OAuth 2.0 authentication using the authorization code grant type. This can be used in one of
     several ways:
     * Given an authorization code, client ID, and client secret, fetch a token ourselves and refresh it as needed if
@@ -213,23 +255,17 @@ class OAuth2AuthorizationCodeCredentials(OAuth2Credentials):
     tenant.
     """
 
-    def __init__(self, authorization_code=None, access_token=None, client_id=None, client_secret=None, **kwargs):
+    def __init__(self, authorization_code=None, **kwargs):
         """
 
-        :param client_id: ID of an authorized OAuth application, required for automatic token fetching and refreshing
-        :param client_secret: Secret associated with the OAuth application
-        :param tenant_id: Microsoft tenant ID of the account to access
-        :param identity: An Identity object representing the account that these credentials are connected to.
         :param authorization_code: Code obtained when authorizing the application to access an account. In combination
           with client_id and client_secret, will be used to obtain an access token.
-        :param access_token: Previously-obtained access token. If a token exists and the application will handle
-          refreshing by itself (or opts not to handle it), this parameter alone is sufficient.
         """
-        super().__init__(client_id=client_id, client_secret=client_secret, **kwargs)
+        for attr in ("client_id", "client_secret"):
+            # Allow omitting these kwargs
+            kwargs[attr] = kwargs.pop(attr, None)
+        super().__init__(**kwargs)
         self.authorization_code = authorization_code
-        if access_token is not None and not isinstance(access_token, dict):
-            raise InvalidTypeError("access_token", access_token, OAuth2Token)
-        self.access_token = access_token
 
     @property
     def token_url(self):
@@ -242,6 +278,35 @@ class OAuth2AuthorizationCodeCredentials(OAuth2Credentials):
         res = super().scope
         res.append("offline_access")
         return res
+
+    def session_params(self):
+        res = super().session_params()
+        if self.client_id and self.client_secret:
+            # If we're given a client ID and secret, we have enough to refresh access tokens ourselves. In other
+            # cases the session will raise TokenExpiredError, and we'll need to ask the calling application to
+            # refresh the token (that covers cases where the caller doesn't have access to the client secret but
+            # is working with a service that can provide it refreshed tokens on a limited basis).
+            res.update(
+                {
+                    "auto_refresh_kwargs": {
+                        "client_id": self.client_id,
+                        "client_secret": self.client_secret,
+                    },
+                    "auto_refresh_url": self.token_url,
+                    "token_updater": self.on_token_auto_refreshed,
+                }
+            )
+        return res
+
+    def token_params(self):
+        res = super().token_params()
+        res["code"] = self.authorization_code  # Auth code may be None
+        self.authorization_code = None  # We can only use the code once
+        return res
+
+    @threaded_cached_property
+    def client(self):
+        return WebApplicationClient(client_id=self.client_id)
 
     def __repr__(self):
         return self.__class__.__name__ + repr(
