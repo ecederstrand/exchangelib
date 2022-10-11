@@ -1,5 +1,5 @@
-"""The 'Subscribe' service has two different modes, pull and push, with different signatures. Implement as two distinct
-classes.
+"""The 'Subscribe' service has three different modes - pull, push and streaming - with different signatures. Implement
+as three distinct classes.
 """
 import abc
 
@@ -8,7 +8,9 @@ from .common import EWSAccountService, add_xml_child, folder_ids_element
 
 
 class Subscribe(EWSAccountService, metaclass=abc.ABCMeta):
-    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/subscribe-operation"""
+    """Base class for subscription classes.
+
+    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/subscribe-operation"""
 
     SERVICE_NAME = "Subscribe"
     EVENT_TYPES = (
