@@ -607,7 +607,7 @@ class CommonItemTest(BaseItemTest):
         insert_kwargs["categories"] = self.categories
         item = self.ITEM_CLASS(folder=self.test_folder, **insert_kwargs)
         # Test with generator as argument
-        insert_ids = self.test_folder.bulk_create(items=(i for i in [item]))
+        insert_ids = self.test_folder.bulk_create(items=(i for i in (item,)))
         self.assertEqual(len(insert_ids), 1)
         self.assertIsInstance(insert_ids[0], BaseItem)
         find_ids = list(self.test_folder.filter(categories__contains=item.categories).values_list("id", "changekey"))
@@ -650,7 +650,7 @@ class CommonItemTest(BaseItemTest):
         for k, v in update_kwargs.items():
             setattr(item, k, v)
         # Test with generator as argument
-        update_ids = self.account.bulk_update(items=(i for i in [(item, update_fieldnames)]))
+        update_ids = self.account.bulk_update(items=(i for i in ((item, update_fieldnames),)))
         self.assertEqual(len(update_ids), 1)
         self.assertEqual(len(update_ids[0]), 2, update_ids)
         self.assertEqual(item.id, update_ids[0][0])  # ID should be the same

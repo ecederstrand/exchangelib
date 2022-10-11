@@ -1,3 +1,4 @@
+from contextlib import suppress
 from unittest.mock import Mock
 
 from exchangelib.errors import (
@@ -132,12 +133,10 @@ class FolderTest(EWSTest):
         with self.assertRaises(ValueError):
             self.account.root.get_default_folder(Folder)
 
-        try:
+        with suppress(ErrorFolderNotFound):
             with self.assertRaises(ValueError) as e:
                 Folder(root=self.account.public_folders_root, parent=self.account.inbox)
             self.assertEqual(e.exception.args[0], "'parent.root' must match 'root'")
-        except ErrorFolderNotFound:
-            pass
         with self.assertRaises(ValueError) as e:
             Folder(parent=self.account.inbox, parent_folder_id="XXX")
         self.assertEqual(e.exception.args[0], "'parent_folder_id' must match 'parent' ID")
@@ -158,7 +157,7 @@ class FolderTest(EWSTest):
 
     def test_public_folders_root(self):
         # Test account does not have a public folders root. Make a dummy query just to hit .get_children()
-        try:
+        with suppress(ErrorNoPublicFolderReplicaAvailable):
             self.assertGreaterEqual(
                 len(
                     list(
@@ -167,8 +166,6 @@ class FolderTest(EWSTest):
                 ),
                 0,
             )
-        except ErrorNoPublicFolderReplicaAvailable:
-            pass
 
     def test_invalid_deletefolder_args(self):
         with self.assertRaises(ValueError) as e:

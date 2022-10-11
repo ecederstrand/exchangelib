@@ -1,5 +1,6 @@
 import io
 import logging
+from contextlib import suppress
 from itertools import chain
 from unittest.mock import patch
 
@@ -91,13 +92,13 @@ class UtilTest(EWSTest):
         # map
         is_empty, seq = peek(map(int, []))
         self.assertEqual((is_empty, list(seq)), (True, []))
-        is_empty, seq = peek(map(int, [1, 2, 3]))
+        is_empty, seq = peek(map(int, (1, 2, 3)))
         self.assertEqual((is_empty, list(seq)), (False, [1, 2, 3]))
 
         # generator
-        is_empty, seq = peek((i for i in []))
+        is_empty, seq = peek((i for i in ()))
         self.assertEqual((is_empty, list(seq)), (True, []))
-        is_empty, seq = peek((i for i in [1, 2, 3]))
+        is_empty, seq = peek((i for i in (1, 2, 3)))
         self.assertEqual((is_empty, list(seq)), (False, [1, 2, 3]))
 
     @requests_mock.mock()
@@ -340,10 +341,8 @@ class UtilTest(EWSTest):
             exchangelib.util.RETRY_WAIT = RETRY_WAIT
             exchangelib.util.MAX_REDIRECTS = MAX_REDIRECTS
 
-            try:
+            with suppress(AttributeError):
                 delattr(protocol, "renew_session")
-            except AttributeError:
-                pass
 
     def test_safe_b64decode(self):
         # Test correctly padded string

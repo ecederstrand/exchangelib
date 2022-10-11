@@ -4,6 +4,7 @@ import pickle
 import socket
 import tempfile
 import warnings
+from contextlib import suppress
 from unittest.mock import Mock, patch
 
 try:
@@ -260,14 +261,12 @@ EWS auth: NTLM""",
         self.assertAlmostEqual(len(list(self.account.protocol.get_timezones())), 130, delta=30, msg=data)
         # Test translation to TimeZone objects
         for tz_definition in self.account.protocol.get_timezones(return_full_timezone_data=True):
-            try:
+            with suppress(ValueError):
                 tz = TimeZone.from_server_timezone(
                     tz_definition=tz_definition,
                     for_year=2018,
                 )
                 self.assertEqual(tz.bias, tz_definition.get_std_and_dst(for_year=2018)[2].bias_in_minutes)
-            except ValueError:
-                pass
 
     def test_get_timezones_parsing(self):
         # Test static XML since it's non-standard
