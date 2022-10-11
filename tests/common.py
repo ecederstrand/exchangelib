@@ -1,6 +1,5 @@
 import abc
 import datetime
-import os
 import random
 import string
 import time
@@ -8,6 +7,7 @@ import unittest
 import unittest.util
 from collections import namedtuple
 from decimal import Decimal
+from pathlib import Path
 
 from yaml import safe_load
 
@@ -72,8 +72,7 @@ mock_version = namedtuple("mock_version", ("build",))
 
 
 def get_settings():
-    with open(os.path.join(os.path.dirname(os.path.dirname(__file__)), "settings.yml")) as f:
-        return safe_load(f)
+    return safe_load((Path(__file__).parent.parent / "settings.yml").read_text())
 
 
 def mock_post(url, status_code, headers, text=""):

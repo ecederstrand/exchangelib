@@ -106,7 +106,6 @@ class BaseOAuth2Credentials(BaseCredentials):
         :return:
         """
         # Creating a new session gets a new access token, so there's no work here to refresh the credentials.
-        pass
 
     def on_token_auto_refreshed(self, access_token):
         """Set the access_token. Called after the access token is refreshed (requests-oauthlib can automatically

@@ -1,5 +1,4 @@
 import getpass
-import glob
 import sys
 from collections import namedtuple
 from types import MethodType
@@ -251,15 +250,14 @@ class AutodiscoverTest(EWSTest):
         self.assertTrue(key in autodiscover_cache)
 
         # Check that we can recover from a destroyed file
-        for db_file in glob.glob(autodiscover_cache._storage_file + "*"):
-            with open(db_file, "w") as f:
-                f.write("XXX")
+        file = autodiscover_cache._storage_file
+        for f in file.parent.glob(f"{file.name}*"):
+            f.write_text("XXX")
         self.assertFalse(key in autodiscover_cache)
 
         # Check that we can recover from an empty file
-        for db_file in glob.glob(autodiscover_cache._storage_file + "*"):
-            with open(db_file, "wb") as f:
-                f.write(b"")
+        for f in file.parent.glob(f"{file.name}*"):
+            f.write_bytes(b"")
         self.assertFalse(key in autodiscover_cache)
 
     @requests_mock.mock(real_http=False)  # Just make sure we don't issue any real HTTP here

@@ -1,11 +1,10 @@
 import getpass
-import glob
 import logging
-import os
 import shelve
 import sys
 import tempfile
 from contextlib import contextmanager, suppress
+from pathlib import Path
 from threading import RLock
 
 from ..configuration import Configuration
@@ -29,25 +28,25 @@ def shelve_filename():
     return f"exchangelib.{version}.cache.{user}.py{major}{minor}"
 
 
-AUTODISCOVER_PERSISTENT_STORAGE = os.path.join(tempfile.gettempdir(), shelve_filename())
+AUTODISCOVER_PERSISTENT_STORAGE = Path(tempfile.gettempdir(), shelve_filename())
 
 
 @contextmanager
-def shelve_open_with_failover(filename):
+def shelve_open_with_failover(file):
     # We can expect empty or corrupt files. Whatever happens, just delete the cache file and try again.
     # 'shelve' may add a backend-specific suffix to the file, so also delete all files with a suffix.
     # We don't know which file caused the error, so just delete them all.
     try:
-        shelve_handle = shelve.open(filename)
+        shelve_handle = shelve.open(file)
         # Try to actually use the file. Some implementations may allow opening the file but then throw
         # errors on access.
         with suppress(KeyError):
             _ = shelve_handle[""]
     except Exception as e:
-        for f in glob.glob(filename + "*"):
+        for f in file.parent.glob(f"{file.name}*"):
             log.warning("Deleting invalid cache file %s (%r)", f, e)
-            os.unlink(f)
-        shelve_handle = shelve.open(filename)
+            f.unlink()
+        shelve_handle = shelve.open(file)
     yield shelve_handle
 
 

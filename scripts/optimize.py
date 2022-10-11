@@ -4,8 +4,8 @@
 import copy
 import datetime
 import logging
-import os
 import time
+from pathlib import Path
 
 try:
     import zoneinfo
@@ -19,8 +19,7 @@ from exchangelib import DELEGATE, Account, CalendarItem, Configuration, Credenti
 logging.basicConfig(level=logging.WARNING)
 
 try:
-    with open(os.path.join(os.path.dirname(__file__), "../settings.yml")) as f:
-        settings = safe_load(f)
+    settings = safe_load((Path(__file__).parent.parent / "settings.yml").read_text())
 except FileNotFoundError:
     print("Copy settings.yml.sample to settings.yml and enter values for your test server")
     raise

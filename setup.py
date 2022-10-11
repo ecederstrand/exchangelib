@@ -10,23 +10,20 @@ Release notes:
 * Push to PyPI: twine upload dist/*
 * Create release on GitHub
 """
-import io
-import os
+from pathlib import Path
 
 from setuptools import find_packages, setup
 
 
 def version():
-    with io.open(os.path.join(os.path.dirname(__file__), "exchangelib/__init__.py"), encoding="utf-8") as f:
-        for line in f:
-            if not line.startswith("__version__"):
-                continue
-            return line.split("=")[1].strip(" \"'\n")
+    for line in read("exchangelib/__init__.py").splitlines():
+        if not line.startswith("__version__"):
+            continue
+        return line.split("=")[1].strip(" \"'\n")
 
 
 def read(file_name):
-    with io.open(os.path.join(os.path.dirname(__file__), file_name), encoding="utf-8") as f:
-        return f.read()
+    return (Path(__file__).parent / file_name).read_text()
 
 
 setup(
