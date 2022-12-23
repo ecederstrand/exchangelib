@@ -178,8 +178,11 @@ class Account:
             self.ad_response = None
             self.protocol = Protocol(config=config)
 
-        # Other ways of identifying the account can be added later
-        self.identity = Identity(primary_smtp_address=primary_smtp_address)
+        ## UPDATE 12/22/2022 by mesita: use identity from config or credentials object if available when doing impersonation
+        if access_type == IMPERSONATION:
+            self.identity = config.credentials.identity or credentials.identity or Identity(primary_smtp_address=primary_smtp_address)
+        else:
+            self.identity = Identity(primary_smtp_address=primary_smtp_address)
 
         # For maintaining affinity in e.g. subscriptions
         self.affinity_cookie = None
