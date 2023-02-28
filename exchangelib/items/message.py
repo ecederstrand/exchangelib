@@ -122,7 +122,7 @@ class Message(Item):
                 self._create(message_disposition=SEND_AND_SAVE_COPY, send_meeting_invitations=send_meeting_invitations)
 
     @require_id
-    def create_reply(self, subject, body, to_recipients=None, cc_recipients=None, bcc_recipients=None, from_address=None):
+    def create_reply(self, subject, body, to_recipients=None, cc_recipients=None, bcc_recipients=None, author=None):
         if to_recipients is None:
             if not self.author:
                 raise ValueError("'to_recipients' must be set when message has no 'author'")
@@ -135,14 +135,14 @@ class Message(Item):
             to_recipients=to_recipients,
             cc_recipients=cc_recipients,
             bcc_recipients=bcc_recipients,
-            author=from_address,
+            author=author,
         )
 
-    def reply(self, subject, body, to_recipients=None, cc_recipients=None, bcc_recipients=None, from_address=None):
-        return self.create_reply(subject, body, to_recipients, cc_recipients, bcc_recipients, from_address).send()
+    def reply(self, subject, body, to_recipients=None, cc_recipients=None, bcc_recipients=None, author=None):
+        return self.create_reply(subject, body, to_recipients, cc_recipients, bcc_recipients, author).send()
 
     @require_id
-    def create_reply_all(self, subject, body, from_address=None):
+    def create_reply_all(self, subject, body, author=None):
         to_recipients = list(self.to_recipients) if self.to_recipients else []
         if self.author:
             to_recipients.append(self.author)
@@ -154,11 +154,11 @@ class Message(Item):
             to_recipients=to_recipients,
             cc_recipients=self.cc_recipients,
             bcc_recipients=self.bcc_recipients,
-            author=from_address,
+            author=author,
         )
 
-    def reply_all(self, subject, body, from_address=None):
-        return self.create_reply_all(subject, body, from_address).send()
+    def reply_all(self, subject, body, author=None):
+        return self.create_reply_all(subject, body, author).send()
 
     def mark_as_junk(self, is_junk=True, move_item=True):
         """Mark or un-marks items as junk email.
