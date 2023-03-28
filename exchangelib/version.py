@@ -106,13 +106,13 @@ EXCHANGE_2010 = Build(14, 0)
 EXCHANGE_2010_SP1 = Build(14, 1)
 EXCHANGE_2010_SP2 = Build(14, 2)
 EXCHANGE_2010_SP3 = Build(14, 3)
-EXCHANGE_2013 = Build(15, 0)
-EXCHANGE_2013_SP1 = Build(15, 0, 847)  # Major builds starting from 847 are Exchange2013_SP1
-EXCHANGE_2015 = Build(15, 20)
-EXCHANGE_2015_SP1 = Build(15, 20)
-EXCHANGE_2016 = Build(15, 1)
-EXCHANGE_2019 = Build(15, 2)
-EXCHANGE_O365 = Build(15, 20)
+EXCHANGE_2013 = Build(21, 0)
+EXCHANGE_2013_SP1 = Build(22, 0, 847)  # Major builds starting from 847 are Exchange2013_SP1
+EXCHANGE_2015 = Build(23, 20)
+EXCHANGE_2015_SP1 = Build(24, 20)
+EXCHANGE_2016 = Build(25, 1)
+EXCHANGE_2019 = Build(26, 2)
+EXCHANGE_O365 = Build(27, 20)
 
 # Legend for VERSIONS:
 #   (build, API version, full name)

@@ -40,7 +40,7 @@ from ..properties import (
 )
 from ..queryset import DoesNotExist, SearchableMixIn
 from ..util import TNS, is_iterable, require_id
-from ..version import EXCHANGE_2007_SP1, EXCHANGE_2010, SupportedVersionClassMixIn
+from ..version import EXCHANGE_2007_SP1, EXCHANGE_2010, EXCHANGE_2016, SupportedVersionClassMixIn
 from .collections import FolderCollection, PullSubscription, PushSubscription, StreamingSubscription, SyncCompleted
 from .queryset import DEEP as DEEP_FOLDERS
 from .queryset import MISSING_FOLDER_ERRORS
@@ -794,7 +794,7 @@ class BaseFolder(RegisterMixIn, SearchableMixIn, SupportedVersionClassMixIn, met
 class Folder(BaseFolder):
     """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/folder"""
 
-    permission_set = PermissionSetField(field_uri="folder:PermissionSet", supported_from=EXCHANGE_2007_SP1)
+    permission_set = PermissionSetField(field_uri="folder:PermissionSet", supported_from=EXCHANGE_2016)
     effective_rights = EffectiveRightsField(
         field_uri="folder:EffectiveRights", is_read_only=True, supported_from=EXCHANGE_2007_SP1
     )
