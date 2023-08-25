@@ -114,7 +114,7 @@ fails to install.
 ## Setup and connecting
 
 First, specify your credentials. Username is usually in `WINDOMAIN\username` format,
-where `WINDOMAIN is` the name of the Windows Domain your username is connected
+where `WINDOMAIN` is the name of the Windows Domain your username is connected
 to, but some servers also accept usernames in PrimarySMTPAddress
 ('myusername@example.com') format (Office365 requires it). UPN format is also
 supported, if your server expects that.
