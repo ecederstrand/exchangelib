@@ -796,6 +796,8 @@ class Attendee(EWSElement):
         field_uri="ResponseType", choices={Choice(c) for c in RESPONSE_TYPES}, default="Unknown"
     )
     last_response_time = DateTimeField(field_uri="LastResponseTime")
+    proposed_start = DateTimeField(field_uri="ProposedStart")
+    proposed_end = DateTimeField(field_uri="ProposedEnd")
 
     def __hash__(self):
         return hash(self.mailbox)
