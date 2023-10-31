@@ -53,6 +53,7 @@ class Subscribe(EWSAccountService, metaclass=abc.ABCMeta):
 
 
 class SubscribeToPull(Subscribe):
+    # https://learn.microsoft.com/en-us/exchange/client-developer/web-service-reference/pullsubscriptionrequest
     subscription_request_elem_tag = "m:PullSubscriptionRequest"
     prefer_affinity = True
 
@@ -76,6 +77,7 @@ class SubscribeToPull(Subscribe):
 
 
 class SubscribeToPush(Subscribe):
+    # https://learn.microsoft.com/en-us/exchange/client-developer/web-service-reference/pushsubscriptionrequest
     subscription_request_elem_tag = "m:PushSubscriptionRequest"
 
     def call(self, folders, event_types, watermark, status_frequency, url):
@@ -100,6 +102,7 @@ class SubscribeToPush(Subscribe):
 
 
 class SubscribeToStreaming(Subscribe):
+    # https://learn.microsoft.com/en-us/exchange/client-developer/web-service-reference/streamingsubscriptionrequest
     subscription_request_elem_tag = "m:StreamingSubscriptionRequest"
     prefer_affinity = True
 
