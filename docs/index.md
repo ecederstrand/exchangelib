@@ -1926,8 +1926,21 @@ for change_type, item in a.inbox.sync_items():
 # a.inbox.item_sync_state.
 ```
 
+EWS allows subscribing to changes in a mailbox. There are three types of subscriptions; pull,
+push and streaming. For each type, you can subscribe to all folders at once, to a single
+folder, or to a collection of folders (see description of `FolderCollection` above). In the
+following, we show only examples for subscriptions on `Account.inbox`, but the others are
+also possible.
+
 Here's how to create a pull subscription that can be used to pull events from the server:
 ```python
+# Subscribe to all folders
+subscription_id, watermark = a.subscribe_to_pull()
+
+# Subscribe to a collection of folders
+subscription_id, watermark = a.inbox.glob("foo*").subscribe_to_pull()
+
+# Subscribe to one folder
 subscription_id, watermark = a.inbox.subscribe_to_pull()
 ```
 
