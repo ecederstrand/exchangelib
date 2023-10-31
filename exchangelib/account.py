@@ -73,6 +73,10 @@ from .services import (
     MoveItem,
     SendItem,
     SetUserOofSettings,
+    SubscribeToPull,
+    SubscribeToPush,
+    SubscribeToStreaming,
+    Unsubscribe,
     UpdateItem,
     UploadItems,
 )
@@ -741,6 +745,64 @@ class Account:
     def delegates(self):
         """Return a list of DelegateUser objects representing the delegates that are set on this account."""
         return list(GetDelegate(account=self).call(user_ids=None, include_permissions=True))
+
+    def subscribe_to_pull(self, event_types=None, watermark=None, timeout=60):
+        """Create a pull subscription.
+
+        :param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPull.EVENT_TYPES
+        :param watermark: An event bookmark as returned by some sync services
+        :param timeout: Timeout of the subscription, in minutes. Timeout is reset when the server receives a
+        GetEvents request for this subscription.
+        :return: The subscription ID and a watermark
+        """
+        if event_types is None:
+            event_types = SubscribeToPull.EVENT_TYPES
+        return SubscribeToPull(account=self).get(
+            folders=None,
+            event_types=event_types,
+            watermark=watermark,
+            timeout=timeout,
+        )
+
+    def subscribe_to_push(self, callback_url, event_types=None, watermark=None, status_frequency=1):
+        """Create a push subscription.
+
+        :param callback_url: A client-defined URL that the server will call
+        :param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPush.EVENT_TYPES
+        :param watermark: An event bookmark as returned by some sync services
+        :param status_frequency: The frequency, in minutes, that the callback URL will be called with.
+        :return: The subscription ID and a watermark
+        """
+        if event_types is None:
+            event_types = SubscribeToPush.EVENT_TYPES
+        return SubscribeToPush(account=self).get(
+            folders=None,
+            event_types=event_types,
+            watermark=watermark,
+            status_frequency=status_frequency,
+            url=callback_url,
+        )
+
+    def subscribe_to_streaming(self, event_types=None):
+        """Create a streaming subscription.
+
+        :param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPush.EVENT_TYPES
+        :return: The subscription ID
+        """
+        if event_types is None:
+            event_types = SubscribeToStreaming.EVENT_TYPES
+        return SubscribeToStreaming(account=self).get(folders=None, event_types=event_types)
+
+    def unsubscribe(self, subscription_id):
+        """Unsubscribe. Only applies to pull and streaming notifications.
+
+        :param subscription_id: A subscription ID as acquired by .subscribe_to_[pull|streaming]()
+        :return: True
+
+        This method doesn't need the current collection instance, but it makes sense to keep the method along the other
+        sync methods.
+        """
+        return Unsubscribe(account=self).get(subscription_id=subscription_id)
 
     def __str__(self):
         if self.fullname:

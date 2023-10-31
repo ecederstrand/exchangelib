@@ -40,9 +40,13 @@ class Subscribe(EWSAccountService, metaclass=abc.ABCMeta):
         return [(container.find(f"{{{MNS}}}SubscriptionId"), container.find(f"{{{MNS}}}Watermark"))]
 
     def _partial_payload(self, folders, event_types):
-        request_elem = create_element(self.subscription_request_elem_tag)
-        folder_ids = folder_ids_element(folders=folders, version=self.account.version, tag="t:FolderIds")
-        request_elem.append(folder_ids)
+        if folders is None:
+            # Interpret this as "all folders"
+            request_elem = create_element(self.subscription_request_elem_tag, attrs=dict(SubscribeToAllFolders=True))
+        else:
+            request_elem = create_element(self.subscription_request_elem_tag)
+            folder_ids = folder_ids_element(folders=folders, version=self.account.version, tag="t:FolderIds")
+            request_elem.append(folder_ids)
         event_types_elem = create_element("t:EventTypes")
         for event_type in event_types:
             add_xml_child(event_types_elem, "t:EventType", event_type)
