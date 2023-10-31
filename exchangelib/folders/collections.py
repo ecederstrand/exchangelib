@@ -448,13 +448,13 @@ class FolderCollection(SearchableMixIn):
         return SubscribeToStreaming(account=self.account).get(folders=self.folders, event_types=event_types)
 
     def pull_subscription(self, **kwargs):
-        return PullSubscription(folder=self, **kwargs)
+        return PullSubscription(target=self, **kwargs)
 
     def push_subscription(self, **kwargs):
-        return PushSubscription(folder=self, **kwargs)
+        return PushSubscription(target=self, **kwargs)
 
     def streaming_subscription(self, **kwargs):
-        return StreamingSubscription(folder=self, **kwargs)
+        return StreamingSubscription(target=self, **kwargs)
 
     def unsubscribe(self, subscription_id):
         """Unsubscribe. Only applies to pull and streaming notifications.
@@ -540,8 +540,8 @@ class FolderCollection(SearchableMixIn):
 
 
 class BaseSubscription(metaclass=abc.ABCMeta):
-    def __init__(self, folder, **subscription_kwargs):
-        self.folder = folder
+    def __init__(self, target, **subscription_kwargs):
+        self.target = target
         self.subscription_kwargs = subscription_kwargs
         self.subscription_id = None
 
@@ -550,19 +550,19 @@ class BaseSubscription(metaclass=abc.ABCMeta):
         """Create the subscription"""
 
     def __exit__(self, *args, **kwargs):
-        self.folder.unsubscribe(subscription_id=self.subscription_id)
+        self.target.unsubscribe(subscription_id=self.subscription_id)
         self.subscription_id = None
 
 
 class PullSubscription(BaseSubscription):
     def __enter__(self):
-        self.subscription_id, watermark = self.folder.subscribe_to_pull(**self.subscription_kwargs)
+        self.subscription_id, watermark = self.target.subscribe_to_pull(**self.subscription_kwargs)
         return self.subscription_id, watermark
 
 
 class PushSubscription(BaseSubscription):
     def __enter__(self):
-        self.subscription_id, watermark = self.folder.subscribe_to_push(**self.subscription_kwargs)
+        self.subscription_id, watermark = self.target.subscribe_to_push(**self.subscription_kwargs)
         return self.subscription_id, watermark
 
     def __exit__(self, *args, **kwargs):
@@ -572,5 +572,5 @@ class PushSubscription(BaseSubscription):
 
 class StreamingSubscription(BaseSubscription):
     def __enter__(self):
-        self.subscription_id = self.folder.subscribe_to_streaming(**self.subscription_kwargs)
+        self.subscription_id = self.target.subscribe_to_streaming(**self.subscription_kwargs)
         return self.subscription_id

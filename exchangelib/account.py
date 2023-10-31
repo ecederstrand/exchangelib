@@ -54,6 +54,7 @@ from .folders import (
     ToDoSearch,
     VoiceMail,
 )
+from .folders.collections import PullSubscription, PushSubscription, StreamingSubscription
 from .items import ALL_OCCURRENCES, AUTO_RESOLVE, HARD_DELETE, ID_ONLY, SAVE_ONLY, SEND_TO_NONE
 from .properties import EWSElement, Mailbox, SendingAs
 from .protocol import Protocol
@@ -792,6 +793,15 @@ class Account:
         if event_types is None:
             event_types = SubscribeToStreaming.EVENT_TYPES
         return SubscribeToStreaming(account=self).get(folders=None, event_types=event_types)
+
+    def pull_subscription(self, **kwargs):
+        return PullSubscription(target=self, **kwargs)
+
+    def push_subscription(self, **kwargs):
+        return PushSubscription(target=self, **kwargs)
+
+    def streaming_subscription(self, **kwargs):
+        return StreamingSubscription(target=self, **kwargs)
 
     def unsubscribe(self, subscription_id):
         """Unsubscribe. Only applies to pull and streaming notifications.

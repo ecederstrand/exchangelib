@@ -631,15 +631,15 @@ class BaseFolder(RegisterMixIn, SearchableMixIn, SupportedVersionClassMixIn, met
 
     @require_id
     def pull_subscription(self, **kwargs):
-        return PullSubscription(folder=self, **kwargs)
+        return PullSubscription(target=self, **kwargs)
 
     @require_id
     def push_subscription(self, **kwargs):
-        return PushSubscription(folder=self, **kwargs)
+        return PushSubscription(target=self, **kwargs)
 
     @require_id
     def streaming_subscription(self, **kwargs):
-        return StreamingSubscription(folder=self, **kwargs)
+        return StreamingSubscription(target=self, **kwargs)
 
     def unsubscribe(self, subscription_id):
         """Unsubscribe. Only applies to pull and streaming notifications.
