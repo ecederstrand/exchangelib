@@ -48,7 +48,7 @@ setup(
         "lxml>3.0",
         "oauthlib",
         "pygments",
-        "requests>=2.310",
+        "requests>=2.31.0",
         "requests_ntlm>=0.2.0",
         "requests_oauthlib",
         "tzdata",
