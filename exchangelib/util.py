@@ -185,7 +185,7 @@ def get_xml_attrs(tree, name):
 def value_to_xml_text(value):
     from .ewsdatetime import EWSDate, EWSDateTime, EWSTimeZone
     from .indexed_properties import EmailAddress, PhoneNumber
-    from .properties import AssociatedCalendarItemId, Attendee, ConversationId, Mailbox
+    from .properties import AssociatedCalendarItemId, Attendee, ConversationId, Mailbox, MessageHeader
 
     # We can't just create a map and look up with type(value) because we want to support subtypes
     if isinstance(value, str):
@@ -216,6 +216,8 @@ def value_to_xml_text(value):
         return value.id
     if isinstance(value, AssociatedCalendarItemId):
         return value.id
+    if isinstance(value, MessageHeader):
+        return value.value
     raise TypeError(f"Unsupported type: {type(value)} ({value})")
 
 
