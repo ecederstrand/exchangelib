@@ -110,6 +110,10 @@ class SwssItems(Folder):
     CONTAINER_CLASS = &#34;IPF.StoreItem.SwssItems&#34;
 
 
+class EventCheckPoints(Folder):
+    CONTAINER_CLASS = &#34;IPF.StoreItem.EventCheckPoints&#34;
+
+
 class SkypeTeamsMessages(Folder):
     CONTAINER_CLASS = &#34;IPF.SkypeTeams.Message&#34;
     LOCALIZED_NAMES = {
@@ -2970,6 +2974,74 @@ MISC_FOLDERS = [
 <li><code><a title="exchangelib.folders.known_folders.Messages.tree" href="base.html#exchangelib.folders.base.BaseFolder.tree">tree</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Messages.unsubscribe" href="base.html#exchangelib.folders.base.BaseFolder.unsubscribe">unsubscribe</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Messages.validate_field" href="../properties.html#exchangelib.properties.EWSElement.validate_field">validate_field</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="exchangelib.folders.known_folders.EventCheckPoints"><code class="flex name class">
+<span>class <span class="ident">EventCheckPoints</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/folder">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/folder</a></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class EventCheckPoints(Folder):
+    CONTAINER_CLASS = &#34;IPF.StoreItem.EventCheckPoints&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="exchangelib.folders.base.Folder" href="base.html#exchangelib.folders.base.Folder">Folder</a></li>
+<li><a title="exchangelib.folders.base.BaseFolder" href="base.html#exchangelib.folders.base.BaseFolder">BaseFolder</a></li>
+<li><a title="exchangelib.items.base.RegisterMixIn" href="../items/base.html#exchangelib.items.base.RegisterMixIn">RegisterMixIn</a></li>
+<li><a title="exchangelib.properties.IdChangeKeyMixIn" href="../properties.html#exchangelib.properties.IdChangeKeyMixIn">IdChangeKeyMixIn</a></li>
+<li><a title="exchangelib.properties.EWSElement" href="../properties.html#exchangelib.properties.EWSElement">EWSElement</a></li>
+<li><a title="exchangelib.queryset.SearchableMixIn" href="../queryset.html#exchangelib.queryset.SearchableMixIn">SearchableMixIn</a></li>
+<li><a title="exchangelib.version.SupportedVersionClassMixIn" href="../version.html#exchangelib.version.SupportedVersionClassMixIn">SupportedVersionClassMixIn</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="exchangelib.folders.known_folders.EventCheckPoints.CONTAINER_CLASS"><code class="name">var <span class="ident">CONTAINER_CLASS</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="exchangelib.folders.base.Folder" href="base.html#exchangelib.folders.base.Folder">Folder</a></b></code>:
+<ul class="hlist">
+<li><code><a title="exchangelib.folders.base.Folder.ID_ELEMENT_CLS" href="base.html#exchangelib.folders.base.BaseFolder.ID_ELEMENT_CLS">ID_ELEMENT_CLS</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.account" href="base.html#exchangelib.folders.base.BaseFolder.account">account</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.add_field" href="../properties.html#exchangelib.properties.EWSElement.add_field">add_field</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.all" href="../queryset.html#exchangelib.queryset.SearchableMixIn.all">all</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.deregister" href="../items/base.html#exchangelib.items.base.RegisterMixIn.deregister">deregister</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.exclude" href="../queryset.html#exchangelib.queryset.SearchableMixIn.exclude">exclude</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.filter" href="../queryset.html#exchangelib.queryset.SearchableMixIn.filter">filter</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.folder_cls_from_container_class" href="base.html#exchangelib.folders.base.BaseFolder.folder_cls_from_container_class">folder_cls_from_container_class</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.folder_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.folder_sync_state">folder_sync_state</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.get" href="../queryset.html#exchangelib.queryset.SearchableMixIn.get">get</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.people" href="../queryset.html#exchangelib.queryset.SearchableMixIn.people">people</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.register" href="../items/base.html#exchangelib.items.base.RegisterMixIn.register">register</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.remove_field" href="../properties.html#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.root" href="base.html#exchangelib.folders.base.BaseFolder.root">root</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.subscribe_to_pull" href="base.html#exchangelib.folders.base.BaseFolder.subscribe_to_pull">subscribe_to_pull</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.subscribe_to_push" href="base.html#exchangelib.folders.base.BaseFolder.subscribe_to_push">subscribe_to_push</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.subscribe_to_streaming" href="base.html#exchangelib.folders.base.BaseFolder.subscribe_to_streaming">subscribe_to_streaming</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.supported_fields" href="../properties.html#exchangelib.properties.EWSElement.supported_fields">supported_fields</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.sync_hierarchy" href="base.html#exchangelib.folders.base.BaseFolder.sync_hierarchy">sync_hierarchy</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.sync_items" href="base.html#exchangelib.folders.base.BaseFolder.sync_items">sync_items</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.test_access" href="base.html#exchangelib.folders.base.BaseFolder.test_access">test_access</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.tree" href="base.html#exchangelib.folders.base.BaseFolder.tree">tree</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.unsubscribe" href="base.html#exchangelib.folders.base.BaseFolder.unsubscribe">unsubscribe</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.validate_field" href="../properties.html#exchangelib.properties.EWSElement.validate_field">validate_field</a></code></li>
 </ul>
 </li>
 </ul>
@@ -7651,6 +7723,12 @@ def is_deletable(self):
 <ul class="">
 <li><code><a title="exchangelib.folders.known_folders.Drafts.DISTINGUISHED_FOLDER_ID" href="#exchangelib.folders.known_folders.Drafts.DISTINGUISHED_FOLDER_ID">DISTINGUISHED_FOLDER_ID</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Drafts.LOCALIZED_NAMES" href="#exchangelib.folders.known_folders.Drafts.LOCALIZED_NAMES">LOCALIZED_NAMES</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="exchangelib.folders.known_folders.EventCheckPoints" href="#exchangelib.folders.known_folders.EventCheckPoints">EventCheckPoints</a></code></h4>
+<ul class="">
+<li><code><a title="exchangelib.folders.known_folders.EventCheckPoints.CONTAINER_CLASS" href="#exchangelib.folders.known_folders.EventCheckPoints.CONTAINER_CLASS">CONTAINER_CLASS</a></code></li>
 </ul>
 </li>
 <li>

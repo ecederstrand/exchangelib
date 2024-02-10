@@ -64,10 +64,12 @@ from .fields import (
     ExtendedPropertyField,
     Field,
     FieldPath,
+    FlaggedForActionField,
     FreeBusyStatusField,
     GenericEventListField,
     IdElementField,
     IdField,
+    ImportanceField,
     IntegerField,
     InvalidField,
     InvalidFieldForVersion,
@@ -76,6 +78,7 @@ from .fields import (
     RecipientAddressField,
     ReferenceItemIdField,
     RoutingTypeField,
+    SensitivityField,
     SubField,
     TextField,
     TimeDeltaField,
@@ -824,6 +827,8 @@ class Attendee(EWSElement):
         field_uri=&#34;ResponseType&#34;, choices={Choice(c) for c in RESPONSE_TYPES}, default=&#34;Unknown&#34;
     )
     last_response_time = DateTimeField(field_uri=&#34;LastResponseTime&#34;)
+    proposed_start = DateTimeField(field_uri=&#34;ProposedStart&#34;)
+    proposed_end = DateTimeField(field_uri=&#34;ProposedEnd&#34;)
 
     def __hash__(self):
         return hash(self.mailbox)
@@ -2165,7 +2170,217 @@ class UserResponse(EWSElement):
             redirect_url=redirect_url,
             user_settings_errors=user_settings_errors,
             user_settings=user_settings,
-        )</code></pre>
+        )
+
+
+class WithinDateRange(EWSElement):
+    &#34;&#34;&#34;MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/withindaterange
+    &#34;&#34;&#34;
+
+    ELEMENT_NAME = &#34;DateRange&#34;
+    NAMESPACE = MNS
+
+    start_date_time = DateTimeField(
+        field_uri=&#34;StartDateTime&#34;, is_required=True)
+    end_date_time = DateTimeField(field_uri=&#34;EndDateTime&#34;, is_required=True)
+
+
+class WithinSizeRange(EWSElement):
+    &#34;&#34;&#34;MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/withinsizerange
+    &#34;&#34;&#34;
+
+    ELEMENT_NAME = &#34;SizeRange&#34;
+    NAMESPACE = MNS
+
+    minimum_size = IntegerField(field_uri=&#34;MinimumSize&#34;, is_required=True)
+    maximum_size = IntegerField(field_uri=&#34;MaximumSize&#34;, is_required=True)
+
+
+class Conditions(EWSElement):
+    &#34;&#34;&#34;MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/conditions
+    &#34;&#34;&#34;
+
+    ELEMENT_NAME = &#34;Conditions&#34;
+    NAMESPACE = TNS
+
+    categories = CharListField(field_uri=&#34;Categories&#34;)
+    contains_body_strings = CharListField(field_uri=&#34;ContainsBodyStrings&#34;)
+    contains_header_strings = CharListField(field_uri=&#34;ContainsHeaderStrings&#34;)
+    contains_recipient_strings = CharListField(
+        field_uri=&#34;ContainsRecipientStrings&#34;)
+    contains_sender_strings = CharListField(field_uri=&#34;ContainsSenderStrings&#34;)
+    contains_subject_or_body_strings = CharListField(
+        field_uri=&#34;ContainsSubjectOrBodyStrings&#34;)
+    contains_subject_strings = CharListField(
+        field_uri=&#34;ContainsSubjectStrings&#34;)
+    flagged_for_action = FlaggedForActionField(field_uri=&#34;FlaggedForAction&#34;)
+    from_addresses = EWSElementField(
+        value_cls=Mailbox, field_uri=&#34;FromAddresses&#34;)
+    from_connected_accounts = CharListField(field_uri=&#34;FromConnectedAccounts&#34;)
+    has_attachments = BooleanField(field_uri=&#34;HasAttachments&#34;)
+    importance = ImportanceField(field_uri=&#34;Importance&#34;)
+    is_approval_request = BooleanField(field_uri=&#34;IsApprovalRequest&#34;)
+    is_automatic_forward = BooleanField(field_uri=&#34;IsAutomaticForward&#34;)
+    is_automatic_reply = BooleanField(field_uri=&#34;IsAutomaticReply&#34;)
+    is_encrypted = BooleanField(field_uri=&#34;IsEncrypted&#34;)
+    is_meeting_request = BooleanField(field_uri=&#34;IsMeetingRequest&#34;)
+    is_meeting_response = BooleanField(field_uri=&#34;IsMeetingResponse&#34;)
+    is_ndr = BooleanField(field_uri=&#34;IsNDR&#34;)
+    is_permission_controlled = BooleanField(field_uri=&#34;IsPermissionControlled&#34;)
+    is_read_receipt = BooleanField(field_uri=&#34;IsReadReceipt&#34;)
+    is_signed = BooleanField(field_uri=&#34;IsSigned&#34;)
+    is_voicemail = BooleanField(field_uri=&#34;IsVoicemail&#34;)
+    item_classes = CharListField(field_uri=&#34;ItemClasses&#34;)
+    message_classifications = CharListField(field_uri=&#34;MessageClassifications&#34;)
+    not_sent_to_me = BooleanField(field_uri=&#34;NotSentToMe&#34;)
+    sent_cc_me = BooleanField(field_uri=&#34;SentCcMe&#34;)
+    sent_only_to_me = BooleanField(field_uri=&#34;SentOnlyToMe&#34;)
+    sent_to_addresses = EWSElementField(
+        value_cls=Mailbox, field_uri=&#34;SentToAddresses&#34;)
+    sent_to_me = BooleanField(field_uri=&#34;SentToMe&#34;)
+    sent_to_or_cc_me = BooleanField(field_uri=&#34;SentToOrCcMe&#34;)
+    sensitivity = SensitivityField(field_uri=&#34;Sensitivity&#34;)
+    within_date_range = EWSElementField(
+        value_cls=WithinDateRange, field_uri=&#34;WithinDateRange&#34;)
+    within_size_range = EWSElementField(
+        value_cls=WithinSizeRange, field_uri=&#34;WithinSizeRange&#34;)
+
+
+class Exceptions(Conditions):
+    &#34;&#34;&#34;MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/exceptions
+    &#34;&#34;&#34;
+
+    ELEMENT_NAME = &#34;Exceptions&#34;
+    NAMESPACE = TNS
+
+
+class CopyToFolder(EWSElement):
+    &#34;&#34;&#34;MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/copytofolder
+    &#34;&#34;&#34;
+
+    ELEMENT_NAME = &#34;CopyToFolder&#34;
+    NAMESPACE = MNS
+
+    folder_id = EWSElementField(value_cls=FolderId, field_uri=&#34;FolderId&#34;)
+    distinguished_folder_id = EWSElementField(
+        value_cls=DistinguishedFolderId, field_uri=&#34;DistinguishedFolderId&#34;)
+
+
+class MoveToFolder(CopyToFolder):
+    &#34;&#34;&#34;MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/movetofolder
+    &#34;&#34;&#34;
+
+    ELEMENT_NAME = &#34;MoveToFolder&#34;
+
+
+class Actions(EWSElement):
+    &#34;&#34;&#34;MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/actions
+    &#34;&#34;&#34;
+
+    ELEMENT_NAME = &#34;Actions&#34;
+    NAMESPACE = TNS
+
+    assign_categories = CharListField(field_uri=&#34;AssignCategories&#34;)
+    copy_to_folder = EWSElementField(
+        value_cls=CopyToFolder, field_uri=&#34;CopyToFolder&#34;)
+    delete = BooleanField(field_uri=&#34;Delete&#34;)
+    forward_as_attachment_to_recipients = EWSElementField(
+        value_cls=Mailbox, field_uri=&#34;ForwardAsAttachmentToRecipients&#34;)
+    forward_to_recipients = EWSElementField(
+        value_cls=Mailbox, field_uri=&#34;ForwardToRecipients&#34;)
+    mark_importance = ImportanceField(field_uri=&#34;MarkImportance&#34;)
+    mark_as_read = BooleanField(field_uri=&#34;MarkAsRead&#34;)
+    move_to_folder = EWSElementField(
+        value_cls=MoveToFolder, field_uri=&#34;MoveToFolder&#34;)
+    permanent_delete = BooleanField(field_uri=&#34;PermanentDelete&#34;)
+    redirect_to_recipients = EWSElementField(
+        value_cls=Mailbox, field_uri=&#34;RedirectToRecipients&#34;)
+    send_sms_alert_to_recipients = EWSElementField(
+        value_cls=Mailbox, field_uri=&#34;SendSMSAlertToRecipients&#34;)
+    server_reply_with_message = EWSElementField(
+        value_cls=ItemId, field_uri=&#34;ServerReplyWithMessage&#34;)
+    stop_processing_rules = BooleanField(field_uri=&#34;StopProcessingRules&#34;)
+
+
+class Rule(EWSElement):
+    &#34;&#34;&#34;MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/rule-ruletype
+    &#34;&#34;&#34;
+    ELEMENT_NAME = &#34;Rule&#34;
+    NAMESPACE = TNS
+
+    rule_id = CharField(field_uri=&#34;RuleId&#34;)
+    display_name = CharField(field_uri=&#34;DisplayName&#34;)
+    priority = IntegerField(field_uri=&#34;Priority&#34;)
+    is_enabled = BooleanField(field_uri=&#34;IsEnabled&#34;)
+    is_not_supported = BooleanField(field_uri=&#34;IsNotSupported&#34;)
+    is_in_error = BooleanField(field_uri=&#34;IsInError&#34;)
+    conditions = EWSElementField(value_cls=Conditions)
+    exceptions = EWSElementField(value_cls=Exceptions)
+    actions = EWSElementField(value_cls=Actions)
+
+
+class InboxRules(EWSElement):
+    &#34;&#34;&#34;MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/inboxrules
+    &#34;&#34;&#34;
+
+    ELEMENT_NAME = &#34;InboxRules&#34;
+    NAMESPACE = MNS
+
+    rule = EWSElementListField(value_cls=Rule)
+
+
+class CreateRuleOperation(EWSElement):
+    &#34;&#34;&#34;MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createruleoperation
+    &#34;&#34;&#34;
+    ELEMENT_NAME = &#34;CreateRuleOperation&#34;
+    NAMESPACE = TNS
+
+    rule = EWSElementField(value_cls=Rule)
+
+
+class SetRuleOperation(EWSElement):
+    &#34;&#34;&#34;MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/setruleoperation
+    &#34;&#34;&#34;
+    ELEMENT_NAME = &#34;SetRuleOperation&#34;
+    NAMESPACE = TNS
+
+    rule = EWSElementField(value_cls=Rule)
+
+
+class DeleteRuleOperation(EWSElement):
+    &#34;&#34;&#34;MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/deleteruleoperation
+    &#34;&#34;&#34;
+    ELEMENT_NAME = &#34;DeleteRuleOperation&#34;
+    NAMESPACE = TNS
+
+    rule_id = CharField(field_uri=&#34;RuleId&#34;)
+
+
+class Operations(EWSElement):
+    &#34;&#34;&#34;MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/operations
+    &#34;&#34;&#34;
+    ELEMENT_NAME = &#34;Operations&#34;
+    NAMESPACE = MNS
+
+    create_rule_operation = EWSElementField(
+        value_cls=CreateRuleOperation)
+    set_rule_operation = EWSElementField(
+        value_cls=SetRuleOperation)
+    delete_rule_operation = EWSElementField(
+        value_cls=DeleteRuleOperation)</code></pre>
 </details>
 </section>
 <section>
@@ -2264,6 +2479,132 @@ class UserResponse(EWSElement):
 <h3>Instance variables</h3>
 <dl>
 <dt id="exchangelib.properties.AcceptSharingInvitation.reference_item_id"><code class="name">var <span class="ident">reference_item_id</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="exchangelib.properties.EWSElement" href="#exchangelib.properties.EWSElement">EWSElement</a></b></code>:
+<ul class="hlist">
+<li><code><a title="exchangelib.properties.EWSElement.add_field" href="#exchangelib.properties.EWSElement.add_field">add_field</a></code></li>
+<li><code><a title="exchangelib.properties.EWSElement.remove_field" href="#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
+<li><code><a title="exchangelib.properties.EWSElement.supported_fields" href="#exchangelib.properties.EWSElement.supported_fields">supported_fields</a></code></li>
+<li><code><a title="exchangelib.properties.EWSElement.validate_field" href="#exchangelib.properties.EWSElement.validate_field">validate_field</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="exchangelib.properties.Actions"><code class="flex name class">
+<span>class <span class="ident">Actions</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>MSDN:
+<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/actions">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/actions</a></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Actions(EWSElement):
+    &#34;&#34;&#34;MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/actions
+    &#34;&#34;&#34;
+
+    ELEMENT_NAME = &#34;Actions&#34;
+    NAMESPACE = TNS
+
+    assign_categories = CharListField(field_uri=&#34;AssignCategories&#34;)
+    copy_to_folder = EWSElementField(
+        value_cls=CopyToFolder, field_uri=&#34;CopyToFolder&#34;)
+    delete = BooleanField(field_uri=&#34;Delete&#34;)
+    forward_as_attachment_to_recipients = EWSElementField(
+        value_cls=Mailbox, field_uri=&#34;ForwardAsAttachmentToRecipients&#34;)
+    forward_to_recipients = EWSElementField(
+        value_cls=Mailbox, field_uri=&#34;ForwardToRecipients&#34;)
+    mark_importance = ImportanceField(field_uri=&#34;MarkImportance&#34;)
+    mark_as_read = BooleanField(field_uri=&#34;MarkAsRead&#34;)
+    move_to_folder = EWSElementField(
+        value_cls=MoveToFolder, field_uri=&#34;MoveToFolder&#34;)
+    permanent_delete = BooleanField(field_uri=&#34;PermanentDelete&#34;)
+    redirect_to_recipients = EWSElementField(
+        value_cls=Mailbox, field_uri=&#34;RedirectToRecipients&#34;)
+    send_sms_alert_to_recipients = EWSElementField(
+        value_cls=Mailbox, field_uri=&#34;SendSMSAlertToRecipients&#34;)
+    server_reply_with_message = EWSElementField(
+        value_cls=ItemId, field_uri=&#34;ServerReplyWithMessage&#34;)
+    stop_processing_rules = BooleanField(field_uri=&#34;StopProcessingRules&#34;)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="exchangelib.properties.EWSElement" href="#exchangelib.properties.EWSElement">EWSElement</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="exchangelib.properties.Actions.ELEMENT_NAME"><code class="name">var <span class="ident">ELEMENT_NAME</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Actions.FIELDS"><code class="name">var <span class="ident">FIELDS</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Actions.NAMESPACE"><code class="name">var <span class="ident">NAMESPACE</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="exchangelib.properties.Actions.assign_categories"><code class="name">var <span class="ident">assign_categories</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Actions.copy_to_folder"><code class="name">var <span class="ident">copy_to_folder</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Actions.delete"><code class="name">var <span class="ident">delete</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Actions.forward_as_attachment_to_recipients"><code class="name">var <span class="ident">forward_as_attachment_to_recipients</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Actions.forward_to_recipients"><code class="name">var <span class="ident">forward_to_recipients</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Actions.mark_as_read"><code class="name">var <span class="ident">mark_as_read</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Actions.mark_importance"><code class="name">var <span class="ident">mark_importance</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Actions.move_to_folder"><code class="name">var <span class="ident">move_to_folder</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Actions.permanent_delete"><code class="name">var <span class="ident">permanent_delete</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Actions.redirect_to_recipients"><code class="name">var <span class="ident">redirect_to_recipients</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Actions.send_sms_alert_to_recipients"><code class="name">var <span class="ident">send_sms_alert_to_recipients</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Actions.server_reply_with_message"><code class="name">var <span class="ident">server_reply_with_message</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Actions.stop_processing_rules"><code class="name">var <span class="ident">stop_processing_rules</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -2602,6 +2943,8 @@ def response_tag(cls):
         field_uri=&#34;ResponseType&#34;, choices={Choice(c) for c in RESPONSE_TYPES}, default=&#34;Unknown&#34;
     )
     last_response_time = DateTimeField(field_uri=&#34;LastResponseTime&#34;)
+    proposed_start = DateTimeField(field_uri=&#34;ProposedStart&#34;)
+    proposed_end = DateTimeField(field_uri=&#34;ProposedEnd&#34;)
 
     def __hash__(self):
         return hash(self.mailbox)</code></pre>
@@ -2632,6 +2975,14 @@ def response_tag(cls):
 <div class="desc"></div>
 </dd>
 <dt id="exchangelib.properties.Attendee.mailbox"><code class="name">var <span class="ident">mailbox</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Attendee.proposed_end"><code class="name">var <span class="ident">proposed_end</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Attendee.proposed_start"><code class="name">var <span class="ident">proposed_start</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -3691,6 +4042,241 @@ The substitutions are identified by braces ('{' and '}').</p></div>
 </li>
 </ul>
 </dd>
+<dt id="exchangelib.properties.Conditions"><code class="flex name class">
+<span>class <span class="ident">Conditions</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>MSDN:
+<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/conditions">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/conditions</a></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Conditions(EWSElement):
+    &#34;&#34;&#34;MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/conditions
+    &#34;&#34;&#34;
+
+    ELEMENT_NAME = &#34;Conditions&#34;
+    NAMESPACE = TNS
+
+    categories = CharListField(field_uri=&#34;Categories&#34;)
+    contains_body_strings = CharListField(field_uri=&#34;ContainsBodyStrings&#34;)
+    contains_header_strings = CharListField(field_uri=&#34;ContainsHeaderStrings&#34;)
+    contains_recipient_strings = CharListField(
+        field_uri=&#34;ContainsRecipientStrings&#34;)
+    contains_sender_strings = CharListField(field_uri=&#34;ContainsSenderStrings&#34;)
+    contains_subject_or_body_strings = CharListField(
+        field_uri=&#34;ContainsSubjectOrBodyStrings&#34;)
+    contains_subject_strings = CharListField(
+        field_uri=&#34;ContainsSubjectStrings&#34;)
+    flagged_for_action = FlaggedForActionField(field_uri=&#34;FlaggedForAction&#34;)
+    from_addresses = EWSElementField(
+        value_cls=Mailbox, field_uri=&#34;FromAddresses&#34;)
+    from_connected_accounts = CharListField(field_uri=&#34;FromConnectedAccounts&#34;)
+    has_attachments = BooleanField(field_uri=&#34;HasAttachments&#34;)
+    importance = ImportanceField(field_uri=&#34;Importance&#34;)
+    is_approval_request = BooleanField(field_uri=&#34;IsApprovalRequest&#34;)
+    is_automatic_forward = BooleanField(field_uri=&#34;IsAutomaticForward&#34;)
+    is_automatic_reply = BooleanField(field_uri=&#34;IsAutomaticReply&#34;)
+    is_encrypted = BooleanField(field_uri=&#34;IsEncrypted&#34;)
+    is_meeting_request = BooleanField(field_uri=&#34;IsMeetingRequest&#34;)
+    is_meeting_response = BooleanField(field_uri=&#34;IsMeetingResponse&#34;)
+    is_ndr = BooleanField(field_uri=&#34;IsNDR&#34;)
+    is_permission_controlled = BooleanField(field_uri=&#34;IsPermissionControlled&#34;)
+    is_read_receipt = BooleanField(field_uri=&#34;IsReadReceipt&#34;)
+    is_signed = BooleanField(field_uri=&#34;IsSigned&#34;)
+    is_voicemail = BooleanField(field_uri=&#34;IsVoicemail&#34;)
+    item_classes = CharListField(field_uri=&#34;ItemClasses&#34;)
+    message_classifications = CharListField(field_uri=&#34;MessageClassifications&#34;)
+    not_sent_to_me = BooleanField(field_uri=&#34;NotSentToMe&#34;)
+    sent_cc_me = BooleanField(field_uri=&#34;SentCcMe&#34;)
+    sent_only_to_me = BooleanField(field_uri=&#34;SentOnlyToMe&#34;)
+    sent_to_addresses = EWSElementField(
+        value_cls=Mailbox, field_uri=&#34;SentToAddresses&#34;)
+    sent_to_me = BooleanField(field_uri=&#34;SentToMe&#34;)
+    sent_to_or_cc_me = BooleanField(field_uri=&#34;SentToOrCcMe&#34;)
+    sensitivity = SensitivityField(field_uri=&#34;Sensitivity&#34;)
+    within_date_range = EWSElementField(
+        value_cls=WithinDateRange, field_uri=&#34;WithinDateRange&#34;)
+    within_size_range = EWSElementField(
+        value_cls=WithinSizeRange, field_uri=&#34;WithinSizeRange&#34;)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="exchangelib.properties.EWSElement" href="#exchangelib.properties.EWSElement">EWSElement</a></li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="exchangelib.properties.Exceptions" href="#exchangelib.properties.Exceptions">Exceptions</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="exchangelib.properties.Conditions.ELEMENT_NAME"><code class="name">var <span class="ident">ELEMENT_NAME</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Conditions.FIELDS"><code class="name">var <span class="ident">FIELDS</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Conditions.NAMESPACE"><code class="name">var <span class="ident">NAMESPACE</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="exchangelib.properties.Conditions.categories"><code class="name">var <span class="ident">categories</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Conditions.contains_body_strings"><code class="name">var <span class="ident">contains_body_strings</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Conditions.contains_header_strings"><code class="name">var <span class="ident">contains_header_strings</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Conditions.contains_recipient_strings"><code class="name">var <span class="ident">contains_recipient_strings</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Conditions.contains_sender_strings"><code class="name">var <span class="ident">contains_sender_strings</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Conditions.contains_subject_or_body_strings"><code class="name">var <span class="ident">contains_subject_or_body_strings</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Conditions.contains_subject_strings"><code class="name">var <span class="ident">contains_subject_strings</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Conditions.flagged_for_action"><code class="name">var <span class="ident">flagged_for_action</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Conditions.from_addresses"><code class="name">var <span class="ident">from_addresses</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Conditions.from_connected_accounts"><code class="name">var <span class="ident">from_connected_accounts</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Conditions.has_attachments"><code class="name">var <span class="ident">has_attachments</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Conditions.importance"><code class="name">var <span class="ident">importance</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Conditions.is_approval_request"><code class="name">var <span class="ident">is_approval_request</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Conditions.is_automatic_forward"><code class="name">var <span class="ident">is_automatic_forward</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Conditions.is_automatic_reply"><code class="name">var <span class="ident">is_automatic_reply</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Conditions.is_encrypted"><code class="name">var <span class="ident">is_encrypted</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Conditions.is_meeting_request"><code class="name">var <span class="ident">is_meeting_request</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Conditions.is_meeting_response"><code class="name">var <span class="ident">is_meeting_response</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Conditions.is_ndr"><code class="name">var <span class="ident">is_ndr</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Conditions.is_permission_controlled"><code class="name">var <span class="ident">is_permission_controlled</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Conditions.is_read_receipt"><code class="name">var <span class="ident">is_read_receipt</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Conditions.is_signed"><code class="name">var <span class="ident">is_signed</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Conditions.is_voicemail"><code class="name">var <span class="ident">is_voicemail</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Conditions.item_classes"><code class="name">var <span class="ident">item_classes</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Conditions.message_classifications"><code class="name">var <span class="ident">message_classifications</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Conditions.not_sent_to_me"><code class="name">var <span class="ident">not_sent_to_me</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Conditions.sensitivity"><code class="name">var <span class="ident">sensitivity</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Conditions.sent_cc_me"><code class="name">var <span class="ident">sent_cc_me</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Conditions.sent_only_to_me"><code class="name">var <span class="ident">sent_only_to_me</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Conditions.sent_to_addresses"><code class="name">var <span class="ident">sent_to_addresses</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Conditions.sent_to_me"><code class="name">var <span class="ident">sent_to_me</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Conditions.sent_to_or_cc_me"><code class="name">var <span class="ident">sent_to_or_cc_me</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Conditions.within_date_range"><code class="name">var <span class="ident">within_date_range</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Conditions.within_size_range"><code class="name">var <span class="ident">within_size_range</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="exchangelib.properties.EWSElement" href="#exchangelib.properties.EWSElement">EWSElement</a></b></code>:
+<ul class="hlist">
+<li><code><a title="exchangelib.properties.EWSElement.add_field" href="#exchangelib.properties.EWSElement.add_field">add_field</a></code></li>
+<li><code><a title="exchangelib.properties.EWSElement.remove_field" href="#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
+<li><code><a title="exchangelib.properties.EWSElement.supported_fields" href="#exchangelib.properties.EWSElement.supported_fields">supported_fields</a></code></li>
+<li><code><a title="exchangelib.properties.EWSElement.validate_field" href="#exchangelib.properties.EWSElement.validate_field">validate_field</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
 <dt id="exchangelib.properties.ConversationId"><code class="flex name class">
 <span>class <span class="ident">ConversationId</span></span>
 <span>(</span><span>*args, **kwargs)</span>
@@ -3770,6 +4356,133 @@ The substitutions are identified by braces ('{' and '}').</p></div>
 <li><code><a title="exchangelib.properties.OldTimestampEvent.remove_field" href="#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
 <li><code><a title="exchangelib.properties.OldTimestampEvent.supported_fields" href="#exchangelib.properties.EWSElement.supported_fields">supported_fields</a></code></li>
 <li><code><a title="exchangelib.properties.OldTimestampEvent.validate_field" href="#exchangelib.properties.EWSElement.validate_field">validate_field</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="exchangelib.properties.CopyToFolder"><code class="flex name class">
+<span>class <span class="ident">CopyToFolder</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>MSDN:
+<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/copytofolder">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/copytofolder</a></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CopyToFolder(EWSElement):
+    &#34;&#34;&#34;MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/copytofolder
+    &#34;&#34;&#34;
+
+    ELEMENT_NAME = &#34;CopyToFolder&#34;
+    NAMESPACE = MNS
+
+    folder_id = EWSElementField(value_cls=FolderId, field_uri=&#34;FolderId&#34;)
+    distinguished_folder_id = EWSElementField(
+        value_cls=DistinguishedFolderId, field_uri=&#34;DistinguishedFolderId&#34;)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="exchangelib.properties.EWSElement" href="#exchangelib.properties.EWSElement">EWSElement</a></li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="exchangelib.properties.MoveToFolder" href="#exchangelib.properties.MoveToFolder">MoveToFolder</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="exchangelib.properties.CopyToFolder.ELEMENT_NAME"><code class="name">var <span class="ident">ELEMENT_NAME</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.CopyToFolder.FIELDS"><code class="name">var <span class="ident">FIELDS</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.CopyToFolder.NAMESPACE"><code class="name">var <span class="ident">NAMESPACE</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="exchangelib.properties.CopyToFolder.distinguished_folder_id"><code class="name">var <span class="ident">distinguished_folder_id</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.CopyToFolder.folder_id"><code class="name">var <span class="ident">folder_id</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="exchangelib.properties.EWSElement" href="#exchangelib.properties.EWSElement">EWSElement</a></b></code>:
+<ul class="hlist">
+<li><code><a title="exchangelib.properties.EWSElement.add_field" href="#exchangelib.properties.EWSElement.add_field">add_field</a></code></li>
+<li><code><a title="exchangelib.properties.EWSElement.remove_field" href="#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
+<li><code><a title="exchangelib.properties.EWSElement.supported_fields" href="#exchangelib.properties.EWSElement.supported_fields">supported_fields</a></code></li>
+<li><code><a title="exchangelib.properties.EWSElement.validate_field" href="#exchangelib.properties.EWSElement.validate_field">validate_field</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="exchangelib.properties.CreateRuleOperation"><code class="flex name class">
+<span>class <span class="ident">CreateRuleOperation</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>MSDN:
+<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createruleoperation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createruleoperation</a></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CreateRuleOperation(EWSElement):
+    &#34;&#34;&#34;MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createruleoperation
+    &#34;&#34;&#34;
+    ELEMENT_NAME = &#34;CreateRuleOperation&#34;
+    NAMESPACE = TNS
+
+    rule = EWSElementField(value_cls=Rule)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="exchangelib.properties.EWSElement" href="#exchangelib.properties.EWSElement">EWSElement</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="exchangelib.properties.CreateRuleOperation.ELEMENT_NAME"><code class="name">var <span class="ident">ELEMENT_NAME</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.CreateRuleOperation.FIELDS"><code class="name">var <span class="ident">FIELDS</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.CreateRuleOperation.NAMESPACE"><code class="name">var <span class="ident">NAMESPACE</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="exchangelib.properties.CreateRuleOperation.rule"><code class="name">var <span class="ident">rule</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="exchangelib.properties.EWSElement" href="#exchangelib.properties.EWSElement">EWSElement</a></b></code>:
+<ul class="hlist">
+<li><code><a title="exchangelib.properties.EWSElement.add_field" href="#exchangelib.properties.EWSElement.add_field">add_field</a></code></li>
+<li><code><a title="exchangelib.properties.EWSElement.remove_field" href="#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
+<li><code><a title="exchangelib.properties.EWSElement.supported_fields" href="#exchangelib.properties.EWSElement.supported_fields">supported_fields</a></code></li>
+<li><code><a title="exchangelib.properties.EWSElement.validate_field" href="#exchangelib.properties.EWSElement.validate_field">validate_field</a></code></li>
 </ul>
 </li>
 </ul>
@@ -4046,6 +4759,64 @@ The substitutions are identified by braces ('{' and '}').</p></div>
 <div class="desc"></div>
 </dd>
 <dt id="exchangelib.properties.DelegateUser.view_private_items"><code class="name">var <span class="ident">view_private_items</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="exchangelib.properties.EWSElement" href="#exchangelib.properties.EWSElement">EWSElement</a></b></code>:
+<ul class="hlist">
+<li><code><a title="exchangelib.properties.EWSElement.add_field" href="#exchangelib.properties.EWSElement.add_field">add_field</a></code></li>
+<li><code><a title="exchangelib.properties.EWSElement.remove_field" href="#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
+<li><code><a title="exchangelib.properties.EWSElement.supported_fields" href="#exchangelib.properties.EWSElement.supported_fields">supported_fields</a></code></li>
+<li><code><a title="exchangelib.properties.EWSElement.validate_field" href="#exchangelib.properties.EWSElement.validate_field">validate_field</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="exchangelib.properties.DeleteRuleOperation"><code class="flex name class">
+<span>class <span class="ident">DeleteRuleOperation</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>MSDN:
+<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/deleteruleoperation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/deleteruleoperation</a></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class DeleteRuleOperation(EWSElement):
+    &#34;&#34;&#34;MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/deleteruleoperation
+    &#34;&#34;&#34;
+    ELEMENT_NAME = &#34;DeleteRuleOperation&#34;
+    NAMESPACE = TNS
+
+    rule_id = CharField(field_uri=&#34;RuleId&#34;)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="exchangelib.properties.EWSElement" href="#exchangelib.properties.EWSElement">EWSElement</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="exchangelib.properties.DeleteRuleOperation.ELEMENT_NAME"><code class="name">var <span class="ident">ELEMENT_NAME</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.DeleteRuleOperation.FIELDS"><code class="name">var <span class="ident">FIELDS</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.DeleteRuleOperation.NAMESPACE"><code class="name">var <span class="ident">NAMESPACE</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="exchangelib.properties.DeleteRuleOperation.rule_id"><code class="name">var <span class="ident">rule_id</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -4451,6 +5222,7 @@ The substitutions are identified by braces ('{' and '}').</p></div>
 <li><a title="exchangelib.indexed_properties.IndexedElement" href="indexed_properties.html#exchangelib.indexed_properties.IndexedElement">IndexedElement</a></li>
 <li><a title="exchangelib.items.base.BaseReplyItem" href="items/base.html#exchangelib.items.base.BaseReplyItem">BaseReplyItem</a></li>
 <li><a title="exchangelib.properties.AcceptSharingInvitation" href="#exchangelib.properties.AcceptSharingInvitation">AcceptSharingInvitation</a></li>
+<li><a title="exchangelib.properties.Actions" href="#exchangelib.properties.Actions">Actions</a></li>
 <li><a title="exchangelib.properties.AlternateId" href="#exchangelib.properties.AlternateId">AlternateId</a></li>
 <li><a title="exchangelib.properties.AlternatePublicFolderId" href="#exchangelib.properties.AlternatePublicFolderId">AlternatePublicFolderId</a></li>
 <li><a title="exchangelib.properties.AlternatePublicFolderItemId" href="#exchangelib.properties.AlternatePublicFolderItemId">AlternatePublicFolderItemId</a></li>
@@ -4465,8 +5237,12 @@ The substitutions are identified by braces ('{' and '}').</p></div>
 <li><a title="exchangelib.properties.CalendarEventDetails" href="#exchangelib.properties.CalendarEventDetails">CalendarEventDetails</a></li>
 <li><a title="exchangelib.properties.CalendarView" href="#exchangelib.properties.CalendarView">CalendarView</a></li>
 <li><a title="exchangelib.properties.CompleteName" href="#exchangelib.properties.CompleteName">CompleteName</a></li>
+<li><a title="exchangelib.properties.Conditions" href="#exchangelib.properties.Conditions">Conditions</a></li>
+<li><a title="exchangelib.properties.CopyToFolder" href="#exchangelib.properties.CopyToFolder">CopyToFolder</a></li>
+<li><a title="exchangelib.properties.CreateRuleOperation" href="#exchangelib.properties.CreateRuleOperation">CreateRuleOperation</a></li>
 <li><a title="exchangelib.properties.DelegatePermissions" href="#exchangelib.properties.DelegatePermissions">DelegatePermissions</a></li>
 <li><a title="exchangelib.properties.DelegateUser" href="#exchangelib.properties.DelegateUser">DelegateUser</a></li>
+<li><a title="exchangelib.properties.DeleteRuleOperation" href="#exchangelib.properties.DeleteRuleOperation">DeleteRuleOperation</a></li>
 <li><a title="exchangelib.properties.DictionaryEntry" href="#exchangelib.properties.DictionaryEntry">DictionaryEntry</a></li>
 <li><a title="exchangelib.properties.EffectiveRights" href="#exchangelib.properties.EffectiveRights">EffectiveRights</a></li>
 <li><a title="exchangelib.properties.EmailAddressAttributedValue" href="#exchangelib.properties.EmailAddressAttributedValue">EmailAddressAttributedValue</a></li>
@@ -4478,6 +5254,7 @@ The substitutions are identified by braces ('{' and '}').</p></div>
 <li><a title="exchangelib.properties.FreeBusyView" href="#exchangelib.properties.FreeBusyView">FreeBusyView</a></li>
 <li><a title="exchangelib.properties.FreeBusyViewOptions" href="#exchangelib.properties.FreeBusyViewOptions">FreeBusyViewOptions</a></li>
 <li><a title="exchangelib.properties.IdChangeKeyMixIn" href="#exchangelib.properties.IdChangeKeyMixIn">IdChangeKeyMixIn</a></li>
+<li><a title="exchangelib.properties.InboxRules" href="#exchangelib.properties.InboxRules">InboxRules</a></li>
 <li><a title="exchangelib.properties.IndexedFieldURI" href="#exchangelib.properties.IndexedFieldURI">IndexedFieldURI</a></li>
 <li><a title="exchangelib.properties.MailTips" href="#exchangelib.properties.MailTips">MailTips</a></li>
 <li><a title="exchangelib.properties.Mailbox" href="#exchangelib.properties.Mailbox">Mailbox</a></li>
@@ -4485,6 +5262,7 @@ The substitutions are identified by braces ('{' and '}').</p></div>
 <li><a title="exchangelib.properties.Member" href="#exchangelib.properties.Member">Member</a></li>
 <li><a title="exchangelib.properties.MessageHeader" href="#exchangelib.properties.MessageHeader">MessageHeader</a></li>
 <li><a title="exchangelib.properties.Notification" href="#exchangelib.properties.Notification">Notification</a></li>
+<li><a title="exchangelib.properties.Operations" href="#exchangelib.properties.Operations">Operations</a></li>
 <li><a title="exchangelib.properties.OutOfOffice" href="#exchangelib.properties.OutOfOffice">OutOfOffice</a></li>
 <li><a title="exchangelib.properties.Period" href="#exchangelib.properties.Period">Period</a></li>
 <li><a title="exchangelib.properties.PermissionSet" href="#exchangelib.properties.PermissionSet">PermissionSet</a></li>
@@ -4495,7 +5273,9 @@ The substitutions are identified by braces ('{' and '}').</p></div>
 <li><a title="exchangelib.properties.ReminderMessageData" href="#exchangelib.properties.ReminderMessageData">ReminderMessageData</a></li>
 <li><a title="exchangelib.properties.RemoveItem" href="#exchangelib.properties.RemoveItem">RemoveItem</a></li>
 <li><a title="exchangelib.properties.ResponseObjects" href="#exchangelib.properties.ResponseObjects">ResponseObjects</a></li>
+<li><a title="exchangelib.properties.Rule" href="#exchangelib.properties.Rule">Rule</a></li>
 <li><a title="exchangelib.properties.SearchableMailbox" href="#exchangelib.properties.SearchableMailbox">SearchableMailbox</a></li>
+<li><a title="exchangelib.properties.SetRuleOperation" href="#exchangelib.properties.SetRuleOperation">SetRuleOperation</a></li>
 <li><a title="exchangelib.properties.StringAttributedValue" href="#exchangelib.properties.StringAttributedValue">StringAttributedValue</a></li>
 <li><a title="exchangelib.properties.SuppressReadReceipt" href="#exchangelib.properties.SuppressReadReceipt">SuppressReadReceipt</a></li>
 <li><a title="exchangelib.properties.TimeWindow" href="#exchangelib.properties.TimeWindow">TimeWindow</a></li>
@@ -4506,6 +5286,8 @@ The substitutions are identified by braces ('{' and '}').</p></div>
 <li><a title="exchangelib.properties.UserConfigurationName" href="#exchangelib.properties.UserConfigurationName">UserConfigurationName</a></li>
 <li><a title="exchangelib.properties.UserId" href="#exchangelib.properties.UserId">UserId</a></li>
 <li><a title="exchangelib.properties.UserResponse" href="#exchangelib.properties.UserResponse">UserResponse</a></li>
+<li><a title="exchangelib.properties.WithinDateRange" href="#exchangelib.properties.WithinDateRange">WithinDateRange</a></li>
+<li><a title="exchangelib.properties.WithinSizeRange" href="#exchangelib.properties.WithinSizeRange">WithinSizeRange</a></li>
 <li><a title="exchangelib.properties.WorkingPeriod" href="#exchangelib.properties.WorkingPeriod">WorkingPeriod</a></li>
 <li><a title="exchangelib.recurrence.Boundary" href="recurrence.html#exchangelib.recurrence.Boundary">Boundary</a></li>
 <li><a title="exchangelib.recurrence.DeletedOccurrence" href="recurrence.html#exchangelib.recurrence.DeletedOccurrence">DeletedOccurrence</a></li>
@@ -5232,6 +6014,53 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <li><code><a title="exchangelib.properties.EWSElement.remove_field" href="#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
 <li><code><a title="exchangelib.properties.EWSElement.supported_fields" href="#exchangelib.properties.EWSElement.supported_fields">supported_fields</a></code></li>
 <li><code><a title="exchangelib.properties.EWSElement.validate_field" href="#exchangelib.properties.EWSElement.validate_field">validate_field</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="exchangelib.properties.Exceptions"><code class="flex name class">
+<span>class <span class="ident">Exceptions</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>MSDN:
+<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/exceptions">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/exceptions</a></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Exceptions(Conditions):
+    &#34;&#34;&#34;MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/exceptions
+    &#34;&#34;&#34;
+
+    ELEMENT_NAME = &#34;Exceptions&#34;
+    NAMESPACE = TNS</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="exchangelib.properties.Conditions" href="#exchangelib.properties.Conditions">Conditions</a></li>
+<li><a title="exchangelib.properties.EWSElement" href="#exchangelib.properties.EWSElement">EWSElement</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="exchangelib.properties.Exceptions.ELEMENT_NAME"><code class="name">var <span class="ident">ELEMENT_NAME</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Exceptions.NAMESPACE"><code class="name">var <span class="ident">NAMESPACE</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="exchangelib.properties.Conditions" href="#exchangelib.properties.Conditions">Conditions</a></b></code>:
+<ul class="hlist">
+<li><code><a title="exchangelib.properties.Conditions.add_field" href="#exchangelib.properties.EWSElement.add_field">add_field</a></code></li>
+<li><code><a title="exchangelib.properties.Conditions.remove_field" href="#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
+<li><code><a title="exchangelib.properties.Conditions.supported_fields" href="#exchangelib.properties.EWSElement.supported_fields">supported_fields</a></code></li>
+<li><code><a title="exchangelib.properties.Conditions.validate_field" href="#exchangelib.properties.EWSElement.validate_field">validate_field</a></code></li>
 </ul>
 </li>
 </ul>
@@ -6100,6 +6929,65 @@ def id(self):
 </li>
 </ul>
 </dd>
+<dt id="exchangelib.properties.InboxRules"><code class="flex name class">
+<span>class <span class="ident">InboxRules</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>MSDN:
+<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/inboxrules">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/inboxrules</a></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class InboxRules(EWSElement):
+    &#34;&#34;&#34;MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/inboxrules
+    &#34;&#34;&#34;
+
+    ELEMENT_NAME = &#34;InboxRules&#34;
+    NAMESPACE = MNS
+
+    rule = EWSElementListField(value_cls=Rule)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="exchangelib.properties.EWSElement" href="#exchangelib.properties.EWSElement">EWSElement</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="exchangelib.properties.InboxRules.ELEMENT_NAME"><code class="name">var <span class="ident">ELEMENT_NAME</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.InboxRules.FIELDS"><code class="name">var <span class="ident">FIELDS</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.InboxRules.NAMESPACE"><code class="name">var <span class="ident">NAMESPACE</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="exchangelib.properties.InboxRules.rule"><code class="name">var <span class="ident">rule</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="exchangelib.properties.EWSElement" href="#exchangelib.properties.EWSElement">EWSElement</a></b></code>:
+<ul class="hlist">
+<li><code><a title="exchangelib.properties.EWSElement.add_field" href="#exchangelib.properties.EWSElement.add_field">add_field</a></code></li>
+<li><code><a title="exchangelib.properties.EWSElement.remove_field" href="#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
+<li><code><a title="exchangelib.properties.EWSElement.supported_fields" href="#exchangelib.properties.EWSElement.supported_fields">supported_fields</a></code></li>
+<li><code><a title="exchangelib.properties.EWSElement.validate_field" href="#exchangelib.properties.EWSElement.validate_field">validate_field</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
 <dt id="exchangelib.properties.IndexedFieldURI"><code class="flex name class">
 <span>class <span class="ident">IndexedFieldURI</span></span>
 <span>(</span><span>**kwargs)</span>
@@ -6733,6 +7621,48 @@ def id(self):
 </li>
 </ul>
 </dd>
+<dt id="exchangelib.properties.MoveToFolder"><code class="flex name class">
+<span>class <span class="ident">MoveToFolder</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>MSDN:
+<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/movetofolder">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/movetofolder</a></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class MoveToFolder(CopyToFolder):
+    &#34;&#34;&#34;MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/movetofolder
+    &#34;&#34;&#34;
+
+    ELEMENT_NAME = &#34;MoveToFolder&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="exchangelib.properties.CopyToFolder" href="#exchangelib.properties.CopyToFolder">CopyToFolder</a></li>
+<li><a title="exchangelib.properties.EWSElement" href="#exchangelib.properties.EWSElement">EWSElement</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="exchangelib.properties.MoveToFolder.ELEMENT_NAME"><code class="name">var <span class="ident">ELEMENT_NAME</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="exchangelib.properties.CopyToFolder" href="#exchangelib.properties.CopyToFolder">CopyToFolder</a></b></code>:
+<ul class="hlist">
+<li><code><a title="exchangelib.properties.CopyToFolder.add_field" href="#exchangelib.properties.EWSElement.add_field">add_field</a></code></li>
+<li><code><a title="exchangelib.properties.CopyToFolder.remove_field" href="#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
+<li><code><a title="exchangelib.properties.CopyToFolder.supported_fields" href="#exchangelib.properties.EWSElement.supported_fields">supported_fields</a></code></li>
+<li><code><a title="exchangelib.properties.CopyToFolder.validate_field" href="#exchangelib.properties.EWSElement.validate_field">validate_field</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
 <dt id="exchangelib.properties.MovedEvent"><code class="flex name class">
 <span>class <span class="ident">MovedEvent</span></span>
 <span>(</span><span>**kwargs)</span>
@@ -7208,6 +8138,77 @@ def id_from_xml(cls, elem):
 <li><code><a title="exchangelib.properties.TimestampEvent.remove_field" href="#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
 <li><code><a title="exchangelib.properties.TimestampEvent.supported_fields" href="#exchangelib.properties.EWSElement.supported_fields">supported_fields</a></code></li>
 <li><code><a title="exchangelib.properties.TimestampEvent.validate_field" href="#exchangelib.properties.EWSElement.validate_field">validate_field</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="exchangelib.properties.Operations"><code class="flex name class">
+<span>class <span class="ident">Operations</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>MSDN:
+<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/operations">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/operations</a></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Operations(EWSElement):
+    &#34;&#34;&#34;MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/operations
+    &#34;&#34;&#34;
+    ELEMENT_NAME = &#34;Operations&#34;
+    NAMESPACE = MNS
+
+    create_rule_operation = EWSElementField(
+        value_cls=CreateRuleOperation)
+    set_rule_operation = EWSElementField(
+        value_cls=SetRuleOperation)
+    delete_rule_operation = EWSElementField(
+        value_cls=DeleteRuleOperation)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="exchangelib.properties.EWSElement" href="#exchangelib.properties.EWSElement">EWSElement</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="exchangelib.properties.Operations.ELEMENT_NAME"><code class="name">var <span class="ident">ELEMENT_NAME</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Operations.FIELDS"><code class="name">var <span class="ident">FIELDS</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Operations.NAMESPACE"><code class="name">var <span class="ident">NAMESPACE</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="exchangelib.properties.Operations.create_rule_operation"><code class="name">var <span class="ident">create_rule_operation</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Operations.delete_rule_operation"><code class="name">var <span class="ident">delete_rule_operation</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Operations.set_rule_operation"><code class="name">var <span class="ident">set_rule_operation</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="exchangelib.properties.EWSElement" href="#exchangelib.properties.EWSElement">EWSElement</a></b></code>:
+<ul class="hlist">
+<li><code><a title="exchangelib.properties.EWSElement.add_field" href="#exchangelib.properties.EWSElement.add_field">add_field</a></code></li>
+<li><code><a title="exchangelib.properties.EWSElement.remove_field" href="#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
+<li><code><a title="exchangelib.properties.EWSElement.supported_fields" href="#exchangelib.properties.EWSElement.supported_fields">supported_fields</a></code></li>
+<li><code><a title="exchangelib.properties.EWSElement.validate_field" href="#exchangelib.properties.EWSElement.validate_field">validate_field</a></code></li>
 </ul>
 </li>
 </ul>
@@ -8824,6 +9825,104 @@ def response_tag(cls):
 </li>
 </ul>
 </dd>
+<dt id="exchangelib.properties.Rule"><code class="flex name class">
+<span>class <span class="ident">Rule</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>MSDN:
+<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/rule-ruletype">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/rule-ruletype</a></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Rule(EWSElement):
+    &#34;&#34;&#34;MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/rule-ruletype
+    &#34;&#34;&#34;
+    ELEMENT_NAME = &#34;Rule&#34;
+    NAMESPACE = TNS
+
+    rule_id = CharField(field_uri=&#34;RuleId&#34;)
+    display_name = CharField(field_uri=&#34;DisplayName&#34;)
+    priority = IntegerField(field_uri=&#34;Priority&#34;)
+    is_enabled = BooleanField(field_uri=&#34;IsEnabled&#34;)
+    is_not_supported = BooleanField(field_uri=&#34;IsNotSupported&#34;)
+    is_in_error = BooleanField(field_uri=&#34;IsInError&#34;)
+    conditions = EWSElementField(value_cls=Conditions)
+    exceptions = EWSElementField(value_cls=Exceptions)
+    actions = EWSElementField(value_cls=Actions)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="exchangelib.properties.EWSElement" href="#exchangelib.properties.EWSElement">EWSElement</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="exchangelib.properties.Rule.ELEMENT_NAME"><code class="name">var <span class="ident">ELEMENT_NAME</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Rule.FIELDS"><code class="name">var <span class="ident">FIELDS</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Rule.NAMESPACE"><code class="name">var <span class="ident">NAMESPACE</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="exchangelib.properties.Rule.actions"><code class="name">var <span class="ident">actions</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Rule.conditions"><code class="name">var <span class="ident">conditions</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Rule.display_name"><code class="name">var <span class="ident">display_name</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Rule.exceptions"><code class="name">var <span class="ident">exceptions</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Rule.is_enabled"><code class="name">var <span class="ident">is_enabled</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Rule.is_in_error"><code class="name">var <span class="ident">is_in_error</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Rule.is_not_supported"><code class="name">var <span class="ident">is_not_supported</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Rule.priority"><code class="name">var <span class="ident">priority</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.Rule.rule_id"><code class="name">var <span class="ident">rule_id</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="exchangelib.properties.EWSElement" href="#exchangelib.properties.EWSElement">EWSElement</a></b></code>:
+<ul class="hlist">
+<li><code><a title="exchangelib.properties.EWSElement.add_field" href="#exchangelib.properties.EWSElement.add_field">add_field</a></code></li>
+<li><code><a title="exchangelib.properties.EWSElement.remove_field" href="#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
+<li><code><a title="exchangelib.properties.EWSElement.supported_fields" href="#exchangelib.properties.EWSElement.supported_fields">supported_fields</a></code></li>
+<li><code><a title="exchangelib.properties.EWSElement.validate_field" href="#exchangelib.properties.EWSElement.validate_field">validate_field</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
 <dt id="exchangelib.properties.SearchableMailbox"><code class="flex name class">
 <span>class <span class="ident">SearchableMailbox</span></span>
 <span>(</span><span>**kwargs)</span>
@@ -8949,6 +10048,64 @@ def response_tag(cls):
 <li><code><a title="exchangelib.properties.Mailbox.remove_field" href="#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
 <li><code><a title="exchangelib.properties.Mailbox.supported_fields" href="#exchangelib.properties.EWSElement.supported_fields">supported_fields</a></code></li>
 <li><code><a title="exchangelib.properties.Mailbox.validate_field" href="#exchangelib.properties.EWSElement.validate_field">validate_field</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="exchangelib.properties.SetRuleOperation"><code class="flex name class">
+<span>class <span class="ident">SetRuleOperation</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>MSDN:
+<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/setruleoperation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/setruleoperation</a></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SetRuleOperation(EWSElement):
+    &#34;&#34;&#34;MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/setruleoperation
+    &#34;&#34;&#34;
+    ELEMENT_NAME = &#34;SetRuleOperation&#34;
+    NAMESPACE = TNS
+
+    rule = EWSElementField(value_cls=Rule)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="exchangelib.properties.EWSElement" href="#exchangelib.properties.EWSElement">EWSElement</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="exchangelib.properties.SetRuleOperation.ELEMENT_NAME"><code class="name">var <span class="ident">ELEMENT_NAME</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.SetRuleOperation.FIELDS"><code class="name">var <span class="ident">FIELDS</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.SetRuleOperation.NAMESPACE"><code class="name">var <span class="ident">NAMESPACE</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="exchangelib.properties.SetRuleOperation.rule"><code class="name">var <span class="ident">rule</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="exchangelib.properties.EWSElement" href="#exchangelib.properties.EWSElement">EWSElement</a></b></code>:
+<ul class="hlist">
+<li><code><a title="exchangelib.properties.EWSElement.add_field" href="#exchangelib.properties.EWSElement.add_field">add_field</a></code></li>
+<li><code><a title="exchangelib.properties.EWSElement.remove_field" href="#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
+<li><code><a title="exchangelib.properties.EWSElement.supported_fields" href="#exchangelib.properties.EWSElement.supported_fields">supported_fields</a></code></li>
+<li><code><a title="exchangelib.properties.EWSElement.validate_field" href="#exchangelib.properties.EWSElement.validate_field">validate_field</a></code></li>
 </ul>
 </li>
 </ul>
@@ -10765,6 +11922,135 @@ def version(self):
 </li>
 </ul>
 </dd>
+<dt id="exchangelib.properties.WithinDateRange"><code class="flex name class">
+<span>class <span class="ident">WithinDateRange</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>MSDN:
+<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/withindaterange">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/withindaterange</a></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class WithinDateRange(EWSElement):
+    &#34;&#34;&#34;MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/withindaterange
+    &#34;&#34;&#34;
+
+    ELEMENT_NAME = &#34;DateRange&#34;
+    NAMESPACE = MNS
+
+    start_date_time = DateTimeField(
+        field_uri=&#34;StartDateTime&#34;, is_required=True)
+    end_date_time = DateTimeField(field_uri=&#34;EndDateTime&#34;, is_required=True)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="exchangelib.properties.EWSElement" href="#exchangelib.properties.EWSElement">EWSElement</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="exchangelib.properties.WithinDateRange.ELEMENT_NAME"><code class="name">var <span class="ident">ELEMENT_NAME</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.WithinDateRange.FIELDS"><code class="name">var <span class="ident">FIELDS</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.WithinDateRange.NAMESPACE"><code class="name">var <span class="ident">NAMESPACE</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="exchangelib.properties.WithinDateRange.end_date_time"><code class="name">var <span class="ident">end_date_time</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.WithinDateRange.start_date_time"><code class="name">var <span class="ident">start_date_time</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="exchangelib.properties.EWSElement" href="#exchangelib.properties.EWSElement">EWSElement</a></b></code>:
+<ul class="hlist">
+<li><code><a title="exchangelib.properties.EWSElement.add_field" href="#exchangelib.properties.EWSElement.add_field">add_field</a></code></li>
+<li><code><a title="exchangelib.properties.EWSElement.remove_field" href="#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
+<li><code><a title="exchangelib.properties.EWSElement.supported_fields" href="#exchangelib.properties.EWSElement.supported_fields">supported_fields</a></code></li>
+<li><code><a title="exchangelib.properties.EWSElement.validate_field" href="#exchangelib.properties.EWSElement.validate_field">validate_field</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="exchangelib.properties.WithinSizeRange"><code class="flex name class">
+<span>class <span class="ident">WithinSizeRange</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>MSDN:
+<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/withinsizerange">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/withinsizerange</a></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class WithinSizeRange(EWSElement):
+    &#34;&#34;&#34;MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/withinsizerange
+    &#34;&#34;&#34;
+
+    ELEMENT_NAME = &#34;SizeRange&#34;
+    NAMESPACE = MNS
+
+    minimum_size = IntegerField(field_uri=&#34;MinimumSize&#34;, is_required=True)
+    maximum_size = IntegerField(field_uri=&#34;MaximumSize&#34;, is_required=True)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="exchangelib.properties.EWSElement" href="#exchangelib.properties.EWSElement">EWSElement</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="exchangelib.properties.WithinSizeRange.ELEMENT_NAME"><code class="name">var <span class="ident">ELEMENT_NAME</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.WithinSizeRange.FIELDS"><code class="name">var <span class="ident">FIELDS</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.WithinSizeRange.NAMESPACE"><code class="name">var <span class="ident">NAMESPACE</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="exchangelib.properties.WithinSizeRange.maximum_size"><code class="name">var <span class="ident">maximum_size</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.properties.WithinSizeRange.minimum_size"><code class="name">var <span class="ident">minimum_size</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="exchangelib.properties.EWSElement" href="#exchangelib.properties.EWSElement">EWSElement</a></b></code>:
+<ul class="hlist">
+<li><code><a title="exchangelib.properties.EWSElement.add_field" href="#exchangelib.properties.EWSElement.add_field">add_field</a></code></li>
+<li><code><a title="exchangelib.properties.EWSElement.remove_field" href="#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
+<li><code><a title="exchangelib.properties.EWSElement.supported_fields" href="#exchangelib.properties.EWSElement.supported_fields">supported_fields</a></code></li>
+<li><code><a title="exchangelib.properties.EWSElement.validate_field" href="#exchangelib.properties.EWSElement.validate_field">validate_field</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
 <dt id="exchangelib.properties.WorkingPeriod"><code class="flex name class">
 <span>class <span class="ident">WorkingPeriod</span></span>
 <span>(</span><span>**kwargs)</span>
@@ -10859,6 +12145,27 @@ def version(self):
 </ul>
 </li>
 <li>
+<h4><code><a title="exchangelib.properties.Actions" href="#exchangelib.properties.Actions">Actions</a></code></h4>
+<ul class="">
+<li><code><a title="exchangelib.properties.Actions.ELEMENT_NAME" href="#exchangelib.properties.Actions.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
+<li><code><a title="exchangelib.properties.Actions.FIELDS" href="#exchangelib.properties.Actions.FIELDS">FIELDS</a></code></li>
+<li><code><a title="exchangelib.properties.Actions.NAMESPACE" href="#exchangelib.properties.Actions.NAMESPACE">NAMESPACE</a></code></li>
+<li><code><a title="exchangelib.properties.Actions.assign_categories" href="#exchangelib.properties.Actions.assign_categories">assign_categories</a></code></li>
+<li><code><a title="exchangelib.properties.Actions.copy_to_folder" href="#exchangelib.properties.Actions.copy_to_folder">copy_to_folder</a></code></li>
+<li><code><a title="exchangelib.properties.Actions.delete" href="#exchangelib.properties.Actions.delete">delete</a></code></li>
+<li><code><a title="exchangelib.properties.Actions.forward_as_attachment_to_recipients" href="#exchangelib.properties.Actions.forward_as_attachment_to_recipients">forward_as_attachment_to_recipients</a></code></li>
+<li><code><a title="exchangelib.properties.Actions.forward_to_recipients" href="#exchangelib.properties.Actions.forward_to_recipients">forward_to_recipients</a></code></li>
+<li><code><a title="exchangelib.properties.Actions.mark_as_read" href="#exchangelib.properties.Actions.mark_as_read">mark_as_read</a></code></li>
+<li><code><a title="exchangelib.properties.Actions.mark_importance" href="#exchangelib.properties.Actions.mark_importance">mark_importance</a></code></li>
+<li><code><a title="exchangelib.properties.Actions.move_to_folder" href="#exchangelib.properties.Actions.move_to_folder">move_to_folder</a></code></li>
+<li><code><a title="exchangelib.properties.Actions.permanent_delete" href="#exchangelib.properties.Actions.permanent_delete">permanent_delete</a></code></li>
+<li><code><a title="exchangelib.properties.Actions.redirect_to_recipients" href="#exchangelib.properties.Actions.redirect_to_recipients">redirect_to_recipients</a></code></li>
+<li><code><a title="exchangelib.properties.Actions.send_sms_alert_to_recipients" href="#exchangelib.properties.Actions.send_sms_alert_to_recipients">send_sms_alert_to_recipients</a></code></li>
+<li><code><a title="exchangelib.properties.Actions.server_reply_with_message" href="#exchangelib.properties.Actions.server_reply_with_message">server_reply_with_message</a></code></li>
+<li><code><a title="exchangelib.properties.Actions.stop_processing_rules" href="#exchangelib.properties.Actions.stop_processing_rules">stop_processing_rules</a></code></li>
+</ul>
+</li>
+<li>
 <h4><code><a title="exchangelib.properties.Address" href="#exchangelib.properties.Address">Address</a></code></h4>
 <ul class="">
 <li><code><a title="exchangelib.properties.Address.ELEMENT_NAME" href="#exchangelib.properties.Address.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
@@ -10909,6 +12216,8 @@ def version(self):
 <li><code><a title="exchangelib.properties.Attendee.RESPONSE_TYPES" href="#exchangelib.properties.Attendee.RESPONSE_TYPES">RESPONSE_TYPES</a></code></li>
 <li><code><a title="exchangelib.properties.Attendee.last_response_time" href="#exchangelib.properties.Attendee.last_response_time">last_response_time</a></code></li>
 <li><code><a title="exchangelib.properties.Attendee.mailbox" href="#exchangelib.properties.Attendee.mailbox">mailbox</a></code></li>
+<li><code><a title="exchangelib.properties.Attendee.proposed_end" href="#exchangelib.properties.Attendee.proposed_end">proposed_end</a></code></li>
+<li><code><a title="exchangelib.properties.Attendee.proposed_start" href="#exchangelib.properties.Attendee.proposed_start">proposed_start</a></code></li>
 <li><code><a title="exchangelib.properties.Attendee.response_type" href="#exchangelib.properties.Attendee.response_type">response_type</a></code></li>
 </ul>
 </li>
@@ -11060,6 +12369,48 @@ def version(self):
 </ul>
 </li>
 <li>
+<h4><code><a title="exchangelib.properties.Conditions" href="#exchangelib.properties.Conditions">Conditions</a></code></h4>
+<ul class="">
+<li><code><a title="exchangelib.properties.Conditions.ELEMENT_NAME" href="#exchangelib.properties.Conditions.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
+<li><code><a title="exchangelib.properties.Conditions.FIELDS" href="#exchangelib.properties.Conditions.FIELDS">FIELDS</a></code></li>
+<li><code><a title="exchangelib.properties.Conditions.NAMESPACE" href="#exchangelib.properties.Conditions.NAMESPACE">NAMESPACE</a></code></li>
+<li><code><a title="exchangelib.properties.Conditions.categories" href="#exchangelib.properties.Conditions.categories">categories</a></code></li>
+<li><code><a title="exchangelib.properties.Conditions.contains_body_strings" href="#exchangelib.properties.Conditions.contains_body_strings">contains_body_strings</a></code></li>
+<li><code><a title="exchangelib.properties.Conditions.contains_header_strings" href="#exchangelib.properties.Conditions.contains_header_strings">contains_header_strings</a></code></li>
+<li><code><a title="exchangelib.properties.Conditions.contains_recipient_strings" href="#exchangelib.properties.Conditions.contains_recipient_strings">contains_recipient_strings</a></code></li>
+<li><code><a title="exchangelib.properties.Conditions.contains_sender_strings" href="#exchangelib.properties.Conditions.contains_sender_strings">contains_sender_strings</a></code></li>
+<li><code><a title="exchangelib.properties.Conditions.contains_subject_or_body_strings" href="#exchangelib.properties.Conditions.contains_subject_or_body_strings">contains_subject_or_body_strings</a></code></li>
+<li><code><a title="exchangelib.properties.Conditions.contains_subject_strings" href="#exchangelib.properties.Conditions.contains_subject_strings">contains_subject_strings</a></code></li>
+<li><code><a title="exchangelib.properties.Conditions.flagged_for_action" href="#exchangelib.properties.Conditions.flagged_for_action">flagged_for_action</a></code></li>
+<li><code><a title="exchangelib.properties.Conditions.from_addresses" href="#exchangelib.properties.Conditions.from_addresses">from_addresses</a></code></li>
+<li><code><a title="exchangelib.properties.Conditions.from_connected_accounts" href="#exchangelib.properties.Conditions.from_connected_accounts">from_connected_accounts</a></code></li>
+<li><code><a title="exchangelib.properties.Conditions.has_attachments" href="#exchangelib.properties.Conditions.has_attachments">has_attachments</a></code></li>
+<li><code><a title="exchangelib.properties.Conditions.importance" href="#exchangelib.properties.Conditions.importance">importance</a></code></li>
+<li><code><a title="exchangelib.properties.Conditions.is_approval_request" href="#exchangelib.properties.Conditions.is_approval_request">is_approval_request</a></code></li>
+<li><code><a title="exchangelib.properties.Conditions.is_automatic_forward" href="#exchangelib.properties.Conditions.is_automatic_forward">is_automatic_forward</a></code></li>
+<li><code><a title="exchangelib.properties.Conditions.is_automatic_reply" href="#exchangelib.properties.Conditions.is_automatic_reply">is_automatic_reply</a></code></li>
+<li><code><a title="exchangelib.properties.Conditions.is_encrypted" href="#exchangelib.properties.Conditions.is_encrypted">is_encrypted</a></code></li>
+<li><code><a title="exchangelib.properties.Conditions.is_meeting_request" href="#exchangelib.properties.Conditions.is_meeting_request">is_meeting_request</a></code></li>
+<li><code><a title="exchangelib.properties.Conditions.is_meeting_response" href="#exchangelib.properties.Conditions.is_meeting_response">is_meeting_response</a></code></li>
+<li><code><a title="exchangelib.properties.Conditions.is_ndr" href="#exchangelib.properties.Conditions.is_ndr">is_ndr</a></code></li>
+<li><code><a title="exchangelib.properties.Conditions.is_permission_controlled" href="#exchangelib.properties.Conditions.is_permission_controlled">is_permission_controlled</a></code></li>
+<li><code><a title="exchangelib.properties.Conditions.is_read_receipt" href="#exchangelib.properties.Conditions.is_read_receipt">is_read_receipt</a></code></li>
+<li><code><a title="exchangelib.properties.Conditions.is_signed" href="#exchangelib.properties.Conditions.is_signed">is_signed</a></code></li>
+<li><code><a title="exchangelib.properties.Conditions.is_voicemail" href="#exchangelib.properties.Conditions.is_voicemail">is_voicemail</a></code></li>
+<li><code><a title="exchangelib.properties.Conditions.item_classes" href="#exchangelib.properties.Conditions.item_classes">item_classes</a></code></li>
+<li><code><a title="exchangelib.properties.Conditions.message_classifications" href="#exchangelib.properties.Conditions.message_classifications">message_classifications</a></code></li>
+<li><code><a title="exchangelib.properties.Conditions.not_sent_to_me" href="#exchangelib.properties.Conditions.not_sent_to_me">not_sent_to_me</a></code></li>
+<li><code><a title="exchangelib.properties.Conditions.sensitivity" href="#exchangelib.properties.Conditions.sensitivity">sensitivity</a></code></li>
+<li><code><a title="exchangelib.properties.Conditions.sent_cc_me" href="#exchangelib.properties.Conditions.sent_cc_me">sent_cc_me</a></code></li>
+<li><code><a title="exchangelib.properties.Conditions.sent_only_to_me" href="#exchangelib.properties.Conditions.sent_only_to_me">sent_only_to_me</a></code></li>
+<li><code><a title="exchangelib.properties.Conditions.sent_to_addresses" href="#exchangelib.properties.Conditions.sent_to_addresses">sent_to_addresses</a></code></li>
+<li><code><a title="exchangelib.properties.Conditions.sent_to_me" href="#exchangelib.properties.Conditions.sent_to_me">sent_to_me</a></code></li>
+<li><code><a title="exchangelib.properties.Conditions.sent_to_or_cc_me" href="#exchangelib.properties.Conditions.sent_to_or_cc_me">sent_to_or_cc_me</a></code></li>
+<li><code><a title="exchangelib.properties.Conditions.within_date_range" href="#exchangelib.properties.Conditions.within_date_range">within_date_range</a></code></li>
+<li><code><a title="exchangelib.properties.Conditions.within_size_range" href="#exchangelib.properties.Conditions.within_size_range">within_size_range</a></code></li>
+</ul>
+</li>
+<li>
 <h4><code><a title="exchangelib.properties.ConversationId" href="#exchangelib.properties.ConversationId">ConversationId</a></code></h4>
 <ul class="">
 <li><code><a title="exchangelib.properties.ConversationId.ELEMENT_NAME" href="#exchangelib.properties.ConversationId.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
@@ -11069,6 +12420,25 @@ def version(self):
 <h4><code><a title="exchangelib.properties.CopiedEvent" href="#exchangelib.properties.CopiedEvent">CopiedEvent</a></code></h4>
 <ul class="">
 <li><code><a title="exchangelib.properties.CopiedEvent.ELEMENT_NAME" href="#exchangelib.properties.CopiedEvent.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="exchangelib.properties.CopyToFolder" href="#exchangelib.properties.CopyToFolder">CopyToFolder</a></code></h4>
+<ul class="">
+<li><code><a title="exchangelib.properties.CopyToFolder.ELEMENT_NAME" href="#exchangelib.properties.CopyToFolder.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
+<li><code><a title="exchangelib.properties.CopyToFolder.FIELDS" href="#exchangelib.properties.CopyToFolder.FIELDS">FIELDS</a></code></li>
+<li><code><a title="exchangelib.properties.CopyToFolder.NAMESPACE" href="#exchangelib.properties.CopyToFolder.NAMESPACE">NAMESPACE</a></code></li>
+<li><code><a title="exchangelib.properties.CopyToFolder.distinguished_folder_id" href="#exchangelib.properties.CopyToFolder.distinguished_folder_id">distinguished_folder_id</a></code></li>
+<li><code><a title="exchangelib.properties.CopyToFolder.folder_id" href="#exchangelib.properties.CopyToFolder.folder_id">folder_id</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="exchangelib.properties.CreateRuleOperation" href="#exchangelib.properties.CreateRuleOperation">CreateRuleOperation</a></code></h4>
+<ul class="">
+<li><code><a title="exchangelib.properties.CreateRuleOperation.ELEMENT_NAME" href="#exchangelib.properties.CreateRuleOperation.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
+<li><code><a title="exchangelib.properties.CreateRuleOperation.FIELDS" href="#exchangelib.properties.CreateRuleOperation.FIELDS">FIELDS</a></code></li>
+<li><code><a title="exchangelib.properties.CreateRuleOperation.NAMESPACE" href="#exchangelib.properties.CreateRuleOperation.NAMESPACE">NAMESPACE</a></code></li>
+<li><code><a title="exchangelib.properties.CreateRuleOperation.rule" href="#exchangelib.properties.CreateRuleOperation.rule">rule</a></code></li>
 </ul>
 </li>
 <li>
@@ -11113,6 +12483,15 @@ def version(self):
 <li><code><a title="exchangelib.properties.DelegateUser.receive_copies_of_meeting_messages" href="#exchangelib.properties.DelegateUser.receive_copies_of_meeting_messages">receive_copies_of_meeting_messages</a></code></li>
 <li><code><a title="exchangelib.properties.DelegateUser.user_id" href="#exchangelib.properties.DelegateUser.user_id">user_id</a></code></li>
 <li><code><a title="exchangelib.properties.DelegateUser.view_private_items" href="#exchangelib.properties.DelegateUser.view_private_items">view_private_items</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="exchangelib.properties.DeleteRuleOperation" href="#exchangelib.properties.DeleteRuleOperation">DeleteRuleOperation</a></code></h4>
+<ul class="">
+<li><code><a title="exchangelib.properties.DeleteRuleOperation.ELEMENT_NAME" href="#exchangelib.properties.DeleteRuleOperation.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
+<li><code><a title="exchangelib.properties.DeleteRuleOperation.FIELDS" href="#exchangelib.properties.DeleteRuleOperation.FIELDS">FIELDS</a></code></li>
+<li><code><a title="exchangelib.properties.DeleteRuleOperation.NAMESPACE" href="#exchangelib.properties.DeleteRuleOperation.NAMESPACE">NAMESPACE</a></code></li>
+<li><code><a title="exchangelib.properties.DeleteRuleOperation.rule_id" href="#exchangelib.properties.DeleteRuleOperation.rule_id">rule_id</a></code></li>
 </ul>
 </li>
 <li>
@@ -11220,6 +12599,13 @@ def version(self):
 </ul>
 </li>
 <li>
+<h4><code><a title="exchangelib.properties.Exceptions" href="#exchangelib.properties.Exceptions">Exceptions</a></code></h4>
+<ul class="">
+<li><code><a title="exchangelib.properties.Exceptions.ELEMENT_NAME" href="#exchangelib.properties.Exceptions.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
+<li><code><a title="exchangelib.properties.Exceptions.NAMESPACE" href="#exchangelib.properties.Exceptions.NAMESPACE">NAMESPACE</a></code></li>
+</ul>
+</li>
+<li>
 <h4><code><a title="exchangelib.properties.ExtendedFieldURI" href="#exchangelib.properties.ExtendedFieldURI">ExtendedFieldURI</a></code></h4>
 <ul class="">
 <li><code><a title="exchangelib.properties.ExtendedFieldURI.ELEMENT_NAME" href="#exchangelib.properties.ExtendedFieldURI.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
@@ -11316,6 +12702,15 @@ def version(self):
 </ul>
 </li>
 <li>
+<h4><code><a title="exchangelib.properties.InboxRules" href="#exchangelib.properties.InboxRules">InboxRules</a></code></h4>
+<ul class="">
+<li><code><a title="exchangelib.properties.InboxRules.ELEMENT_NAME" href="#exchangelib.properties.InboxRules.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
+<li><code><a title="exchangelib.properties.InboxRules.FIELDS" href="#exchangelib.properties.InboxRules.FIELDS">FIELDS</a></code></li>
+<li><code><a title="exchangelib.properties.InboxRules.NAMESPACE" href="#exchangelib.properties.InboxRules.NAMESPACE">NAMESPACE</a></code></li>
+<li><code><a title="exchangelib.properties.InboxRules.rule" href="#exchangelib.properties.InboxRules.rule">rule</a></code></li>
+</ul>
+</li>
+<li>
 <h4><code><a title="exchangelib.properties.IndexedFieldURI" href="#exchangelib.properties.IndexedFieldURI">IndexedFieldURI</a></code></h4>
 <ul class="">
 <li><code><a title="exchangelib.properties.IndexedFieldURI.ELEMENT_NAME" href="#exchangelib.properties.IndexedFieldURI.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
@@ -11408,6 +12803,12 @@ def version(self):
 </ul>
 </li>
 <li>
+<h4><code><a title="exchangelib.properties.MoveToFolder" href="#exchangelib.properties.MoveToFolder">MoveToFolder</a></code></h4>
+<ul class="">
+<li><code><a title="exchangelib.properties.MoveToFolder.ELEMENT_NAME" href="#exchangelib.properties.MoveToFolder.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
+</ul>
+</li>
+<li>
 <h4><code><a title="exchangelib.properties.MovedEvent" href="#exchangelib.properties.MovedEvent">MovedEvent</a></code></h4>
 <ul class="">
 <li><code><a title="exchangelib.properties.MovedEvent.ELEMENT_NAME" href="#exchangelib.properties.MovedEvent.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
@@ -11476,6 +12877,17 @@ def version(self):
 <li><code><a title="exchangelib.properties.OldTimestampEvent.old_folder_id" href="#exchangelib.properties.OldTimestampEvent.old_folder_id">old_folder_id</a></code></li>
 <li><code><a title="exchangelib.properties.OldTimestampEvent.old_item_id" href="#exchangelib.properties.OldTimestampEvent.old_item_id">old_item_id</a></code></li>
 <li><code><a title="exchangelib.properties.OldTimestampEvent.old_parent_folder_id" href="#exchangelib.properties.OldTimestampEvent.old_parent_folder_id">old_parent_folder_id</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="exchangelib.properties.Operations" href="#exchangelib.properties.Operations">Operations</a></code></h4>
+<ul class="">
+<li><code><a title="exchangelib.properties.Operations.ELEMENT_NAME" href="#exchangelib.properties.Operations.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
+<li><code><a title="exchangelib.properties.Operations.FIELDS" href="#exchangelib.properties.Operations.FIELDS">FIELDS</a></code></li>
+<li><code><a title="exchangelib.properties.Operations.NAMESPACE" href="#exchangelib.properties.Operations.NAMESPACE">NAMESPACE</a></code></li>
+<li><code><a title="exchangelib.properties.Operations.create_rule_operation" href="#exchangelib.properties.Operations.create_rule_operation">create_rule_operation</a></code></li>
+<li><code><a title="exchangelib.properties.Operations.delete_rule_operation" href="#exchangelib.properties.Operations.delete_rule_operation">delete_rule_operation</a></code></li>
+<li><code><a title="exchangelib.properties.Operations.set_rule_operation" href="#exchangelib.properties.Operations.set_rule_operation">set_rule_operation</a></code></li>
 </ul>
 </li>
 <li>
@@ -11710,6 +13122,23 @@ def version(self):
 </ul>
 </li>
 <li>
+<h4><code><a title="exchangelib.properties.Rule" href="#exchangelib.properties.Rule">Rule</a></code></h4>
+<ul class="two-column">
+<li><code><a title="exchangelib.properties.Rule.ELEMENT_NAME" href="#exchangelib.properties.Rule.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
+<li><code><a title="exchangelib.properties.Rule.FIELDS" href="#exchangelib.properties.Rule.FIELDS">FIELDS</a></code></li>
+<li><code><a title="exchangelib.properties.Rule.NAMESPACE" href="#exchangelib.properties.Rule.NAMESPACE">NAMESPACE</a></code></li>
+<li><code><a title="exchangelib.properties.Rule.actions" href="#exchangelib.properties.Rule.actions">actions</a></code></li>
+<li><code><a title="exchangelib.properties.Rule.conditions" href="#exchangelib.properties.Rule.conditions">conditions</a></code></li>
+<li><code><a title="exchangelib.properties.Rule.display_name" href="#exchangelib.properties.Rule.display_name">display_name</a></code></li>
+<li><code><a title="exchangelib.properties.Rule.exceptions" href="#exchangelib.properties.Rule.exceptions">exceptions</a></code></li>
+<li><code><a title="exchangelib.properties.Rule.is_enabled" href="#exchangelib.properties.Rule.is_enabled">is_enabled</a></code></li>
+<li><code><a title="exchangelib.properties.Rule.is_in_error" href="#exchangelib.properties.Rule.is_in_error">is_in_error</a></code></li>
+<li><code><a title="exchangelib.properties.Rule.is_not_supported" href="#exchangelib.properties.Rule.is_not_supported">is_not_supported</a></code></li>
+<li><code><a title="exchangelib.properties.Rule.priority" href="#exchangelib.properties.Rule.priority">priority</a></code></li>
+<li><code><a title="exchangelib.properties.Rule.rule_id" href="#exchangelib.properties.Rule.rule_id">rule_id</a></code></li>
+</ul>
+</li>
+<li>
 <h4><code><a title="exchangelib.properties.SearchableMailbox" href="#exchangelib.properties.SearchableMailbox">SearchableMailbox</a></code></h4>
 <ul class="">
 <li><code><a title="exchangelib.properties.SearchableMailbox.ELEMENT_NAME" href="#exchangelib.properties.SearchableMailbox.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
@@ -11728,6 +13157,15 @@ def version(self):
 <ul class="">
 <li><code><a title="exchangelib.properties.SendingAs.ELEMENT_NAME" href="#exchangelib.properties.SendingAs.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
 <li><code><a title="exchangelib.properties.SendingAs.NAMESPACE" href="#exchangelib.properties.SendingAs.NAMESPACE">NAMESPACE</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="exchangelib.properties.SetRuleOperation" href="#exchangelib.properties.SetRuleOperation">SetRuleOperation</a></code></h4>
+<ul class="">
+<li><code><a title="exchangelib.properties.SetRuleOperation.ELEMENT_NAME" href="#exchangelib.properties.SetRuleOperation.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
+<li><code><a title="exchangelib.properties.SetRuleOperation.FIELDS" href="#exchangelib.properties.SetRuleOperation.FIELDS">FIELDS</a></code></li>
+<li><code><a title="exchangelib.properties.SetRuleOperation.NAMESPACE" href="#exchangelib.properties.SetRuleOperation.NAMESPACE">NAMESPACE</a></code></li>
+<li><code><a title="exchangelib.properties.SetRuleOperation.rule" href="#exchangelib.properties.SetRuleOperation.rule">rule</a></code></li>
 </ul>
 </li>
 <li>
@@ -11910,6 +13348,26 @@ def version(self):
 <li><code><a title="exchangelib.properties.UserResponse.user_settings" href="#exchangelib.properties.UserResponse.user_settings">user_settings</a></code></li>
 <li><code><a title="exchangelib.properties.UserResponse.user_settings_errors" href="#exchangelib.properties.UserResponse.user_settings_errors">user_settings_errors</a></code></li>
 <li><code><a title="exchangelib.properties.UserResponse.version" href="#exchangelib.properties.UserResponse.version">version</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="exchangelib.properties.WithinDateRange" href="#exchangelib.properties.WithinDateRange">WithinDateRange</a></code></h4>
+<ul class="">
+<li><code><a title="exchangelib.properties.WithinDateRange.ELEMENT_NAME" href="#exchangelib.properties.WithinDateRange.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
+<li><code><a title="exchangelib.properties.WithinDateRange.FIELDS" href="#exchangelib.properties.WithinDateRange.FIELDS">FIELDS</a></code></li>
+<li><code><a title="exchangelib.properties.WithinDateRange.NAMESPACE" href="#exchangelib.properties.WithinDateRange.NAMESPACE">NAMESPACE</a></code></li>
+<li><code><a title="exchangelib.properties.WithinDateRange.end_date_time" href="#exchangelib.properties.WithinDateRange.end_date_time">end_date_time</a></code></li>
+<li><code><a title="exchangelib.properties.WithinDateRange.start_date_time" href="#exchangelib.properties.WithinDateRange.start_date_time">start_date_time</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="exchangelib.properties.WithinSizeRange" href="#exchangelib.properties.WithinSizeRange">WithinSizeRange</a></code></h4>
+<ul class="">
+<li><code><a title="exchangelib.properties.WithinSizeRange.ELEMENT_NAME" href="#exchangelib.properties.WithinSizeRange.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
+<li><code><a title="exchangelib.properties.WithinSizeRange.FIELDS" href="#exchangelib.properties.WithinSizeRange.FIELDS">FIELDS</a></code></li>
+<li><code><a title="exchangelib.properties.WithinSizeRange.NAMESPACE" href="#exchangelib.properties.WithinSizeRange.NAMESPACE">NAMESPACE</a></code></li>
+<li><code><a title="exchangelib.properties.WithinSizeRange.maximum_size" href="#exchangelib.properties.WithinSizeRange.maximum_size">maximum_size</a></code></li>
+<li><code><a title="exchangelib.properties.WithinSizeRange.minimum_size" href="#exchangelib.properties.WithinSizeRange.minimum_size">minimum_size</a></code></li>
 </ul>
 </li>
 <li>

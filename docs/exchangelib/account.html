@@ -28,13 +28,21 @@
 </summary>
 <pre><code class="python">import locale as stdlib_locale
 from logging import getLogger
+from typing import List, Optional
 
 from cached_property import threaded_cached_property
 
 from .autodiscover import Autodiscovery
 from .configuration import Configuration
 from .credentials import ACCESS_TYPES, DELEGATE, IMPERSONATION
-from .errors import InvalidEnumValue, InvalidTypeError, UnknownTimeZone
+from .errors import (
+    ErrorInvalidArgument,
+    InvalidEnumValue,
+    InvalidTypeError,
+    MalformedResponseError,
+    ResponseMessageError,
+    UnknownTimeZone,
+)
 from .ewsdatetime import UTC, EWSTimeZone
 from .fields import FieldPath, TextField
 from .folders import (
@@ -82,8 +90,9 @@ from .folders import (
     ToDoSearch,
     VoiceMail,
 )
+from .folders.collections import PullSubscription, PushSubscription, StreamingSubscription
 from .items import ALL_OCCURRENCES, AUTO_RESOLVE, HARD_DELETE, ID_ONLY, SAVE_ONLY, SEND_TO_NONE
-from .properties import EWSElement, Mailbox, SendingAs
+from .properties import EWSElement, Mailbox, Rule, SendingAs
 from .protocol import Protocol
 from .queryset import QuerySet
 from .services import (
@@ -101,10 +110,15 @@ from .services import (
     MoveItem,
     SendItem,
     SetUserOofSettings,
+    SubscribeToPull,
+    SubscribeToPush,
+    SubscribeToStreaming,
+    Unsubscribe,
     UpdateItem,
     UploadItems,
 )
-from .util import get_domain, peek
+from .services.inbox_rules import CreateInboxRule, DeleteInboxRule, GetInboxRules, SetInboxRule
+from .util import MNS, get_domain, peek
 
 log = getLogger(__name__)
 
@@ -769,6 +783,136 @@ class Account:
     def delegates(self):
         &#34;&#34;&#34;Return a list of DelegateUser objects representing the delegates that are set on this account.&#34;&#34;&#34;
         return list(GetDelegate(account=self).call(user_ids=None, include_permissions=True))
+
+    @property
+    def rules(self):
+        &#34;&#34;&#34;Return a list of Rule objects representing the rules that are set on this account.&#34;&#34;&#34;
+        try:
+            elems = GetInboxRules(account=self).call()
+            return list(elems)
+        except MalformedResponseError as exc:
+            empty_info = f&#34;No {{{MNS}}}InboxRules elements in ResponseMessage&#34;
+            if empty_info in str(exc):
+                return []
+            raise exc
+
+    def get_rules(self, generator=False) -&gt; List[Rule]:
+        &#34;&#34;&#34;Retrieve Inbox rules in the identified user&#39;s mailbox.
+
+        :param generator: If True, return a generator instead of a list. Default is False.
+        :return: A list of Rule objects if generator is False, else a generator.
+        &#34;&#34;&#34;
+        if generator:
+            # If the generator parameter is True, return a generator.
+            return GetInboxRules(account=self).call()
+        return self.rules
+
+    def create_rule(self, rule: Rule):
+        &#34;&#34;&#34;Create an Inbox rule in a user&#39;s mailbox in the Exchange store.
+
+        :param rule: The rule to create with display_name as the key at least.
+        :return: The rule ID of the created rule. If failed, raise an error.
+        &#34;&#34;&#34;
+        create_rule_service = CreateInboxRule(account=self)
+        create_rule_service.get(rule=rule, remove_outlook_rule_blob=True)
+        # After creating the rule, query all rules,
+        # find the rule that was just created, and return its ID.
+        rules = self.get_rules(generator=True)
+        for i in rules:
+            if i.display_name == rule.display_name:
+                return i.rule_id
+        raise ResponseMessageError(&#34;Failed to create rule!&#34;)
+
+    def set_rule(self, rule: Rule):
+        &#34;&#34;&#34;Modify an Inbox rule in a user&#39;s mailbox in the Exchange store.
+
+        :param rule: The rule to set with rule_id as the key at least.
+        :return: None if success, else raise an error.
+        &#34;&#34;&#34;
+        return SetInboxRule(account=self).get(rule=rule)
+
+    def delete_rule(self, rule_name: Optional[str] = None, rule_id: Optional[str] = None):
+        &#34;&#34;&#34;Delete an Inbox rule in a user&#39;s mailbox in the Exchange store.
+
+        :param rule_name: The name of the rule to delete. If rule_id is not None, this parameter is ignored.
+        :param rule_id: The ID of the rule to delete. If not None, rule_name is ignored.
+        :return: None if success, else raise an error.
+        &#34;&#34;&#34;
+        if rule_id:
+            return DeleteInboxRule(account=self).get(rule_id=rule_id)
+        if rule_name:
+            rules = self.get_rules(generator=True)
+            for rule in rules:
+                if rule.display_name == rule_name:
+                    return DeleteInboxRule(account=self).get(rule_id=rule.rule_id)
+        raise ErrorInvalidArgument(&#34;rule_name or rule_id is required!&#34;)
+
+    def subscribe_to_pull(self, event_types=None, watermark=None, timeout=60):
+        &#34;&#34;&#34;Create a pull subscription.
+
+        :param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPull.EVENT_TYPES
+        :param watermark: An event bookmark as returned by some sync services
+        :param timeout: Timeout of the subscription, in minutes. Timeout is reset when the server receives a
+        GetEvents request for this subscription.
+        :return: The subscription ID and a watermark
+        &#34;&#34;&#34;
+        if event_types is None:
+            event_types = SubscribeToPull.EVENT_TYPES
+        return SubscribeToPull(account=self).get(
+            folders=None,
+            event_types=event_types,
+            watermark=watermark,
+            timeout=timeout,
+        )
+
+    def subscribe_to_push(self, callback_url, event_types=None, watermark=None, status_frequency=1):
+        &#34;&#34;&#34;Create a push subscription.
+
+        :param callback_url: A client-defined URL that the server will call
+        :param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPush.EVENT_TYPES
+        :param watermark: An event bookmark as returned by some sync services
+        :param status_frequency: The frequency, in minutes, that the callback URL will be called with.
+        :return: The subscription ID and a watermark
+        &#34;&#34;&#34;
+        if event_types is None:
+            event_types = SubscribeToPush.EVENT_TYPES
+        return SubscribeToPush(account=self).get(
+            folders=None,
+            event_types=event_types,
+            watermark=watermark,
+            status_frequency=status_frequency,
+            url=callback_url,
+        )
+
+    def subscribe_to_streaming(self, event_types=None):
+        &#34;&#34;&#34;Create a streaming subscription.
+
+        :param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPush.EVENT_TYPES
+        :return: The subscription ID
+        &#34;&#34;&#34;
+        if event_types is None:
+            event_types = SubscribeToStreaming.EVENT_TYPES
+        return SubscribeToStreaming(account=self).get(folders=None, event_types=event_types)
+
+    def pull_subscription(self, **kwargs):
+        return PullSubscription(target=self, **kwargs)
+
+    def push_subscription(self, **kwargs):
+        return PushSubscription(target=self, **kwargs)
+
+    def streaming_subscription(self, **kwargs):
+        return StreamingSubscription(target=self, **kwargs)
+
+    def unsubscribe(self, subscription_id):
+        &#34;&#34;&#34;Unsubscribe. Only applies to pull and streaming notifications.
+
+        :param subscription_id: A subscription ID as acquired by .subscribe_to_[pull|streaming]()
+        :return: True
+
+        This method doesn&#39;t need the current collection instance, but it makes sense to keep the method along the other
+        sync methods.
+        &#34;&#34;&#34;
+        return Unsubscribe(account=self).get(subscription_id=subscription_id)
 
     def __str__(self):
         if self.fullname:
@@ -1455,6 +1599,136 @@ assume values to be in the provided timezone. Defaults to the timezone of the ho
     def delegates(self):
         &#34;&#34;&#34;Return a list of DelegateUser objects representing the delegates that are set on this account.&#34;&#34;&#34;
         return list(GetDelegate(account=self).call(user_ids=None, include_permissions=True))
+
+    @property
+    def rules(self):
+        &#34;&#34;&#34;Return a list of Rule objects representing the rules that are set on this account.&#34;&#34;&#34;
+        try:
+            elems = GetInboxRules(account=self).call()
+            return list(elems)
+        except MalformedResponseError as exc:
+            empty_info = f&#34;No {{{MNS}}}InboxRules elements in ResponseMessage&#34;
+            if empty_info in str(exc):
+                return []
+            raise exc
+
+    def get_rules(self, generator=False) -&gt; List[Rule]:
+        &#34;&#34;&#34;Retrieve Inbox rules in the identified user&#39;s mailbox.
+
+        :param generator: If True, return a generator instead of a list. Default is False.
+        :return: A list of Rule objects if generator is False, else a generator.
+        &#34;&#34;&#34;
+        if generator:
+            # If the generator parameter is True, return a generator.
+            return GetInboxRules(account=self).call()
+        return self.rules
+
+    def create_rule(self, rule: Rule):
+        &#34;&#34;&#34;Create an Inbox rule in a user&#39;s mailbox in the Exchange store.
+
+        :param rule: The rule to create with display_name as the key at least.
+        :return: The rule ID of the created rule. If failed, raise an error.
+        &#34;&#34;&#34;
+        create_rule_service = CreateInboxRule(account=self)
+        create_rule_service.get(rule=rule, remove_outlook_rule_blob=True)
+        # After creating the rule, query all rules,
+        # find the rule that was just created, and return its ID.
+        rules = self.get_rules(generator=True)
+        for i in rules:
+            if i.display_name == rule.display_name:
+                return i.rule_id
+        raise ResponseMessageError(&#34;Failed to create rule!&#34;)
+
+    def set_rule(self, rule: Rule):
+        &#34;&#34;&#34;Modify an Inbox rule in a user&#39;s mailbox in the Exchange store.
+
+        :param rule: The rule to set with rule_id as the key at least.
+        :return: None if success, else raise an error.
+        &#34;&#34;&#34;
+        return SetInboxRule(account=self).get(rule=rule)
+
+    def delete_rule(self, rule_name: Optional[str] = None, rule_id: Optional[str] = None):
+        &#34;&#34;&#34;Delete an Inbox rule in a user&#39;s mailbox in the Exchange store.
+
+        :param rule_name: The name of the rule to delete. If rule_id is not None, this parameter is ignored.
+        :param rule_id: The ID of the rule to delete. If not None, rule_name is ignored.
+        :return: None if success, else raise an error.
+        &#34;&#34;&#34;
+        if rule_id:
+            return DeleteInboxRule(account=self).get(rule_id=rule_id)
+        if rule_name:
+            rules = self.get_rules(generator=True)
+            for rule in rules:
+                if rule.display_name == rule_name:
+                    return DeleteInboxRule(account=self).get(rule_id=rule.rule_id)
+        raise ErrorInvalidArgument(&#34;rule_name or rule_id is required!&#34;)
+
+    def subscribe_to_pull(self, event_types=None, watermark=None, timeout=60):
+        &#34;&#34;&#34;Create a pull subscription.
+
+        :param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPull.EVENT_TYPES
+        :param watermark: An event bookmark as returned by some sync services
+        :param timeout: Timeout of the subscription, in minutes. Timeout is reset when the server receives a
+        GetEvents request for this subscription.
+        :return: The subscription ID and a watermark
+        &#34;&#34;&#34;
+        if event_types is None:
+            event_types = SubscribeToPull.EVENT_TYPES
+        return SubscribeToPull(account=self).get(
+            folders=None,
+            event_types=event_types,
+            watermark=watermark,
+            timeout=timeout,
+        )
+
+    def subscribe_to_push(self, callback_url, event_types=None, watermark=None, status_frequency=1):
+        &#34;&#34;&#34;Create a push subscription.
+
+        :param callback_url: A client-defined URL that the server will call
+        :param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPush.EVENT_TYPES
+        :param watermark: An event bookmark as returned by some sync services
+        :param status_frequency: The frequency, in minutes, that the callback URL will be called with.
+        :return: The subscription ID and a watermark
+        &#34;&#34;&#34;
+        if event_types is None:
+            event_types = SubscribeToPush.EVENT_TYPES
+        return SubscribeToPush(account=self).get(
+            folders=None,
+            event_types=event_types,
+            watermark=watermark,
+            status_frequency=status_frequency,
+            url=callback_url,
+        )
+
+    def subscribe_to_streaming(self, event_types=None):
+        &#34;&#34;&#34;Create a streaming subscription.
+
+        :param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPush.EVENT_TYPES
+        :return: The subscription ID
+        &#34;&#34;&#34;
+        if event_types is None:
+            event_types = SubscribeToStreaming.EVENT_TYPES
+        return SubscribeToStreaming(account=self).get(folders=None, event_types=event_types)
+
+    def pull_subscription(self, **kwargs):
+        return PullSubscription(target=self, **kwargs)
+
+    def push_subscription(self, **kwargs):
+        return PushSubscription(target=self, **kwargs)
+
+    def streaming_subscription(self, **kwargs):
+        return StreamingSubscription(target=self, **kwargs)
+
+    def unsubscribe(self, subscription_id):
+        &#34;&#34;&#34;Unsubscribe. Only applies to pull and streaming notifications.
+
+        :param subscription_id: A subscription ID as acquired by .subscribe_to_[pull|streaming]()
+        :return: True
+
+        This method doesn&#39;t need the current collection instance, but it makes sense to keep the method along the other
+        sync methods.
+        &#34;&#34;&#34;
+        return Unsubscribe(account=self).get(subscription_id=subscription_id)
 
     def __str__(self):
         if self.fullname:
@@ -2317,6 +2591,26 @@ def primary_smtp_address(self):
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
 </dd>
+<dt id="exchangelib.account.Account.rules"><code class="name">var <span class="ident">rules</span></code></dt>
+<dd>
+<div class="desc"><p>Return a list of Rule objects representing the rules that are set on this account.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def rules(self):
+    &#34;&#34;&#34;Return a list of Rule objects representing the rules that are set on this account.&#34;&#34;&#34;
+    try:
+        elems = GetInboxRules(account=self).call()
+        return list(elems)
+    except MalformedResponseError as exc:
+        empty_info = f&#34;No {{{MNS}}}InboxRules elements in ResponseMessage&#34;
+        if empty_info in str(exc):
+            return []
+        raise exc</code></pre>
+</details>
+</dd>
 <dt id="exchangelib.account.Account.search_folders"><code class="name">var <span class="ident">search_folders</span></code></dt>
 <dd>
 <div class="desc"></div>
@@ -2884,6 +3178,63 @@ specified in SEND_MEETING_INVITATIONS_AND_CANCELLATIONS_CHOICES (Default value =
     )</code></pre>
 </details>
 </dd>
+<dt id="exchangelib.account.Account.create_rule"><code class="name flex">
+<span>def <span class="ident">create_rule</span></span>(<span>self, rule: <a title="exchangelib.properties.Rule" href="properties.html#exchangelib.properties.Rule">Rule</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create an Inbox rule in a user's mailbox in the Exchange store.</p>
+<p>:param rule: The rule to create with display_name as the key at least.
+:return: The rule ID of the created rule. If failed, raise an error.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_rule(self, rule: Rule):
+    &#34;&#34;&#34;Create an Inbox rule in a user&#39;s mailbox in the Exchange store.
+
+    :param rule: The rule to create with display_name as the key at least.
+    :return: The rule ID of the created rule. If failed, raise an error.
+    &#34;&#34;&#34;
+    create_rule_service = CreateInboxRule(account=self)
+    create_rule_service.get(rule=rule, remove_outlook_rule_blob=True)
+    # After creating the rule, query all rules,
+    # find the rule that was just created, and return its ID.
+    rules = self.get_rules(generator=True)
+    for i in rules:
+        if i.display_name == rule.display_name:
+            return i.rule_id
+    raise ResponseMessageError(&#34;Failed to create rule!&#34;)</code></pre>
+</details>
+</dd>
+<dt id="exchangelib.account.Account.delete_rule"><code class="name flex">
+<span>def <span class="ident">delete_rule</span></span>(<span>self, rule_name: Optional[str] = None, rule_id: Optional[str] = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Delete an Inbox rule in a user's mailbox in the Exchange store.</p>
+<p>:param rule_name: The name of the rule to delete. If rule_id is not None, this parameter is ignored.
+:param rule_id: The ID of the rule to delete. If not None, rule_name is ignored.
+:return: None if success, else raise an error.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def delete_rule(self, rule_name: Optional[str] = None, rule_id: Optional[str] = None):
+    &#34;&#34;&#34;Delete an Inbox rule in a user&#39;s mailbox in the Exchange store.
+
+    :param rule_name: The name of the rule to delete. If rule_id is not None, this parameter is ignored.
+    :param rule_id: The ID of the rule to delete. If not None, rule_name is ignored.
+    :return: None if success, else raise an error.
+    &#34;&#34;&#34;
+    if rule_id:
+        return DeleteInboxRule(account=self).get(rule_id=rule_id)
+    if rule_name:
+        rules = self.get_rules(generator=True)
+        for rule in rules:
+            if rule.display_name == rule_name:
+                return DeleteInboxRule(account=self).get(rule_id=rule.rule_id)
+    raise ErrorInvalidArgument(&#34;rule_name or rule_id is required!&#34;)</code></pre>
+</details>
+</dd>
 <dt id="exchangelib.account.Account.export"><code class="name flex">
 <span>def <span class="ident">export</span></span>(<span>self, items, chunk_size=None)</span>
 </code></dt>
@@ -2985,6 +3336,202 @@ specified in SEND_MEETING_INVITATIONS_AND_CANCELLATIONS_CHOICES (Default value =
         # empty &#39;ids&#39; and return early.
         return
     yield from GetPersona(account=self).call(personas=ids)</code></pre>
+</details>
+</dd>
+<dt id="exchangelib.account.Account.get_rules"><code class="name flex">
+<span>def <span class="ident">get_rules</span></span>(<span>self, generator=False) ‑> List[<a title="exchangelib.properties.Rule" href="properties.html#exchangelib.properties.Rule">Rule</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Retrieve Inbox rules in the identified user's mailbox.</p>
+<p>:param generator: If True, return a generator instead of a list. Default is False.
+:return: A list of Rule objects if generator is False, else a generator.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_rules(self, generator=False) -&gt; List[Rule]:
+    &#34;&#34;&#34;Retrieve Inbox rules in the identified user&#39;s mailbox.
+
+    :param generator: If True, return a generator instead of a list. Default is False.
+    :return: A list of Rule objects if generator is False, else a generator.
+    &#34;&#34;&#34;
+    if generator:
+        # If the generator parameter is True, return a generator.
+        return GetInboxRules(account=self).call()
+    return self.rules</code></pre>
+</details>
+</dd>
+<dt id="exchangelib.account.Account.pull_subscription"><code class="name flex">
+<span>def <span class="ident">pull_subscription</span></span>(<span>self, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def pull_subscription(self, **kwargs):
+    return PullSubscription(target=self, **kwargs)</code></pre>
+</details>
+</dd>
+<dt id="exchangelib.account.Account.push_subscription"><code class="name flex">
+<span>def <span class="ident">push_subscription</span></span>(<span>self, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def push_subscription(self, **kwargs):
+    return PushSubscription(target=self, **kwargs)</code></pre>
+</details>
+</dd>
+<dt id="exchangelib.account.Account.set_rule"><code class="name flex">
+<span>def <span class="ident">set_rule</span></span>(<span>self, rule: <a title="exchangelib.properties.Rule" href="properties.html#exchangelib.properties.Rule">Rule</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Modify an Inbox rule in a user's mailbox in the Exchange store.</p>
+<p>:param rule: The rule to set with rule_id as the key at least.
+:return: None if success, else raise an error.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_rule(self, rule: Rule):
+    &#34;&#34;&#34;Modify an Inbox rule in a user&#39;s mailbox in the Exchange store.
+
+    :param rule: The rule to set with rule_id as the key at least.
+    :return: None if success, else raise an error.
+    &#34;&#34;&#34;
+    return SetInboxRule(account=self).get(rule=rule)</code></pre>
+</details>
+</dd>
+<dt id="exchangelib.account.Account.streaming_subscription"><code class="name flex">
+<span>def <span class="ident">streaming_subscription</span></span>(<span>self, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def streaming_subscription(self, **kwargs):
+    return StreamingSubscription(target=self, **kwargs)</code></pre>
+</details>
+</dd>
+<dt id="exchangelib.account.Account.subscribe_to_pull"><code class="name flex">
+<span>def <span class="ident">subscribe_to_pull</span></span>(<span>self, event_types=None, watermark=None, timeout=60)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create a pull subscription.</p>
+<p>:param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPull.EVENT_TYPES
+:param watermark: An event bookmark as returned by some sync services
+:param timeout: Timeout of the subscription, in minutes. Timeout is reset when the server receives a
+GetEvents request for this subscription.
+:return: The subscription ID and a watermark</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def subscribe_to_pull(self, event_types=None, watermark=None, timeout=60):
+    &#34;&#34;&#34;Create a pull subscription.
+
+    :param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPull.EVENT_TYPES
+    :param watermark: An event bookmark as returned by some sync services
+    :param timeout: Timeout of the subscription, in minutes. Timeout is reset when the server receives a
+    GetEvents request for this subscription.
+    :return: The subscription ID and a watermark
+    &#34;&#34;&#34;
+    if event_types is None:
+        event_types = SubscribeToPull.EVENT_TYPES
+    return SubscribeToPull(account=self).get(
+        folders=None,
+        event_types=event_types,
+        watermark=watermark,
+        timeout=timeout,
+    )</code></pre>
+</details>
+</dd>
+<dt id="exchangelib.account.Account.subscribe_to_push"><code class="name flex">
+<span>def <span class="ident">subscribe_to_push</span></span>(<span>self, callback_url, event_types=None, watermark=None, status_frequency=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create a push subscription.</p>
+<p>:param callback_url: A client-defined URL that the server will call
+:param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPush.EVENT_TYPES
+:param watermark: An event bookmark as returned by some sync services
+:param status_frequency: The frequency, in minutes, that the callback URL will be called with.
+:return: The subscription ID and a watermark</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def subscribe_to_push(self, callback_url, event_types=None, watermark=None, status_frequency=1):
+    &#34;&#34;&#34;Create a push subscription.
+
+    :param callback_url: A client-defined URL that the server will call
+    :param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPush.EVENT_TYPES
+    :param watermark: An event bookmark as returned by some sync services
+    :param status_frequency: The frequency, in minutes, that the callback URL will be called with.
+    :return: The subscription ID and a watermark
+    &#34;&#34;&#34;
+    if event_types is None:
+        event_types = SubscribeToPush.EVENT_TYPES
+    return SubscribeToPush(account=self).get(
+        folders=None,
+        event_types=event_types,
+        watermark=watermark,
+        status_frequency=status_frequency,
+        url=callback_url,
+    )</code></pre>
+</details>
+</dd>
+<dt id="exchangelib.account.Account.subscribe_to_streaming"><code class="name flex">
+<span>def <span class="ident">subscribe_to_streaming</span></span>(<span>self, event_types=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create a streaming subscription.</p>
+<p>:param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPush.EVENT_TYPES
+:return: The subscription ID</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def subscribe_to_streaming(self, event_types=None):
+    &#34;&#34;&#34;Create a streaming subscription.
+
+    :param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPush.EVENT_TYPES
+    :return: The subscription ID
+    &#34;&#34;&#34;
+    if event_types is None:
+        event_types = SubscribeToStreaming.EVENT_TYPES
+    return SubscribeToStreaming(account=self).get(folders=None, event_types=event_types)</code></pre>
+</details>
+</dd>
+<dt id="exchangelib.account.Account.unsubscribe"><code class="name flex">
+<span>def <span class="ident">unsubscribe</span></span>(<span>self, subscription_id)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Unsubscribe. Only applies to pull and streaming notifications.</p>
+<p>:param subscription_id: A subscription ID as acquired by .subscribe_to_<a href="">pull|streaming</a>
+:return: True</p>
+<p>This method doesn't need the current collection instance, but it makes sense to keep the method along the other
+sync methods.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def unsubscribe(self, subscription_id):
+    &#34;&#34;&#34;Unsubscribe. Only applies to pull and streaming notifications.
+
+    :param subscription_id: A subscription ID as acquired by .subscribe_to_[pull|streaming]()
+    :return: True
+
+    This method doesn&#39;t need the current collection instance, but it makes sense to keep the method along the other
+    sync methods.
+    &#34;&#34;&#34;
+    return Unsubscribe(account=self).get(subscription_id=subscription_id)</code></pre>
 </details>
 </dd>
 <dt id="exchangelib.account.Account.upload"><code class="name flex">
@@ -3142,7 +3689,9 @@ account.upload([
 <li><code><a title="exchangelib.account.Account.conflicts" href="#exchangelib.account.Account.conflicts">conflicts</a></code></li>
 <li><code><a title="exchangelib.account.Account.contacts" href="#exchangelib.account.Account.contacts">contacts</a></code></li>
 <li><code><a title="exchangelib.account.Account.conversation_history" href="#exchangelib.account.Account.conversation_history">conversation_history</a></code></li>
+<li><code><a title="exchangelib.account.Account.create_rule" href="#exchangelib.account.Account.create_rule">create_rule</a></code></li>
 <li><code><a title="exchangelib.account.Account.delegates" href="#exchangelib.account.Account.delegates">delegates</a></code></li>
+<li><code><a title="exchangelib.account.Account.delete_rule" href="#exchangelib.account.Account.delete_rule">delete_rule</a></code></li>
 <li><code><a title="exchangelib.account.Account.directory" href="#exchangelib.account.Account.directory">directory</a></code></li>
 <li><code><a title="exchangelib.account.Account.domain" href="#exchangelib.account.Account.domain">domain</a></code></li>
 <li><code><a title="exchangelib.account.Account.drafts" href="#exchangelib.account.Account.drafts">drafts</a></code></li>
@@ -3150,6 +3699,7 @@ account.upload([
 <li><code><a title="exchangelib.account.Account.favorites" href="#exchangelib.account.Account.favorites">favorites</a></code></li>
 <li><code><a title="exchangelib.account.Account.fetch" href="#exchangelib.account.Account.fetch">fetch</a></code></li>
 <li><code><a title="exchangelib.account.Account.fetch_personas" href="#exchangelib.account.Account.fetch_personas">fetch_personas</a></code></li>
+<li><code><a title="exchangelib.account.Account.get_rules" href="#exchangelib.account.Account.get_rules">get_rules</a></code></li>
 <li><code><a title="exchangelib.account.Account.im_contact_list" href="#exchangelib.account.Account.im_contact_list">im_contact_list</a></code></li>
 <li><code><a title="exchangelib.account.Account.inbox" href="#exchangelib.account.Account.inbox">inbox</a></code></li>
 <li><code><a title="exchangelib.account.Account.journal" href="#exchangelib.account.Account.journal">journal</a></code></li>
@@ -3164,6 +3714,8 @@ account.upload([
 <li><code><a title="exchangelib.account.Account.people_connect" href="#exchangelib.account.Account.people_connect">people_connect</a></code></li>
 <li><code><a title="exchangelib.account.Account.primary_smtp_address" href="#exchangelib.account.Account.primary_smtp_address">primary_smtp_address</a></code></li>
 <li><code><a title="exchangelib.account.Account.public_folders_root" href="#exchangelib.account.Account.public_folders_root">public_folders_root</a></code></li>
+<li><code><a title="exchangelib.account.Account.pull_subscription" href="#exchangelib.account.Account.pull_subscription">pull_subscription</a></code></li>
+<li><code><a title="exchangelib.account.Account.push_subscription" href="#exchangelib.account.Account.push_subscription">push_subscription</a></code></li>
 <li><code><a title="exchangelib.account.Account.quick_contacts" href="#exchangelib.account.Account.quick_contacts">quick_contacts</a></code></li>
 <li><code><a title="exchangelib.account.Account.recipient_cache" href="#exchangelib.account.Account.recipient_cache">recipient_cache</a></code></li>
 <li><code><a title="exchangelib.account.Account.recoverable_items_deletions" href="#exchangelib.account.Account.recoverable_items_deletions">recoverable_items_deletions</a></code></li>
@@ -3171,13 +3723,20 @@ account.upload([
 <li><code><a title="exchangelib.account.Account.recoverable_items_root" href="#exchangelib.account.Account.recoverable_items_root">recoverable_items_root</a></code></li>
 <li><code><a title="exchangelib.account.Account.recoverable_items_versions" href="#exchangelib.account.Account.recoverable_items_versions">recoverable_items_versions</a></code></li>
 <li><code><a title="exchangelib.account.Account.root" href="#exchangelib.account.Account.root">root</a></code></li>
+<li><code><a title="exchangelib.account.Account.rules" href="#exchangelib.account.Account.rules">rules</a></code></li>
 <li><code><a title="exchangelib.account.Account.search_folders" href="#exchangelib.account.Account.search_folders">search_folders</a></code></li>
 <li><code><a title="exchangelib.account.Account.sent" href="#exchangelib.account.Account.sent">sent</a></code></li>
 <li><code><a title="exchangelib.account.Account.server_failures" href="#exchangelib.account.Account.server_failures">server_failures</a></code></li>
+<li><code><a title="exchangelib.account.Account.set_rule" href="#exchangelib.account.Account.set_rule">set_rule</a></code></li>
+<li><code><a title="exchangelib.account.Account.streaming_subscription" href="#exchangelib.account.Account.streaming_subscription">streaming_subscription</a></code></li>
+<li><code><a title="exchangelib.account.Account.subscribe_to_pull" href="#exchangelib.account.Account.subscribe_to_pull">subscribe_to_pull</a></code></li>
+<li><code><a title="exchangelib.account.Account.subscribe_to_push" href="#exchangelib.account.Account.subscribe_to_push">subscribe_to_push</a></code></li>
+<li><code><a title="exchangelib.account.Account.subscribe_to_streaming" href="#exchangelib.account.Account.subscribe_to_streaming">subscribe_to_streaming</a></code></li>
 <li><code><a title="exchangelib.account.Account.sync_issues" href="#exchangelib.account.Account.sync_issues">sync_issues</a></code></li>
 <li><code><a title="exchangelib.account.Account.tasks" href="#exchangelib.account.Account.tasks">tasks</a></code></li>
 <li><code><a title="exchangelib.account.Account.todo_search" href="#exchangelib.account.Account.todo_search">todo_search</a></code></li>
 <li><code><a title="exchangelib.account.Account.trash" href="#exchangelib.account.Account.trash">trash</a></code></li>
+<li><code><a title="exchangelib.account.Account.unsubscribe" href="#exchangelib.account.Account.unsubscribe">unsubscribe</a></code></li>
 <li><code><a title="exchangelib.account.Account.upload" href="#exchangelib.account.Account.upload">upload</a></code></li>
 <li><code><a title="exchangelib.account.Account.voice_mail" href="#exchangelib.account.Account.voice_mail">voice_mail</a></code></li>
 </ul>
