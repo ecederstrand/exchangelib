@@ -2273,6 +2273,7 @@ class Actions(EWSElement):
 
 class Rule(EWSElement):
     """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/rule-ruletype"""
+
     ELEMENT_NAME = "Rule"
     NAMESPACE = TNS
 
@@ -2298,6 +2299,7 @@ class InboxRules(EWSElement):
 
 class CreateRuleOperation(EWSElement):
     """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createruleoperation"""
+
     ELEMENT_NAME = "CreateRuleOperation"
     NAMESPACE = TNS
 
@@ -2306,6 +2308,7 @@ class CreateRuleOperation(EWSElement):
 
 class SetRuleOperation(EWSElement):
     """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/setruleoperation"""
+
     ELEMENT_NAME = "SetRuleOperation"
     NAMESPACE = TNS
 
@@ -2314,6 +2317,7 @@ class SetRuleOperation(EWSElement):
 
 class DeleteRuleOperation(EWSElement):
     """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/deleteruleoperation"""
+
     ELEMENT_NAME = "DeleteRuleOperation"
     NAMESPACE = TNS
 
@@ -2322,6 +2326,7 @@ class DeleteRuleOperation(EWSElement):
 
 class Operations(EWSElement):
     """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/operations"""
+
     ELEMENT_NAME = "Operations"
     NAMESPACE = MNS
 
