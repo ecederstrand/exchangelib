@@ -2171,9 +2171,7 @@ class WithinSizeRange(EWSElement):
 
 
 class Conditions(EWSElement):
-    """MSDN:
-    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/conditions
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/conditions"""
 
     ELEMENT_NAME = "Conditions"
     NAMESPACE = TNS
@@ -2222,18 +2220,14 @@ class Conditions(EWSElement):
 
 
 class Exceptions(Conditions):
-    """MSDN:
-    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/exceptions
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/exceptions"""
 
     ELEMENT_NAME = "Exceptions"
     NAMESPACE = TNS
 
 
 class CopyToFolder(EWSElement):
-    """MSDN:
-    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/copytofolder
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/copytofolder"""
 
     ELEMENT_NAME = "CopyToFolder"
     NAMESPACE = MNS
@@ -2244,17 +2238,13 @@ class CopyToFolder(EWSElement):
 
 
 class MoveToFolder(CopyToFolder):
-    """MSDN:
-    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/movetofolder
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/movetofolder"""
 
     ELEMENT_NAME = "MoveToFolder"
 
 
 class Actions(EWSElement):
-    """MSDN:
-    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/actions
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/actions"""
 
     ELEMENT_NAME = "Actions"
     NAMESPACE = TNS
@@ -2282,9 +2272,7 @@ class Actions(EWSElement):
 
 
 class Rule(EWSElement):
-    """MSDN:
-    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/rule-ruletype
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/rule-ruletype"""
     ELEMENT_NAME = "Rule"
     NAMESPACE = TNS
 
@@ -2300,9 +2288,7 @@ class Rule(EWSElement):
 
 
 class InboxRules(EWSElement):
-    """MSDN:
-    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/inboxrules
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/inboxrules"""
 
     ELEMENT_NAME = "InboxRules"
     NAMESPACE = MNS
@@ -2311,9 +2297,7 @@ class InboxRules(EWSElement):
 
 
 class CreateRuleOperation(EWSElement):
-    """MSDN:
-    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createruleoperation
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createruleoperation"""
     ELEMENT_NAME = "CreateRuleOperation"
     NAMESPACE = TNS
 
@@ -2321,9 +2305,7 @@ class CreateRuleOperation(EWSElement):
 
 
 class SetRuleOperation(EWSElement):
-    """MSDN:
-    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/setruleoperation
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/setruleoperation"""
     ELEMENT_NAME = "SetRuleOperation"
     NAMESPACE = TNS
 
@@ -2331,9 +2313,7 @@ class SetRuleOperation(EWSElement):
 
 
 class DeleteRuleOperation(EWSElement):
-    """MSDN:
-    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/deleteruleoperation
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/deleteruleoperation"""
     ELEMENT_NAME = "DeleteRuleOperation"
     NAMESPACE = TNS
 
@@ -2341,9 +2321,7 @@ class DeleteRuleOperation(EWSElement):
 
 
 class Operations(EWSElement):
-    """MSDN:
-    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/operations
-    """
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/operations"""
     ELEMENT_NAME = "Operations"
     NAMESPACE = MNS
 
