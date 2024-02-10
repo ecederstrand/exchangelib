@@ -1,12 +1,20 @@
 import locale as stdlib_locale
 from logging import getLogger
+from typing import List, Optional
 
 from cached_property import threaded_cached_property
 
 from .autodiscover import Autodiscovery
 from .configuration import Configuration
 from .credentials import ACCESS_TYPES, DELEGATE, IMPERSONATION
-from .errors import InvalidEnumValue, InvalidTypeError, UnknownTimeZone
+from .errors import (
+    ErrorInvalidArgument,
+    InvalidEnumValue,
+    InvalidTypeError,
+    MalformedResponseError,
+    ResponseMessageError,
+    UnknownTimeZone,
+)
 from .ewsdatetime import UTC, EWSTimeZone
 from .fields import FieldPath, TextField
 from .folders import (
@@ -56,7 +64,7 @@ from .folders import (
 )
 from .folders.collections import PullSubscription, PushSubscription, StreamingSubscription
 from .items import ALL_OCCURRENCES, AUTO_RESOLVE, HARD_DELETE, ID_ONLY, SAVE_ONLY, SEND_TO_NONE
-from .properties import EWSElement, Mailbox, SendingAs
+from .properties import EWSElement, Mailbox, Rule, SendingAs
 from .protocol import Protocol
 from .queryset import QuerySet
 from .services import (
@@ -81,7 +89,8 @@ from .services import (
     UpdateItem,
     UploadItems,
 )
-from .util import get_domain, peek
+from .services.inbox_rules import CreateInboxRule, DeleteInboxRule, GetInboxRules, SetInboxRule
+from .util import MNS, get_domain, peek
 
 log = getLogger(__name__)
 
@@ -746,6 +755,69 @@ class Account:
     def delegates(self):
         """Return a list of DelegateUser objects representing the delegates that are set on this account."""
         return list(GetDelegate(account=self).call(user_ids=None, include_permissions=True))
+
+    @property
+    def rules(self):
+        """Return a list of Rule objects representing the rules that are set on this account."""
+        try:
+            elems = GetInboxRules(account=self).call()
+            return list(elems)
+        except MalformedResponseError as exc:
+            empty_info = f"No {{{MNS}}}InboxRules elements in ResponseMessage"
+            if empty_info in str(exc):
+                return []
+            raise exc
+
+    def get_rules(self, generator=False) -> List[Rule]:
+        """Retrieve Inbox rules in the identified user's mailbox.
+
+        :param generator: If True, return a generator instead of a list. Default is False.
+        :return: A list of Rule objects if generator is False, else a generator.
+        """
+        if generator:
+            # If the generator parameter is True, return a generator.
+            return GetInboxRules(account=self).call()
+        return self.rules
+
+    def create_rule(self, rule: Rule):
+        """Create an Inbox rule in a user's mailbox in the Exchange store.
+
+        :param rule: The rule to create with display_name as the key at least.
+        :return: The rule ID of the created rule. If failed, raise an error.
+        """
+        create_rule_service = CreateInboxRule(account=self)
+        create_rule_service.get(rule=rule, remove_outlook_rule_blob=True)
+        # After creating the rule, query all rules,
+        # find the rule that was just created, and return its ID.
+        rules = self.get_rules(generator=True)
+        for i in rules:
+            if i.display_name == rule.display_name:
+                return i.rule_id
+        raise ResponseMessageError("Failed to create rule!")
+
+    def set_rule(self, rule: Rule):
+        """Modify an Inbox rule in a user's mailbox in the Exchange store.
+
+        :param rule: The rule to set with rule_id as the key at least.
+        :return: None if success, else raise an error.
+        """
+        return SetInboxRule(account=self).get(rule=rule)
+
+    def delete_rule(self, rule_name: Optional[str] = None, rule_id: Optional[str] = None):
+        """Delete an Inbox rule in a user's mailbox in the Exchange store.
+
+        :param rule_name: The name of the rule to delete. If rule_id is not None, this parameter is ignored.
+        :param rule_id: The ID of the rule to delete. If not None, rule_name is ignored.
+        :return: None if success, else raise an error.
+        """
+        if rule_id:
+            return DeleteInboxRule(account=self).get(rule_id=rule_id)
+        if rule_name:
+            rules = self.get_rules(generator=True)
+            for rule in rules:
+                if rule.display_name == rule_name:
+                    return DeleteInboxRule(account=self).get(rule_id=rule.rule_id)
+        raise ErrorInvalidArgument("rule_name or rule_id is required!")
 
     def subscribe_to_pull(self, event_types=None, watermark=None, timeout=60):
         """Create a pull subscription.

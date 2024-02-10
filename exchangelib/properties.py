@@ -36,10 +36,12 @@ from .fields import (
     ExtendedPropertyField,
     Field,
     FieldPath,
+    FlaggedForActionField,
     FreeBusyStatusField,
     GenericEventListField,
     IdElementField,
     IdField,
+    ImportanceField,
     IntegerField,
     InvalidField,
     InvalidFieldForVersion,
@@ -48,6 +50,7 @@ from .fields import (
     RecipientAddressField,
     ReferenceItemIdField,
     RoutingTypeField,
+    SensitivityField,
     SubField,
     TextField,
     TimeDeltaField,
@@ -2140,3 +2143,213 @@ class UserResponse(EWSElement):
             user_settings_errors=user_settings_errors,
             user_settings=user_settings,
         )
+
+
+class WithinDateRange(EWSElement):
+    """MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/withindaterange
+    """
+
+    ELEMENT_NAME = "DateRange"
+    NAMESPACE = MNS
+
+    start_date_time = DateTimeField(
+        field_uri="StartDateTime", is_required=True)
+    end_date_time = DateTimeField(field_uri="EndDateTime", is_required=True)
+
+
+class WithinSizeRange(EWSElement):
+    """MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/withinsizerange
+    """
+
+    ELEMENT_NAME = "SizeRange"
+    NAMESPACE = MNS
+
+    minimum_size = IntegerField(field_uri="MinimumSize", is_required=True)
+    maximum_size = IntegerField(field_uri="MaximumSize", is_required=True)
+
+
+class Conditions(EWSElement):
+    """MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/conditions
+    """
+
+    ELEMENT_NAME = "Conditions"
+    NAMESPACE = TNS
+
+    categories = CharListField(field_uri="Categories")
+    contains_body_strings = CharListField(field_uri="ContainsBodyStrings")
+    contains_header_strings = CharListField(field_uri="ContainsHeaderStrings")
+    contains_recipient_strings = CharListField(
+        field_uri="ContainsRecipientStrings")
+    contains_sender_strings = CharListField(field_uri="ContainsSenderStrings")
+    contains_subject_or_body_strings = CharListField(
+        field_uri="ContainsSubjectOrBodyStrings")
+    contains_subject_strings = CharListField(
+        field_uri="ContainsSubjectStrings")
+    flagged_for_action = FlaggedForActionField(field_uri="FlaggedForAction")
+    from_addresses = EWSElementField(
+        value_cls=Mailbox, field_uri="FromAddresses")
+    from_connected_accounts = CharListField(field_uri="FromConnectedAccounts")
+    has_attachments = BooleanField(field_uri="HasAttachments")
+    importance = ImportanceField(field_uri="Importance")
+    is_approval_request = BooleanField(field_uri="IsApprovalRequest")
+    is_automatic_forward = BooleanField(field_uri="IsAutomaticForward")
+    is_automatic_reply = BooleanField(field_uri="IsAutomaticReply")
+    is_encrypted = BooleanField(field_uri="IsEncrypted")
+    is_meeting_request = BooleanField(field_uri="IsMeetingRequest")
+    is_meeting_response = BooleanField(field_uri="IsMeetingResponse")
+    is_ndr = BooleanField(field_uri="IsNDR")
+    is_permission_controlled = BooleanField(field_uri="IsPermissionControlled")
+    is_read_receipt = BooleanField(field_uri="IsReadReceipt")
+    is_signed = BooleanField(field_uri="IsSigned")
+    is_voicemail = BooleanField(field_uri="IsVoicemail")
+    item_classes = CharListField(field_uri="ItemClasses")
+    message_classifications = CharListField(field_uri="MessageClassifications")
+    not_sent_to_me = BooleanField(field_uri="NotSentToMe")
+    sent_cc_me = BooleanField(field_uri="SentCcMe")
+    sent_only_to_me = BooleanField(field_uri="SentOnlyToMe")
+    sent_to_addresses = EWSElementField(
+        value_cls=Mailbox, field_uri="SentToAddresses")
+    sent_to_me = BooleanField(field_uri="SentToMe")
+    sent_to_or_cc_me = BooleanField(field_uri="SentToOrCcMe")
+    sensitivity = SensitivityField(field_uri="Sensitivity")
+    within_date_range = EWSElementField(
+        value_cls=WithinDateRange, field_uri="WithinDateRange")
+    within_size_range = EWSElementField(
+        value_cls=WithinSizeRange, field_uri="WithinSizeRange")
+
+
+class Exceptions(Conditions):
+    """MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/exceptions
+    """
+
+    ELEMENT_NAME = "Exceptions"
+    NAMESPACE = TNS
+
+
+class CopyToFolder(EWSElement):
+    """MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/copytofolder
+    """
+
+    ELEMENT_NAME = "CopyToFolder"
+    NAMESPACE = MNS
+
+    folder_id = EWSElementField(value_cls=FolderId, field_uri="FolderId")
+    distinguished_folder_id = EWSElementField(
+        value_cls=DistinguishedFolderId, field_uri="DistinguishedFolderId")
+
+
+class MoveToFolder(CopyToFolder):
+    """MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/movetofolder
+    """
+
+    ELEMENT_NAME = "MoveToFolder"
+
+
+class Actions(EWSElement):
+    """MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/actions
+    """
+
+    ELEMENT_NAME = "Actions"
+    NAMESPACE = TNS
+
+    assign_categories = CharListField(field_uri="AssignCategories")
+    copy_to_folder = EWSElementField(
+        value_cls=CopyToFolder, field_uri="CopyToFolder")
+    delete = BooleanField(field_uri="Delete")
+    forward_as_attachment_to_recipients = EWSElementField(
+        value_cls=Mailbox, field_uri="ForwardAsAttachmentToRecipients")
+    forward_to_recipients = EWSElementField(
+        value_cls=Mailbox, field_uri="ForwardToRecipients")
+    mark_importance = ImportanceField(field_uri="MarkImportance")
+    mark_as_read = BooleanField(field_uri="MarkAsRead")
+    move_to_folder = EWSElementField(
+        value_cls=MoveToFolder, field_uri="MoveToFolder")
+    permanent_delete = BooleanField(field_uri="PermanentDelete")
+    redirect_to_recipients = EWSElementField(
+        value_cls=Mailbox, field_uri="RedirectToRecipients")
+    send_sms_alert_to_recipients = EWSElementField(
+        value_cls=Mailbox, field_uri="SendSMSAlertToRecipients")
+    server_reply_with_message = EWSElementField(
+        value_cls=ItemId, field_uri="ServerReplyWithMessage")
+    stop_processing_rules = BooleanField(field_uri="StopProcessingRules")
+
+
+class Rule(EWSElement):
+    """MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/rule-ruletype
+    """
+    ELEMENT_NAME = "Rule"
+    NAMESPACE = TNS
+
+    rule_id = CharField(field_uri="RuleId")
+    display_name = CharField(field_uri="DisplayName")
+    priority = IntegerField(field_uri="Priority")
+    is_enabled = BooleanField(field_uri="IsEnabled")
+    is_not_supported = BooleanField(field_uri="IsNotSupported")
+    is_in_error = BooleanField(field_uri="IsInError")
+    conditions = EWSElementField(value_cls=Conditions)
+    exceptions = EWSElementField(value_cls=Exceptions)
+    actions = EWSElementField(value_cls=Actions)
+
+
+class InboxRules(EWSElement):
+    """MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/inboxrules
+    """
+
+    ELEMENT_NAME = "InboxRules"
+    NAMESPACE = MNS
+
+    rule = EWSElementListField(value_cls=Rule)
+
+
+class CreateRuleOperation(EWSElement):
+    """MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createruleoperation
+    """
+    ELEMENT_NAME = "CreateRuleOperation"
+    NAMESPACE = TNS
+
+    rule = EWSElementField(value_cls=Rule)
+
+
+class SetRuleOperation(EWSElement):
+    """MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/setruleoperation
+    """
+    ELEMENT_NAME = "SetRuleOperation"
+    NAMESPACE = TNS
+
+    rule = EWSElementField(value_cls=Rule)
+
+
+class DeleteRuleOperation(EWSElement):
+    """MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/deleteruleoperation
+    """
+    ELEMENT_NAME = "DeleteRuleOperation"
+    NAMESPACE = TNS
+
+    rule_id = CharField(field_uri="RuleId")
+
+
+class Operations(EWSElement):
+    """MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/operations
+    """
+    ELEMENT_NAME = "Operations"
+    NAMESPACE = MNS
+
+    create_rule_operation = EWSElementField(
+        value_cls=CreateRuleOperation)
+    set_rule_operation = EWSElementField(
+        value_cls=SetRuleOperation)
+    delete_rule_operation = EWSElementField(
+        value_cls=DeleteRuleOperation)

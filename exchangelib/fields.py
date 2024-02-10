@@ -1723,3 +1723,61 @@ class GenericEventListField(EWSElementField):
                 continue
             events.append(value_cls.from_xml(elem=event, account=account))
         return events or self.default
+
+
+FLAG_ACTION_CHOICES = [
+    Choice("Any"),
+    Choice("Call"),
+    Choice("DoNotForward"),
+    Choice("FollowUp"),
+    Choice("FYI"),
+    Choice("Forward"),
+    Choice("NoResponseNecessary"),
+    Choice("Read"),
+    Choice("Reply"),
+    Choice("ReplyToAll"),
+    Choice("Review"),
+]
+
+
+class FlaggedForActionField(ChoiceField):
+    """A field specifies the flag for action value that
+    must appear on incoming messages in order for the condition
+    or exception to apply."""
+
+    def __init__(self, *args, **kwargs):
+        kwargs["choices"] = FLAG_ACTION_CHOICES
+        super().__init__(*args, **kwargs)
+
+
+IMPORTANCE_CHOICES = [
+    Choice("Low"),
+    Choice("Normal"),
+    Choice("High"),
+]
+
+
+class ImportanceField(ChoiceField):
+    """A field that describes the importance of an item or
+    the aggregated importance of all items in a conversation
+    in the current folder."""
+
+    def __init__(self, *args, **kwargs):
+        kwargs["choices"] = IMPORTANCE_CHOICES
+        super().__init__(*args, **kwargs)
+
+
+SENSITIVITY_CHOICES = [
+    Choice("Normal"),
+    Choice("Personal"),
+    Choice("Private"),
+    Choice("Confidential"),
+]
+
+
+class SensitivityField(ChoiceField):
+    """A field that indicates the sensitivity level of an item."""
+
+    def __init__(self, *args, **kwargs):
+        kwargs["choices"] = SENSITIVITY_CHOICES
+        super().__init__(*args, **kwargs)
