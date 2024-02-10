@@ -13,6 +13,7 @@ class GetInboxRules(EWSAccountService):
 
     The GetInboxRules operation uses Exchange Web Services to retrieve Inbox rules in the identified user's mailbox.
     """
+
     SERVICE_NAME = "GetInboxRules"
     supported_from = EXCHANGE_2010
     element_container_name = InboxRules.response_tag()
@@ -35,6 +36,7 @@ class GetInboxRules(EWSAccountService):
         add_xml_child(payload, 'm:MailboxSmtpAddress', mailbox)
         return payload
 
+
 class UpdateInboxRules(EWSAccountService):
     """
     MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/updateinboxrules-operation
@@ -48,6 +50,7 @@ class UpdateInboxRules(EWSAccountService):
     However, Outlook can't recreate rules that don't also exist as an extended rule, and client-side send rules don't exist as extended rules.
     As a result, these rules are lost. We suggest you consider this when designing your solution.
     """
+
     SERVICE_NAME = "UpdateInboxRules"
     supported_from = EXCHANGE_2010
     ERRORS_TO_CATCH_IN_RESPONSE = EWSAccountService.ERRORS_TO_CATCH_IN_RESPONSE + (

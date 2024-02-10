@@ -1741,9 +1741,11 @@ FLAG_ACTION_CHOICES = [
 
 
 class FlaggedForActionField(ChoiceField):
-    """A field specifies the flag for action value that
+    """
+    A field specifies the flag for action value that
     must appear on incoming messages in order for the condition
-    or exception to apply."""
+    or exception to apply.
+    """
 
     def __init__(self, *args, **kwargs):
         kwargs["choices"] = FLAG_ACTION_CHOICES
@@ -1758,9 +1760,11 @@ IMPORTANCE_CHOICES = [
 
 
 class ImportanceField(ChoiceField):
-    """A field that describes the importance of an item or
+    """
+    A field that describes the importance of an item or
     the aggregated importance of all items in a conversation
-    in the current folder."""
+    in the current folder.
+    """
 
     def __init__(self, *args, **kwargs):
         kwargs["choices"] = IMPORTANCE_CHOICES
