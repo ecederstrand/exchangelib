@@ -424,11 +424,13 @@ Office 365 is deprecating Basic authentication and switching to MFA for end
 users and OAuth for everything else. Here's one way to set up an app in Azure
 that can access accounts in your organization using impersonation - i.e. access
 to multiple acounts on behalf of those users. First, log into the
-[https://admin.microsoft.com](Microsoft 365 Administration) page. Find the link
+[Microsoft 365 Administration](https://admin.microsoft.com) page. Find the link
 to `Azure Active Directory`.  Find the link
 to `Azure Active Directory`. Select `App registrations` in the menu and then
 `New registration`. Enter an app name and press `Register`:
+
 ![App registration](/exchangelib/assets/img/app_registration.png)
+
 On the next page, note down the Directory (tenant) ID and Application (client)
 ID, create a secret using the `Add a certificate or secret` link, and note down
 the Value (client secret) as well.
@@ -438,12 +440,15 @@ Continue to the `App registraions` menu item, select your new app, select the
 `APIs my organization uses` and search for `Office 365 Exchange Online`. Select
 that API, then `Application permissions` and add the `full_access_as_app`
 permission:
+
 ![API permissions](/exchangelib/assets/img/api_permissions.png)
 
 Finally, continue to the `Enterprise applications` page, select your new app,
 continue to the `Permissions` page, and check that your app has the
 `full_access_as_app` permission:
+
 ![API permissions](/exchangelib/assets/img/permissions.png)
+
 If not, press `Grant admin consent for testsuite` and grant access.
 
 You should now be able to connect to an account using the `OAuth2Credentials`
@@ -455,10 +460,12 @@ If you only want to access a single account on Office 365, delegate access is
 a more suitable access level. Here's one way to set up an app in Azure
 that can access accounts in your organization using delegation - i.e. access
 to the same account that you are logging in as. First, log into the
-[https://admin.microsoft.com](Microsoft 365 Administration) page. Find the link
+[Microsoft 365 Administration](https://admin.microsoft.com) page. Find the link
 to `Azure Active Directory`. Select `App registrations` in the menu and then
 `New registration`. Enter an app name and press `Register`:
+
 ![App registration](/exchangelib/assets/img/delegate_app_registration.png)
+
 On the next page, note down the Directory (tenant) ID and Application (client)
 ID, create a secret using the `Add a certificate or secret` link, and note down
 the Value (client secret) as well.
@@ -468,12 +475,15 @@ Continue to the `App registraions` menu item, select your new app, select the
 `APIs my organization uses` and search for `Office 365 Exchange Online`. Select
 that API and then `Delegated permissions` and add the `EWS.AccessAsUser.All`
 permission under the `EWS` section:
+
 ![API permissions](/exchangelib/assets/img/delegate_app_api_permissions.png)
 
 Finally, continue to the `Enterprise applications` page, select your new app,
 continue to the `Permissions` page, and check that your app has the
 `EWS.AccessAsUser.All` permission:
+
 ![API permissions](/exchangelib/assets/img/delegate_app_permissions.png)
+
 If not, press `Grant admin consent for testsuite_delegate` and grant access.
 
 You should now be able to connect to an account using the
