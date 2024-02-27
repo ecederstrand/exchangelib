@@ -1,6 +1,5 @@
 import locale as stdlib_locale
 from logging import getLogger
-from typing import List
 
 from cached_property import threaded_cached_property
 
@@ -9,9 +8,9 @@ from .configuration import Configuration
 from .credentials import ACCESS_TYPES, DELEGATE, IMPERSONATION
 from .errors import (
     ErrorInvalidArgument,
+    ErrorItemNotFound,
     InvalidEnumValue,
     InvalidTypeError,
-    MalformedResponseError,
     ResponseMessageError,
     UnknownTimeZone,
 )
@@ -93,7 +92,7 @@ from .services import (
     UpdateItem,
     UploadItems,
 )
-from .util import MNS, get_domain, peek
+from .util import get_domain, peek
 
 log = getLogger(__name__)
 
@@ -762,25 +761,7 @@ class Account:
     @property
     def rules(self):
         """Return a list of Rule objects representing the rules that are set on this account."""
-        try:
-            elems = GetInboxRules(account=self).call()
-            return list(elems)
-        except MalformedResponseError as exc:
-            empty_info = f"No {{{MNS}}}InboxRules elements in ResponseMessage"
-            if empty_info in str(exc):
-                return []
-            raise exc
-
-    def get_rules(self, generator=False) -> List[Rule]:
-        """Retrieve Inbox rules in the identified user's mailbox.
-
-        :param generator: If True, return a generator instead of a list. Default is False.
-        :return: A list of Rule objects if generator is False, else a generator.
-        """
-        if generator:
-            # If the generator parameter is True, return a generator.
-            return GetInboxRules(account=self).call()
-        return self.rules
+        return list(GetInboxRules(account=self).call())
 
     def create_rule(self, rule: Rule):
         """Create an Inbox rule in a user's mailbox in the Exchange store.
@@ -792,11 +773,11 @@ class Account:
         create_rule_service.get(rule=rule, remove_outlook_rule_blob=True)
         # After creating the rule, query all rules,
         # find the rule that was just created, and return its ID.
-        rules = self.get_rules(generator=True)
+        rules = GetInboxRules(account=self).call()
         for i in rules:
             if i.display_name == rule.display_name:
                 return i.rule_id
-        raise ResponseMessageError("Failed to create rule!")
+        raise ResponseMessageError(f"Failed to create rule ({rule.display_name})!")
 
     def set_rule(self, rule: Rule):
         """Modify an Inbox rule in a user's mailbox in the Exchange store.
@@ -815,10 +796,11 @@ class Account:
         if rule.rule_id:
             return DeleteInboxRule(account=self).get(rule_id=rule.rule_id)
         if rule.display_name:
-            rules = self.get_rules(generator=True)
+            rules = GetInboxRules(account=self).call()
             for _rule in rules:
                 if _rule.display_name == rule.display_name:
                     return DeleteInboxRule(account=self).get(rule_id=_rule.rule_id)
+            raise ErrorItemNotFound(f"rule ({rule.display_name}) not found in the mailbox!")
         raise ErrorInvalidArgument("rule.rule_id or rule.display_name is required!")
 
     def subscribe_to_pull(self, event_types=None, watermark=None, timeout=60):

@@ -1,9 +1,9 @@
-from typing import Optional, Union
+from typing import Any, Generator, Optional, Union
 
 from ..errors import ErrorInvalidOperation
 from ..fields import CharField
 from ..properties import CreateRuleOperation, DeleteRuleOperation, InboxRules, Operations, Rule, SetRuleOperation
-from ..util import add_xml_child, create_element, set_xml_value
+from ..util import MNS, add_xml_child, create_element, get_xml_attr, set_xml_value
 from ..version import EXCHANGE_2010
 from .common import EWSAccountService
 
@@ -22,7 +22,7 @@ class GetInboxRules(EWSAccountService):
         ErrorInvalidOperation,
     )
 
-    def call(self, mailbox: Optional[str] = None):
+    def call(self, mailbox: Optional[str] = None) -> Generator[Union[Rule, Exception, None], Any, None]:
         if not mailbox:
             mailbox = self.account.primary_smtp_address
         payload = self.get_payload(mailbox=mailbox)
@@ -36,6 +36,14 @@ class GetInboxRules(EWSAccountService):
         payload = create_element(f"m:{self.SERVICE_NAME}")
         add_xml_child(payload, 'm:MailboxSmtpAddress', mailbox)
         return payload
+
+    def _get_element_container(self, message, name=None):
+        if name:
+            response_class = message.get("ResponseClass")
+            response_code = get_xml_attr(message, f"{{{MNS}}}ResponseCode")
+            if response_class == "Success" and response_code == "NoError" and message.find(name) is None:
+                return []
+        return super()._get_element_container(message, name)
 
 
 class UpdateInboxRules(EWSAccountService):
