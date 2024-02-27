@@ -1,6 +1,7 @@
-from typing import Optional
+from typing import Optional, Union
 
 from ..errors import ErrorInvalidOperation
+from ..fields import CharField
 from ..properties import CreateRuleOperation, DeleteRuleOperation, InboxRules, Operations, Rule, SetRuleOperation
 from ..util import add_xml_child, create_element, set_xml_value
 from ..version import EXCHANGE_2010
@@ -108,7 +109,7 @@ class DeleteInboxRule(UpdateInboxRules):
     https://learn.microsoft.com/en-us/exchange/client-developer/web-service-reference/updateinboxrules-operation#updateinboxrules-delete-rule-request-example
     """
 
-    def call(self, rule_id: str, remove_outlook_rule_blob: bool = True):
+    def call(self, rule_id: Union[str, CharField], remove_outlook_rule_blob: bool = True):
         payload = self.get_payload(
             rule_id=rule_id, remove_outlook_rule_blob=remove_outlook_rule_blob)
         return self._get_elements(payload=payload)

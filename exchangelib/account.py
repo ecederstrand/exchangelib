@@ -803,21 +803,20 @@ class Account:
         """
         return SetInboxRule(account=self).get(rule=rule)
 
-    def delete_rule(self, rule_name: Optional[str] = None, rule_id: Optional[str] = None):
+    def delete_rule(self, rule: Rule):
         """Delete an Inbox rule in a user's mailbox in the Exchange store.
 
-        :param rule_name: The name of the rule to delete. If rule_id is not None, this parameter is ignored.
-        :param rule_id: The ID of the rule to delete. If not None, rule_name is ignored.
+        :param rule: The rule to delete with rule_id or display_name as the key at least.
         :return: None if success, else raise an error.
         """
-        if rule_id:
-            return DeleteInboxRule(account=self).get(rule_id=rule_id)
-        if rule_name:
+        if rule.rule_id:
+            return DeleteInboxRule(account=self).get(rule_id=rule.rule_id)
+        if rule.display_name:
             rules = self.get_rules(generator=True)
-            for rule in rules:
-                if rule.display_name == rule_name:
-                    return DeleteInboxRule(account=self).get(rule_id=rule.rule_id)
-        raise ErrorInvalidArgument("rule_name or rule_id is required!")
+            for _rule in rules:
+                if _rule.display_name == rule.display_name:
+                    return DeleteInboxRule(account=self).get(rule_id=_rule.rule_id)
+        raise ErrorInvalidArgument("rule.rule_id or rule.display_name is required!")
 
     def subscribe_to_pull(self, event_types=None, watermark=None, timeout=60):
         """Create a pull subscription.
