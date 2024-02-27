@@ -3,8 +3,7 @@ layout: default
 title: exchangelib
 ---
 
-Exchange Web Services client library
-====================================
+# Exchange Web Services client library
 
 This module is an ORM for your Exchange mailbox, providing Django-style access to all your data. It is a
 platform-independent, well-performing, well-behaving, well-documented, well-tested and simple interface for
@@ -15,21 +14,21 @@ exporting and uploading calendar, mailbox, task, contact and distribution list i
 Apart from this documentation, we also provide online
 [source code documentation](https://ecederstrand.github.io/exchangelib/exchangelib/).
 
-
 ## Table of Contents
+
 * [Installation](#installation)
 * [Setup and connecting](#setup-and-connecting)
-    * [Optimizing connections](#optimizing-connections)
-    * [Fault tolerance](#fault-tolerance)
-    * [Kerberos and SSPI authentication](#kerberos-and-sspi-authentication)
-    * [Certificate Based Authentication (CBA)](#certificate-based-authentication-cba)
-    * [OAuth authentication](#oauth-authentication)
-    * [Impersonation OAuth on Office 365](#impersonation-oauth-on-office-365)
-    * [Delegate OAuth on Office 365](#delegate-oauth-on-office-365)
-    * [MSAL on Office 365](#msal-on-office-365)
-    * [Caching autodiscover results](#caching-autodiscover-results)
-    * [Proxies and custom TLS validation](#proxies-and-custom-tls-validation)
-    * [User-Agent](#user-agent)
+  * [Optimizing connections](#optimizing-connections)
+  * [Fault tolerance](#fault-tolerance)
+  * [Kerberos and SSPI authentication](#kerberos-and-sspi-authentication)
+  * [Certificate Based Authentication (CBA)](#certificate-based-authentication-cba)
+  * [OAuth authentication](#oauth-authentication)
+  * [Impersonation OAuth on Office 365](#impersonation-oauth-on-office-365)
+  * [Delegate OAuth on Office 365](#delegate-oauth-on-office-365)
+  * [MSAL on Office 365](#msal-on-office-365)
+  * [Caching autodiscover results](#caching-autodiscover-results)
+  * [Proxies and custom TLS validation](#proxies-and-custom-tls-validation)
+  * [User-Agent](#user-agent)
 * [Folders](#folders)
 * [Dates, datetimes and timezones](#dates-datetimes-and-timezones)
 * [Creating, updating, deleting, sending, moving, archiving, marking as junk](#creating-updating-deleting-sending-moving-archiving-marking-as-junk)
@@ -51,8 +50,8 @@ Apart from this documentation, we also provide online
 * [Troubleshooting](#troubleshooting)
 * [Tests](#tests)
 
-
 ## Installation
+
 You can install this package from PyPI:
 
 ```bash
@@ -84,6 +83,7 @@ This package uses the `lxml` package, and `pykerberos` to support Kerberos authe
 To be able to install these, you may need to install some additional operating system packages.
 
 On Ubuntu:
+
 ```bash
 apt-get install libxml2-dev libxslt1-dev
 
@@ -92,12 +92,14 @@ apt-get install libkrb5-dev build-essential libssl-dev libffi-dev python-dev
 ```
 
 On CentOS:
+
 ```bash
 # For Kerberos support, install these:
 yum install gcc python-devel krb5-devel krb5-workstation python-devel
 ```
 
 On FreeBSD, `pip` needs a little help:
+
 ```bash
 pkg install libxml2 libxslt
 CFLAGS=-I/usr/local/include pip install lxml
@@ -110,13 +112,12 @@ CFLAGS=-I/usr/local/include pip install kerberos pykerberos
 For other operating systems, please consult the documentation for the Python package that
 fails to install.
 
-
 ## Setup and connecting
 
 First, specify your credentials. Username is usually in `WINDOMAIN\username` format,
 where `WINDOMAIN` is the name of the Windows Domain your username is connected
 to, but some servers also accept usernames in PrimarySMTPAddress
-('myusername@example.com') format (Office365 requires it). UPN format is also
+(`myusername@example.com`) format (Office365 requires it). UPN format is also
 supported, if your server expects that.
 
 ```python
@@ -126,6 +127,7 @@ credentials = Credentials(username="MYWINDOMAIN\\myuser", password="topsecret")
 # For Office365
 credentials = Credentials(username="myuser@example.com", password="topsecret")
 ```
+
 If you're running long-running jobs, you may want to enable fault-tolerance.
 Fault-tolerance means that requests to the server do an exponential backoff
 and sleep for up to a certain threshold before giving up, if the server is
@@ -196,6 +198,7 @@ johns_account = Account(
 If you want to impersonate an account and access a shared folder that this
 account has access to, you need to specify the email adress of the shared
 folder to access the folder:
+
 ```python
 from exchangelib.folders import Calendar, SingleFolderQuerySet
 from exchangelib.properties import DistinguishedFolderId, Mailbox
@@ -219,7 +222,6 @@ from exchangelib.autodiscover import Autodiscovery
 Autodiscovery.DNS_RESOLVER_ATTRS["edns"] = False  # Disable EDNS queries
 ```
 
-
 ### Optimizing connections
 
 According to MSDN docs, you can avoid a per-request AD lookup if you specify
@@ -235,6 +237,7 @@ account.identity.upn = "john@subdomain.example.com"
 
 If the server doesn't support autodiscover, or you want to avoid the overhead
 of autodiscover, use a Configuration object to set the hostname instead:
+
 ```python
 from exchangelib import Configuration, Credentials
 
@@ -280,6 +283,7 @@ config = Configuration(server="mail.example.com", max_connections=10)
 ```
 
 ### Fault tolerance
+
 By default, we fail on all exceptions from the server. If you want to enable
 fault tolerance, add a retry policy to your configuration. We will then retry
 on certain transient errors. By default, we back off exponentially and retry
@@ -306,6 +310,7 @@ Autodiscovery.INITIAL_RETRY_POLICY = FaultTolerance(max_wait=30)
 ```
 
 ### Kerberos and SSPI authentication
+
 Kerberos and SSPI authentication are supported via the GSSAPI and SSPI auth
 types.
 
@@ -317,6 +322,7 @@ config = Configuration(auth_type=SSPI)
 ```
 
 ### Certificate Based Authentication (CBA)
+
 ```python
 from exchangelib import Configuration, BaseProtocol, CBA, TLSClientAuth
 
@@ -326,6 +332,7 @@ config = Configuration(auth_type=CBA)
 ```
 
 ### OAuth authentication
+
 OAuth is supported via the OAUTH2 auth type and the OAuth2Credentials class.
 Use OAuth2AuthorizationCodeCredentials instead for the authorization code flow
 (useful for applications that access multiple accounts).
@@ -412,6 +419,7 @@ class MyCredentials(OAuth2AuthorizationCodeCredentials):
 ```
 
 ### Impersonation OAuth on Office 365
+
 Office 365 is deprecating Basic authentication and switching to MFA for end
 users and OAuth for everything else. Here's one way to set up an app in Azure
 that can access accounts in your organization using impersonation - i.e. access
@@ -441,8 +449,8 @@ If not, press `Grant admin consent for testsuite` and grant access.
 You should now be able to connect to an account using the `OAuth2Credentials`
 class as shown above.
 
-
 ### Delegate OAuth on Office 365
+
 If you only want to access a single account on Office 365, delegate access is
 a more suitable access level. Here's one way to set up an app in Azure
 that can access accounts in your organization using delegation - i.e. access
@@ -471,8 +479,8 @@ If not, press `Grant admin consent for testsuite_delegate` and grant access.
 You should now be able to connect to an account using the
 `OAuth2LegacyCredentials` class as shown above.
 
-
 ### MSAL on Office 365
+
 The [Microsoft Authentication Library](https://github.com/AzureAD/microsoft-authentication-library-for-python)
 supports obtaining OAuth tokens via a range of different methods. You can use
 MSAL to fetch a token valid for EWS and then only provide the token to this
@@ -526,8 +534,8 @@ a = Account(
 print(a.root.tree())
 ```
 
-
 ### Caching autodiscover results
+
 If you're connecting to the same account very often, you can cache the
 autodiscover result for later so you can skip the autodiscover lookup:
 
@@ -567,6 +575,7 @@ shared between processes and is not deleted when your program exits.
 A cache entry for a domain is removed automatically if autodiscovery fails for
 an email in that domain. It's possible to clear the entire cache completely if
 you want:
+
 ```python
 from exchangelib.autodiscover import clear_cache
 
@@ -649,6 +658,7 @@ BaseProtocol.USERAGENT = "Auto-Reply/0.1.0"
 ```
 
 ## Folders
+
 All wellknown folders are available as properties on the account, e.g. as `account.root`, `account.calendar`,
 `account.trash`, `account.inbox`, `account.outbox`, `account.sent`, `account.junk`, `account.tasks` and
 `account.contacts`.
@@ -698,6 +708,7 @@ some_folder.absolute  # Returns the full path as a string
 ```
 
 tree() returns a string representation of the tree structure at a given level
+
 ```python
 print(a.root.tree())
 """
@@ -951,6 +962,7 @@ forward_draft.send()
 EWS distinguishes between plain text and HTML body contents. If you want to
 send HTML body content, use the HTMLBody helper. Clients will see this as HTML
 and display the body correctly:
+
 ```python
 from exchangelib import HTMLBody
 
@@ -1111,6 +1123,7 @@ folder_is_empty = not a.inbox.all().exists()  # Efficient tasting
 ```
 
 Restricting returned attributes:
+
 ```python
 sparse_items = a.inbox.all().only("subject", "start")
 # Dig deeper on indexed properties
@@ -1120,6 +1133,7 @@ sparse_items = a.contacts.all().only("physical_addresses__Home__street")
 ```
 
 Return values as dicts, nested or flat lists instead of objects:
+
 ```python
 ids_as_dict = a.inbox.all().values("id", "changekey")
 values_as_list = a.inbox.all().values_list("subject", "body")
@@ -1217,7 +1231,7 @@ validating the syntax of the QueryString - we just pass the string verbatim to
 EWS.
 
 Read more about the QueryString syntax here:
-https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/querystring-querystringtype
+<https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/querystring-querystringtype>
 
 ```python
 a.inbox.filter("subject:XXX")
@@ -1504,7 +1518,6 @@ att = FileAttachment(
 contact.attach(att)
 ```
 
-
 ## Extended properties
 
 Extended properties makes it possible to attach custom key-value pairs
@@ -1582,6 +1595,7 @@ others don't. Custom fields must be registered on the generic Folder or
 RootOfHierarchy folder classes.
 
 Here's an example of getting the size (in bytes) of a folder:
+
 ```python
 from exchangelib import ExtendedProperty, Folder
 
@@ -1596,18 +1610,18 @@ print(a.inbox.size)
 ```
 
 In general, here's how to work with any MAPI property as listed in e.g.
-https://docs.microsoft.com/en-us/office/client-developer/outlook/mapi/mapi-properties.
+<https://docs.microsoft.com/en-us/office/client-developer/outlook/mapi/mapi-properties>.
 Let's take `PidLidTaskDueDate` as an example. This is the due date for a
 message maked with the follow-up flag in Microsoft Outlook.
 
 `PidLidTaskDueDate` is documented at
-https://docs.microsoft.com/en-us/office/client-developer/outlook/mapi/pidlidtaskduedate-canonical-property.
+<https://docs.microsoft.com/en-us/office/client-developer/outlook/mapi/pidlidtaskduedate-canonical-property>.
 The property ID is `0x00008105` and the property set is `PSETID_Task`. But EWS
 wants the UUID for `PSETID_Task`, so we look that up in the MS-OXPROPS pdf:
-https://docs.microsoft.com/en-us/openspecs/exchange_server_protocols/ms-oxprops/f6ab1613-aefe-447d-a49c-18217230b148
+<https://docs.microsoft.com/en-us/openspecs/exchange_server_protocols/ms-oxprops/f6ab1613-aefe-447d-a49c-18217230b148>
 The UUID is `00062003-0000-0000-C000-000000000046`. The property type is
 `PT_SYSTIME` which is also called `SystemTime` (see
-https://docs.microsoft.com/en-us/dotnet/api/microsoft.exchange.webservices.data.mapipropertytype )
+<https://docs.microsoft.com/en-us/dotnet/api/microsoft.exchange.webservices.data.mapipropertytype> )
 
 In conclusion, the definition for the due date becomes:
 
@@ -1631,7 +1645,6 @@ type. Here's an example showing how to process attachments on existing items.
 FileAttachments have a 'content' attribute containing the binary content of the
 file, and ItemAttachments have an 'item' attribute containing the item. The
 item can be a Message, CalendarItem, Task etc.
-
 
 ```python
 import os.path
@@ -1694,6 +1707,7 @@ item.detach(my_file)
 
 If you want to embed an image in the item body, you can link to the file in
 the HTML.
+
 ```python
 from exchangelib import HTMLBody
 
@@ -1810,10 +1824,10 @@ master.save(update_fields=["subject"])
 
 Each `Message` item has four timestamp fields:
 
--   `datetime_created`
--   `datetime_sent`
--   `datetime_received`
--   `last_modified_time`
+* `datetime_created`
+* `datetime_sent`
+* `datetime_received`
+* `last_modified_time`
 
 The values for these fields are set by the Exchange server and are not
 modifiable via EWS. All values are timezone-aware `EWSDateTime`
@@ -1851,8 +1865,8 @@ a.oof_settings = OofSettings(
 )
 ```
 
-
 ## Mail tips
+
 Mail tips for an account contain some extra information about the account,
 e.g. OOF information, max message size, whether the mailbox is full, messages
 are moderated etc. Here's how to get mail tips for a single account:
@@ -1864,18 +1878,18 @@ a = Account(...)
 print(a.mail_tips)
 ```
 
-
 ## Delegate information
+
 An account can have delegates, which are other users that are allowed to access the account.
 Here's how to fetch information about those delegates, including which level of access they
 have to the account.
+
 ```python
 from exchangelib import Account
 
 a = Account(...)
 print(a.delegates)
 ```
-
 
 ## Export and upload
 
@@ -1902,6 +1916,7 @@ using EWS is available at
 [https://docs.microsoft.com/en-us/exchange/client-developer/exchange-web-services/notification-subscriptions-mailbox-events-and-ews-in-exchange](https://docs.microsoft.com/en-us/exchange/client-developer/exchange-web-services/notification-subscriptions-mailbox-events-and-ews-in-exchange):
 
 The following shows how to synchronize folders and items:
+
 ```python
 from exchangelib import Account
 
@@ -1933,6 +1948,7 @@ following, we show only examples for subscriptions on `Account.inbox`, but the o
 also possible.
 
 Here's how to create a pull subscription that can be used to pull events from the server:
+
 ```python
 # Subscribe to all folders
 subscription_id, watermark = a.subscribe_to_pull()
@@ -1948,6 +1964,7 @@ Here's how to create a push subscription. The server will regularly send an HTTP
 request to the callback URL to deliver changes or a status message. There is also support
 for parsing the POST data that the Exchange server sends to the callback URL, and for
 creating proper responses to these URLs.
+
 ```python
 subscription_id, watermark = a.inbox.subscribe_to_push(
     callback_url="https://my_app.example.com/callback_url"
@@ -1958,6 +1975,7 @@ When the server sends a push notification, the POST data contains a
 `SendNotification` XML document. You can use this package in the callback URL
 implementation to parse this data. Here's a short example of a Flask app that
 handles these documents:
+
 ```python
 from exchangelib.services import SendNotification
 from flask import Flask, request
@@ -1980,6 +1998,7 @@ def notify_me():
 
 Here's how to create a streaming subscription that can be used to stream events from the
 server.
+
 ```python
 subscription_id = a.inbox.subscribe_to_streaming()
 ```
@@ -1987,12 +2006,14 @@ subscription_id = a.inbox.subscribe_to_streaming()
 Cancel the subscription when you're done synchronizing. This is not supported for push
 subscriptions. They cancel automatically after a certain amount of failed attempts, or
 you can let your callback URL send an unsubscribe response as described above.
+
 ```python
 a.inbox.unsubscribe(subscription_id)
 ```
 
 When creating subscriptions, you can also use one of the three context managers
 that handle unsubscription automatically:
+
 ```python
 with a.inbox.pull_subscription() as (subscription_id, watermark):
     pass
@@ -2153,7 +2174,6 @@ for busy_info in a.protocol.get_free_busy_info(accounts=accounts, start=start, e
         print(account_tz.localize(event.start), account_tz.localize(event.end))
 ```
 
-
 ## Troubleshooting
 
 If you are having trouble using this library, the first thing to try is
@@ -2181,7 +2201,6 @@ from exchangelib import CalendarItem
 
 print(CalendarItem.__doc__)
 ```
-
 
 ## Tests
 
