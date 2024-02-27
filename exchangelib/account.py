@@ -1,6 +1,6 @@
 import locale as stdlib_locale
 from logging import getLogger
-from typing import List, Optional
+from typing import List
 
 from cached_property import threaded_cached_property
 
@@ -70,10 +70,13 @@ from .queryset import QuerySet
 from .services import (
     ArchiveItem,
     CopyItem,
+    CreateInboxRule,
     CreateItem,
+    DeleteInboxRule,
     DeleteItem,
     ExportItems,
     GetDelegate,
+    GetInboxRules,
     GetItem,
     GetMailTips,
     GetPersona,
@@ -81,6 +84,7 @@ from .services import (
     MarkAsJunk,
     MoveItem,
     SendItem,
+    SetInboxRule,
     SetUserOofSettings,
     SubscribeToPull,
     SubscribeToPush,
@@ -89,7 +93,6 @@ from .services import (
     UpdateItem,
     UploadItems,
 )
-from .services.inbox_rules import CreateInboxRule, DeleteInboxRule, GetInboxRules, SetInboxRule
 from .util import MNS, get_domain, peek
 
 log = getLogger(__name__)

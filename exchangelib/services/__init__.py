@@ -41,6 +41,7 @@ from .get_user_availability import GetUserAvailability
 from .get_user_configuration import GetUserConfiguration
 from .get_user_oof_settings import GetUserOofSettings
 from .get_user_settings import GetUserSettings
+from .inbox_rules import CreateInboxRule, DeleteInboxRule, GetInboxRules, SetInboxRule
 from .mark_as_junk import MarkAsJunk
 from .move_folder import MoveFolder
 from .move_item import MoveItem
@@ -109,4 +110,8 @@ __all__ = [
     "UpdateItem",
     "UpdateUserConfiguration",
     "UploadItems",
+    "GetInboxRules",
+    "CreateInboxRule",
+    "SetInboxRule",
+    "DeleteInboxRule"
 ]
