@@ -44,6 +44,7 @@ Apart from this documentation, we also provide online
 * [Out of Facility (OOF)](#out-of-facility-oof)
 * [Mail tips](#mail-tips)
 * [Delegate information](#delegate-information)
+* [InboxRules](#inboxrules)
 * [Export and upload](#export-and-upload)
 * [Synchronization, subscriptions and notifications](#synchronization-subscriptions-and-notifications)
 * [Non-account services](#non-account-services)
@@ -1900,6 +1901,95 @@ from exchangelib import Account
 a = Account(...)
 print(a.delegates)
 ```
+
+## InboxRules
+
+An account can have several inbox-rules, which are used to trigger the rule actions for a rule based on the corresponding conditions in the mailbox. Here's how to fetch information about those rules:
+
+```python
+from exchangelib import Account
+
+a = Account(...)
+print(a.rules)
+```
+
+The `InboxRules` element represents an array of rules in the user's mailbox. Each `Rule` is structured as follows:
+
+* `rule_id`: Specifies the rule identifier.
+* `display_name`: Contains the display name of a rule.
+* `priority`: Indicates the order in which a rule is to be run.
+* `is_enabled`: Indicates whether the rule is enabled.
+* `is_not_supported`: Indicates whether the rule cannot be modified with the managed code APIs.
+* `is_in_error`: Indicates whether the rule is in an error condition.
+* `conditions`: Identifies the conditions that, when fulfilled, will trigger the rule actions for a rule.
+* `exceptions`: Identifies the exceptions that represent all the available rule exception conditions for the inbox rule.
+* `actions`: Represents the actions to be taken on a message when the conditions are fulfilled.
+
+Here are examples of operations for adding, deleting, modifying, and querying InboxRules.
+
+```python
+from exchangelib import IMPERSONATION, Account
+
+from exchangelib.properties import Actions, Conditions, Exceptions, Rule
+
+ACCESS_TYPE = IMPERSONATION # Choose one from (IMPERSONATION, DELEGATE)
+
+# Create Account object, set email address, access type and configuration
+account = Account(
+    primary_smtp_address='user@example.com',
+    access_type=ACCESS_TYPE,
+    ...
+)
+
+print("Rules of account before creation:", account.rules, '\n')
+
+# Create rule conditions, sender contains 'sender_example'
+conditions = Conditions(
+    contains_sender_strings=[
+        "sender_example",
+    ],
+)
+
+# Create rule actions, automatically delete emails
+actions = Actions(
+    delete=True
+)
+
+# Create Rule instance
+rule = Rule(
+    display_name='test_exchangelib_rule',
+    priority=1,
+    is_enabled=True,
+    conditions=conditions,
+    exceptions=Exceptions(),
+    actions=actions,
+)
+
+# Create rule
+rule_id = account.create_rule(rule)
+print("Rule:", rule)
+print("Created rule with ID:", rule_id, '\n')
+
+if rule_id:
+    # Get rule list
+    print("Get Rules of account after creation:", account.rules, '\n')
+
+    # Modify rule
+    rule.rule_id = rule_id
+    rule.display_name = 'test_exchangelib_rule(modified)'
+    res = account.set_rule(rule)
+    print("Modified rule with ID:", rule.rule_id)
+    print("Response:", res.text if hasattr(res, 'text') else res)
+    print("Rules of account after modification:", account.rules, '\n')
+
+    # Delete rule
+    res = account.delete_rule(rule=rule)
+    print("Deleted rule with ID:", rule.rule_id)
+    print("Response:", res.text if hasattr(res, 'text') else res)
+    print("Rules of account after deletion:", account.rules)
+```
+
+Please note that the response for creating/modifying/deleting rules does not contain the corresponding `rule_id`.
 
 ## Export and upload
 
