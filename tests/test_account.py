@@ -19,11 +19,15 @@ from exchangelib.ewsdatetime import UTC
 from exchangelib.folders import Calendar
 from exchangelib.items import Message
 from exchangelib.properties import (
+    Actions,
+    Conditions,
     DelegatePermissions,
     DelegateUser,
+    Exceptions,
     MailTips,
     OutOfOffice,
     RecipientAddress,
+    Rule,
     SendingAs,
     UserId,
 )
@@ -31,7 +35,7 @@ from exchangelib.protocol import FaultTolerance, Protocol
 from exchangelib.services import GetDelegate, GetMailTips
 from exchangelib.version import EXCHANGE_2007_SP1, Version
 
-from .common import EWSTest
+from .common import EWSTest, get_random_string
 
 
 class AccountTest(EWSTest):
@@ -337,3 +341,36 @@ class AccountTest(EWSTest):
         )
         self.assertIsNotNone(a.protocol.auth_type)
         self.assertIsNotNone(a.protocol.retry_policy)
+
+    def test_inbox_rules(self):
+        # Clean up first
+        for rule in self.account.rules:
+            self.account.delete_rule(rule)
+
+        self.assertEqual(len(self.account.rules), 0)
+
+        # Create rule
+        display_name = get_random_string(16)
+        rule = Rule(
+            display_name=display_name,
+            priority=1,
+            is_enabled=True,
+            conditions=Conditions(contains_sender_strings=[get_random_string(8)]),
+            exceptions=Exceptions(),
+            actions=Actions(delete=True),
+        )
+        self.assertIsNone(rule.id)
+        self.account.create_rule(rule=rule)
+        self.assertIsNotNone(rule.id)
+        self.assertEqual(len(self.account.rules), 1)
+        self.assertEqual(self.account.rules[0].display_name, display_name)
+
+        # Update rule
+        rule.display_name = get_random_string(16)
+        self.account.set_rule(rule=rule)
+        self.assertEqual(len(self.account.rules), 1)
+        self.assertNotEqual(self.account.rules[0].display_name, display_name)
+
+        # Delete rule
+        self.account.delete_rule(rule=rule)
+        self.assertEqual(len(self.account.rules), 0)

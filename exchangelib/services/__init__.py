@@ -113,5 +113,5 @@ __all__ = [
     "GetInboxRules",
     "CreateInboxRule",
     "SetInboxRule",
-    "DeleteInboxRule"
+    "DeleteInboxRule",
 ]

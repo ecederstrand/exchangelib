@@ -6,14 +6,7 @@ from cached_property import threaded_cached_property
 from .autodiscover import Autodiscovery
 from .configuration import Configuration
 from .credentials import ACCESS_TYPES, DELEGATE, IMPERSONATION
-from .errors import (
-    ErrorInvalidArgument,
-    ErrorItemNotFound,
-    InvalidEnumValue,
-    InvalidTypeError,
-    ResponseMessageError,
-    UnknownTimeZone,
-)
+from .errors import ErrorItemNotFound, InvalidEnumValue, InvalidTypeError, ResponseMessageError, UnknownTimeZone
 from .ewsdatetime import UTC, EWSTimeZone
 from .fields import FieldPath, TextField
 from .folders import (
@@ -764,44 +757,42 @@ class Account:
         return list(GetInboxRules(account=self).call())
 
     def create_rule(self, rule: Rule):
-        """Create an Inbox rule in a user's mailbox in the Exchange store.
+        """Create an Inbox rule.
 
-        :param rule: The rule to create with display_name as the key at least.
-        :return: The rule ID of the created rule. If failed, raise an error.
+        :param rule: The rule to create. Must have at least 'display_name' set.
+        :return: None if success, else raises an error.
         """
-        create_rule_service = CreateInboxRule(account=self)
-        create_rule_service.get(rule=rule, remove_outlook_rule_blob=True)
+        CreateInboxRule(account=self).get(rule=rule, remove_outlook_rule_blob=True)
         # After creating the rule, query all rules,
         # find the rule that was just created, and return its ID.
-        rules = GetInboxRules(account=self).call()
-        for i in rules:
-            if i.display_name == rule.display_name:
-                return i.rule_id
-        raise ResponseMessageError(f"Failed to create rule ({rule.display_name})!")
+        try:
+            rule.id = {i.display_name: i for i in GetInboxRules(account=self).call()}[rule.display_name].id
+        except KeyError:
+            raise ResponseMessageError(f"Failed to create rule ({rule.display_name})!")
 
     def set_rule(self, rule: Rule):
-        """Modify an Inbox rule in a user's mailbox in the Exchange store.
+        """Modify an Inbox rule.
 
-        :param rule: The rule to set with rule_id as the key at least.
-        :return: None if success, else raise an error.
+        :param rule: The rule to set. Must have an ID.
+        :return: None if success, else raises an error.
         """
-        return SetInboxRule(account=self).get(rule=rule)
+        SetInboxRule(account=self).get(rule=rule)
 
     def delete_rule(self, rule: Rule):
-        """Delete an Inbox rule in a user's mailbox in the Exchange store.
+        """Delete an Inbox rule.
 
-        :param rule: The rule to delete with rule_id or display_name as the key at least.
-        :return: None if success, else raise an error.
+        :param rule: The rule to delete. Must have ID or 'display_name'.
+        :return: None if success, else raises an error.
         """
-        if rule.rule_id:
-            return DeleteInboxRule(account=self).get(rule_id=rule.rule_id)
-        if rule.display_name:
-            rules = GetInboxRules(account=self).call()
-            for _rule in rules:
-                if _rule.display_name == rule.display_name:
-                    return DeleteInboxRule(account=self).get(rule_id=_rule.rule_id)
-            raise ErrorItemNotFound(f"rule ({rule.display_name}) not found in the mailbox!")
-        raise ErrorInvalidArgument("rule.rule_id or rule.display_name is required!")
+        if not rule.id:
+            if not rule.display_name:
+                raise ValueError("Rule must have ID or display_name")
+            try:
+                rule = {i.display_name: i for i in GetInboxRules(account=self).call()}[rule.display_name]
+            except KeyError:
+                raise ErrorItemNotFound(f"No rule with name {rule.display_name!r}")
+        DeleteInboxRule(account=self).get(rule=rule)
+        rule.id = None
 
     def subscribe_to_pull(self, event_types=None, watermark=None, timeout=60):
         """Create a pull subscription.

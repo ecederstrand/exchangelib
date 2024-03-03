@@ -2153,8 +2153,7 @@ class WithinDateRange(EWSElement):
     ELEMENT_NAME = "DateRange"
     NAMESPACE = MNS
 
-    start_date_time = DateTimeField(
-        field_uri="StartDateTime", is_required=True)
+    start_date_time = DateTimeField(field_uri="StartDateTime", is_required=True)
     end_date_time = DateTimeField(field_uri="EndDateTime", is_required=True)
 
 
@@ -2179,16 +2178,12 @@ class Conditions(EWSElement):
     categories = CharListField(field_uri="Categories")
     contains_body_strings = CharListField(field_uri="ContainsBodyStrings")
     contains_header_strings = CharListField(field_uri="ContainsHeaderStrings")
-    contains_recipient_strings = CharListField(
-        field_uri="ContainsRecipientStrings")
+    contains_recipient_strings = CharListField(field_uri="ContainsRecipientStrings")
     contains_sender_strings = CharListField(field_uri="ContainsSenderStrings")
-    contains_subject_or_body_strings = CharListField(
-        field_uri="ContainsSubjectOrBodyStrings")
-    contains_subject_strings = CharListField(
-        field_uri="ContainsSubjectStrings")
+    contains_subject_or_body_strings = CharListField(field_uri="ContainsSubjectOrBodyStrings")
+    contains_subject_strings = CharListField(field_uri="ContainsSubjectStrings")
     flagged_for_action = FlaggedForActionField(field_uri="FlaggedForAction")
-    from_addresses = EWSElementField(
-        value_cls=Mailbox, field_uri="FromAddresses")
+    from_addresses = EWSElementField(value_cls=Mailbox, field_uri="FromAddresses")
     from_connected_accounts = CharListField(field_uri="FromConnectedAccounts")
     has_attachments = BooleanField(field_uri="HasAttachments")
     importance = ImportanceField(field_uri="Importance")
@@ -2208,15 +2203,12 @@ class Conditions(EWSElement):
     not_sent_to_me = BooleanField(field_uri="NotSentToMe")
     sent_cc_me = BooleanField(field_uri="SentCcMe")
     sent_only_to_me = BooleanField(field_uri="SentOnlyToMe")
-    sent_to_addresses = EWSElementField(
-        value_cls=Mailbox, field_uri="SentToAddresses")
+    sent_to_addresses = EWSElementField(value_cls=Mailbox, field_uri="SentToAddresses")
     sent_to_me = BooleanField(field_uri="SentToMe")
     sent_to_or_cc_me = BooleanField(field_uri="SentToOrCcMe")
     sensitivity = SensitivityField(field_uri="Sensitivity")
-    within_date_range = EWSElementField(
-        value_cls=WithinDateRange, field_uri="WithinDateRange")
-    within_size_range = EWSElementField(
-        value_cls=WithinSizeRange, field_uri="WithinSizeRange")
+    within_date_range = EWSElementField(value_cls=WithinDateRange, field_uri="WithinDateRange")
+    within_size_range = EWSElementField(value_cls=WithinSizeRange, field_uri="WithinSizeRange")
 
 
 class Exceptions(Conditions):
@@ -2233,8 +2225,7 @@ class CopyToFolder(EWSElement):
     NAMESPACE = MNS
 
     folder_id = EWSElementField(value_cls=FolderId, field_uri="FolderId")
-    distinguished_folder_id = EWSElementField(
-        value_cls=DistinguishedFolderId, field_uri="DistinguishedFolderId")
+    distinguished_folder_id = EWSElementField(value_cls=DistinguishedFolderId, field_uri="DistinguishedFolderId")
 
 
 class MoveToFolder(CopyToFolder):
@@ -2250,24 +2241,19 @@ class Actions(EWSElement):
     NAMESPACE = TNS
 
     assign_categories = CharListField(field_uri="AssignCategories")
-    copy_to_folder = EWSElementField(
-        value_cls=CopyToFolder, field_uri="CopyToFolder")
+    copy_to_folder = EWSElementField(value_cls=CopyToFolder, field_uri="CopyToFolder")
     delete = BooleanField(field_uri="Delete")
     forward_as_attachment_to_recipients = EWSElementField(
-        value_cls=Mailbox, field_uri="ForwardAsAttachmentToRecipients")
-    forward_to_recipients = EWSElementField(
-        value_cls=Mailbox, field_uri="ForwardToRecipients")
+        value_cls=Mailbox, field_uri="ForwardAsAttachmentToRecipients"
+    )
+    forward_to_recipients = EWSElementField(value_cls=Mailbox, field_uri="ForwardToRecipients")
     mark_importance = ImportanceField(field_uri="MarkImportance")
     mark_as_read = BooleanField(field_uri="MarkAsRead")
-    move_to_folder = EWSElementField(
-        value_cls=MoveToFolder, field_uri="MoveToFolder")
+    move_to_folder = EWSElementField(value_cls=MoveToFolder, field_uri="MoveToFolder")
     permanent_delete = BooleanField(field_uri="PermanentDelete")
-    redirect_to_recipients = EWSElementField(
-        value_cls=Mailbox, field_uri="RedirectToRecipients")
-    send_sms_alert_to_recipients = EWSElementField(
-        value_cls=Mailbox, field_uri="SendSMSAlertToRecipients")
-    server_reply_with_message = EWSElementField(
-        value_cls=ItemId, field_uri="ServerReplyWithMessage")
+    redirect_to_recipients = EWSElementField(value_cls=Mailbox, field_uri="RedirectToRecipients")
+    send_sms_alert_to_recipients = EWSElementField(value_cls=Mailbox, field_uri="SendSMSAlertToRecipients")
+    server_reply_with_message = EWSElementField(value_cls=ItemId, field_uri="ServerReplyWithMessage")
     stop_processing_rules = BooleanField(field_uri="StopProcessingRules")
 
 
@@ -2277,7 +2263,7 @@ class Rule(EWSElement):
     ELEMENT_NAME = "Rule"
     NAMESPACE = TNS
 
-    rule_id = CharField(field_uri="RuleId")
+    id = CharField(field_uri="RuleId")
     display_name = CharField(field_uri="DisplayName")
     priority = IntegerField(field_uri="Priority")
     is_enabled = BooleanField(field_uri="IsEnabled")
@@ -2321,7 +2307,7 @@ class DeleteRuleOperation(EWSElement):
     ELEMENT_NAME = "DeleteRuleOperation"
     NAMESPACE = TNS
 
-    rule_id = CharField(field_uri="RuleId")
+    id = CharField(field_uri="RuleId")
 
 
 class Operations(EWSElement):
@@ -2330,9 +2316,6 @@ class Operations(EWSElement):
     ELEMENT_NAME = "Operations"
     NAMESPACE = MNS
 
-    create_rule_operation = EWSElementField(
-        value_cls=CreateRuleOperation)
-    set_rule_operation = EWSElementField(
-        value_cls=SetRuleOperation)
-    delete_rule_operation = EWSElementField(
-        value_cls=DeleteRuleOperation)
+    create_rule_operation = EWSElementField(value_cls=CreateRuleOperation)
+    set_rule_operation = EWSElementField(value_cls=SetRuleOperation)
+    delete_rule_operation = EWSElementField(value_cls=DeleteRuleOperation)
