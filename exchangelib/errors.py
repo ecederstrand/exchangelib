@@ -1,4 +1,5 @@
 """Stores errors specific to this package, and mirrors all the possible errors that EWS can return."""
+
 from urllib.parse import urlparse
 
 

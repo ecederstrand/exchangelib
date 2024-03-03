@@ -1,6 +1,7 @@
 """The 'Subscribe' service has three different modes - pull, push and streaming - with different signatures. Implement
 as three distinct classes.
 """
+
 import abc
 
 from ..util import MNS, create_element
