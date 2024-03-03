@@ -476,13 +476,13 @@ class FolderCollection(SearchableMixIn):
         return SubscribeToStreaming(account=self.account).get(folders=self.folders, event_types=event_types)
 
     def pull_subscription(self, **kwargs):
-        return PullSubscription(target=self, **kwargs)
+        return PullSubscription(folder=self, **kwargs)
 
     def push_subscription(self, **kwargs):
-        return PushSubscription(target=self, **kwargs)
+        return PushSubscription(folder=self, **kwargs)
 
     def streaming_subscription(self, **kwargs):
-        return StreamingSubscription(target=self, **kwargs)
+        return StreamingSubscription(folder=self, **kwargs)
 
     def unsubscribe(self, subscription_id):
         &#34;&#34;&#34;Unsubscribe. Only applies to pull and streaming notifications.
@@ -568,8 +568,8 @@ class FolderCollection(SearchableMixIn):
 
 
 class BaseSubscription(metaclass=abc.ABCMeta):
-    def __init__(self, target, **subscription_kwargs):
-        self.target = target
+    def __init__(self, folder, **subscription_kwargs):
+        self.folder = folder
         self.subscription_kwargs = subscription_kwargs
         self.subscription_id = None
 
@@ -578,19 +578,19 @@ class BaseSubscription(metaclass=abc.ABCMeta):
         &#34;&#34;&#34;Create the subscription&#34;&#34;&#34;
 
     def __exit__(self, *args, **kwargs):
-        self.target.unsubscribe(subscription_id=self.subscription_id)
+        self.folder.unsubscribe(subscription_id=self.subscription_id)
         self.subscription_id = None
 
 
 class PullSubscription(BaseSubscription):
     def __enter__(self):
-        self.subscription_id, watermark = self.target.subscribe_to_pull(**self.subscription_kwargs)
+        self.subscription_id, watermark = self.folder.subscribe_to_pull(**self.subscription_kwargs)
         return self.subscription_id, watermark
 
 
 class PushSubscription(BaseSubscription):
     def __enter__(self):
-        self.subscription_id, watermark = self.target.subscribe_to_push(**self.subscription_kwargs)
+        self.subscription_id, watermark = self.folder.subscribe_to_push(**self.subscription_kwargs)
         return self.subscription_id, watermark
 
     def __exit__(self, *args, **kwargs):
@@ -600,7 +600,7 @@ class PushSubscription(BaseSubscription):
 
 class StreamingSubscription(BaseSubscription):
     def __enter__(self):
-        self.subscription_id = self.target.subscribe_to_streaming(**self.subscription_kwargs)
+        self.subscription_id = self.folder.subscribe_to_streaming(**self.subscription_kwargs)
         return self.subscription_id</code></pre>
 </details>
 </section>
@@ -615,7 +615,7 @@ class StreamingSubscription(BaseSubscription):
 <dl>
 <dt id="exchangelib.folders.collections.BaseSubscription"><code class="flex name class">
 <span>class <span class="ident">BaseSubscription</span></span>
-<span>(</span><span>target, **subscription_kwargs)</span>
+<span>(</span><span>folder, **subscription_kwargs)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -624,8 +624,8 @@ class StreamingSubscription(BaseSubscription):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class BaseSubscription(metaclass=abc.ABCMeta):
-    def __init__(self, target, **subscription_kwargs):
-        self.target = target
+    def __init__(self, folder, **subscription_kwargs):
+        self.folder = folder
         self.subscription_kwargs = subscription_kwargs
         self.subscription_id = None
 
@@ -634,7 +634,7 @@ class StreamingSubscription(BaseSubscription):
         &#34;&#34;&#34;Create the subscription&#34;&#34;&#34;
 
     def __exit__(self, *args, **kwargs):
-        self.target.unsubscribe(subscription_id=self.subscription_id)
+        self.folder.unsubscribe(subscription_id=self.subscription_id)
         self.subscription_id = None</code></pre>
 </details>
 <h3>Subclasses</h3>
@@ -1083,13 +1083,13 @@ class StreamingSubscription(BaseSubscription):
         return SubscribeToStreaming(account=self.account).get(folders=self.folders, event_types=event_types)
 
     def pull_subscription(self, **kwargs):
-        return PullSubscription(target=self, **kwargs)
+        return PullSubscription(folder=self, **kwargs)
 
     def push_subscription(self, **kwargs):
-        return PushSubscription(target=self, **kwargs)
+        return PushSubscription(folder=self, **kwargs)
 
     def streaming_subscription(self, **kwargs):
-        return StreamingSubscription(target=self, **kwargs)
+        return StreamingSubscription(folder=self, **kwargs)
 
     def unsubscribe(self, subscription_id):
         &#34;&#34;&#34;Unsubscribe. Only applies to pull and streaming notifications.
@@ -1565,7 +1565,7 @@ non-null, we always return Persona objects. (Default value = ID_ONLY)
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def pull_subscription(self, **kwargs):
-    return PullSubscription(target=self, **kwargs)</code></pre>
+    return PullSubscription(folder=self, **kwargs)</code></pre>
 </details>
 </dd>
 <dt id="exchangelib.folders.collections.FolderCollection.push_subscription"><code class="name flex">
@@ -1578,7 +1578,7 @@ non-null, we always return Persona objects. (Default value = ID_ONLY)
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def push_subscription(self, **kwargs):
-    return PushSubscription(target=self, **kwargs)</code></pre>
+    return PushSubscription(folder=self, **kwargs)</code></pre>
 </details>
 </dd>
 <dt id="exchangelib.folders.collections.FolderCollection.resolve"><code class="name flex">
@@ -1618,7 +1618,7 @@ non-null, we always return Persona objects. (Default value = ID_ONLY)
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def streaming_subscription(self, **kwargs):
-    return StreamingSubscription(target=self, **kwargs)</code></pre>
+    return StreamingSubscription(folder=self, **kwargs)</code></pre>
 </details>
 </dd>
 <dt id="exchangelib.folders.collections.FolderCollection.subscribe_to_pull"><code class="name flex">
@@ -1890,7 +1890,7 @@ the overlap the timespan are returned (items that end exactly on 'start' are als
 </dd>
 <dt id="exchangelib.folders.collections.PullSubscription"><code class="flex name class">
 <span>class <span class="ident">PullSubscription</span></span>
-<span>(</span><span>target, **subscription_kwargs)</span>
+<span>(</span><span>folder, **subscription_kwargs)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1900,7 +1900,7 @@ the overlap the timespan are returned (items that end exactly on 'start' are als
 </summary>
 <pre><code class="python">class PullSubscription(BaseSubscription):
     def __enter__(self):
-        self.subscription_id, watermark = self.target.subscribe_to_pull(**self.subscription_kwargs)
+        self.subscription_id, watermark = self.folder.subscribe_to_pull(**self.subscription_kwargs)
         return self.subscription_id, watermark</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -1910,7 +1910,7 @@ the overlap the timespan are returned (items that end exactly on 'start' are als
 </dd>
 <dt id="exchangelib.folders.collections.PushSubscription"><code class="flex name class">
 <span>class <span class="ident">PushSubscription</span></span>
-<span>(</span><span>target, **subscription_kwargs)</span>
+<span>(</span><span>folder, **subscription_kwargs)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1920,7 +1920,7 @@ the overlap the timespan are returned (items that end exactly on 'start' are als
 </summary>
 <pre><code class="python">class PushSubscription(BaseSubscription):
     def __enter__(self):
-        self.subscription_id, watermark = self.target.subscribe_to_push(**self.subscription_kwargs)
+        self.subscription_id, watermark = self.folder.subscribe_to_push(**self.subscription_kwargs)
         return self.subscription_id, watermark
 
     def __exit__(self, *args, **kwargs):
@@ -1934,7 +1934,7 @@ the overlap the timespan are returned (items that end exactly on 'start' are als
 </dd>
 <dt id="exchangelib.folders.collections.StreamingSubscription"><code class="flex name class">
 <span>class <span class="ident">StreamingSubscription</span></span>
-<span>(</span><span>target, **subscription_kwargs)</span>
+<span>(</span><span>folder, **subscription_kwargs)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1944,7 +1944,7 @@ the overlap the timespan are returned (items that end exactly on 'start' are als
 </summary>
 <pre><code class="python">class StreamingSubscription(BaseSubscription):
     def __enter__(self):
-        self.subscription_id = self.target.subscribe_to_streaming(**self.subscription_kwargs)
+        self.subscription_id = self.folder.subscribe_to_streaming(**self.subscription_kwargs)
         return self.subscription_id</code></pre>
 </details>
 <h3>Ancestors</h3>

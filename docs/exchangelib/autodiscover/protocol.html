@@ -26,8 +26,7 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from ..properties import UserResponse
-from ..protocol import BaseProtocol
+<pre><code class="python">from ..protocol import BaseProtocol
 from ..services import GetUserSettings
 from ..transport import get_autodiscover_authtype
 from ..version import Version
@@ -74,11 +73,6 @@ Auth type: {self.auth_type}&#34;&#34;&#34;
                 &#34;external_ews_url&#34;,
                 &#34;ews_supported_schemas&#34;,
             ]
-        for setting in settings:
-            if setting not in UserResponse.SETTINGS_MAP:
-                raise ValueError(
-                    f&#34;Setting {setting!r} is invalid. Valid options are: {sorted(UserResponse.SETTINGS_MAP.keys())}&#34;
-                )
         return GetUserSettings(protocol=self).get(users=[user], settings=settings)
 
     def dummy_xml(self):
@@ -153,11 +147,6 @@ Auth type: {self.auth_type}&#34;&#34;&#34;
                 &#34;external_ews_url&#34;,
                 &#34;ews_supported_schemas&#34;,
             ]
-        for setting in settings:
-            if setting not in UserResponse.SETTINGS_MAP:
-                raise ValueError(
-                    f&#34;Setting {setting!r} is invalid. Valid options are: {sorted(UserResponse.SETTINGS_MAP.keys())}&#34;
-                )
         return GetUserSettings(protocol=self).get(users=[user], settings=settings)
 
     def dummy_xml(self):
@@ -254,11 +243,6 @@ def version(self):
             &#34;external_ews_url&#34;,
             &#34;ews_supported_schemas&#34;,
         ]
-    for setting in settings:
-        if setting not in UserResponse.SETTINGS_MAP:
-            raise ValueError(
-                f&#34;Setting {setting!r} is invalid. Valid options are: {sorted(UserResponse.SETTINGS_MAP.keys())}&#34;
-            )
     return GetUserSettings(protocol=self).get(users=[user], settings=settings)</code></pre>
 </details>
 </dd>

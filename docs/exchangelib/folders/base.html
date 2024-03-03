@@ -266,7 +266,6 @@ class BaseFolder(RegisterMixIn, SearchableMixIn, SupportedVersionClassMixIn, met
             ConversationSettings,
             CrawlerData,
             DlpPolicyEvaluation,
-            EventCheckPoints,
             FreeBusyCache,
             GALContacts,
             Messages,
@@ -289,7 +288,6 @@ class BaseFolder(RegisterMixIn, SearchableMixIn, SupportedVersionClassMixIn, met
             ConversationSettings,
             CrawlerData,
             DlpPolicyEvaluation,
-            EventCheckPoints,
             FreeBusyCache,
             GALContacts,
             Messages,
@@ -659,15 +657,15 @@ class BaseFolder(RegisterMixIn, SearchableMixIn, SupportedVersionClassMixIn, met
 
     @require_id
     def pull_subscription(self, **kwargs):
-        return PullSubscription(target=self, **kwargs)
+        return PullSubscription(folder=self, **kwargs)
 
     @require_id
     def push_subscription(self, **kwargs):
-        return PushSubscription(target=self, **kwargs)
+        return PushSubscription(folder=self, **kwargs)
 
     @require_id
     def streaming_subscription(self, **kwargs):
-        return StreamingSubscription(target=self, **kwargs)
+        return StreamingSubscription(folder=self, **kwargs)
 
     def unsubscribe(self, subscription_id):
         &#34;&#34;&#34;Unsubscribe. Only applies to pull and streaming notifications.
@@ -1160,7 +1158,6 @@ class Folder(BaseFolder):
             ConversationSettings,
             CrawlerData,
             DlpPolicyEvaluation,
-            EventCheckPoints,
             FreeBusyCache,
             GALContacts,
             Messages,
@@ -1183,7 +1180,6 @@ class Folder(BaseFolder):
             ConversationSettings,
             CrawlerData,
             DlpPolicyEvaluation,
-            EventCheckPoints,
             FreeBusyCache,
             GALContacts,
             Messages,
@@ -1553,15 +1549,15 @@ class Folder(BaseFolder):
 
     @require_id
     def pull_subscription(self, **kwargs):
-        return PullSubscription(target=self, **kwargs)
+        return PullSubscription(folder=self, **kwargs)
 
     @require_id
     def push_subscription(self, **kwargs):
-        return PushSubscription(target=self, **kwargs)
+        return PushSubscription(folder=self, **kwargs)
 
     @require_id
     def streaming_subscription(self, **kwargs):
-        return StreamingSubscription(target=self, **kwargs)
+        return StreamingSubscription(folder=self, **kwargs)
 
     def unsubscribe(self, subscription_id):
         &#34;&#34;&#34;Unsubscribe. Only applies to pull and streaming notifications.
@@ -1839,7 +1835,6 @@ def folder_cls_from_container_class(container_class):
         ConversationSettings,
         CrawlerData,
         DlpPolicyEvaluation,
-        EventCheckPoints,
         FreeBusyCache,
         GALContacts,
         Messages,
@@ -1862,7 +1857,6 @@ def folder_cls_from_container_class(container_class):
         ConversationSettings,
         CrawlerData,
         DlpPolicyEvaluation,
-        EventCheckPoints,
         FreeBusyCache,
         GALContacts,
         Messages,
@@ -2408,7 +2402,7 @@ def get_user_configuration(self, name, properties=None):
 </summary>
 <pre><code class="python">@require_id
 def pull_subscription(self, **kwargs):
-    return PullSubscription(target=self, **kwargs)</code></pre>
+    return PullSubscription(folder=self, **kwargs)</code></pre>
 </details>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.push_subscription"><code class="name flex">
@@ -2422,7 +2416,7 @@ def pull_subscription(self, **kwargs):
 </summary>
 <pre><code class="python">@require_id
 def push_subscription(self, **kwargs):
-    return PushSubscription(target=self, **kwargs)</code></pre>
+    return PushSubscription(folder=self, **kwargs)</code></pre>
 </details>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.refresh"><code class="name flex">
@@ -2501,7 +2495,7 @@ def refresh(self):
 </summary>
 <pre><code class="python">@require_id
 def streaming_subscription(self, **kwargs):
-    return StreamingSubscription(target=self, **kwargs)</code></pre>
+    return StreamingSubscription(folder=self, **kwargs)</code></pre>
 </details>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.subscribe_to_pull"><code class="name flex">
@@ -3094,7 +3088,6 @@ def update_user_configuration(self, name, dictionary=None, xml_data=None, binary
 <li><a title="exchangelib.folders.known_folders.DeferredAction" href="known_folders.html#exchangelib.folders.known_folders.DeferredAction">DeferredAction</a></li>
 <li><a title="exchangelib.folders.known_folders.DeletedItems" href="known_folders.html#exchangelib.folders.known_folders.DeletedItems">DeletedItems</a></li>
 <li><a title="exchangelib.folders.known_folders.DlpPolicyEvaluation" href="known_folders.html#exchangelib.folders.known_folders.DlpPolicyEvaluation">DlpPolicyEvaluation</a></li>
-<li><a title="exchangelib.folders.known_folders.EventCheckPoints" href="known_folders.html#exchangelib.folders.known_folders.EventCheckPoints">EventCheckPoints</a></li>
 <li><a title="exchangelib.folders.known_folders.ExchangeSyncData" href="known_folders.html#exchangelib.folders.known_folders.ExchangeSyncData">ExchangeSyncData</a></li>
 <li><a title="exchangelib.folders.known_folders.Files" href="known_folders.html#exchangelib.folders.known_folders.Files">Files</a></li>
 <li><a title="exchangelib.folders.known_folders.FreeBusyCache" href="known_folders.html#exchangelib.folders.known_folders.FreeBusyCache">FreeBusyCache</a></li>

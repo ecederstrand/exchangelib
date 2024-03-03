@@ -29,7 +29,6 @@
 <pre><code class="python">import abc
 import datetime
 import logging
-import warnings
 from contextlib import suppress
 from decimal import Decimal, InvalidOperation
 from importlib import import_module
@@ -768,21 +767,16 @@ class TimeZoneField(FieldURIField):
     def from_xml(self, elem, account):
         field_elem = elem.find(self.response_tag())
         if field_elem is not None:
-            tz_id = field_elem.get(&#34;Id&#34;) or field_elem.get(&#34;Name&#34;)
+            ms_id = field_elem.get(&#34;Id&#34;)
+            ms_name = field_elem.get(&#34;Name&#34;)
             try:
-                return self.value_cls.from_ms_id(tz_id)
+                return self.value_cls.from_ms_id(ms_id or ms_name)
             except UnknownTimeZone:
-                warnings.warn(
-                    f&#34;&#34;&#34;\
-Cannot convert value {tz_id!r} on field {self.name!r} to type {self.value_cls.__name__!r} (unknown timezone ID).
-You can fix this by adding a custom entry into the timezone translation map:
-
-from exchangelib.winzone import MS_TIMEZONE_TO_IANA_MAP, CLDR_TO_MS_TIMEZONE_MAP
-
-# Replace &#34;Some_Region/Some_Location&#34; with a reasonable value from CLDR_TO_MS_TIMEZONE_MAP.keys()
-MS_TIMEZONE_TO_IANA_MAP[{tz_id!r}] = &#34;Some_Region/Some_Location&#34;
-
-# Your code here&#34;&#34;&#34;
+                log.warning(
+                    &#34;Cannot convert value &#39;%s&#39; on field &#39;%s&#39; to type %s (unknown timezone ID)&#34;,
+                    (ms_id or ms_name),
+                    self.name,
+                    self.value_cls,
                 )
                 return None
         return self.default
@@ -1750,65 +1744,7 @@ class GenericEventListField(EWSElementField):
             except KeyError:
                 continue
             events.append(value_cls.from_xml(elem=event, account=account))
-        return events or self.default
-
-
-FLAG_ACTION_CHOICES = [
-    Choice(&#34;Any&#34;),
-    Choice(&#34;Call&#34;),
-    Choice(&#34;DoNotForward&#34;),
-    Choice(&#34;FollowUp&#34;),
-    Choice(&#34;FYI&#34;),
-    Choice(&#34;Forward&#34;),
-    Choice(&#34;NoResponseNecessary&#34;),
-    Choice(&#34;Read&#34;),
-    Choice(&#34;Reply&#34;),
-    Choice(&#34;ReplyToAll&#34;),
-    Choice(&#34;Review&#34;),
-]
-
-
-class FlaggedForActionField(ChoiceField):
-    &#34;&#34;&#34;A field specifies the flag for action value that
-    must appear on incoming messages in order for the condition
-    or exception to apply.&#34;&#34;&#34;
-
-    def __init__(self, *args, **kwargs):
-        kwargs[&#34;choices&#34;] = FLAG_ACTION_CHOICES
-        super().__init__(*args, **kwargs)
-
-
-IMPORTANCE_CHOICES = [
-    Choice(&#34;Low&#34;),
-    Choice(&#34;Normal&#34;),
-    Choice(&#34;High&#34;),
-]
-
-
-class ImportanceField(ChoiceField):
-    &#34;&#34;&#34;A field that describes the importance of an item or
-    the aggregated importance of all items in a conversation
-    in the current folder.&#34;&#34;&#34;
-
-    def __init__(self, *args, **kwargs):
-        kwargs[&#34;choices&#34;] = IMPORTANCE_CHOICES
-        super().__init__(*args, **kwargs)
-
-
-SENSITIVITY_CHOICES = [
-    Choice(&#34;Normal&#34;),
-    Choice(&#34;Personal&#34;),
-    Choice(&#34;Private&#34;),
-    Choice(&#34;Confidential&#34;),
-]
-
-
-class SensitivityField(ChoiceField):
-    &#34;&#34;&#34;A field that indicates the sensitivity level of an item.&#34;&#34;&#34;
-
-    def __init__(self, *args, **kwargs):
-        kwargs[&#34;choices&#34;] = SENSITIVITY_CHOICES
-        super().__init__(*args, **kwargs)</code></pre>
+        return events or self.default</code></pre>
 </details>
 </section>
 <section>
@@ -2692,12 +2628,9 @@ The class bool is a subclass of the class int, and cannot be subclassed.</p></di
 </ul>
 <h3>Subclasses</h3>
 <ul class="hlist">
-<li><a title="exchangelib.fields.FlaggedForActionField" href="#exchangelib.fields.FlaggedForActionField">FlaggedForActionField</a></li>
 <li><a title="exchangelib.fields.FreeBusyStatusField" href="#exchangelib.fields.FreeBusyStatusField">FreeBusyStatusField</a></li>
-<li><a title="exchangelib.fields.ImportanceField" href="#exchangelib.fields.ImportanceField">ImportanceField</a></li>
 <li><a title="exchangelib.fields.LabelField" href="#exchangelib.fields.LabelField">LabelField</a></li>
 <li><a title="exchangelib.fields.RoutingTypeField" href="#exchangelib.fields.RoutingTypeField">RoutingTypeField</a></li>
-<li><a title="exchangelib.fields.SensitivityField" href="#exchangelib.fields.SensitivityField">SensitivityField</a></li>
 </ul>
 <h3>Methods</h3>
 <dl>
@@ -4704,47 +4637,6 @@ may additionally be a label for searching, filtering and limiting fields. In tha
 </li>
 </ul>
 </dd>
-<dt id="exchangelib.fields.FlaggedForActionField"><code class="flex name class">
-<span>class <span class="ident">FlaggedForActionField</span></span>
-<span>(</span><span>*args, **kwargs)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>A field specifies the flag for action value that
-must appear on incoming messages in order for the condition
-or exception to apply.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class FlaggedForActionField(ChoiceField):
-    &#34;&#34;&#34;A field specifies the flag for action value that
-    must appear on incoming messages in order for the condition
-    or exception to apply.&#34;&#34;&#34;
-
-    def __init__(self, *args, **kwargs):
-        kwargs[&#34;choices&#34;] = FLAG_ACTION_CHOICES
-        super().__init__(*args, **kwargs)</code></pre>
-</details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li><a title="exchangelib.fields.ChoiceField" href="#exchangelib.fields.ChoiceField">ChoiceField</a></li>
-<li><a title="exchangelib.fields.CharField" href="#exchangelib.fields.CharField">CharField</a></li>
-<li><a title="exchangelib.fields.TextField" href="#exchangelib.fields.TextField">TextField</a></li>
-<li><a title="exchangelib.fields.FieldURIField" href="#exchangelib.fields.FieldURIField">FieldURIField</a></li>
-<li><a title="exchangelib.fields.Field" href="#exchangelib.fields.Field">Field</a></li>
-<li><a title="exchangelib.version.SupportedVersionInstanceMixIn" href="version.html#exchangelib.version.SupportedVersionInstanceMixIn">SupportedVersionInstanceMixIn</a></li>
-</ul>
-<h3>Inherited members</h3>
-<ul class="hlist">
-<li><code><b><a title="exchangelib.fields.ChoiceField" href="#exchangelib.fields.ChoiceField">ChoiceField</a></b></code>:
-<ul class="hlist">
-<li><code><a title="exchangelib.fields.ChoiceField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
-<li><code><a title="exchangelib.fields.ChoiceField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
-<li><code><a title="exchangelib.fields.ChoiceField.value_cls" href="#exchangelib.fields.TextField.value_cls">value_cls</a></code></li>
-</ul>
-</li>
-</ul>
-</dd>
 <dt id="exchangelib.fields.FreeBusyStatusField"><code class="flex name class">
 <span>class <span class="ident">FreeBusyStatusField</span></span>
 <span>(</span><span>*args, **kwargs)</span>
@@ -4934,47 +4826,6 @@ but we can assume 512 bytes in practice. See
 <li><code><a title="exchangelib.fields.CharField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
 <li><code><a title="exchangelib.fields.CharField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
 <li><code><a title="exchangelib.fields.CharField.value_cls" href="#exchangelib.fields.TextField.value_cls">value_cls</a></code></li>
-</ul>
-</li>
-</ul>
-</dd>
-<dt id="exchangelib.fields.ImportanceField"><code class="flex name class">
-<span>class <span class="ident">ImportanceField</span></span>
-<span>(</span><span>*args, **kwargs)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>A field that describes the importance of an item or
-the aggregated importance of all items in a conversation
-in the current folder.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class ImportanceField(ChoiceField):
-    &#34;&#34;&#34;A field that describes the importance of an item or
-    the aggregated importance of all items in a conversation
-    in the current folder.&#34;&#34;&#34;
-
-    def __init__(self, *args, **kwargs):
-        kwargs[&#34;choices&#34;] = IMPORTANCE_CHOICES
-        super().__init__(*args, **kwargs)</code></pre>
-</details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li><a title="exchangelib.fields.ChoiceField" href="#exchangelib.fields.ChoiceField">ChoiceField</a></li>
-<li><a title="exchangelib.fields.CharField" href="#exchangelib.fields.CharField">CharField</a></li>
-<li><a title="exchangelib.fields.TextField" href="#exchangelib.fields.TextField">TextField</a></li>
-<li><a title="exchangelib.fields.FieldURIField" href="#exchangelib.fields.FieldURIField">FieldURIField</a></li>
-<li><a title="exchangelib.fields.Field" href="#exchangelib.fields.Field">Field</a></li>
-<li><a title="exchangelib.version.SupportedVersionInstanceMixIn" href="version.html#exchangelib.version.SupportedVersionInstanceMixIn">SupportedVersionInstanceMixIn</a></li>
-</ul>
-<h3>Inherited members</h3>
-<ul class="hlist">
-<li><code><b><a title="exchangelib.fields.ChoiceField" href="#exchangelib.fields.ChoiceField">ChoiceField</a></b></code>:
-<ul class="hlist">
-<li><code><a title="exchangelib.fields.ChoiceField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
-<li><code><a title="exchangelib.fields.ChoiceField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
-<li><code><a title="exchangelib.fields.ChoiceField.value_cls" href="#exchangelib.fields.TextField.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -6223,43 +6074,6 @@ because the decoded data could be in some other encoding, specified in the "Cont
 </li>
 </ul>
 </dd>
-<dt id="exchangelib.fields.SensitivityField"><code class="flex name class">
-<span>class <span class="ident">SensitivityField</span></span>
-<span>(</span><span>*args, **kwargs)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>A field that indicates the sensitivity level of an item.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class SensitivityField(ChoiceField):
-    &#34;&#34;&#34;A field that indicates the sensitivity level of an item.&#34;&#34;&#34;
-
-    def __init__(self, *args, **kwargs):
-        kwargs[&#34;choices&#34;] = SENSITIVITY_CHOICES
-        super().__init__(*args, **kwargs)</code></pre>
-</details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li><a title="exchangelib.fields.ChoiceField" href="#exchangelib.fields.ChoiceField">ChoiceField</a></li>
-<li><a title="exchangelib.fields.CharField" href="#exchangelib.fields.CharField">CharField</a></li>
-<li><a title="exchangelib.fields.TextField" href="#exchangelib.fields.TextField">TextField</a></li>
-<li><a title="exchangelib.fields.FieldURIField" href="#exchangelib.fields.FieldURIField">FieldURIField</a></li>
-<li><a title="exchangelib.fields.Field" href="#exchangelib.fields.Field">Field</a></li>
-<li><a title="exchangelib.version.SupportedVersionInstanceMixIn" href="version.html#exchangelib.version.SupportedVersionInstanceMixIn">SupportedVersionInstanceMixIn</a></li>
-</ul>
-<h3>Inherited members</h3>
-<ul class="hlist">
-<li><code><b><a title="exchangelib.fields.ChoiceField" href="#exchangelib.fields.ChoiceField">ChoiceField</a></b></code>:
-<ul class="hlist">
-<li><code><a title="exchangelib.fields.ChoiceField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
-<li><code><a title="exchangelib.fields.ChoiceField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
-<li><code><a title="exchangelib.fields.ChoiceField.value_cls" href="#exchangelib.fields.TextField.value_cls">value_cls</a></code></li>
-</ul>
-</li>
-</ul>
-</dd>
 <dt id="exchangelib.fields.StringAttributedValueField"><code class="flex name class">
 <span>class <span class="ident">StringAttributedValueField</span></span>
 <span>(</span><span>*args, **kwargs)</span>
@@ -6757,21 +6571,16 @@ a tzinfo subclass. The remaining arguments may be ints.</p></div>
     def from_xml(self, elem, account):
         field_elem = elem.find(self.response_tag())
         if field_elem is not None:
-            tz_id = field_elem.get(&#34;Id&#34;) or field_elem.get(&#34;Name&#34;)
+            ms_id = field_elem.get(&#34;Id&#34;)
+            ms_name = field_elem.get(&#34;Name&#34;)
             try:
-                return self.value_cls.from_ms_id(tz_id)
+                return self.value_cls.from_ms_id(ms_id or ms_name)
             except UnknownTimeZone:
-                warnings.warn(
-                    f&#34;&#34;&#34;\
-Cannot convert value {tz_id!r} on field {self.name!r} to type {self.value_cls.__name__!r} (unknown timezone ID).
-You can fix this by adding a custom entry into the timezone translation map:
-
-from exchangelib.winzone import MS_TIMEZONE_TO_IANA_MAP, CLDR_TO_MS_TIMEZONE_MAP
-
-# Replace &#34;Some_Region/Some_Location&#34; with a reasonable value from CLDR_TO_MS_TIMEZONE_MAP.keys()
-MS_TIMEZONE_TO_IANA_MAP[{tz_id!r}] = &#34;Some_Region/Some_Location&#34;
-
-# Your code here&#34;&#34;&#34;
+                log.warning(
+                    &#34;Cannot convert value &#39;%s&#39; on field &#39;%s&#39; to type %s (unknown timezone ID)&#34;,
+                    (ms_id or ms_name),
+                    self.name,
+                    self.value_cls,
                 )
                 return None
         return self.default
@@ -7438,9 +7247,6 @@ If we want a URI validator, see <a href="https://stackoverflow.com/questions/144
 </ul>
 </li>
 <li>
-<h4><code><a title="exchangelib.fields.FlaggedForActionField" href="#exchangelib.fields.FlaggedForActionField">FlaggedForActionField</a></code></h4>
-</li>
-<li>
 <h4><code><a title="exchangelib.fields.FreeBusyStatusField" href="#exchangelib.fields.FreeBusyStatusField">FreeBusyStatusField</a></code></h4>
 </li>
 <li>
@@ -7454,9 +7260,6 @@ If we want a URI validator, see <a href="https://stackoverflow.com/questions/144
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.IdField" href="#exchangelib.fields.IdField">IdField</a></code></h4>
-</li>
-<li>
-<h4><code><a title="exchangelib.fields.ImportanceField" href="#exchangelib.fields.ImportanceField">ImportanceField</a></code></h4>
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.IndexedField" href="#exchangelib.fields.IndexedField">IndexedField</a></code></h4>
@@ -7588,9 +7391,6 @@ If we want a URI validator, see <a href="https://stackoverflow.com/questions/144
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.RoutingTypeField" href="#exchangelib.fields.RoutingTypeField">RoutingTypeField</a></code></h4>
-</li>
-<li>
-<h4><code><a title="exchangelib.fields.SensitivityField" href="#exchangelib.fields.SensitivityField">SensitivityField</a></code></h4>
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.StringAttributedValueField" href="#exchangelib.fields.StringAttributedValueField">StringAttributedValueField</a></code></h4>

@@ -71,13 +71,9 @@ class Subscribe(EWSAccountService, metaclass=abc.ABCMeta):
         return [(container.find(f&#34;{{{MNS}}}SubscriptionId&#34;), container.find(f&#34;{{{MNS}}}Watermark&#34;))]
 
     def _partial_payload(self, folders, event_types):
-        if folders is None:
-            # Interpret this as &#34;all folders&#34;
-            request_elem = create_element(self.subscription_request_elem_tag, attrs=dict(SubscribeToAllFolders=True))
-        else:
-            request_elem = create_element(self.subscription_request_elem_tag)
-            folder_ids = folder_ids_element(folders=folders, version=self.account.version, tag=&#34;t:FolderIds&#34;)
-            request_elem.append(folder_ids)
+        request_elem = create_element(self.subscription_request_elem_tag)
+        folder_ids = folder_ids_element(folders=folders, version=self.account.version, tag=&#34;t:FolderIds&#34;)
+        request_elem.append(folder_ids)
         event_types_elem = create_element(&#34;t:EventTypes&#34;)
         for event_type in event_types:
             add_xml_child(event_types_elem, &#34;t:EventType&#34;, event_type)
@@ -88,7 +84,6 @@ class Subscribe(EWSAccountService, metaclass=abc.ABCMeta):
 
 
 class SubscribeToPull(Subscribe):
-    # https://learn.microsoft.com/en-us/exchange/client-developer/web-service-reference/pullsubscriptionrequest
     subscription_request_elem_tag = &#34;m:PullSubscriptionRequest&#34;
     prefer_affinity = True
 
@@ -112,7 +107,6 @@ class SubscribeToPull(Subscribe):
 
 
 class SubscribeToPush(Subscribe):
-    # https://learn.microsoft.com/en-us/exchange/client-developer/web-service-reference/pushsubscriptionrequest
     subscription_request_elem_tag = &#34;m:PushSubscriptionRequest&#34;
 
     def call(self, folders, event_types, watermark, status_frequency, url):
@@ -137,7 +131,6 @@ class SubscribeToPush(Subscribe):
 
 
 class SubscribeToStreaming(Subscribe):
-    # https://learn.microsoft.com/en-us/exchange/client-developer/web-service-reference/streamingsubscriptionrequest
     subscription_request_elem_tag = &#34;m:StreamingSubscriptionRequest&#34;
     prefer_affinity = True
 
@@ -210,13 +203,9 @@ class SubscribeToStreaming(Subscribe):
         return [(container.find(f&#34;{{{MNS}}}SubscriptionId&#34;), container.find(f&#34;{{{MNS}}}Watermark&#34;))]
 
     def _partial_payload(self, folders, event_types):
-        if folders is None:
-            # Interpret this as &#34;all folders&#34;
-            request_elem = create_element(self.subscription_request_elem_tag, attrs=dict(SubscribeToAllFolders=True))
-        else:
-            request_elem = create_element(self.subscription_request_elem_tag)
-            folder_ids = folder_ids_element(folders=folders, version=self.account.version, tag=&#34;t:FolderIds&#34;)
-            request_elem.append(folder_ids)
+        request_elem = create_element(self.subscription_request_elem_tag)
+        folder_ids = folder_ids_element(folders=folders, version=self.account.version, tag=&#34;t:FolderIds&#34;)
+        request_elem.append(folder_ids)
         event_types_elem = create_element(&#34;t:EventTypes&#34;)
         for event_type in event_types:
             add_xml_child(event_types_elem, &#34;t:EventType&#34;, event_type)
@@ -278,7 +267,6 @@ class SubscribeToStreaming(Subscribe):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class SubscribeToPull(Subscribe):
-    # https://learn.microsoft.com/en-us/exchange/client-developer/web-service-reference/pullsubscriptionrequest
     subscription_request_elem_tag = &#34;m:PullSubscriptionRequest&#34;
     prefer_affinity = True
 
@@ -385,7 +373,6 @@ class SubscribeToStreaming(Subscribe):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class SubscribeToPush(Subscribe):
-    # https://learn.microsoft.com/en-us/exchange/client-developer/web-service-reference/pushsubscriptionrequest
     subscription_request_elem_tag = &#34;m:PushSubscriptionRequest&#34;
 
     def call(self, folders, event_types, watermark, status_frequency, url):
@@ -491,7 +478,6 @@ class SubscribeToStreaming(Subscribe):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class SubscribeToStreaming(Subscribe):
-    # https://learn.microsoft.com/en-us/exchange/client-developer/web-service-reference/streamingsubscriptionrequest
     subscription_request_elem_tag = &#34;m:StreamingSubscriptionRequest&#34;
     prefer_affinity = True
 

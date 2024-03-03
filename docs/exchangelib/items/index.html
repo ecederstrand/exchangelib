@@ -3111,7 +3111,7 @@ we use folder.account.</p></div>
 
     @require_id
     def create_reply(self, subject, body, to_recipients=None, cc_recipients=None, bcc_recipients=None, author=None):
-        if not to_recipients:
+        if to_recipients is None:
             if not self.author:
                 raise ValueError(&#34;&#39;to_recipients&#39; must be set when message has no &#39;author&#39;&#34;)
             to_recipients = [self.author]
@@ -3131,23 +3131,17 @@ we use folder.account.</p></div>
 
     @require_id
     def create_reply_all(self, subject, body, author=None):
-        me = MailboxField().clean(self.account.primary_smtp_address.lower())
-        to_recipients = set(self.to_recipients or [])
-        to_recipients.discard(me)
-        cc_recipients = set(self.cc_recipients or [])
-        cc_recipients.discard(me)
-        bcc_recipients = set(self.bcc_recipients or [])
-        bcc_recipients.discard(me)
+        to_recipients = list(self.to_recipients) if self.to_recipients else []
         if self.author:
-            to_recipients.add(self.author)
+            to_recipients.append(self.author)
         return ReplyAllToItem(
             account=self.account,
             reference_item_id=ReferenceItemId(id=self.id, changekey=self.changekey),
             subject=subject,
             new_body=body,
-            to_recipients=list(to_recipients),
-            cc_recipients=list(cc_recipients),
-            bcc_recipients=list(bcc_recipients),
+            to_recipients=to_recipients,
+            cc_recipients=self.cc_recipients,
+            bcc_recipients=self.bcc_recipients,
             author=author,
         )
 
@@ -3275,7 +3269,7 @@ we use folder.account.</p></div>
 </summary>
 <pre><code class="python">@require_id
 def create_reply(self, subject, body, to_recipients=None, cc_recipients=None, bcc_recipients=None, author=None):
-    if not to_recipients:
+    if to_recipients is None:
         if not self.author:
             raise ValueError(&#34;&#39;to_recipients&#39; must be set when message has no &#39;author&#39;&#34;)
         to_recipients = [self.author]
@@ -3302,23 +3296,17 @@ def create_reply(self, subject, body, to_recipients=None, cc_recipients=None, bc
 </summary>
 <pre><code class="python">@require_id
 def create_reply_all(self, subject, body, author=None):
-    me = MailboxField().clean(self.account.primary_smtp_address.lower())
-    to_recipients = set(self.to_recipients or [])
-    to_recipients.discard(me)
-    cc_recipients = set(self.cc_recipients or [])
-    cc_recipients.discard(me)
-    bcc_recipients = set(self.bcc_recipients or [])
-    bcc_recipients.discard(me)
+    to_recipients = list(self.to_recipients) if self.to_recipients else []
     if self.author:
-        to_recipients.add(self.author)
+        to_recipients.append(self.author)
     return ReplyAllToItem(
         account=self.account,
         reference_item_id=ReferenceItemId(id=self.id, changekey=self.changekey),
         subject=subject,
         new_body=body,
-        to_recipients=list(to_recipients),
-        cc_recipients=list(cc_recipients),
-        bcc_recipients=list(bcc_recipients),
+        to_recipients=to_recipients,
+        cc_recipients=self.cc_recipients,
+        bcc_recipients=self.bcc_recipients,
         author=author,
     )</code></pre>
 </details>

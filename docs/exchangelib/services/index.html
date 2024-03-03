@@ -284,10 +284,6 @@ __all__ = [
 <dd>
 <div class="desc"></div>
 </dd>
-<dt><code class="name"><a title="exchangelib.services.inbox_rules" href="inbox_rules.html">exchangelib.services.inbox_rules</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
 <dt><code class="name"><a title="exchangelib.services.mark_as_junk" href="mark_as_junk.html">exchangelib.services.mark_as_junk</a></code></dt>
 <dd>
 <div class="desc"></div>
@@ -6493,7 +6489,6 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class SubscribeToPull(Subscribe):
-    # https://learn.microsoft.com/en-us/exchange/client-developer/web-service-reference/pullsubscriptionrequest
     subscription_request_elem_tag = &#34;m:PullSubscriptionRequest&#34;
     prefer_affinity = True
 
@@ -6600,7 +6595,6 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class SubscribeToPush(Subscribe):
-    # https://learn.microsoft.com/en-us/exchange/client-developer/web-service-reference/pushsubscriptionrequest
     subscription_request_elem_tag = &#34;m:PushSubscriptionRequest&#34;
 
     def call(self, folders, event_types, watermark, status_frequency, url):
@@ -6706,7 +6700,6 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class SubscribeToStreaming(Subscribe):
-    # https://learn.microsoft.com/en-us/exchange/client-developer/web-service-reference/streamingsubscriptionrequest
     subscription_request_elem_tag = &#34;m:StreamingSubscriptionRequest&#34;
     prefer_affinity = True
 
@@ -7846,7 +7839,6 @@ call.</p>
 <li><code><a title="exchangelib.services.get_user_configuration" href="get_user_configuration.html">exchangelib.services.get_user_configuration</a></code></li>
 <li><code><a title="exchangelib.services.get_user_oof_settings" href="get_user_oof_settings.html">exchangelib.services.get_user_oof_settings</a></code></li>
 <li><code><a title="exchangelib.services.get_user_settings" href="get_user_settings.html">exchangelib.services.get_user_settings</a></code></li>
-<li><code><a title="exchangelib.services.inbox_rules" href="inbox_rules.html">exchangelib.services.inbox_rules</a></code></li>
 <li><code><a title="exchangelib.services.mark_as_junk" href="mark_as_junk.html">exchangelib.services.mark_as_junk</a></code></li>
 <li><code><a title="exchangelib.services.move_folder" href="move_folder.html">exchangelib.services.move_folder</a></code></li>
 <li><code><a title="exchangelib.services.move_item" href="move_item.html">exchangelib.services.move_item</a></code></li>
