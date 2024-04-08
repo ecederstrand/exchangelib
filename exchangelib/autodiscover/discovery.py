@@ -17,6 +17,7 @@ log = logging.getLogger(__name__)
 
 DNS_LOOKUP_ERRORS = (
     dns.name.EmptyLabel,
+    dns.resolver.LifetimeTimeout,
     dns.resolver.NXDOMAIN,
     dns.resolver.NoAnswer,
     dns.resolver.NoNameservers,
@@ -31,6 +32,9 @@ class SrvRecord:
         self.weight = weight
         self.port = port
         self.srv = srv
+
+    def __hash__(self):
+        return hash((self.priority, self.weight, self.port, self.srv))
 
     def __eq__(self, other):
         return all(getattr(self, k) == getattr(other, k) for k in self.__dict__)

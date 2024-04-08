@@ -22,10 +22,10 @@ Here's a short example of how `exchangelib` works. Let's print the first
 ```python
 from exchangelib import Credentials, Account
 
-credentials = Credentials('john@example.com', 'topsecret')
-account = Account('john@example.com', credentials=credentials, autodiscover=True)
+credentials = Credentials("john@example.com", "topsecret")
+account = Account("john@example.com", credentials=credentials, autodiscover=True)
 
-for item in account.inbox.all().order_by('-datetime_received')[:100]:
+for item in account.inbox.all().order_by("-datetime_received")[:100]:
     print(item.subject, item.sender, item.datetime_received)
 ```
 

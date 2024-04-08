@@ -34,3 +34,9 @@ repos:
         entry: flake8
         types: [ python ]
         language: system
+      - id: blacken-docs
+        name: blacken-docs
+        stages: [ commit ]
+        entry: blacken-docs
+        types: [ markdown ]
+        language: system

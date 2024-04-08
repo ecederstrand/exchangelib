@@ -481,7 +481,17 @@ class CancelCalendarItem(BaseReplyItem):
 
     ELEMENT_NAME = &#34;CancelCalendarItem&#34;
     author_idx = BaseReplyItem.FIELDS.index_by_name(&#34;author&#34;)
-    FIELDS = BaseReplyItem.FIELDS[:author_idx] + BaseReplyItem.FIELDS[author_idx + 1 :]</code></pre>
+    FIELDS = BaseReplyItem.FIELDS[:author_idx] + BaseReplyItem.FIELDS[author_idx + 1 :]
+
+
+class _Booking(Item):
+    &#34;&#34;&#34;Not mentioned anywhere in MSDN docs, but it&#39;s common enough that we want to at least not crash when we encounter
+    an item of this type in a folder. For more information, see https://github.com/ecederstrand/exchangelib/issues/877
+
+    Not supported in any way except to not crash on calendar folder reads
+    &#34;&#34;&#34;
+
+    ELEMENT_NAME = &#34;Booking&#34;</code></pre>
 </details>
 </section>
 <section>

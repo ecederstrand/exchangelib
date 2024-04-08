@@ -26,7 +26,8 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from ..protocol import BaseProtocol
+<pre><code class="python">from ..properties import UserResponse
+from ..protocol import BaseProtocol
 from ..services import GetUserSettings
 from ..transport import get_autodiscover_authtype
 from ..version import Version
@@ -63,18 +64,22 @@ Auth type: {self.auth_type}&#34;&#34;&#34;
         # Autodetect authentication type.
         return get_autodiscover_authtype(protocol=self)
 
-    def get_user_settings(self, user):
-        return GetUserSettings(protocol=self).get(
-            users=[user],
-            settings=[
+    def get_user_settings(self, user, settings=None):
+        if not settings:
+            settings = [
                 &#34;user_dn&#34;,
                 &#34;mailbox_dn&#34;,
                 &#34;user_display_name&#34;,
                 &#34;auto_discover_smtp_address&#34;,
                 &#34;external_ews_url&#34;,
                 &#34;ews_supported_schemas&#34;,
-            ],
-        )
+            ]
+        for setting in settings:
+            if setting not in UserResponse.SETTINGS_MAP:
+                raise ValueError(
+                    f&#34;Setting {setting!r} is invalid. Valid options are: {sorted(UserResponse.SETTINGS_MAP.keys())}&#34;
+                )
+        return GetUserSettings(protocol=self).get(users=[user], settings=settings)
 
     def dummy_xml(self):
         # Generate a valid EWS request for SOAP autodiscovery
@@ -138,18 +143,22 @@ Auth type: {self.auth_type}&#34;&#34;&#34;
         # Autodetect authentication type.
         return get_autodiscover_authtype(protocol=self)
 
-    def get_user_settings(self, user):
-        return GetUserSettings(protocol=self).get(
-            users=[user],
-            settings=[
+    def get_user_settings(self, user, settings=None):
+        if not settings:
+            settings = [
                 &#34;user_dn&#34;,
                 &#34;mailbox_dn&#34;,
                 &#34;user_display_name&#34;,
                 &#34;auto_discover_smtp_address&#34;,
                 &#34;external_ews_url&#34;,
                 &#34;ews_supported_schemas&#34;,
-            ],
-        )
+            ]
+        for setting in settings:
+            if setting not in UserResponse.SETTINGS_MAP:
+                raise ValueError(
+                    f&#34;Setting {setting!r} is invalid. Valid options are: {sorted(UserResponse.SETTINGS_MAP.keys())}&#34;
+                )
+        return GetUserSettings(protocol=self).get(users=[user], settings=settings)
 
     def dummy_xml(self):
         # Generate a valid EWS request for SOAP autodiscovery
@@ -227,7 +236,7 @@ def version(self):
 </details>
 </dd>
 <dt id="exchangelib.autodiscover.protocol.AutodiscoverProtocol.get_user_settings"><code class="name flex">
-<span>def <span class="ident">get_user_settings</span></span>(<span>self, user)</span>
+<span>def <span class="ident">get_user_settings</span></span>(<span>self, user, settings=None)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -235,18 +244,22 @@ def version(self):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get_user_settings(self, user):
-    return GetUserSettings(protocol=self).get(
-        users=[user],
-        settings=[
+<pre><code class="python">def get_user_settings(self, user, settings=None):
+    if not settings:
+        settings = [
             &#34;user_dn&#34;,
             &#34;mailbox_dn&#34;,
             &#34;user_display_name&#34;,
             &#34;auto_discover_smtp_address&#34;,
             &#34;external_ews_url&#34;,
             &#34;ews_supported_schemas&#34;,
-        ],
-    )</code></pre>
+        ]
+    for setting in settings:
+        if setting not in UserResponse.SETTINGS_MAP:
+            raise ValueError(
+                f&#34;Setting {setting!r} is invalid. Valid options are: {sorted(UserResponse.SETTINGS_MAP.keys())}&#34;
+            )
+    return GetUserSettings(protocol=self).get(users=[user], settings=settings)</code></pre>
 </details>
 </dd>
 </dl>

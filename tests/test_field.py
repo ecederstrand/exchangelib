@@ -1,4 +1,5 @@
 import datetime
+import warnings
 from collections import namedtuple
 from decimal import Decimal
 
@@ -176,7 +177,24 @@ class FieldTest(TimedTestCase):
 </Envelope>"""
         elem = to_xml(payload).find(f"{{{TNS}}}Item")
         field = TimeZoneField("foo", field_uri="item:Foo", default="DUMMY")
-        self.assertEqual(field.from_xml(elem=elem, account=account), None)
+
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            tz = field.from_xml(elem=elem, account=account)
+        self.assertEqual(tz, None)
+        self.assertEqual(
+            str(w[0].message),
+            """\
+Cannot convert value 'THIS_IS_GARBAGE' on field 'foo' to type 'EWSTimeZone' (unknown timezone ID).
+You can fix this by adding a custom entry into the timezone translation map:
+
+from exchangelib.winzone import MS_TIMEZONE_TO_IANA_MAP, CLDR_TO_MS_TIMEZONE_MAP
+
+# Replace "Some_Region/Some_Location" with a reasonable value from CLDR_TO_MS_TIMEZONE_MAP.keys()
+MS_TIMEZONE_TO_IANA_MAP['THIS_IS_GARBAGE'] = "Some_Region/Some_Location"
+
+# Your code here""",
+        )
 
     def test_versioned_field(self):
         field = TextField("foo", field_uri="bar", supported_from=EXCHANGE_2010)

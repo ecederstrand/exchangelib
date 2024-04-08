@@ -73,8 +73,19 @@ class CredentialsTest(TimedTestCase):
             e.exception.args[0],
             "'access_token' 'XXX' must be of type <class 'oauthlib.oauth2.rfc6749.tokens.OAuth2Token'>",
         )
+        c = OAuth2AuthorizationCodeCredentials(client_id="WWW", client_secret="XXX", authorization_code="YYY")
+        self.assertListEqual(c.scope, ["https://outlook.office365.com/.default", "offline_access"])
+        self.assertDictEqual(c.token_params(), {"include_client_id": True, "code": "YYY"})
+
+        c = OAuth2LegacyCredentials(
+            client_id="XXX", client_secret="YYY", tenant_id="ZZZZ", username="AAA", password="BBB"
+        )
+        self.assertListEqual(c.scope, ["https://outlook.office365.com/EWS.AccessAsUser.All"])
+        self.assertDictEqual(c.token_params(), {"include_client_id": True, "password": "BBB", "username": "AAA"})
 
         c = OAuth2Credentials("XXX", "YYY", "ZZZZ")
+        self.assertListEqual(c.scope, ["https://outlook.office365.com/.default"])
+        self.assertDictEqual(c.token_params(), {"include_client_id": True})
         c.refresh("XXX")  # No-op
 
         with self.assertRaises(TypeError) as e:

@@ -43,7 +43,7 @@ class CalendarTest(CommonItemTest):
     def test_cancel(self):
         item = self.get_test_item().save()
         try:
-            res = item.cancel()  # Returns (id, changekey) of cancelled item
+            res = self.safe_cancel(item)  # Returns (id, changekey) of cancelled item
         except ErrorInvalidRecipients:
             # Does not always work in a single-account setup
             pass
@@ -51,7 +51,7 @@ class CalendarTest(CommonItemTest):
             self.assertIsInstance(res, BulkCreateResult)
             with self.assertRaises(ErrorItemNotFound):
                 # Item is already cancelled
-                item.cancel()
+                self.safe_cancel(item)
 
     def test_updating_timestamps(self):
         # Test that we can update an item without changing anything, and maintain the hidden timezone fields as local
@@ -101,7 +101,7 @@ class CalendarTest(CommonItemTest):
         ]
         item.start, item.end = dt_start, dt_end
         item.recurrence.boundary.start = dt_start.date()
-        item.save()
+        self.safe_save(item)
         item.refresh()
         self.assertEqual(item.start, dt_start)
         self.assertEqual(item.end, dt_end)
@@ -122,7 +122,7 @@ class CalendarTest(CommonItemTest):
         self.assertEqual(item.is_all_day, True)
         self.assertEqual(item.start, start_dt.date())
         self.assertEqual(item.end, end_dt.date())
-        item.save()  # Make sure we can update
+        self.safe_save(item)  # Make sure we can update
         item.delete()
 
         # We are also allowed to assign plain dates as values for all-day items
@@ -139,7 +139,7 @@ class CalendarTest(CommonItemTest):
         self.assertEqual(item.is_all_day, True)
         self.assertEqual(item.start, start_dt.date())
         self.assertEqual(item.end, end_dt.date())
-        item.save()  # Make sure we can update
+        self.safe_save(item)  # Make sure we can update
 
     def test_view(self):
         item1 = self.ITEM_CLASS(
@@ -508,17 +508,14 @@ class CalendarTest(CommonItemTest):
             third_occurrence.delete()  # Item is gone from the server, so this should fail
 
     def test_invalid_updateitem_items(self):
-        # Test here because CalendarItem is the only item that has a requiref field with no default
+        # Test here because CalendarItem is the only item that has a required field with no default
         item = self.get_test_item().save()
-        with self.assertRaises(ValueError) as e:
-            self.account.bulk_update([(item, [])])
-        self.assertEqual(e.exception.args[0], "'fieldnames' must not be empty")
 
         # Test a field that has is_required=True
         start = item.start
         item.start = None
         with self.assertRaises(ValueError) as e:
-            self.account.bulk_update([(item, ["start"])])
+            item.save(update_fields=["start"])
         self.assertEqual(e.exception.args[0], "'start' is a required field with no default")
         item.start = start
 
@@ -526,13 +523,13 @@ class CalendarTest(CommonItemTest):
         uid = item.uid
         item.uid = None
         with self.assertRaises(ValueError) as e:
-            self.account.bulk_update([(item, ["uid"])])
+            item.save(update_fields=["uid"])
         self.assertEqual(e.exception.args[0], "'uid' is a required field and may not be deleted")
         item.uid = uid
 
         item.is_meeting = None
         with self.assertRaises(ValueError) as e:
-            self.account.bulk_update([(item, ["is_meeting"])])
+            item.save(update_fields=["is_meeting"])
         self.assertEqual(e.exception.args[0], "'is_meeting' is a read-only field")
 
     def test_meeting_request(self):

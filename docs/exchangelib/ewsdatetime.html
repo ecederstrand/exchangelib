@@ -257,6 +257,9 @@ class EWSTimeZone(zoneinfo.ZoneInfo):
         instance.ms_name = &#34;&#34;
         return instance
 
+    def __hash__(self):
+        return hash(self.key)
+
     def __eq__(self, other):
         # Microsoft time zones are less granular than IANA, so an EWSTimeZone created from &#39;Europe/Copenhagen&#39; may
         # return from the server as &#39;Europe/Copenhagen&#39;. We&#39;re catering for Microsoft here, so base equality on the
@@ -895,6 +898,9 @@ services.GetServerTimeZones.</p></div>
         # long-format names, see output of services.GetServerTimeZones(account.protocol).call()
         instance.ms_name = &#34;&#34;
         return instance
+
+    def __hash__(self):
+        return hash(self.key)
 
     def __eq__(self, other):
         # Microsoft time zones are less granular than IANA, so an EWSTimeZone created from &#39;Europe/Copenhagen&#39; may

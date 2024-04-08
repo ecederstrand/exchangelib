@@ -1,6 +1,7 @@
 import abc
 import datetime
 import logging
+import warnings
 from contextlib import suppress
 from decimal import Decimal, InvalidOperation
 from importlib import import_module
@@ -739,16 +740,21 @@ class TimeZoneField(FieldURIField):
     def from_xml(self, elem, account):
         field_elem = elem.find(self.response_tag())
         if field_elem is not None:
-            ms_id = field_elem.get("Id")
-            ms_name = field_elem.get("Name")
+            tz_id = field_elem.get("Id") or field_elem.get("Name")
             try:
-                return self.value_cls.from_ms_id(ms_id or ms_name)
+                return self.value_cls.from_ms_id(tz_id)
             except UnknownTimeZone:
-                log.warning(
-                    "Cannot convert value '%s' on field '%s' to type %s (unknown timezone ID)",
-                    (ms_id or ms_name),
-                    self.name,
-                    self.value_cls,
+                warnings.warn(
+                    f"""\
+Cannot convert value {tz_id!r} on field {self.name!r} to type {self.value_cls.__name__!r} (unknown timezone ID).
+You can fix this by adding a custom entry into the timezone translation map:
+
+from exchangelib.winzone import MS_TIMEZONE_TO_IANA_MAP, CLDR_TO_MS_TIMEZONE_MAP
+
+# Replace "Some_Region/Some_Location" with a reasonable value from CLDR_TO_MS_TIMEZONE_MAP.keys()
+MS_TIMEZONE_TO_IANA_MAP[{tz_id!r}] = "Some_Region/Some_Location"
+
+# Your code here"""
                 )
                 return None
         return self.default
@@ -1161,6 +1167,19 @@ class MailboxListField(EWSElementListField):
         from .properties import Mailbox
 
         kwargs["value_cls"] = Mailbox
+        super().__init__(*args, **kwargs)
+
+    def clean(self, value, version=None):
+        if value is not None:
+            value = [self.value_cls(email_address=s) if isinstance(s, str) else s for s in value]
+        return super().clean(value, version=version)
+
+
+class AddressListField(EWSElementListField):
+    def __init__(self, *args, **kwargs):
+        from .properties import Address
+
+        kwargs["value_cls"] = Address
         super().__init__(*args, **kwargs)
 
     def clean(self, value, version=None):
@@ -1717,3 +1736,81 @@ class GenericEventListField(EWSElementField):
                 continue
             events.append(value_cls.from_xml(elem=event, account=account))
         return events or self.default
+
+
+FLAG_ACTION_CHOICES = [
+    Choice("Any"),
+    Choice("Call"),
+    Choice("DoNotForward"),
+    Choice("FollowUp"),
+    Choice("FYI"),
+    Choice("Forward"),
+    Choice("NoResponseNecessary"),
+    Choice("Read"),
+    Choice("Reply"),
+    Choice("ReplyToAll"),
+    Choice("Review"),
+]
+
+
+class FlaggedForActionField(ChoiceField):
+    """
+    A field specifies the flag for action value that
+    must appear on incoming messages in order for the condition
+    or exception to apply.
+    """
+
+    def __init__(self, *args, **kwargs):
+        kwargs["choices"] = FLAG_ACTION_CHOICES
+        super().__init__(*args, **kwargs)
+
+
+IMPORTANCE_CHOICES = [
+    Choice("Low"),
+    Choice("Normal"),
+    Choice("High"),
+]
+
+
+class ImportanceField(ChoiceField):
+    """
+    A field that describes the importance of an item or
+    the aggregated importance of all items in a conversation
+    in the current folder.
+    """
+
+    def __init__(self, *args, **kwargs):
+        kwargs["choices"] = IMPORTANCE_CHOICES
+        super().__init__(*args, **kwargs)
+
+
+SENSITIVITY_CHOICES = [
+    Choice("Normal"),
+    Choice("Personal"),
+    Choice("Private"),
+    Choice("Confidential"),
+]
+
+
+class SensitivityField(ChoiceField):
+    """A field that indicates the sensitivity level of an item."""
+
+    def __init__(self, *args, **kwargs):
+        kwargs["choices"] = SENSITIVITY_CHOICES
+        super().__init__(*args, **kwargs)
+
+
+class FolderActionField(EWSElementField):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def clean(self, value, version=None):
+        from .folders import DistinguishedFolderId, Folder
+
+        if isinstance(value, Folder):
+            folder_id = value.to_id()
+            if isinstance(folder_id, DistinguishedFolderId):
+                value = self.value_cls(distinguished_folder_id=folder_id)
+            else:
+                value = self.value_cls(folder_id=folder_id)
+        return super().clean(value, version=version)

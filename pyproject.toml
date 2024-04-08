@@ -1,3 +1,80 @@
+# Release notes:
+# *  Install pdoc3, wheel, twine
+# * Bump version in exchangelib/__init__.py
+# * Bump version in CHANGELOG.md
+# * Generate documentation:
+#     rm -r docs/exchangelib && pdoc3 --html exchangelib -o docs --force && pre-commit run end-of-file-fixer
+# * Commit and push changes
+# * Build package:
+#     rm -rf build dist exchangelib.egg-info && python -m build
+# * Push to PyPI:
+#     twine upload dist/*
+# * Create release on GitHub
+
+[project]
+name = "exchangelib"
+dynamic = ["version"]
+description = "Client for Microsoft Exchange Web Services (EWS)"
+readme = {file = "README.md", content-type = "text/markdown"}
+requires-python = ">=3.8"
+license = {text = "BSD-2-Clause"}
+keywords = [
+    "ews",
+    "exchange",
+    "autodiscover",
+    "microsoft",
+    "outlook",
+    "exchange-web-services",
+    "o365",
+    "office365",
+]
+authors = [
+    {name = "Erik Cederstrand", email = "erik@cederstrand.dk"}
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Topic :: Communications",
+    "License :: OSI Approved :: BSD License",
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    'backports.zoneinfo; python_version < "3.9"',
+    "cached_property",
+    "defusedxml >= 0.6.0",
+    "dnspython >= 2.2.0",
+    "isodate",
+    "lxml>3.0",
+    "oauthlib",
+    "pygments",
+    "requests >= 2.31.0",
+    "requests_ntlm >= 0.2.0",
+    "requests_oauthlib",
+    "tzdata",
+    "tzlocal",
+]
+
+[project.urls]
+Homepage = "https://github.com/ecederstrand/exchangelib"
+Issues = "https://github.com/ecederstrand/exchangelib/issues"
+Documentation = "https://ecederstrand.github.io/exchangelib/"
+Repository = "https://github.com/ecederstrand/exchangelib.git"
+Changelog = "https://github.com/ecederstrand/exchangelib/blob/master/CHANGELOG.md"
+
+[project.optional-dependencies]
+kerberos = ["requests_gssapi"]
+sspi = ["requests_negotiate_sspi"]
+complete = ["requests_gssapi", "requests_negotiate_sspi"]
+
+[tool.setuptools.dynamic]
+version = {attr = "exchangelib.__version__"}
+
+[bdist_wheel]
+universal = 1
+
+[tool.flake8]
+ignore = ["E203", "W503"]
+max-line-length = 120
+
 [tool.black]
 line-length = 120
 

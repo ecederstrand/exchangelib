@@ -544,7 +544,12 @@ class QuerySet(SearchableMixIn):
             account = self.folder_collection.account
             item_id = self._id_field.field.clean(kwargs[&#34;id&#34;], version=account.version)
             changekey = self._changekey_field.field.clean(kwargs.get(&#34;changekey&#34;), version=account.version)
-            items = list(account.fetch(ids=[(item_id, changekey)], only_fields=self.only_fields))
+            # The folders we&#39;re querying may not support all fields
+            if self.only_fields is None:
+                only_fields = {FieldPath(field=f) for f in self.folder_collection.allowed_item_fields()}
+            else:
+                only_fields = self.only_fields
+            items = list(account.fetch(ids=[(item_id, changekey)], only_fields=only_fields))
         else:
             new_qs = self.filter(*args, **kwargs)
             items = list(new_qs.__iter__())
@@ -1204,7 +1209,12 @@ chaining to build up complex queries.</p>
             account = self.folder_collection.account
             item_id = self._id_field.field.clean(kwargs[&#34;id&#34;], version=account.version)
             changekey = self._changekey_field.field.clean(kwargs.get(&#34;changekey&#34;), version=account.version)
-            items = list(account.fetch(ids=[(item_id, changekey)], only_fields=self.only_fields))
+            # The folders we&#39;re querying may not support all fields
+            if self.only_fields is None:
+                only_fields = {FieldPath(field=f) for f in self.folder_collection.allowed_item_fields()}
+            else:
+                only_fields = self.only_fields
+            items = list(account.fetch(ids=[(item_id, changekey)], only_fields=only_fields))
         else:
             new_qs = self.filter(*args, **kwargs)
             items = list(new_qs.__iter__())
@@ -1540,7 +1550,12 @@ to fetch and move per request. We're only fetching the IDs, so keep it high.</p>
         account = self.folder_collection.account
         item_id = self._id_field.field.clean(kwargs[&#34;id&#34;], version=account.version)
         changekey = self._changekey_field.field.clean(kwargs.get(&#34;changekey&#34;), version=account.version)
-        items = list(account.fetch(ids=[(item_id, changekey)], only_fields=self.only_fields))
+        # The folders we&#39;re querying may not support all fields
+        if self.only_fields is None:
+            only_fields = {FieldPath(field=f) for f in self.folder_collection.allowed_item_fields()}
+        else:
+            only_fields = self.only_fields
+        items = list(account.fetch(ids=[(item_id, changekey)], only_fields=only_fields))
     else:
         new_qs = self.filter(*args, **kwargs)
         items = list(new_qs.__iter__())

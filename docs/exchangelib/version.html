@@ -74,26 +74,6 @@ class Build:
             kwargs[k] = int(v)  # Also raises ValueError
         return cls(**kwargs)
 
-    @classmethod
-    def from_hex_string(cls, s):
-        &#34;&#34;&#34;Parse a server version string as returned in an autodiscover response. The process is described here:
-        https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/serverversion-pox#example
-
-        The string is a hex string that, converted to a 32-bit binary, encodes the server version. The rules are:
-            * The first 4 bits contain the version number structure version. Can be ignored
-            * The next 6 bits contain the major version number
-            * The next 6 bits contain the minor version number
-            * The next bit contains a flag. Can be ignored
-            * The next 15 bits contain the major build number
-
-        :param s:
-        &#34;&#34;&#34;
-        bin_s = f&#34;{int(s, 16):032b}&#34;  # Convert string to 32-bit binary string
-        major_version = int(bin_s[4:10], 2)
-        minor_version = int(bin_s[10:16], 2)
-        build_number = int(bin_s[17:32], 2)
-        return cls(major_version=major_version, minor_version=minor_version, major_build=build_number)
-
     def api_version(self):
         for build, api_version, _ in VERSIONS:
             if self.major_version != build.major_version or self.minor_version != build.minor_version:
@@ -175,7 +155,7 @@ EXCHANGE_O365 = Build(15, 20)
 # The list is sorted from newest to oldest build
 VERSIONS = (
     (EXCHANGE_O365, &#34;Exchange2016&#34;, &#34;Microsoft Exchange Server Office365&#34;),  # Not mentioned in list of build numbers
-    (EXCHANGE_2019, &#34;Exchange2019&#34;, &#34;Microsoft Exchange Server 2019&#34;),
+    (EXCHANGE_2019, &#34;Exchange2016&#34;, &#34;Microsoft Exchange Server 2019&#34;),
     (EXCHANGE_2016, &#34;Exchange2016&#34;, &#34;Microsoft Exchange Server 2016&#34;),
     (EXCHANGE_2015_SP1, &#34;Exchange2015_SP1&#34;, &#34;Microsoft Exchange Server 2015 SP1&#34;),
     (EXCHANGE_2015, &#34;Exchange2015&#34;, &#34;Microsoft Exchange Server 2015&#34;),
@@ -213,12 +193,14 @@ class Version:
     @property
     def fullname(self):
         for build, api_version, full_name in VERSIONS:
-            if self.build:
-                if self.build.major_version != build.major_version or self.build.minor_version != build.minor_version:
-                    continue
+            if self.build and (
+                self.build.major_version != build.major_version or self.build.minor_version != build.minor_version
+            ):
+                continue
             if self.api_version == api_version:
                 return full_name
-        raise ValueError(f&#34;Full name for API version {self.api_version} build {self.build} is unknown&#34;)
+        log.warning(&#34;Full name for API version %s build %s is unknown&#34;, self.api_version, self.build)
+        return &#34;UNKNOWN&#34;
 
     @classmethod
     def guess(cls, protocol, api_version_hint=None):
@@ -300,6 +282,9 @@ class Version:
     def all_versions(cls):
         # Return all supported versions, sorted newest to oldest
         return [cls(build=build, api_version=api_version) for build, api_version, _ in VERSIONS]
+
+    def __hash__(self):
+        return hash((self.build, self.api_version))
 
     def __eq__(self, other):
         if self.api_version != other.api_version:
@@ -423,26 +408,6 @@ def _supports_version(supported_from, deprecated_from, version):
             kwargs[k] = int(v)  # Also raises ValueError
         return cls(**kwargs)
 
-    @classmethod
-    def from_hex_string(cls, s):
-        &#34;&#34;&#34;Parse a server version string as returned in an autodiscover response. The process is described here:
-        https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/serverversion-pox#example
-
-        The string is a hex string that, converted to a 32-bit binary, encodes the server version. The rules are:
-            * The first 4 bits contain the version number structure version. Can be ignored
-            * The next 6 bits contain the major version number
-            * The next 6 bits contain the minor version number
-            * The next bit contains a flag. Can be ignored
-            * The next 15 bits contain the major build number
-
-        :param s:
-        &#34;&#34;&#34;
-        bin_s = f&#34;{int(s, 16):032b}&#34;  # Convert string to 32-bit binary string
-        major_version = int(bin_s[4:10], 2)
-        minor_version = int(bin_s[10:16], 2)
-        build_number = int(bin_s[17:32], 2)
-        return cls(major_version=major_version, minor_version=minor_version, major_build=build_number)
-
     def api_version(self):
         for build, api_version, _ in VERSIONS:
             if self.major_version != build.major_version or self.minor_version != build.minor_version:
@@ -495,44 +460,6 @@ def _supports_version(supported_from, deprecated_from, version):
 </details>
 <h3>Static methods</h3>
 <dl>
-<dt id="exchangelib.version.Build.from_hex_string"><code class="name flex">
-<span>def <span class="ident">from_hex_string</span></span>(<span>s)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Parse a server version string as returned in an autodiscover response. The process is described here:
-<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/serverversion-pox#example">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/serverversion-pox#example</a></p>
-<p>The string is a hex string that, converted to a 32-bit binary, encodes the server version. The rules are:
-* The first 4 bits contain the version number structure version. Can be ignored
-* The next 6 bits contain the major version number
-* The next 6 bits contain the minor version number
-* The next bit contains a flag. Can be ignored
-* The next 15 bits contain the major build number</p>
-<p>:param s:</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def from_hex_string(cls, s):
-    &#34;&#34;&#34;Parse a server version string as returned in an autodiscover response. The process is described here:
-    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/serverversion-pox#example
-
-    The string is a hex string that, converted to a 32-bit binary, encodes the server version. The rules are:
-        * The first 4 bits contain the version number structure version. Can be ignored
-        * The next 6 bits contain the major version number
-        * The next 6 bits contain the minor version number
-        * The next bit contains a flag. Can be ignored
-        * The next 15 bits contain the major build number
-
-    :param s:
-    &#34;&#34;&#34;
-    bin_s = f&#34;{int(s, 16):032b}&#34;  # Convert string to 32-bit binary string
-    major_version = int(bin_s[4:10], 2)
-    minor_version = int(bin_s[10:16], 2)
-    build_number = int(bin_s[17:32], 2)
-    return cls(major_version=major_version, minor_version=minor_version, major_build=build_number)</code></pre>
-</details>
-</dd>
 <dt id="exchangelib.version.Build.from_xml"><code class="name flex">
 <span>def <span class="ident">from_xml</span></span>(<span>elem)</span>
 </code></dt>
@@ -742,12 +669,14 @@ def supports_version(cls, version):
     @property
     def fullname(self):
         for build, api_version, full_name in VERSIONS:
-            if self.build:
-                if self.build.major_version != build.major_version or self.build.minor_version != build.minor_version:
-                    continue
+            if self.build and (
+                self.build.major_version != build.major_version or self.build.minor_version != build.minor_version
+            ):
+                continue
             if self.api_version == api_version:
                 return full_name
-        raise ValueError(f&#34;Full name for API version {self.api_version} build {self.build} is unknown&#34;)
+        log.warning(&#34;Full name for API version %s build %s is unknown&#34;, self.api_version, self.build)
+        return &#34;UNKNOWN&#34;
 
     @classmethod
     def guess(cls, protocol, api_version_hint=None):
@@ -829,6 +758,9 @@ def supports_version(cls, version):
     def all_versions(cls):
         # Return all supported versions, sorted newest to oldest
         return [cls(build=build, api_version=api_version) for build, api_version, _ in VERSIONS]
+
+    def __hash__(self):
+        return hash((self.build, self.api_version))
 
     def __eq__(self, other):
         if self.api_version != other.api_version:
@@ -978,12 +910,14 @@ def guess(cls, protocol, api_version_hint=None):
 <pre><code class="python">@property
 def fullname(self):
     for build, api_version, full_name in VERSIONS:
-        if self.build:
-            if self.build.major_version != build.major_version or self.build.minor_version != build.minor_version:
-                continue
+        if self.build and (
+            self.build.major_version != build.major_version or self.build.minor_version != build.minor_version
+        ):
+            continue
         if self.api_version == api_version:
             return full_name
-    raise ValueError(f&#34;Full name for API version {self.api_version} build {self.build} is unknown&#34;)</code></pre>
+    log.warning(&#34;Full name for API version %s build %s is unknown&#34;, self.api_version, self.build)
+    return &#34;UNKNOWN&#34;</code></pre>
 </details>
 </dd>
 </dl>
@@ -1024,7 +958,6 @@ def fullname(self):
 <h4><code><a title="exchangelib.version.Build" href="#exchangelib.version.Build">Build</a></code></h4>
 <ul class="two-column">
 <li><code><a title="exchangelib.version.Build.api_version" href="#exchangelib.version.Build.api_version">api_version</a></code></li>
-<li><code><a title="exchangelib.version.Build.from_hex_string" href="#exchangelib.version.Build.from_hex_string">from_hex_string</a></code></li>
 <li><code><a title="exchangelib.version.Build.from_xml" href="#exchangelib.version.Build.from_xml">from_xml</a></code></li>
 <li><code><a title="exchangelib.version.Build.major_build" href="#exchangelib.version.Build.major_build">major_build</a></code></li>
 <li><code><a title="exchangelib.version.Build.major_version" href="#exchangelib.version.Build.major_version">major_version</a></code></li>

@@ -4,6 +4,7 @@ A protocol is an endpoint for EWS service connections. It contains all necessary
 Protocols should be accessed through an Account, and are either created from a default Configuration or autodiscovered
 when creating an Account.
 """
+
 import abc
 import datetime
 import logging
@@ -129,6 +130,15 @@ class BaseProtocol:
         with self._session_pool_lock:
             self.config._credentials = value
             self.close()
+
+    @property
+    def max_connections(self):
+        return self._session_pool_maxsize
+
+    @max_connections.setter
+    def max_connections(self, value):
+        with self._session_pool_lock:
+            self._session_pool_maxsize = value or self.SESSION_POOLSIZE
 
     @property
     def retry_policy(self):

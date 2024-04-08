@@ -6,7 +6,7 @@ from cached_property import threaded_cached_property
 from .autodiscover import Autodiscovery
 from .configuration import Configuration
 from .credentials import ACCESS_TYPES, DELEGATE, IMPERSONATION
-from .errors import InvalidEnumValue, InvalidTypeError, UnknownTimeZone
+from .errors import InvalidEnumValue, InvalidTypeError, ResponseMessageError, UnknownTimeZone
 from .ewsdatetime import UTC, EWSTimeZone
 from .fields import FieldPath, TextField
 from .folders import (
@@ -54,17 +54,21 @@ from .folders import (
     ToDoSearch,
     VoiceMail,
 )
+from .folders.collections import PullSubscription, PushSubscription, StreamingSubscription
 from .items import ALL_OCCURRENCES, AUTO_RESOLVE, HARD_DELETE, ID_ONLY, SAVE_ONLY, SEND_TO_NONE
-from .properties import EWSElement, Mailbox, SendingAs
+from .properties import EWSElement, Mailbox, Rule, SendingAs
 from .protocol import Protocol
 from .queryset import QuerySet
 from .services import (
     ArchiveItem,
     CopyItem,
+    CreateInboxRule,
     CreateItem,
+    DeleteInboxRule,
     DeleteItem,
     ExportItems,
     GetDelegate,
+    GetInboxRules,
     GetItem,
     GetMailTips,
     GetPersona,
@@ -72,7 +76,12 @@ from .services import (
     MarkAsJunk,
     MoveItem,
     SendItem,
+    SetInboxRule,
     SetUserOofSettings,
+    SubscribeToPull,
+    SubscribeToPush,
+    SubscribeToStreaming,
+    Unsubscribe,
     UpdateItem,
     UploadItems,
 )
@@ -157,11 +166,16 @@ class Account:
             raise InvalidTypeError("config", config, Configuration)
         if autodiscover:
             if config:
-                auth_type, retry_policy, version = config.auth_type, config.retry_policy, config.version
+                auth_type, retry_policy, version, max_connections = (
+                    config.auth_type,
+                    config.retry_policy,
+                    config.version,
+                    config.max_connections,
+                )
                 if not credentials:
                     credentials = config.credentials
             else:
-                auth_type, retry_policy, version = None, None, None
+                auth_type, retry_policy, version, max_connections = None, None, None, None
             self.ad_response, self.protocol = Autodiscovery(
                 email=primary_smtp_address, credentials=credentials
             ).discover()
@@ -171,6 +185,7 @@ class Account:
                 self.protocol.config.retry_policy = retry_policy
             if version:
                 self.protocol.config.version = version
+            self.protocol.max_connections = max_connections
             primary_smtp_address = self.ad_response.autodiscover_smtp_address
         else:
             if not config:
@@ -744,6 +759,111 @@ class Account:
     def delegates(self):
         """Return a list of DelegateUser objects representing the delegates that are set on this account."""
         return list(GetDelegate(account=self).call(user_ids=None, include_permissions=True))
+
+    @property
+    def rules(self):
+        """Return a list of Rule objects representing the rules that are set on this account."""
+        return list(GetInboxRules(account=self).call())
+
+    def create_rule(self, rule: Rule):
+        """Create an Inbox rule.
+
+        :param rule: The rule to create. Must have at least 'display_name' set.
+        :return: None if success, else raises an error.
+        """
+        CreateInboxRule(account=self).get(rule=rule, remove_outlook_rule_blob=True)
+        # After creating the rule, query all rules,
+        # find the rule that was just created, and return its ID.
+        try:
+            rule.id = {i.display_name: i for i in GetInboxRules(account=self).call()}[rule.display_name].id
+        except KeyError:
+            raise ResponseMessageError(f"Failed to create rule ({rule.display_name})!")
+
+    def set_rule(self, rule: Rule):
+        """Modify an Inbox rule.
+
+        :param rule: The rule to set. Must have an ID.
+        :return: None if success, else raises an error.
+        """
+        SetInboxRule(account=self).get(rule=rule)
+
+    def delete_rule(self, rule: Rule):
+        """Delete an Inbox rule.
+
+        :param rule: The rule to delete. Must have an ID.
+        :return: None if success, else raises an error.
+        """
+        if not rule.id:
+            raise ValueError("Rule must have an ID")
+        DeleteInboxRule(account=self).get(rule=rule)
+        rule.id = None
+
+    def subscribe_to_pull(self, event_types=None, watermark=None, timeout=60):
+        """Create a pull subscription.
+
+        :param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPull.EVENT_TYPES
+        :param watermark: An event bookmark as returned by some sync services
+        :param timeout: Timeout of the subscription, in minutes. Timeout is reset when the server receives a
+        GetEvents request for this subscription.
+        :return: The subscription ID and a watermark
+        """
+        if event_types is None:
+            event_types = SubscribeToPull.EVENT_TYPES
+        return SubscribeToPull(account=self).get(
+            folders=None,
+            event_types=event_types,
+            watermark=watermark,
+            timeout=timeout,
+        )
+
+    def subscribe_to_push(self, callback_url, event_types=None, watermark=None, status_frequency=1):
+        """Create a push subscription.
+
+        :param callback_url: A client-defined URL that the server will call
+        :param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPush.EVENT_TYPES
+        :param watermark: An event bookmark as returned by some sync services
+        :param status_frequency: The frequency, in minutes, that the callback URL will be called with.
+        :return: The subscription ID and a watermark
+        """
+        if event_types is None:
+            event_types = SubscribeToPush.EVENT_TYPES
+        return SubscribeToPush(account=self).get(
+            folders=None,
+            event_types=event_types,
+            watermark=watermark,
+            status_frequency=status_frequency,
+            url=callback_url,
+        )
+
+    def subscribe_to_streaming(self, event_types=None):
+        """Create a streaming subscription.
+
+        :param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPush.EVENT_TYPES
+        :return: The subscription ID
+        """
+        if event_types is None:
+            event_types = SubscribeToStreaming.EVENT_TYPES
+        return SubscribeToStreaming(account=self).get(folders=None, event_types=event_types)
+
+    def pull_subscription(self, **kwargs):
+        return PullSubscription(target=self, **kwargs)
+
+    def push_subscription(self, **kwargs):
+        return PushSubscription(target=self, **kwargs)
+
+    def streaming_subscription(self, **kwargs):
+        return StreamingSubscription(target=self, **kwargs)
+
+    def unsubscribe(self, subscription_id):
+        """Unsubscribe. Only applies to pull and streaming notifications.
+
+        :param subscription_id: A subscription ID as acquired by .subscribe_to_[pull|streaming]()
+        :return: True
+
+        This method doesn't need the current collection instance, but it makes sense to keep the method along the other
+        sync methods.
+        """
+        return Unsubscribe(account=self).get(subscription_id=subscription_id)
 
     def __str__(self):
         if self.fullname:

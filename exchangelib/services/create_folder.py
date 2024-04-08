@@ -1,6 +1,6 @@
 from ..errors import ErrorFolderExists
 from ..util import MNS, create_element
-from .common import EWSAccountService, folder_ids_element, parse_folder_elem
+from .common import EWSAccountService, folder_ids_element, parse_folder_elem, set_xml_value
 
 
 class CreateFolder(EWSAccountService):
@@ -38,5 +38,8 @@ class CreateFolder(EWSAccountService):
         payload.append(
             folder_ids_element(folders=[parent_folder], version=self.account.version, tag="m:ParentFolderId")
         )
-        payload.append(folder_ids_element(folders=folders, version=self.account.version, tag="m:Folders"))
+        folder_elems = create_element("m:Folders")
+        for folder in folders:
+            set_xml_value(folder_elems, folder, version=self.account.version)
+        payload.append(folder_elems)
         return payload

@@ -68,6 +68,7 @@ from .calendar_item import (
     MeetingRequest,
     MeetingResponse,
     TentativelyAcceptItem,
+    _Booking,
 )
 from .contact import Contact, DistributionList, Persona
 from .item import BaseItem, Item
@@ -90,6 +91,7 @@ SEARCH_SCOPE_CHOICES = (ACTIVE_DIRECTORY, ACTIVE_DIRECTORY_CONTACTS, CONTACTS, C
 
 
 ITEM_CLASSES = (
+    _Booking,
     CalendarItem,
     Contact,
     DistributionList,
@@ -1281,7 +1283,10 @@ we use folder.account.</p></div>
     )
     direct_reports = MailboxListField(
         field_uri=&#34;contacts:DirectReports&#34;, supported_from=EXCHANGE_2010_SP2, is_read_only=True
-    )</code></pre>
+    )
+    # O365 throws ErrorInternalServerError &#34;[0x004f0102] MapiReplyToBlob&#34; if UniqueBody is requested
+    unique_body_idx = Item.FIELDS.index_by_name(&#34;unique_body&#34;)
+    FIELDS = Item.FIELDS[:unique_body_idx] + Item.FIELDS[unique_body_idx + 1 :]</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -1298,6 +1303,10 @@ we use folder.account.</p></div>
 <div class="desc"></div>
 </dd>
 <dt id="exchangelib.items.Contact.FIELDS"><code class="name">var <span class="ident">FIELDS</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.items.Contact.unique_body_idx"><code class="name">var <span class="ident">unique_body_idx</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1569,7 +1578,11 @@ we use folder.account.</p></div>
     contact_source = ChoiceField(
         field_uri=&#34;contacts:ContactSource&#34;, choices={Choice(&#34;Store&#34;), Choice(&#34;ActiveDirectory&#34;)}, is_read_only=True
     )
-    members = MemberListField(field_uri=&#34;distributionlist:Members&#34;)</code></pre>
+    members = MemberListField(field_uri=&#34;distributionlist:Members&#34;)
+
+    # O365 throws ErrorInternalServerError &#34;[0x004f0102] MapiReplyToBlob&#34; if UniqueBody is requested
+    unique_body_idx = Item.FIELDS.index_by_name(&#34;unique_body&#34;)
+    FIELDS = Item.FIELDS[:unique_body_idx] + Item.FIELDS[unique_body_idx + 1 :]</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -1586,6 +1599,10 @@ we use folder.account.</p></div>
 <div class="desc"></div>
 </dd>
 <dt id="exchangelib.items.DistributionList.FIELDS"><code class="name">var <span class="ident">FIELDS</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.items.DistributionList.unique_body_idx"><code class="name">var <span class="ident">unique_body_idx</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1877,12 +1894,9 @@ we use folder.account.</p></div>
     @require_id
     def refresh(self):
         # Updates the item based on fresh data from EWS
-        from ..folders import Folder
         from ..services import GetItem
 
-        additional_fields = {
-            FieldPath(field=f) for f in Folder(root=self.account.root).allowed_item_fields(version=self.account.version)
-        }
+        additional_fields = {FieldPath(field=f) for f in self.supported_fields(version=self.account.version)}
         res = GetItem(account=self.account).get(items=[self], additional_fields=additional_fields, shape=ID_ONLY)
         if self.id != res.id and not isinstance(self._id, (OccurrenceItemId, RecurringMasterItemId)):
             # When we refresh an item with an OccurrenceItemId as ID, EWS returns the ID of the occurrence, so
@@ -2045,7 +2059,7 @@ we use folder.account.</p></div>
         )
 
     def forward(self, subject, body, to_recipients, cc_recipients=None, bcc_recipients=None):
-        self.create_forward(
+        return self.create_forward(
             subject,
             body,
             to_recipients,
@@ -2064,6 +2078,7 @@ we use folder.account.</p></div>
 <ul class="hlist">
 <li><a title="exchangelib.items.calendar_item.BaseMeetingItem" href="calendar_item.html#exchangelib.items.calendar_item.BaseMeetingItem">BaseMeetingItem</a></li>
 <li><a title="exchangelib.items.calendar_item.CalendarItem" href="calendar_item.html#exchangelib.items.calendar_item.CalendarItem">CalendarItem</a></li>
+<li>exchangelib.items.calendar_item._Booking</li>
 <li><a title="exchangelib.items.contact.Contact" href="contact.html#exchangelib.items.contact.Contact">Contact</a></li>
 <li><a title="exchangelib.items.contact.DistributionList" href="contact.html#exchangelib.items.contact.DistributionList">DistributionList</a></li>
 <li><a title="exchangelib.items.message.Message" href="message.html#exchangelib.items.message.Message">Message</a></li>
@@ -2406,7 +2421,7 @@ simply not be created on the server the item is saved.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def forward(self, subject, body, to_recipients, cc_recipients=None, bcc_recipients=None):
-    self.create_forward(
+    return self.create_forward(
         subject,
         body,
         to_recipients,
@@ -2479,12 +2494,9 @@ def move(self, to_folder):
 <pre><code class="python">@require_id
 def refresh(self):
     # Updates the item based on fresh data from EWS
-    from ..folders import Folder
     from ..services import GetItem
 
-    additional_fields = {
-        FieldPath(field=f) for f in Folder(root=self.account.root).allowed_item_fields(version=self.account.version)
-    }
+    additional_fields = {FieldPath(field=f) for f in self.supported_fields(version=self.account.version)}
     res = GetItem(account=self.account).get(items=[self], additional_fields=additional_fields, shape=ID_ONLY)
     if self.id != res.id and not isinstance(self._id, (OccurrenceItemId, RecurringMasterItemId)):
         # When we refresh an item with an OccurrenceItemId as ID, EWS returns the ID of the occurrence, so
@@ -3076,32 +3088,30 @@ we use folder.account.</p></div>
     ):
         # Sends Message and saves a copy in the parent folder. Does not return an ItemId.
         if self.id:
-            self._update(
+            return self._update(
                 update_fieldnames=update_fields,
                 message_disposition=SEND_AND_SAVE_COPY,
                 conflict_resolution=conflict_resolution,
                 send_meeting_invitations=send_meeting_invitations,
             )
-        else:
-            if self.account.version.build &lt; EXCHANGE_2013 and self.attachments:
-                # At least some versions prior to Exchange 2013 can&#39;t send-and-save attachments immediately. You need
-                # to first save, then attach, then send. This is done in save().
-                self.save(
-                    update_fields=update_fields,
-                    conflict_resolution=conflict_resolution,
-                    send_meeting_invitations=send_meeting_invitations,
-                )
-                self.send(
-                    save_copy=False,
-                    conflict_resolution=conflict_resolution,
-                    send_meeting_invitations=send_meeting_invitations,
-                )
-            else:
-                self._create(message_disposition=SEND_AND_SAVE_COPY, send_meeting_invitations=send_meeting_invitations)
+        if self.account.version.build &lt; EXCHANGE_2013 and self.attachments:
+            # At least some versions prior to Exchange 2013 can&#39;t send-and-save attachments immediately. You need
+            # to first save, then attach, then send. This is done in save().
+            self.save(
+                update_fields=update_fields,
+                conflict_resolution=conflict_resolution,
+                send_meeting_invitations=send_meeting_invitations,
+            )
+            return self.send(
+                save_copy=False,
+                conflict_resolution=conflict_resolution,
+                send_meeting_invitations=send_meeting_invitations,
+            )
+        return self._create(message_disposition=SEND_AND_SAVE_COPY, send_meeting_invitations=send_meeting_invitations)
 
     @require_id
-    def create_reply(self, subject, body, to_recipients=None, cc_recipients=None, bcc_recipients=None):
-        if to_recipients is None:
+    def create_reply(self, subject, body, to_recipients=None, cc_recipients=None, bcc_recipients=None, author=None):
+        if not to_recipients:
             if not self.author:
                 raise ValueError(&#34;&#39;to_recipients&#39; must be set when message has no &#39;author&#39;&#34;)
             to_recipients = [self.author]
@@ -3113,28 +3123,36 @@ we use folder.account.</p></div>
             to_recipients=to_recipients,
             cc_recipients=cc_recipients,
             bcc_recipients=bcc_recipients,
+            author=author,
         )
 
-    def reply(self, subject, body, to_recipients=None, cc_recipients=None, bcc_recipients=None):
-        self.create_reply(subject, body, to_recipients, cc_recipients, bcc_recipients).send()
+    def reply(self, subject, body, to_recipients=None, cc_recipients=None, bcc_recipients=None, author=None):
+        return self.create_reply(subject, body, to_recipients, cc_recipients, bcc_recipients, author).send()
 
     @require_id
-    def create_reply_all(self, subject, body):
-        to_recipients = list(self.to_recipients) if self.to_recipients else []
+    def create_reply_all(self, subject, body, author=None):
+        me = MailboxField().clean(self.account.primary_smtp_address.lower())
+        to_recipients = set(self.to_recipients or [])
+        to_recipients.discard(me)
+        cc_recipients = set(self.cc_recipients or [])
+        cc_recipients.discard(me)
+        bcc_recipients = set(self.bcc_recipients or [])
+        bcc_recipients.discard(me)
         if self.author:
-            to_recipients.append(self.author)
+            to_recipients.add(self.author)
         return ReplyAllToItem(
             account=self.account,
             reference_item_id=ReferenceItemId(id=self.id, changekey=self.changekey),
             subject=subject,
             new_body=body,
-            to_recipients=to_recipients,
-            cc_recipients=self.cc_recipients,
-            bcc_recipients=self.bcc_recipients,
+            to_recipients=list(to_recipients),
+            cc_recipients=list(cc_recipients),
+            bcc_recipients=list(bcc_recipients),
+            author=author,
         )
 
-    def reply_all(self, subject, body):
-        self.create_reply_all(subject, body).send()
+    def reply_all(self, subject, body, author=None):
+        return self.create_reply_all(subject, body, author).send()
 
     def mark_as_junk(self, is_junk=True, move_item=True):
         &#34;&#34;&#34;Mark or un-marks items as junk email.
@@ -3247,7 +3265,7 @@ we use folder.account.</p></div>
 <h3>Methods</h3>
 <dl>
 <dt id="exchangelib.items.Message.create_reply"><code class="name flex">
-<span>def <span class="ident">create_reply</span></span>(<span>self, subject, body, to_recipients=None, cc_recipients=None, bcc_recipients=None)</span>
+<span>def <span class="ident">create_reply</span></span>(<span>self, subject, body, to_recipients=None, cc_recipients=None, bcc_recipients=None, author=None)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3256,8 +3274,8 @@ we use folder.account.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@require_id
-def create_reply(self, subject, body, to_recipients=None, cc_recipients=None, bcc_recipients=None):
-    if to_recipients is None:
+def create_reply(self, subject, body, to_recipients=None, cc_recipients=None, bcc_recipients=None, author=None):
+    if not to_recipients:
         if not self.author:
             raise ValueError(&#34;&#39;to_recipients&#39; must be set when message has no &#39;author&#39;&#34;)
         to_recipients = [self.author]
@@ -3269,11 +3287,12 @@ def create_reply(self, subject, body, to_recipients=None, cc_recipients=None, bc
         to_recipients=to_recipients,
         cc_recipients=cc_recipients,
         bcc_recipients=bcc_recipients,
+        author=author,
     )</code></pre>
 </details>
 </dd>
 <dt id="exchangelib.items.Message.create_reply_all"><code class="name flex">
-<span>def <span class="ident">create_reply_all</span></span>(<span>self, subject, body)</span>
+<span>def <span class="ident">create_reply_all</span></span>(<span>self, subject, body, author=None)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3282,18 +3301,25 @@ def create_reply(self, subject, body, to_recipients=None, cc_recipients=None, bc
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@require_id
-def create_reply_all(self, subject, body):
-    to_recipients = list(self.to_recipients) if self.to_recipients else []
+def create_reply_all(self, subject, body, author=None):
+    me = MailboxField().clean(self.account.primary_smtp_address.lower())
+    to_recipients = set(self.to_recipients or [])
+    to_recipients.discard(me)
+    cc_recipients = set(self.cc_recipients or [])
+    cc_recipients.discard(me)
+    bcc_recipients = set(self.bcc_recipients or [])
+    bcc_recipients.discard(me)
     if self.author:
-        to_recipients.append(self.author)
+        to_recipients.add(self.author)
     return ReplyAllToItem(
         account=self.account,
         reference_item_id=ReferenceItemId(id=self.id, changekey=self.changekey),
         subject=subject,
         new_body=body,
-        to_recipients=to_recipients,
-        cc_recipients=self.cc_recipients,
-        bcc_recipients=self.bcc_recipients,
+        to_recipients=list(to_recipients),
+        cc_recipients=list(cc_recipients),
+        bcc_recipients=list(bcc_recipients),
+        author=author,
     )</code></pre>
 </details>
 </dd>
@@ -3330,7 +3356,7 @@ removed.
 </details>
 </dd>
 <dt id="exchangelib.items.Message.reply"><code class="name flex">
-<span>def <span class="ident">reply</span></span>(<span>self, subject, body, to_recipients=None, cc_recipients=None, bcc_recipients=None)</span>
+<span>def <span class="ident">reply</span></span>(<span>self, subject, body, to_recipients=None, cc_recipients=None, bcc_recipients=None, author=None)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3338,12 +3364,12 @@ removed.
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def reply(self, subject, body, to_recipients=None, cc_recipients=None, bcc_recipients=None):
-    self.create_reply(subject, body, to_recipients, cc_recipients, bcc_recipients).send()</code></pre>
+<pre><code class="python">def reply(self, subject, body, to_recipients=None, cc_recipients=None, bcc_recipients=None, author=None):
+    return self.create_reply(subject, body, to_recipients, cc_recipients, bcc_recipients, author).send()</code></pre>
 </details>
 </dd>
 <dt id="exchangelib.items.Message.reply_all"><code class="name flex">
-<span>def <span class="ident">reply_all</span></span>(<span>self, subject, body)</span>
+<span>def <span class="ident">reply_all</span></span>(<span>self, subject, body, author=None)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3351,8 +3377,8 @@ removed.
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def reply_all(self, subject, body):
-    self.create_reply_all(subject, body).send()</code></pre>
+<pre><code class="python">def reply_all(self, subject, body, author=None):
+    return self.create_reply_all(subject, body, author).send()</code></pre>
 </details>
 </dd>
 <dt id="exchangelib.items.Message.send"><code class="name flex">
@@ -3421,28 +3447,26 @@ def send(
 ):
     # Sends Message and saves a copy in the parent folder. Does not return an ItemId.
     if self.id:
-        self._update(
+        return self._update(
             update_fieldnames=update_fields,
             message_disposition=SEND_AND_SAVE_COPY,
             conflict_resolution=conflict_resolution,
             send_meeting_invitations=send_meeting_invitations,
         )
-    else:
-        if self.account.version.build &lt; EXCHANGE_2013 and self.attachments:
-            # At least some versions prior to Exchange 2013 can&#39;t send-and-save attachments immediately. You need
-            # to first save, then attach, then send. This is done in save().
-            self.save(
-                update_fields=update_fields,
-                conflict_resolution=conflict_resolution,
-                send_meeting_invitations=send_meeting_invitations,
-            )
-            self.send(
-                save_copy=False,
-                conflict_resolution=conflict_resolution,
-                send_meeting_invitations=send_meeting_invitations,
-            )
-        else:
-            self._create(message_disposition=SEND_AND_SAVE_COPY, send_meeting_invitations=send_meeting_invitations)</code></pre>
+    if self.account.version.build &lt; EXCHANGE_2013 and self.attachments:
+        # At least some versions prior to Exchange 2013 can&#39;t send-and-save attachments immediately. You need
+        # to first save, then attach, then send. This is done in save().
+        self.save(
+            update_fields=update_fields,
+            conflict_resolution=conflict_resolution,
+            send_meeting_invitations=send_meeting_invitations,
+        )
+        return self.send(
+            save_copy=False,
+            conflict_resolution=conflict_resolution,
+            send_meeting_invitations=send_meeting_invitations,
+        )
+    return self._create(message_disposition=SEND_AND_SAVE_COPY, send_meeting_invitations=send_meeting_invitations)</code></pre>
 </details>
 </dd>
 </dl>
@@ -4571,6 +4595,10 @@ we use folder.account.</p></div>
     status_description = CharField(field_uri=&#34;task:StatusDescription&#34;, is_read_only=True)
     total_work = IntegerField(field_uri=&#34;task:TotalWork&#34;, min=0)
 
+    # O365 throws ErrorInternalServerError &#34;[0x004f0102] MapiReplyToBlob&#34; if UniqueBody is requested
+    unique_body_idx = Item.FIELDS.index_by_name(&#34;unique_body&#34;)
+    FIELDS = Item.FIELDS[:unique_body_idx] + Item.FIELDS[unique_body_idx + 1 :]
+
     def clean(self, version=None):
         super().clean(version=version)
         if self.due_date and self.start_date and self.due_date &lt; self.start_date:
@@ -4646,6 +4674,10 @@ we use folder.account.</p></div>
 <div class="desc"></div>
 </dd>
 <dt id="exchangelib.items.Task.NOT_STARTED"><code class="name">var <span class="ident">NOT_STARTED</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.items.Task.unique_body_idx"><code class="name">var <span class="ident">unique_body_idx</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -5045,6 +5077,7 @@ we use folder.account.</p></div>
 <li><code><a title="exchangelib.items.Contact.profession" href="#exchangelib.items.Contact.profession">profession</a></code></li>
 <li><code><a title="exchangelib.items.Contact.spouse_name" href="#exchangelib.items.Contact.spouse_name">spouse_name</a></code></li>
 <li><code><a title="exchangelib.items.Contact.surname" href="#exchangelib.items.Contact.surname">surname</a></code></li>
+<li><code><a title="exchangelib.items.Contact.unique_body_idx" href="#exchangelib.items.Contact.unique_body_idx">unique_body_idx</a></code></li>
 <li><code><a title="exchangelib.items.Contact.user_smime_certificate" href="#exchangelib.items.Contact.user_smime_certificate">user_smime_certificate</a></code></li>
 <li><code><a title="exchangelib.items.Contact.wedding_anniversary" href="#exchangelib.items.Contact.wedding_anniversary">wedding_anniversary</a></code></li>
 </ul>
@@ -5064,6 +5097,7 @@ we use folder.account.</p></div>
 <li><code><a title="exchangelib.items.DistributionList.display_name" href="#exchangelib.items.DistributionList.display_name">display_name</a></code></li>
 <li><code><a title="exchangelib.items.DistributionList.file_as" href="#exchangelib.items.DistributionList.file_as">file_as</a></code></li>
 <li><code><a title="exchangelib.items.DistributionList.members" href="#exchangelib.items.DistributionList.members">members</a></code></li>
+<li><code><a title="exchangelib.items.DistributionList.unique_body_idx" href="#exchangelib.items.DistributionList.unique_body_idx">unique_body_idx</a></code></li>
 </ul>
 </li>
 <li>
@@ -5417,6 +5451,7 @@ we use folder.account.</p></div>
 <li><code><a title="exchangelib.items.Task.status" href="#exchangelib.items.Task.status">status</a></code></li>
 <li><code><a title="exchangelib.items.Task.status_description" href="#exchangelib.items.Task.status_description">status_description</a></code></li>
 <li><code><a title="exchangelib.items.Task.total_work" href="#exchangelib.items.Task.total_work">total_work</a></code></li>
+<li><code><a title="exchangelib.items.Task.unique_body_idx" href="#exchangelib.items.Task.unique_body_idx">unique_body_idx</a></code></li>
 </ul>
 </li>
 <li>

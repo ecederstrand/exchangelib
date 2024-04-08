@@ -1,5 +1,6 @@
 import time
 
+from exchangelib.errors import ErrorItemNotFound
 from exchangelib.folders import FolderCollection, Inbox
 from exchangelib.items import ASSOCIATED, SHALLOW, Message
 from exchangelib.queryset import DoesNotExist, MultipleObjectsReturned, QuerySet
@@ -192,6 +193,11 @@ class ItemQuerySetTest(BaseItemTest):
         self.assertEqual(item.changekey, get_item.changekey)
         self.assertEqual(item.subject, get_item.subject)
         self.assertEqual(item.body, get_item.body)
+        item_id = item.id
+        item.delete()
+        with self.assertRaises(ErrorItemNotFound):
+            self.test_folder.get(id=item_id, changekey=None)
+        item = self.get_test_item().save()
 
         # Test a get() from queryset
         get_item = self.test_folder.all().get(id=item.id, changekey=item.changekey)

@@ -37,7 +37,7 @@ class FindFolder(EWSPagingService):
             raise InvalidEnumValue("depth", depth, FOLDER_TRAVERSAL_CHOICES)
         roots = {f.root for f in folders}
         if len(roots) != 1:
-            raise ValueError(f"All folders in 'roots' must have the same root hierarchy ({roots})")
+            raise ValueError(f"All folders must have the same root hierarchy ({roots})")
         self.root = roots.pop()
         return self._elems_to_objs(
             self._paged_call(

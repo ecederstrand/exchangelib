@@ -53,7 +53,7 @@ from pygments.formatters.terminal import TerminalFormatter
 from pygments.lexers.html import XmlLexer
 from requests_oauthlib import OAuth2Session
 
-from .errors import MalformedResponseError, RateLimitError, RedirectError, RelativeRedirect, TransportError
+from .errors import ErrorInternalServerTransientError, ErrorTimeoutExpired, RelativeRedirect, TransportError
 
 log = logging.getLogger(__name__)
 xml_log = logging.getLogger(f&#34;{__name__}.xml&#34;)
@@ -96,6 +96,7 @@ class ElementNotFound(Exception):
 # Regex of UTF-8 control characters that are illegal in XML 1.0 (and XML 1.1).
 # See https://stackoverflow.com/a/22273639/219640
 _ILLEGAL_XML_CHARS_RE = re.compile(&#34;[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F-\x84\x86-\x9F\uFDD0-\uFDDF\uFFFE\uFFFF]&#34;)
+_ILLEGAL_XML_ESCAPE_CHARS_RE = re.compile(rb&#34;&amp;(#[0-9]+;?|#[xX][0-9a-fA-F]+;?)&#34;)  # Could match the above better
 
 # XML namespaces
 SOAPNS = &#34;http://schemas.xmlsoap.org/soap/envelope/&#34;
@@ -296,6 +297,13 @@ def safe_xml_value(value, replacement=&#34;?&#34;):
     return _ILLEGAL_XML_CHARS_RE.sub(replacement, value)
 
 
+def sanitize_xml(data, replacement=b&#34;?&#34;):
+    if not isinstance(data, bytes):
+        # We may get data=&#34;&#34; from some expatreader versions
+        return data
+    return _ILLEGAL_XML_ESCAPE_CHARS_RE.sub(replacement, data)
+
+
 def create_element(name, attrs=None, nsmap=None):
     if &#34;:&#34; in name:
         ns, name = name.split(&#34;:&#34;)
@@ -390,19 +398,20 @@ class StreamingBase64Parser(DefusedExpatParser):
         collected_data = []
         while buffer:
             if not self.element_found:
-                collected_data += buffer
+                collected_data.extend(buffer)
             yield from self.feed(buffer)
             buffer = file.read(self._bufsize)
         # Any remaining data in self.buffer should be padding chars now
         self.buffer = None
         self.close()
         if not self.element_found:
-            data = bytes(collected_data)
-            raise ElementNotFound(&#34;The element to be streamed from was not found&#34;, data=bytes(data))
+            raise ElementNotFound(&#34;The element to be streamed from was not found&#34;, data=bytes(collected_data))
 
     def feed(self, data, isFinal=0):
-        &#34;&#34;&#34;Yield the current content of the character buffer.&#34;&#34;&#34;
-        DefusedExpatParser.feed(self, data=data, isFinal=isFinal)
+        &#34;&#34;&#34;Yield the current content of the character buffer. The input XML may contain illegal characters. The lxml
+        parser handles this gracefully with the &#39;recover&#39; option, but ExpatParser doesn&#39;t have this option. Remove
+        illegal characters before parsing.&#34;&#34;&#34;
+        DefusedExpatParser.feed(self, data=sanitize_xml(data), isFinal=isFinal)
         return self._decode_buffer()
 
     def _decode_buffer(self):
@@ -743,8 +752,6 @@ def get_redirect_url(response, allow_relative=True, require_relative=False):
     return redirect_url
 
 
-RETRY_WAIT = 10  # Seconds to wait before retry on connection errors
-
 # A collection of error classes we want to handle as general connection errors
 CONNECTION_ERRORS = (
     requests.exceptions.ChunkedEncodingError,
@@ -801,11 +808,7 @@ def post_ratelimited(protocol, session, url, headers, data, stream=False, timeou
     if not timeout:
         timeout = protocol.TIMEOUT
     thread_id = get_ident()
-    wait = RETRY_WAIT  # Initial retry wait. We double the value on each retry
-    retry = 0
     log_msg = &#34;&#34;&#34;\
-Retry: %(retry)s
-Waited: %(wait)s
 Timeout: %(timeout)s
 Session: %(session_id)s
 Thread: %(thread_id)s
@@ -821,8 +824,6 @@ Response headers: %(response_headers)s&#34;&#34;&#34;
 Request XML: %(xml_request)s
 Response XML: %(xml_response)s&#34;&#34;&#34;
     log_vals = dict(
-        retry=retry,
-        wait=wait,
         timeout=timeout,
         session_id=session.session_id,
         thread_id=thread_id,
@@ -836,150 +837,97 @@ Response XML: %(xml_response)s&#34;&#34;&#34;
         response_headers=None,
     )
     xml_log_vals = dict(
-        xml_request=None,
+        xml_request=data,
         xml_response=None,
     )
-    t_start = time.monotonic()
+    sleep_secs = _back_off_if_needed(protocol.retry_policy.back_off_until)
+    if sleep_secs:
+        # We may have slept for a long time. Renew the session.
+        session = protocol.renew_session(session)
+    log.debug(
+        &#34;Session %s thread %s timeout %s: POST&#39;ing to %s after %ss sleep&#34;,
+        session.session_id,
+        thread_id,
+        timeout,
+        url,
+        sleep_secs,
+    )
+    kwargs = dict(url=url, headers=headers, data=data, allow_redirects=False, timeout=timeout, stream=stream)
+    if isinstance(session, OAuth2Session):
+        # Fix token refreshing bug. Reported as https://github.com/requests/requests-oauthlib/issues/498
+        kwargs.update(session.auto_refresh_kwargs)
+    d_start = time.monotonic()
     try:
-        while True:
-            backed_off = _back_off_if_needed(protocol.retry_policy.back_off_until)
-            if backed_off:
-                # We may have slept for a long time. Renew the session.
-                session = protocol.renew_session(session)
-            log.debug(
-                &#34;Session %s thread %s: retry %s timeout %s POST&#39;ing to %s after %ss wait&#34;,
-                session.session_id,
-                thread_id,
-                retry,
-                timeout,
-                url,
-                wait,
-            )
-            d_start = time.monotonic()
-            # Always create a dummy response for logging purposes, in case we fail in the following
-            r = DummyResponse(url=url, request_headers=headers)
-            kwargs = dict(url=url, headers=headers, data=data, allow_redirects=False, timeout=timeout, stream=stream)
-            if isinstance(session, OAuth2Session):
-                # Fix token refreshing bug. Reported as https://github.com/requests/requests-oauthlib/issues/498
-                kwargs.update(session.auto_refresh_kwargs)
-            try:
-                r = session.post(**kwargs)
-            except TLS_ERRORS as e:
-                # Don&#39;t retry on TLS errors. They will most likely be persistent.
-                raise TransportError(str(e))
-            except CONNECTION_ERRORS as e:
-                log.debug(&#34;Session %s thread %s: connection error POST&#39;ing to %s&#34;, session.session_id, thread_id, url)
-                r = DummyResponse(url=url, headers={&#34;TimeoutException&#34;: e}, request_headers=headers)
-            except TokenExpiredError as e:
-                log.debug(&#34;Session %s thread %s: OAuth token expired; refreshing&#34;, session.session_id, thread_id)
-                r = DummyResponse(url=url, headers={&#34;TokenExpiredError&#34;: e}, request_headers=headers, status_code=401)
-            except KeyError as e:
-                if e.args[0] != &#34;www-authenticate&#34;:
-                    raise
-                log.debug(&#34;Session %s thread %s: auth headers missing from %s&#34;, session.session_id, thread_id, url)
-                r = DummyResponse(url=url, headers={&#34;KeyError&#34;: e}, request_headers=headers)
-            finally:
-                log_vals.update(
-                    retry=retry,
-                    wait=wait,
-                    session_id=session.session_id,
-                    url=str(r.url),
-                    response_time=time.monotonic() - d_start,
-                    status_code=r.status_code,
-                    request_headers=r.request.headers,
-                    response_headers=r.headers,
-                )
-                xml_log_vals.update(
-                    xml_request=data,
-                    xml_response=&#34;[STREAMING]&#34; if stream else r.content,
-                )
-            log.debug(log_msg, log_vals)
-            xml_log.debug(xml_log_msg, xml_log_vals)
-            if _need_new_credentials(response=r):
-                r.close()  # Release memory
-                session = protocol.refresh_credentials(session)
-                continue
-            total_wait = time.monotonic() - t_start
-            if protocol.retry_policy.may_retry_on_error(response=r, wait=total_wait):
-                r.close()  # Release memory
-                log.info(
-                    &#34;Session %s thread %s: Connection error on URL %s (code %s). Cool down %s secs&#34;,
-                    session.session_id,
-                    thread_id,
-                    r.url,
-                    r.status_code,
-                    wait,
-                )
-                wait = _retry_after(r, wait)
-                protocol.retry_policy.back_off(wait)
-                retry += 1
-                wait *= 2  # Increase delay for every retry
-                continue
-            if r.status_code in (301, 302):
-                r.close()  # Release memory
-                url = _fail_on_redirect(r)
-                continue
-            break
-    except (RateLimitError, RedirectError) as e:
-        log.warning(e.value)
+        r = session.post(**kwargs)
+    except TLS_ERRORS as e:
         protocol.retire_session(session)
+        # Don&#39;t retry on TLS errors. They will most likely be persistent.
+        raise TransportError(str(e))
+    except CONNECTION_ERRORS as e:
+        protocol.retire_session(session)
+        log.debug(&#34;Session %s thread %s: connection error POST&#39;ing to %s&#34;, session.session_id, thread_id, url)
+        raise ErrorTimeoutExpired(f&#34;Reraised from {e.__class__.__name__}({e})&#34;)
+    except TokenExpiredError:
+        log.debug(&#34;Session %s thread %s: OAuth token expired; refreshing&#34;, session.session_id, thread_id)
+        protocol.release_session(protocol.refresh_credentials(session))
         raise
+    except KeyError as e:
+        protocol.retire_session(session)
+        if e.args[0] != &#34;www-authenticate&#34;:
+            raise
+        # Server returned an HTTP error code during the NTLM handshake. Re-raise as internal server error
+        log.debug(&#34;Session %s thread %s: auth headers missing from %s&#34;, session.session_id, thread_id, url)
+        raise ErrorInternalServerTransientError(f&#34;Reraised from {e.__class__.__name__}({e})&#34;)
     except Exception as e:
         # Let higher layers handle this. Add full context for better debugging.
         log.error(&#34;%s: %s\n%s\n%s&#34;, e.__class__.__name__, str(e), log_msg % log_vals, xml_log_msg % xml_log_vals)
         protocol.retire_session(session)
         raise
-    if r.status_code == 500 and r.content and is_xml(r.content):
-        # Some genius at Microsoft thinks it&#39;s OK to send a valid SOAP response as an HTTP 500
-        log.debug(&#34;Got status code %s but trying to parse content anyway&#34;, r.status_code)
-    elif r.status_code != 200:
+    log_vals.update(
+        session_id=session.session_id,
+        url=r.url,
+        response_time=time.monotonic() - d_start,
+        status_code=r.status_code,
+        request_headers=r.request.headers,
+        response_headers=r.headers,
+    )
+    xml_log_vals.update(
+        xml_request=data,
+        xml_response=&#34;[STREAMING]&#34; if stream else r.content,
+    )
+    log.debug(log_msg, log_vals)
+    xml_log.debug(xml_log_msg, xml_log_vals)
+
+    try:
+        protocol.retry_policy.raise_response_errors(r)
+    except Exception:
+        r.close()  # Release memory
         protocol.retire_session(session)
-        try:
-            protocol.retry_policy.raise_response_errors(r)  # Always raises an exception
-        except MalformedResponseError as e:
-            log.error(&#34;%s: %s\n%s\n%s&#34;, e.__class__.__name__, str(e), log_msg % log_vals, xml_log_msg % xml_log_vals)
-            raise
+        raise
+
     log.debug(&#34;Session %s thread %s: Useful response from %s&#34;, session.session_id, thread_id, url)
     return r, session
 
 
 def _back_off_if_needed(back_off_until):
+    # Returns the number of seconds we slept
     if back_off_until:
         sleep_secs = (back_off_until - datetime.datetime.now()).total_seconds()
         # The back off value may have expired within the last few milliseconds
         if sleep_secs &gt; 0:
             log.warning(&#34;Server requested back off until %s. Sleeping %s seconds&#34;, back_off_until, sleep_secs)
             time.sleep(sleep_secs)
-            return True
-    return False
+            return sleep_secs
+    return 0
 
 
-def _need_new_credentials(response):
-    return response.status_code == 401 and response.headers.get(&#34;TokenExpiredError&#34;)
-
-
-def _fail_on_redirect(response):
-    # Retry with no delay. If we let requests handle redirects automatically, it would issue a GET to that
-    # URL. We still want to POST.
+def _get_retry_after(r):
+    &#34;&#34;&#34;Get Retry-After header, if it exists. We interpret the value as seconds to wait before sending next request.&#34;&#34;&#34;
     try:
-        redirect_url = get_redirect_url(response=response, allow_relative=False)
-    except RelativeRedirect as e:
-        log.debug(&#34;&#39;allow_redirects&#39; only supports relative redirects (%s -&gt; %s)&#34;, response.url, e.value)
-        raise RedirectError(url=e.value)
-    log.debug(&#34;Redirect not allowed but we were redirected ( (%s -&gt; %s)&#34;, response.url, redirect_url)
-    raise RedirectError(url=redirect_url)
-
-
-def _retry_after(r, wait):
-    &#34;&#34;&#34;Either return the Retry-After header value or the default wait, whichever is larger.&#34;&#34;&#34;
-    try:
-        retry_after = int(r.headers.get(&#34;Retry-After&#34;, &#34;0&#34;))
+        val = int(r.headers.get(&#34;Retry-After&#34;, &#34;0&#34;))
     except ValueError:
-        pass
-    else:
-        if retry_after &gt; wait:
-            return retry_after
-    return wait</code></pre>
+        return None
+    return val if val &gt; 0 else None</code></pre>
 </details>
 </section>
 <section>
@@ -1318,11 +1266,7 @@ intend to raise an exception. We give up on max_wait timeout, not number of retr
     if not timeout:
         timeout = protocol.TIMEOUT
     thread_id = get_ident()
-    wait = RETRY_WAIT  # Initial retry wait. We double the value on each retry
-    retry = 0
     log_msg = &#34;&#34;&#34;\
-Retry: %(retry)s
-Waited: %(wait)s
 Timeout: %(timeout)s
 Session: %(session_id)s
 Thread: %(thread_id)s
@@ -1338,8 +1282,6 @@ Response headers: %(response_headers)s&#34;&#34;&#34;
 Request XML: %(xml_request)s
 Response XML: %(xml_response)s&#34;&#34;&#34;
     log_vals = dict(
-        retry=retry,
-        wait=wait,
         timeout=timeout,
         session_id=session.session_id,
         thread_id=thread_id,
@@ -1353,109 +1295,74 @@ Response XML: %(xml_response)s&#34;&#34;&#34;
         response_headers=None,
     )
     xml_log_vals = dict(
-        xml_request=None,
+        xml_request=data,
         xml_response=None,
     )
-    t_start = time.monotonic()
+    sleep_secs = _back_off_if_needed(protocol.retry_policy.back_off_until)
+    if sleep_secs:
+        # We may have slept for a long time. Renew the session.
+        session = protocol.renew_session(session)
+    log.debug(
+        &#34;Session %s thread %s timeout %s: POST&#39;ing to %s after %ss sleep&#34;,
+        session.session_id,
+        thread_id,
+        timeout,
+        url,
+        sleep_secs,
+    )
+    kwargs = dict(url=url, headers=headers, data=data, allow_redirects=False, timeout=timeout, stream=stream)
+    if isinstance(session, OAuth2Session):
+        # Fix token refreshing bug. Reported as https://github.com/requests/requests-oauthlib/issues/498
+        kwargs.update(session.auto_refresh_kwargs)
+    d_start = time.monotonic()
     try:
-        while True:
-            backed_off = _back_off_if_needed(protocol.retry_policy.back_off_until)
-            if backed_off:
-                # We may have slept for a long time. Renew the session.
-                session = protocol.renew_session(session)
-            log.debug(
-                &#34;Session %s thread %s: retry %s timeout %s POST&#39;ing to %s after %ss wait&#34;,
-                session.session_id,
-                thread_id,
-                retry,
-                timeout,
-                url,
-                wait,
-            )
-            d_start = time.monotonic()
-            # Always create a dummy response for logging purposes, in case we fail in the following
-            r = DummyResponse(url=url, request_headers=headers)
-            kwargs = dict(url=url, headers=headers, data=data, allow_redirects=False, timeout=timeout, stream=stream)
-            if isinstance(session, OAuth2Session):
-                # Fix token refreshing bug. Reported as https://github.com/requests/requests-oauthlib/issues/498
-                kwargs.update(session.auto_refresh_kwargs)
-            try:
-                r = session.post(**kwargs)
-            except TLS_ERRORS as e:
-                # Don&#39;t retry on TLS errors. They will most likely be persistent.
-                raise TransportError(str(e))
-            except CONNECTION_ERRORS as e:
-                log.debug(&#34;Session %s thread %s: connection error POST&#39;ing to %s&#34;, session.session_id, thread_id, url)
-                r = DummyResponse(url=url, headers={&#34;TimeoutException&#34;: e}, request_headers=headers)
-            except TokenExpiredError as e:
-                log.debug(&#34;Session %s thread %s: OAuth token expired; refreshing&#34;, session.session_id, thread_id)
-                r = DummyResponse(url=url, headers={&#34;TokenExpiredError&#34;: e}, request_headers=headers, status_code=401)
-            except KeyError as e:
-                if e.args[0] != &#34;www-authenticate&#34;:
-                    raise
-                log.debug(&#34;Session %s thread %s: auth headers missing from %s&#34;, session.session_id, thread_id, url)
-                r = DummyResponse(url=url, headers={&#34;KeyError&#34;: e}, request_headers=headers)
-            finally:
-                log_vals.update(
-                    retry=retry,
-                    wait=wait,
-                    session_id=session.session_id,
-                    url=str(r.url),
-                    response_time=time.monotonic() - d_start,
-                    status_code=r.status_code,
-                    request_headers=r.request.headers,
-                    response_headers=r.headers,
-                )
-                xml_log_vals.update(
-                    xml_request=data,
-                    xml_response=&#34;[STREAMING]&#34; if stream else r.content,
-                )
-            log.debug(log_msg, log_vals)
-            xml_log.debug(xml_log_msg, xml_log_vals)
-            if _need_new_credentials(response=r):
-                r.close()  # Release memory
-                session = protocol.refresh_credentials(session)
-                continue
-            total_wait = time.monotonic() - t_start
-            if protocol.retry_policy.may_retry_on_error(response=r, wait=total_wait):
-                r.close()  # Release memory
-                log.info(
-                    &#34;Session %s thread %s: Connection error on URL %s (code %s). Cool down %s secs&#34;,
-                    session.session_id,
-                    thread_id,
-                    r.url,
-                    r.status_code,
-                    wait,
-                )
-                wait = _retry_after(r, wait)
-                protocol.retry_policy.back_off(wait)
-                retry += 1
-                wait *= 2  # Increase delay for every retry
-                continue
-            if r.status_code in (301, 302):
-                r.close()  # Release memory
-                url = _fail_on_redirect(r)
-                continue
-            break
-    except (RateLimitError, RedirectError) as e:
-        log.warning(e.value)
+        r = session.post(**kwargs)
+    except TLS_ERRORS as e:
         protocol.retire_session(session)
+        # Don&#39;t retry on TLS errors. They will most likely be persistent.
+        raise TransportError(str(e))
+    except CONNECTION_ERRORS as e:
+        protocol.retire_session(session)
+        log.debug(&#34;Session %s thread %s: connection error POST&#39;ing to %s&#34;, session.session_id, thread_id, url)
+        raise ErrorTimeoutExpired(f&#34;Reraised from {e.__class__.__name__}({e})&#34;)
+    except TokenExpiredError:
+        log.debug(&#34;Session %s thread %s: OAuth token expired; refreshing&#34;, session.session_id, thread_id)
+        protocol.release_session(protocol.refresh_credentials(session))
         raise
+    except KeyError as e:
+        protocol.retire_session(session)
+        if e.args[0] != &#34;www-authenticate&#34;:
+            raise
+        # Server returned an HTTP error code during the NTLM handshake. Re-raise as internal server error
+        log.debug(&#34;Session %s thread %s: auth headers missing from %s&#34;, session.session_id, thread_id, url)
+        raise ErrorInternalServerTransientError(f&#34;Reraised from {e.__class__.__name__}({e})&#34;)
     except Exception as e:
         # Let higher layers handle this. Add full context for better debugging.
         log.error(&#34;%s: %s\n%s\n%s&#34;, e.__class__.__name__, str(e), log_msg % log_vals, xml_log_msg % xml_log_vals)
         protocol.retire_session(session)
         raise
-    if r.status_code == 500 and r.content and is_xml(r.content):
-        # Some genius at Microsoft thinks it&#39;s OK to send a valid SOAP response as an HTTP 500
-        log.debug(&#34;Got status code %s but trying to parse content anyway&#34;, r.status_code)
-    elif r.status_code != 200:
+    log_vals.update(
+        session_id=session.session_id,
+        url=r.url,
+        response_time=time.monotonic() - d_start,
+        status_code=r.status_code,
+        request_headers=r.request.headers,
+        response_headers=r.headers,
+    )
+    xml_log_vals.update(
+        xml_request=data,
+        xml_response=&#34;[STREAMING]&#34; if stream else r.content,
+    )
+    log.debug(log_msg, log_vals)
+    xml_log.debug(xml_log_msg, xml_log_vals)
+
+    try:
+        protocol.retry_policy.raise_response_errors(r)
+    except Exception:
+        r.close()  # Release memory
         protocol.retire_session(session)
-        try:
-            protocol.retry_policy.raise_response_errors(r)  # Always raises an exception
-        except MalformedResponseError as e:
-            log.error(&#34;%s: %s\n%s\n%s&#34;, e.__class__.__name__, str(e), log_msg % log_vals, xml_log_msg % xml_log_vals)
-            raise
+        raise
+
     log.debug(&#34;Session %s thread %s: Useful response from %s&#34;, session.session_id, thread_id, url)
     return r, session</code></pre>
 </details>
@@ -1550,6 +1457,22 @@ Response XML: %(xml_response)s&#34;&#34;&#34;
 </summary>
 <pre><code class="python">def safe_xml_value(value, replacement=&#34;?&#34;):
     return _ILLEGAL_XML_CHARS_RE.sub(replacement, value)</code></pre>
+</details>
+</dd>
+<dt id="exchangelib.util.sanitize_xml"><code class="name flex">
+<span>def <span class="ident">sanitize_xml</span></span>(<span>data, replacement=b'?')</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def sanitize_xml(data, replacement=b&#34;?&#34;):
+    if not isinstance(data, bytes):
+        # We may get data=&#34;&#34; from some expatreader versions
+        return data
+    return _ILLEGAL_XML_ESCAPE_CHARS_RE.sub(replacement, data)</code></pre>
 </details>
 </dd>
 <dt id="exchangelib.util.set_xml_value"><code class="name flex">
@@ -2399,19 +2322,20 @@ def highlight_xml(xml_str):
         collected_data = []
         while buffer:
             if not self.element_found:
-                collected_data += buffer
+                collected_data.extend(buffer)
             yield from self.feed(buffer)
             buffer = file.read(self._bufsize)
         # Any remaining data in self.buffer should be padding chars now
         self.buffer = None
         self.close()
         if not self.element_found:
-            data = bytes(collected_data)
-            raise ElementNotFound(&#34;The element to be streamed from was not found&#34;, data=bytes(data))
+            raise ElementNotFound(&#34;The element to be streamed from was not found&#34;, data=bytes(collected_data))
 
     def feed(self, data, isFinal=0):
-        &#34;&#34;&#34;Yield the current content of the character buffer.&#34;&#34;&#34;
-        DefusedExpatParser.feed(self, data=data, isFinal=isFinal)
+        &#34;&#34;&#34;Yield the current content of the character buffer. The input XML may contain illegal characters. The lxml
+        parser handles this gracefully with the &#39;recover&#39; option, but ExpatParser doesn&#39;t have this option. Remove
+        illegal characters before parsing.&#34;&#34;&#34;
+        DefusedExpatParser.feed(self, data=sanitize_xml(data), isFinal=isFinal)
         return self._decode_buffer()
 
     def _decode_buffer(self):
@@ -2442,14 +2366,18 @@ def highlight_xml(xml_str):
 <span>def <span class="ident">feed</span></span>(<span>self, data, isFinal=0)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Yield the current content of the character buffer.</p></div>
+<div class="desc"><p>Yield the current content of the character buffer. The input XML may contain illegal characters. The lxml
+parser handles this gracefully with the 'recover' option, but ExpatParser doesn't have this option. Remove
+illegal characters before parsing.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def feed(self, data, isFinal=0):
-    &#34;&#34;&#34;Yield the current content of the character buffer.&#34;&#34;&#34;
-    DefusedExpatParser.feed(self, data=data, isFinal=isFinal)
+    &#34;&#34;&#34;Yield the current content of the character buffer. The input XML may contain illegal characters. The lxml
+    parser handles this gracefully with the &#39;recover&#39; option, but ExpatParser doesn&#39;t have this option. Remove
+    illegal characters before parsing.&#34;&#34;&#34;
+    DefusedExpatParser.feed(self, data=sanitize_xml(data), isFinal=isFinal)
     return self._decode_buffer()</code></pre>
 </details>
 </dd>
@@ -2474,15 +2402,14 @@ def highlight_xml(xml_str):
     collected_data = []
     while buffer:
         if not self.element_found:
-            collected_data += buffer
+            collected_data.extend(buffer)
         yield from self.feed(buffer)
         buffer = file.read(self._bufsize)
     # Any remaining data in self.buffer should be padding chars now
     self.buffer = None
     self.close()
     if not self.element_found:
-        data = bytes(collected_data)
-        raise ElementNotFound(&#34;The element to be streamed from was not found&#34;, data=bytes(data))</code></pre>
+        raise ElementNotFound(&#34;The element to be streamed from was not found&#34;, data=bytes(collected_data))</code></pre>
 </details>
 </dd>
 </dl>
@@ -2627,6 +2554,7 @@ no namespace.</p></div>
 <li><code><a title="exchangelib.util.require_id" href="#exchangelib.util.require_id">require_id</a></code></li>
 <li><code><a title="exchangelib.util.safe_b64decode" href="#exchangelib.util.safe_b64decode">safe_b64decode</a></code></li>
 <li><code><a title="exchangelib.util.safe_xml_value" href="#exchangelib.util.safe_xml_value">safe_xml_value</a></code></li>
+<li><code><a title="exchangelib.util.sanitize_xml" href="#exchangelib.util.sanitize_xml">sanitize_xml</a></code></li>
 <li><code><a title="exchangelib.util.set_xml_value" href="#exchangelib.util.set_xml_value">set_xml_value</a></code></li>
 <li><code><a title="exchangelib.util.split_url" href="#exchangelib.util.split_url">split_url</a></code></li>
 <li><code><a title="exchangelib.util.to_xml" href="#exchangelib.util.to_xml">to_xml</a></code></li>

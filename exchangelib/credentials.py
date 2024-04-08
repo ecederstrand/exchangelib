@@ -4,6 +4,7 @@ login to a specific account. Impersonation is used mainly for service accounts t
 for ad-hoc access e.g. granted manually by the user.
 See https://docs.microsoft.com/en-us/exchange/client-developer/exchange-web-services/impersonation-and-ews-in-exchange
 """
+
 import abc
 import logging
 from threading import RLock
@@ -134,18 +135,36 @@ class BaseOAuth2Credentials(BaseCredentials):
         return hash(tuple(res))
 
     @property
-    @abc.abstractmethod
     def token_url(self):
         """The URL to request tokens from"""
+        # We may not know (or need) the Microsoft tenant ID. If not, use common/ to let Microsoft select the appropriate
+        # tenant for the provided authorization code or refresh token.
+        return f"https://login.microsoftonline.com/{self.tenant_id or 'common'}/oauth2/v2.0/token"  # nosec
 
     @property
-    @abc.abstractmethod
     def scope(self):
         """The scope we ask for the token to have"""
+        return ["https://outlook.office365.com/.default"]
 
     def session_params(self):
         """Extra parameters to use when creating the session"""
-        return {"token": self.access_token}  # Token may be None
+        res = {"token": self.access_token}  # Token may be None
+        if self.client_id and self.client_secret:
+            # If we're given a client ID and secret, we have enough to refresh access tokens ourselves. In other
+            # cases the session will raise TokenExpiredError, and we'll need to ask the calling application to
+            # refresh the token (that covers cases where the caller doesn't have access to the client secret but
+            # is working with a service that can provide it refreshed tokens on a limited basis).
+            res.update(
+                {
+                    "auto_refresh_kwargs": {
+                        "client_id": self.client_id,
+                        "client_secret": self.client_secret,
+                    },
+                    "auto_refresh_url": self.token_url,
+                    "token_updater": self.on_token_auto_refreshed,
+                }
+            )
+        return res
 
     def token_params(self):
         """Extra parameters when requesting the token"""
@@ -190,14 +209,6 @@ class OAuth2Credentials(BaseOAuth2Credentials):
     information to restrict end users' access to the appropriate account. Use OAuth2AuthorizationCodeCredentials and
     the associated auth code grant type for multi-tenant applications.
     """
-
-    @property
-    def token_url(self):
-        return f"https://login.microsoftonline.com/{self.tenant_id}/oauth2/v2.0/token"
-
-    @property
-    def scope(self):
-        return ["https://outlook.office365.com/.default"]
 
     @threaded_cached_property
     def client(self):
@@ -267,34 +278,9 @@ class OAuth2AuthorizationCodeCredentials(BaseOAuth2Credentials):
         self.authorization_code = authorization_code
 
     @property
-    def token_url(self):
-        # We don't know (or need) the Microsoft tenant ID. Use common/ to let Microsoft select the appropriate
-        # tenant for the provided authorization code or refresh token.
-        return "https://login.microsoftonline.com/common/oauth2/v2.0/token"  # nosec
-
-    @property
     def scope(self):
         res = super().scope
         res.append("offline_access")
-        return res
-
-    def session_params(self):
-        res = super().session_params()
-        if self.client_id and self.client_secret:
-            # If we're given a client ID and secret, we have enough to refresh access tokens ourselves. In other
-            # cases the session will raise TokenExpiredError, and we'll need to ask the calling application to
-            # refresh the token (that covers cases where the caller doesn't have access to the client secret but
-            # is working with a service that can provide it refreshed tokens on a limited basis).
-            res.update(
-                {
-                    "auto_refresh_kwargs": {
-                        "client_id": self.client_id,
-                        "client_secret": self.client_secret,
-                    },
-                    "auto_refresh_url": self.token_url,
-                    "token_updater": self.on_token_auto_refreshed,
-                }
-            )
         return res
 
     def token_params(self):

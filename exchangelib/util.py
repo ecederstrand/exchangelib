@@ -68,6 +68,7 @@ class ElementNotFound(Exception):
 # Regex of UTF-8 control characters that are illegal in XML 1.0 (and XML 1.1).
 # See https://stackoverflow.com/a/22273639/219640
 _ILLEGAL_XML_CHARS_RE = re.compile("[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F-\x84\x86-\x9F\uFDD0-\uFDDF\uFFFE\uFFFF]")
+_ILLEGAL_XML_ESCAPE_CHARS_RE = re.compile(rb"&(#[0-9]+;?|#[xX][0-9a-fA-F]+;?)")  # Could match the above better
 
 # XML namespaces
 SOAPNS = "http://schemas.xmlsoap.org/soap/envelope/"
@@ -268,6 +269,13 @@ def safe_xml_value(value, replacement="?"):
     return _ILLEGAL_XML_CHARS_RE.sub(replacement, value)
 
 
+def sanitize_xml(data, replacement=b"?"):
+    if not isinstance(data, bytes):
+        # We may get data="" from some expatreader versions
+        return data
+    return _ILLEGAL_XML_ESCAPE_CHARS_RE.sub(replacement, data)
+
+
 def create_element(name, attrs=None, nsmap=None):
     if ":" in name:
         ns, name = name.split(":")
@@ -362,19 +370,20 @@ class StreamingBase64Parser(DefusedExpatParser):
         collected_data = []
         while buffer:
             if not self.element_found:
-                collected_data += buffer
+                collected_data.extend(buffer)
             yield from self.feed(buffer)
             buffer = file.read(self._bufsize)
         # Any remaining data in self.buffer should be padding chars now
         self.buffer = None
         self.close()
         if not self.element_found:
-            data = bytes(collected_data)
-            raise ElementNotFound("The element to be streamed from was not found", data=bytes(data))
+            raise ElementNotFound("The element to be streamed from was not found", data=bytes(collected_data))
 
     def feed(self, data, isFinal=0):
-        """Yield the current content of the character buffer."""
-        DefusedExpatParser.feed(self, data=data, isFinal=isFinal)
+        """Yield the current content of the character buffer. The input XML may contain illegal characters. The lxml
+        parser handles this gracefully with the 'recover' option, but ExpatParser doesn't have this option. Remove
+        illegal characters before parsing."""
+        DefusedExpatParser.feed(self, data=sanitize_xml(data), isFinal=isFinal)
         return self._decode_buffer()
 
     def _decode_buffer(self):

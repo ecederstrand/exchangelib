@@ -267,12 +267,9 @@ class Item(BaseItem):
     @require_id
     def refresh(self):
         # Updates the item based on fresh data from EWS
-        from ..folders import Folder
         from ..services import GetItem
 
-        additional_fields = {
-            FieldPath(field=f) for f in Folder(root=self.account.root).allowed_item_fields(version=self.account.version)
-        }
+        additional_fields = {FieldPath(field=f) for f in self.supported_fields(version=self.account.version)}
         res = GetItem(account=self.account).get(items=[self], additional_fields=additional_fields, shape=ID_ONLY)
         if self.id != res.id and not isinstance(self._id, (OccurrenceItemId, RecurringMasterItemId)):
             # When we refresh an item with an OccurrenceItemId as ID, EWS returns the ID of the occurrence, so
@@ -435,7 +432,7 @@ class Item(BaseItem):
         )
 
     def forward(self, subject, body, to_recipients, cc_recipients=None, bcc_recipients=None):
-        self.create_forward(
+        return self.create_forward(
             subject,
             body,
             to_recipients,
@@ -661,12 +658,9 @@ we use folder.account.</p></div>
     @require_id
     def refresh(self):
         # Updates the item based on fresh data from EWS
-        from ..folders import Folder
         from ..services import GetItem
 
-        additional_fields = {
-            FieldPath(field=f) for f in Folder(root=self.account.root).allowed_item_fields(version=self.account.version)
-        }
+        additional_fields = {FieldPath(field=f) for f in self.supported_fields(version=self.account.version)}
         res = GetItem(account=self.account).get(items=[self], additional_fields=additional_fields, shape=ID_ONLY)
         if self.id != res.id and not isinstance(self._id, (OccurrenceItemId, RecurringMasterItemId)):
             # When we refresh an item with an OccurrenceItemId as ID, EWS returns the ID of the occurrence, so
@@ -829,7 +823,7 @@ we use folder.account.</p></div>
         )
 
     def forward(self, subject, body, to_recipients, cc_recipients=None, bcc_recipients=None):
-        self.create_forward(
+        return self.create_forward(
             subject,
             body,
             to_recipients,
@@ -848,6 +842,7 @@ we use folder.account.</p></div>
 <ul class="hlist">
 <li><a title="exchangelib.items.calendar_item.BaseMeetingItem" href="calendar_item.html#exchangelib.items.calendar_item.BaseMeetingItem">BaseMeetingItem</a></li>
 <li><a title="exchangelib.items.calendar_item.CalendarItem" href="calendar_item.html#exchangelib.items.calendar_item.CalendarItem">CalendarItem</a></li>
+<li>exchangelib.items.calendar_item._Booking</li>
 <li><a title="exchangelib.items.contact.Contact" href="contact.html#exchangelib.items.contact.Contact">Contact</a></li>
 <li><a title="exchangelib.items.contact.DistributionList" href="contact.html#exchangelib.items.contact.DistributionList">DistributionList</a></li>
 <li><a title="exchangelib.items.message.Message" href="message.html#exchangelib.items.message.Message">Message</a></li>
@@ -1190,7 +1185,7 @@ simply not be created on the server the item is saved.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def forward(self, subject, body, to_recipients, cc_recipients=None, bcc_recipients=None):
-    self.create_forward(
+    return self.create_forward(
         subject,
         body,
         to_recipients,
@@ -1263,12 +1258,9 @@ def move(self, to_folder):
 <pre><code class="python">@require_id
 def refresh(self):
     # Updates the item based on fresh data from EWS
-    from ..folders import Folder
     from ..services import GetItem
 
-    additional_fields = {
-        FieldPath(field=f) for f in Folder(root=self.account.root).allowed_item_fields(version=self.account.version)
-    }
+    additional_fields = {FieldPath(field=f) for f in self.supported_fields(version=self.account.version)}
     res = GetItem(account=self.account).get(items=[self], additional_fields=additional_fields, shape=ID_ONLY)
     if self.id != res.id and not isinstance(self._id, (OccurrenceItemId, RecurringMasterItemId)):
         # When we refresh an item with an OccurrenceItemId as ID, EWS returns the ID of the occurrence, so

@@ -77,6 +77,7 @@ class BaseFolder(RegisterMixIn, SearchableMixIn, SupportedVersionClassMixIn, met
     ID_ELEMENT_CLS = FolderId
 
     _id = IdElementField(field_uri="folder:FolderId", value_cls=ID_ELEMENT_CLS)
+    _distinguished_id = IdElementField(field_uri="folder:DistinguishedFolderId", value_cls=DistinguishedFolderId)
     parent_folder_id = EWSElementField(field_uri="folder:ParentFolderId", value_cls=ParentFolderId, is_read_only=True)
     folder_class = CharField(field_uri="folder:FolderClass", is_required_after_save=True)
     name = CharField(field_uri="folder:DisplayName")
@@ -84,13 +85,12 @@ class BaseFolder(RegisterMixIn, SearchableMixIn, SupportedVersionClassMixIn, met
     child_folder_count = IntegerField(field_uri="folder:ChildFolderCount", is_read_only=True)
     unread_count = IntegerField(field_uri="folder:UnreadCount", is_read_only=True)
 
-    __slots__ = "is_distinguished", "item_sync_state", "folder_sync_state"
+    __slots__ = "item_sync_state", "folder_sync_state"
 
     # Used to register extended properties
     INSERT_AFTER_FIELD = "child_folder_count"
 
     def __init__(self, **kwargs):
-        self.is_distinguished = kwargs.pop("is_distinguished", False)
         self.item_sync_state = kwargs.pop("item_sync_state", None)
         self.folder_sync_state = kwargs.pop("folder_sync_state", None)
         super().__init__(**kwargs)
@@ -109,6 +109,10 @@ class BaseFolder(RegisterMixIn, SearchableMixIn, SupportedVersionClassMixIn, met
     @abc.abstractmethod
     def parent(self):
         """Return the parent folder of this folder"""
+
+    @property
+    def is_distinguished(self):
+        return self._distinguished_id or (self.DISTINGUISHED_FOLDER_ID and not self._id)
 
     @property
     def is_deletable(self):
@@ -148,7 +152,7 @@ class BaseFolder(RegisterMixIn, SearchableMixIn, SupportedVersionClassMixIn, met
         return FolderCollection(account=self.account, folders=self._walk())
 
     def _glob(self, pattern):
-        split_pattern = pattern.rsplit("/", 1)
+        split_pattern = pattern.split("/", maxsplit=1)
         head, tail = (split_pattern[0], None) if len(split_pattern) == 1 else split_pattern
         if head == "":
             # We got an absolute path. Restart globbing at root
@@ -217,7 +221,7 @@ class BaseFolder(RegisterMixIn, SearchableMixIn, SupportedVersionClassMixIn, met
     def localized_names(cls, locale):
         # Return localized names for a specific locale. If no locale-specific names exist, return the default names,
         # if any.
-        return tuple(s.lower() for s in cls.LOCALIZED_NAMES.get(locale, cls.LOCALIZED_NAMES.get(None, [])))
+        return tuple(s.lower() for s in cls.LOCALIZED_NAMES.get(locale, cls.LOCALIZED_NAMES.get(None, [cls.__name__])))
 
     @staticmethod
     def folder_cls_from_container_class(container_class):
@@ -230,13 +234,17 @@ class BaseFolder(RegisterMixIn, SearchableMixIn, SupportedVersionClassMixIn, met
         from .known_folders import (
             ApplicationData,
             Calendar,
+            Companies,
             Contacts,
             ConversationSettings,
             CrawlerData,
             DlpPolicyEvaluation,
+            EventCheckPoints,
             FreeBusyCache,
             GALContacts,
             Messages,
+            OrganizationalContacts,
+            PeopleCentricConversationBuddies,
             RecipientCache,
             RecoveryPoints,
             Reminders,
@@ -249,13 +257,17 @@ class BaseFolder(RegisterMixIn, SearchableMixIn, SupportedVersionClassMixIn, met
         for folder_cls in (
             ApplicationData,
             Calendar,
+            Companies,
             Contacts,
             ConversationSettings,
             CrawlerData,
             DlpPolicyEvaluation,
+            EventCheckPoints,
             FreeBusyCache,
             GALContacts,
             Messages,
+            OrganizationalContacts,
+            PeopleCentricConversationBuddies,
             RSSFeeds,
             RecipientCache,
             RecoveryPoints,
@@ -429,9 +441,9 @@ class BaseFolder(RegisterMixIn, SearchableMixIn, SupportedVersionClassMixIn, met
             log.warning("Cannot wipe recoverable items folder %s", self)
             return
         log.warning("Wiping %s", self)
-        has_distinguished_subfolders = any(f.is_distinguished for f in self.children)
+        has_non_deletable_subfolders = any(not f.is_deletable for f in self.children)
         try:
-            if has_distinguished_subfolders:
+            if has_non_deletable_subfolders:
                 self.empty()
             else:
                 self.empty(delete_sub_folders=True)
@@ -440,7 +452,7 @@ class BaseFolder(RegisterMixIn, SearchableMixIn, SupportedVersionClassMixIn, met
             return
         except DELETE_FOLDER_ERRORS:
             try:
-                if has_distinguished_subfolders:
+                if has_non_deletable_subfolders:
                     raise  # We already tried this
                 self.empty()
             except DELETE_FOLDER_ERRORS:
@@ -484,17 +496,19 @@ class BaseFolder(RegisterMixIn, SearchableMixIn, SupportedVersionClassMixIn, met
         return kwargs
 
     def to_id(self):
-        if self.is_distinguished:
-            # Don't add the changekey here. When modifying folder content, we usually don't care if others have changed
-            # the folder content since we fetched the changekey.
-            if self.account:
-                return DistinguishedFolderId(
-                    id=self.DISTINGUISHED_FOLDER_ID, mailbox=Mailbox(email_address=self.account.primary_smtp_address)
-                )
-            return DistinguishedFolderId(id=self.DISTINGUISHED_FOLDER_ID)
-        if self.id:
-            return FolderId(id=self.id, changekey=self.changekey)
-        raise ValueError("Must be a distinguished folder or have an ID")
+        # Use self._distinguished_id as-is if we have it. This could be a DistinguishedFolderId with a mailbox pointing
+        # to a shared mailbox.
+        if self._distinguished_id:
+            return self._distinguished_id
+        if self._id:
+            return self._id
+        if not self.DISTINGUISHED_FOLDER_ID:
+            raise ValueError(f"{self} must be a distinguished folder or have an ID")
+        self._distinguished_id = DistinguishedFolderId(
+            id=self.DISTINGUISHED_FOLDER_ID,
+            mailbox=Mailbox(email_address=self.account.primary_smtp_address),
+        )
+        return self._distinguished_id
 
     @classmethod
     def resolve(cls, account, folder):
@@ -621,15 +635,15 @@ class BaseFolder(RegisterMixIn, SearchableMixIn, SupportedVersionClassMixIn, met
 
     @require_id
     def pull_subscription(self, **kwargs):
-        return PullSubscription(folder=self, **kwargs)
+        return PullSubscription(target=self, **kwargs)
 
     @require_id
     def push_subscription(self, **kwargs):
-        return PushSubscription(folder=self, **kwargs)
+        return PushSubscription(target=self, **kwargs)
 
     @require_id
     def streaming_subscription(self, **kwargs):
-        return StreamingSubscription(folder=self, **kwargs)
+        return StreamingSubscription(target=self, **kwargs)
 
     def unsubscribe(self, subscription_id):
         """Unsubscribe. Only applies to pull and streaming notifications.
@@ -769,7 +783,8 @@ class BaseFolder(RegisterMixIn, SearchableMixIn, SupportedVersionClassMixIn, met
         if other == ".":
             return self
         for c in self.children:
-            if c.name == other:
+            # Folders are case-insensitive server-side. Let's do that here as well.
+            if c.name.lower() == other.lower():
                 return c
         raise ErrorFolderNotFound(f"No subfolder with name {other!r}")
 
@@ -842,15 +857,19 @@ class Folder(BaseFolder):
         return super().deregister(*args, **kwargs)
 
     @classmethod
-    def get_distinguished(cls, root):
+    def get_distinguished(cls, account):
         """Get the distinguished folder for this folder class.
 
-        :param root:
+        :param account:
         :return:
         """
         try:
             return cls.resolve(
-                account=root.account, folder=cls(root=root, name=cls.DISTINGUISHED_FOLDER_ID, is_distinguished=True)
+                account=account,
+                folder=DistinguishedFolderId(
+                    id=cls.DISTINGUISHED_FOLDER_ID,
+                    mailbox=Mailbox(email_address=account.primary_smtp_address),
+                ),
             )
         except MISSING_FOLDER_ERRORS:
             raise ErrorFolderNotFound(f"Could not find distinguished folder {cls.DISTINGUISHED_FOLDER_ID!r}")
@@ -905,7 +924,11 @@ class Folder(BaseFolder):
             if folder.name:
                 with suppress(KeyError):
                     # TODO: fld_class.LOCALIZED_NAMES is most definitely neither complete nor authoritative
-                    folder_cls = root.folder_cls_from_folder_name(folder_name=folder.name, locale=root.account.locale)
+                    folder_cls = root.folder_cls_from_folder_name(
+                        folder_name=folder.name,
+                        folder_class=folder.folder_class,
+                        locale=root.account.locale,
+                    )
                     log.debug("Folder class %s matches localized folder name %s", folder_cls, folder.name)
             if folder.folder_class and folder_cls == Folder:
                 with suppress(KeyError):

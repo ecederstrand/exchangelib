@@ -110,6 +110,10 @@ class Task(Item):
     status_description = CharField(field_uri=&#34;task:StatusDescription&#34;, is_read_only=True)
     total_work = IntegerField(field_uri=&#34;task:TotalWork&#34;, min=0)
 
+    # O365 throws ErrorInternalServerError &#34;[0x004f0102] MapiReplyToBlob&#34; if UniqueBody is requested
+    unique_body_idx = Item.FIELDS.index_by_name(&#34;unique_body&#34;)
+    FIELDS = Item.FIELDS[:unique_body_idx] + Item.FIELDS[unique_body_idx + 1 :]
+
     def clean(self, version=None):
         super().clean(version=version)
         if self.due_date and self.start_date and self.due_date &lt; self.start_date:
@@ -248,6 +252,10 @@ we use folder.account.</p></div>
     status_description = CharField(field_uri=&#34;task:StatusDescription&#34;, is_read_only=True)
     total_work = IntegerField(field_uri=&#34;task:TotalWork&#34;, min=0)
 
+    # O365 throws ErrorInternalServerError &#34;[0x004f0102] MapiReplyToBlob&#34; if UniqueBody is requested
+    unique_body_idx = Item.FIELDS.index_by_name(&#34;unique_body&#34;)
+    FIELDS = Item.FIELDS[:unique_body_idx] + Item.FIELDS[unique_body_idx + 1 :]
+
     def clean(self, version=None):
         super().clean(version=version)
         if self.due_date and self.start_date and self.due_date &lt; self.start_date:
@@ -323,6 +331,10 @@ we use folder.account.</p></div>
 <div class="desc"></div>
 </dd>
 <dt id="exchangelib.items.task.Task.NOT_STARTED"><code class="name">var <span class="ident">NOT_STARTED</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.items.task.Task.unique_body_idx"><code class="name">var <span class="ident">unique_body_idx</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -559,6 +571,7 @@ we use folder.account.</p></div>
 <li><code><a title="exchangelib.items.task.Task.status" href="#exchangelib.items.task.Task.status">status</a></code></li>
 <li><code><a title="exchangelib.items.task.Task.status_description" href="#exchangelib.items.task.Task.status_description">status_description</a></code></li>
 <li><code><a title="exchangelib.items.task.Task.total_work" href="#exchangelib.items.task.Task.total_work">total_work</a></code></li>
+<li><code><a title="exchangelib.items.task.Task.unique_body_idx" href="#exchangelib.items.task.Task.unique_body_idx">unique_body_idx</a></code></li>
 </ul>
 </li>
 </ul>

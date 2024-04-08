@@ -38,7 +38,7 @@ from ..errors import (
     SOAPError,
     TransportError,
 )
-from ..folders import BaseFolder, Folder, RootOfHierarchy
+from ..folders import ArchiveRoot, BaseFolder, Folder, PublicFoldersRoot, Root, RootOfHierarchy
 from ..items import BaseItem
 from ..properties import (
     BaseItemId,
@@ -519,11 +519,12 @@ class EWSService(SupportedVersionClassMixIn, metaclass=abc.ABCMeta):
         fault_actor = get_xml_attr(fault, "faultactor")
         detail = fault.find("detail")
         if detail is not None:
-            code, msg = None, ""
-            if detail.find(f"{{{ENS}}}ResponseCode") is not None:
-                code = get_xml_attr(detail, f"{{{ENS}}}ResponseCode").strip()
-            if detail.find(f"{{{ENS}}}Message") is not None:
-                msg = get_xml_attr(detail, f"{{{ENS}}}Message").strip()
+            code = get_xml_attr(detail, f"{{{ENS}}}ResponseCode")
+            if code:
+                code = code.strip()
+            msg = get_xml_attr(detail, f"{{{ENS}}}Message")
+            if msg:
+                msg = msg.strip()
             msg_xml = detail.find(f"{{{TNS}}}MessageXml")  # Crazy. Here, it's in the TNS namespace
             if code == "ErrorServerBusy":
                 back_off = None
@@ -926,10 +927,7 @@ def to_item_id(item, item_cls):
         # Allow any BaseItemId subclass to pass unaltered
         return item
     if isinstance(item, (BaseFolder, BaseItem)):
-        try:
-            return item.to_id()
-        except ValueError:
-            return item
+        return item.to_id()
     if isinstance(item, (str, tuple, list)):
         return item_cls(*item)
     return item_cls(item.id, item.changekey)
@@ -978,19 +976,21 @@ def parse_folder_elem(elem, folder, account):
     elif isinstance(folder, Folder):
         f = folder.from_xml_with_root(elem=elem, root=folder.root)
     elif isinstance(folder, DistinguishedFolderId):
-        # We don't know the root, so assume account.root.
-        for cls in account.root.WELLKNOWN_FOLDERS:
+        # We don't know the root or even account, but we need to attach the folder to something if we want to make
+        # future requests with this folder. Use 'account' but make sure to always use the distinguished folder ID going
+        # forward, instead of referencing anything connected to 'account'.
+        roots = (Root, ArchiveRoot, PublicFoldersRoot)
+        for cls in roots + tuple(chain(*(r.WELLKNOWN_FOLDERS for r in roots))):
             if cls.DISTINGUISHED_FOLDER_ID == folder.id:
                 folder_cls = cls
                 break
         else:
             raise ValueError(f"Unknown distinguished folder ID: {folder.id}")
-        f = folder_cls.from_xml_with_root(elem=elem, root=account.root)
+        if folder_cls in roots:
+            f = folder_cls.from_xml(elem=elem, account=account)
+        else:
+            f = folder_cls.from_xml_with_root(elem=elem, root=account.root)
     else:
         # 'folder' is a generic FolderId instance. We don't know the root so assume account.root.
         f = Folder.from_xml_with_root(elem=elem, root=account.root)
-    if isinstance(folder, DistinguishedFolderId):
-        f.is_distinguished = True
-    elif isinstance(folder, BaseFolder) and folder.is_distinguished:
-        f.is_distinguished = True
     return f

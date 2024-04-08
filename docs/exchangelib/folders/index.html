@@ -59,6 +59,7 @@ from .known_folders import (
     Directory,
     DlpPolicyEvaluation,
     Drafts,
+    EventCheckPoints,
     ExchangeSyncData,
     Favorites,
     Files,
@@ -153,6 +154,7 @@ __all__ = [
     &#34;DistinguishedFolderId&#34;,
     &#34;DlpPolicyEvaluation&#34;,
     &#34;Drafts&#34;,
+    &#34;EventCheckPoints&#34;,
     &#34;ExchangeSyncData&#34;,
     &#34;FOLDER_TRAVERSAL_CHOICES&#34;,
     &#34;Favorites&#34;,
@@ -315,7 +317,6 @@ __all__ = [
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.WellknownFolder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -394,7 +395,6 @@ __all__ = [
 <li><code><a title="exchangelib.folders.known_folders.Contacts.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.Contacts.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -472,7 +472,6 @@ __all__ = [
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -542,7 +541,6 @@ __all__ = [
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -617,7 +615,6 @@ __all__ = [
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.WellknownFolder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -692,7 +689,6 @@ __all__ = [
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.WellknownFolder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -767,7 +763,6 @@ __all__ = [
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.WellknownFolder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -842,7 +837,6 @@ __all__ = [
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.WellknownFolder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -917,7 +911,6 @@ __all__ = [
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.WellknownFolder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -992,7 +985,6 @@ __all__ = [
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.WellknownFolder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -1067,7 +1059,6 @@ __all__ = [
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.WellknownFolder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -1150,7 +1141,6 @@ __all__ = [
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.get_distinguished" href="roots.html#exchangelib.folders.roots.RootOfHierarchy.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.roots.RootOfHierarchy.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -1227,7 +1217,6 @@ __all__ = [
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -1279,6 +1268,7 @@ __all__ = [
     ID_ELEMENT_CLS = FolderId
 
     _id = IdElementField(field_uri=&#34;folder:FolderId&#34;, value_cls=ID_ELEMENT_CLS)
+    _distinguished_id = IdElementField(field_uri=&#34;folder:FolderId&#34;, value_cls=DistinguishedFolderId)
     parent_folder_id = EWSElementField(field_uri=&#34;folder:ParentFolderId&#34;, value_cls=ParentFolderId, is_read_only=True)
     folder_class = CharField(field_uri=&#34;folder:FolderClass&#34;, is_required_after_save=True)
     name = CharField(field_uri=&#34;folder:DisplayName&#34;)
@@ -1286,13 +1276,12 @@ __all__ = [
     child_folder_count = IntegerField(field_uri=&#34;folder:ChildFolderCount&#34;, is_read_only=True)
     unread_count = IntegerField(field_uri=&#34;folder:UnreadCount&#34;, is_read_only=True)
 
-    __slots__ = &#34;is_distinguished&#34;, &#34;item_sync_state&#34;, &#34;folder_sync_state&#34;
+    __slots__ = &#34;item_sync_state&#34;, &#34;folder_sync_state&#34;
 
     # Used to register extended properties
     INSERT_AFTER_FIELD = &#34;child_folder_count&#34;
 
     def __init__(self, **kwargs):
-        self.is_distinguished = kwargs.pop(&#34;is_distinguished&#34;, False)
         self.item_sync_state = kwargs.pop(&#34;item_sync_state&#34;, None)
         self.folder_sync_state = kwargs.pop(&#34;folder_sync_state&#34;, None)
         super().__init__(**kwargs)
@@ -1311,6 +1300,10 @@ __all__ = [
     @abc.abstractmethod
     def parent(self):
         &#34;&#34;&#34;Return the parent folder of this folder&#34;&#34;&#34;
+
+    @property
+    def is_distinguished(self):
+        return self._distinguished_id or (self.DISTINGUISHED_FOLDER_ID and not self._id)
 
     @property
     def is_deletable(self):
@@ -1350,7 +1343,7 @@ __all__ = [
         return FolderCollection(account=self.account, folders=self._walk())
 
     def _glob(self, pattern):
-        split_pattern = pattern.rsplit(&#34;/&#34;, 1)
+        split_pattern = pattern.split(&#34;/&#34;, maxsplit=1)
         head, tail = (split_pattern[0], None) if len(split_pattern) == 1 else split_pattern
         if head == &#34;&#34;:
             # We got an absolute path. Restart globbing at root
@@ -1432,13 +1425,17 @@ __all__ = [
         from .known_folders import (
             ApplicationData,
             Calendar,
+            Companies,
             Contacts,
             ConversationSettings,
             CrawlerData,
             DlpPolicyEvaluation,
+            EventCheckPoints,
             FreeBusyCache,
             GALContacts,
             Messages,
+            OrganizationalContacts,
+            PeopleCentricConversationBuddies,
             RecipientCache,
             RecoveryPoints,
             Reminders,
@@ -1451,13 +1448,17 @@ __all__ = [
         for folder_cls in (
             ApplicationData,
             Calendar,
+            Companies,
             Contacts,
             ConversationSettings,
             CrawlerData,
             DlpPolicyEvaluation,
+            EventCheckPoints,
             FreeBusyCache,
             GALContacts,
             Messages,
+            OrganizationalContacts,
+            PeopleCentricConversationBuddies,
             RSSFeeds,
             RecipientCache,
             RecoveryPoints,
@@ -1631,9 +1632,9 @@ __all__ = [
             log.warning(&#34;Cannot wipe recoverable items folder %s&#34;, self)
             return
         log.warning(&#34;Wiping %s&#34;, self)
-        has_distinguished_subfolders = any(f.is_distinguished for f in self.children)
+        has_non_deletable_subfolders = any(not f.is_deletable for f in self.children)
         try:
-            if has_distinguished_subfolders:
+            if has_non_deletable_subfolders:
                 self.empty()
             else:
                 self.empty(delete_sub_folders=True)
@@ -1642,7 +1643,7 @@ __all__ = [
             return
         except DELETE_FOLDER_ERRORS:
             try:
-                if has_distinguished_subfolders:
+                if has_non_deletable_subfolders:
                     raise  # We already tried this
                 self.empty()
             except DELETE_FOLDER_ERRORS:
@@ -1686,17 +1687,19 @@ __all__ = [
         return kwargs
 
     def to_id(self):
-        if self.is_distinguished:
-            # Don&#39;t add the changekey here. When modifying folder content, we usually don&#39;t care if others have changed
-            # the folder content since we fetched the changekey.
-            if self.account:
-                return DistinguishedFolderId(
-                    id=self.DISTINGUISHED_FOLDER_ID, mailbox=Mailbox(email_address=self.account.primary_smtp_address)
-                )
-            return DistinguishedFolderId(id=self.DISTINGUISHED_FOLDER_ID)
-        if self.id:
-            return FolderId(id=self.id, changekey=self.changekey)
-        raise ValueError(&#34;Must be a distinguished folder or have an ID&#34;)
+        # Use self._distinguished_id as-is if we have it. This could be a DistinguishedFolderId with a mailbox pointing
+        # to a shared mailbox.
+        if self._distinguished_id:
+            return self._distinguished_id
+        if self._id:
+            return self._id
+        if not self.DISTINGUISHED_FOLDER_ID:
+            raise ValueError(f&#34;{self} must be a distinguished folder or have an ID&#34;)
+        self._distinguished_id = DistinguishedFolderId(
+            id=self.DISTINGUISHED_FOLDER_ID,
+            mailbox=Mailbox(email_address=self.account.primary_smtp_address),
+        )
+        return self._distinguished_id
 
     @classmethod
     def resolve(cls, account, folder):
@@ -1823,15 +1826,15 @@ __all__ = [
 
     @require_id
     def pull_subscription(self, **kwargs):
-        return PullSubscription(folder=self, **kwargs)
+        return PullSubscription(target=self, **kwargs)
 
     @require_id
     def push_subscription(self, **kwargs):
-        return PushSubscription(folder=self, **kwargs)
+        return PushSubscription(target=self, **kwargs)
 
     @require_id
     def streaming_subscription(self, **kwargs):
-        return StreamingSubscription(folder=self, **kwargs)
+        return StreamingSubscription(target=self, **kwargs)
 
     def unsubscribe(self, subscription_id):
         &#34;&#34;&#34;Unsubscribe. Only applies to pull and streaming notifications.
@@ -1971,7 +1974,8 @@ __all__ = [
         if other == &#34;.&#34;:
             return self
         for c in self.children:
-            if c.name == other:
+            # Folders are case-insensitive server-side. Let&#39;s do that here as well.
+            if c.name.lower() == other.lower():
                 return c
         raise ErrorFolderNotFound(f&#34;No subfolder with name {other!r}&#34;)
 
@@ -2103,13 +2107,17 @@ def folder_cls_from_container_class(container_class):
     from .known_folders import (
         ApplicationData,
         Calendar,
+        Companies,
         Contacts,
         ConversationSettings,
         CrawlerData,
         DlpPolicyEvaluation,
+        EventCheckPoints,
         FreeBusyCache,
         GALContacts,
         Messages,
+        OrganizationalContacts,
+        PeopleCentricConversationBuddies,
         RecipientCache,
         RecoveryPoints,
         Reminders,
@@ -2122,13 +2130,17 @@ def folder_cls_from_container_class(container_class):
     for folder_cls in (
         ApplicationData,
         Calendar,
+        Companies,
         Contacts,
         ConversationSettings,
         CrawlerData,
         DlpPolicyEvaluation,
+        EventCheckPoints,
         FreeBusyCache,
         GALContacts,
         Messages,
+        OrganizationalContacts,
+        PeopleCentricConversationBuddies,
         RSSFeeds,
         RecipientCache,
         RecoveryPoints,
@@ -2297,7 +2309,15 @@ def is_deletable(self):
 </dd>
 <dt id="exchangelib.folders.BaseFolder.is_distinguished"><code class="name">var <span class="ident">is_distinguished</span></code></dt>
 <dd>
-<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def is_distinguished(self):
+    return self._distinguished_id or (self.DISTINGUISHED_FOLDER_ID and not self._id)</code></pre>
+</details>
 </dd>
 <dt id="exchangelib.folders.BaseFolder.item_sync_state"><code class="name">var <span class="ident">item_sync_state</span></code></dt>
 <dd>
@@ -2661,7 +2681,7 @@ def get_user_configuration(self, name, properties=None):
 </summary>
 <pre><code class="python">@require_id
 def pull_subscription(self, **kwargs):
-    return PullSubscription(folder=self, **kwargs)</code></pre>
+    return PullSubscription(target=self, **kwargs)</code></pre>
 </details>
 </dd>
 <dt id="exchangelib.folders.BaseFolder.push_subscription"><code class="name flex">
@@ -2675,7 +2695,7 @@ def pull_subscription(self, **kwargs):
 </summary>
 <pre><code class="python">@require_id
 def push_subscription(self, **kwargs):
-    return PushSubscription(folder=self, **kwargs)</code></pre>
+    return PushSubscription(target=self, **kwargs)</code></pre>
 </details>
 </dd>
 <dt id="exchangelib.folders.BaseFolder.refresh"><code class="name flex">
@@ -2754,7 +2774,7 @@ def refresh(self):
 </summary>
 <pre><code class="python">@require_id
 def streaming_subscription(self, **kwargs):
-    return StreamingSubscription(folder=self, **kwargs)</code></pre>
+    return StreamingSubscription(target=self, **kwargs)</code></pre>
 </details>
 </dd>
 <dt id="exchangelib.folders.BaseFolder.subscribe_to_pull"><code class="name flex">
@@ -2960,17 +2980,19 @@ service user doesn't have access to the calendar. This will throw the most commo
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def to_id(self):
-    if self.is_distinguished:
-        # Don&#39;t add the changekey here. When modifying folder content, we usually don&#39;t care if others have changed
-        # the folder content since we fetched the changekey.
-        if self.account:
-            return DistinguishedFolderId(
-                id=self.DISTINGUISHED_FOLDER_ID, mailbox=Mailbox(email_address=self.account.primary_smtp_address)
-            )
-        return DistinguishedFolderId(id=self.DISTINGUISHED_FOLDER_ID)
-    if self.id:
-        return FolderId(id=self.id, changekey=self.changekey)
-    raise ValueError(&#34;Must be a distinguished folder or have an ID&#34;)</code></pre>
+    # Use self._distinguished_id as-is if we have it. This could be a DistinguishedFolderId with a mailbox pointing
+    # to a shared mailbox.
+    if self._distinguished_id:
+        return self._distinguished_id
+    if self._id:
+        return self._id
+    if not self.DISTINGUISHED_FOLDER_ID:
+        raise ValueError(f&#34;{self} must be a distinguished folder or have an ID&#34;)
+    self._distinguished_id = DistinguishedFolderId(
+        id=self.DISTINGUISHED_FOLDER_ID,
+        mailbox=Mailbox(email_address=self.account.primary_smtp_address),
+    )
+    return self._distinguished_id</code></pre>
 </details>
 </dd>
 <dt id="exchangelib.folders.BaseFolder.tree"><code class="name flex">
@@ -3123,9 +3145,9 @@ def update_user_configuration(self, name, dictionary=None, xml_data=None, binary
         log.warning(&#34;Cannot wipe recoverable items folder %s&#34;, self)
         return
     log.warning(&#34;Wiping %s&#34;, self)
-    has_distinguished_subfolders = any(f.is_distinguished for f in self.children)
+    has_non_deletable_subfolders = any(not f.is_deletable for f in self.children)
     try:
-        if has_distinguished_subfolders:
+        if has_non_deletable_subfolders:
             self.empty()
         else:
             self.empty(delete_sub_folders=True)
@@ -3134,7 +3156,7 @@ def update_user_configuration(self, name, dictionary=None, xml_data=None, binary
         return
     except DELETE_FOLDER_ERRORS:
         try:
-            if has_distinguished_subfolders:
+            if has_non_deletable_subfolders:
                 raise  # We already tried this
             self.empty()
         except DELETE_FOLDER_ERRORS:
@@ -3240,7 +3262,6 @@ def update_user_configuration(self, name, dictionary=None, xml_data=None, binary
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -3356,7 +3377,6 @@ def update_user_configuration(self, name, dictionary=None, xml_data=None, binary
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -3428,7 +3448,6 @@ def update_user_configuration(self, name, dictionary=None, xml_data=None, binary
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -3505,7 +3524,6 @@ def update_user_configuration(self, name, dictionary=None, xml_data=None, binary
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -3539,7 +3557,7 @@ def update_user_configuration(self, name, dictionary=None, xml_data=None, binary
 </summary>
 <pre><code class="python">class Companies(NonDeletableFolderMixIn, Contacts):
     DISTINGUISHED_FOLDER_ID = None
-    CONTAINTER_CLASS = &#34;IPF.Contact.Company&#34;
+    CONTAINER_CLASS = &#34;IPF.Contact.Company&#34;
     LOCALIZED_NAMES = {
         None: (&#34;Companies&#34;,),
         &#34;da_DK&#34;: (&#34;Firmaer&#34;,),
@@ -3559,7 +3577,7 @@ def update_user_configuration(self, name, dictionary=None, xml_data=None, binary
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="exchangelib.folders.Companies.CONTAINTER_CLASS"><code class="name">var <span class="ident">CONTAINTER_CLASS</span></code></dt>
+<dt id="exchangelib.folders.Companies.CONTAINER_CLASS"><code class="name">var <span class="ident">CONTAINER_CLASS</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -3589,7 +3607,6 @@ def update_user_configuration(self, name, dictionary=None, xml_data=None, binary
 <li><code><a title="exchangelib.folders.known_folders.Contacts.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.Contacts.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -3664,7 +3681,6 @@ def update_user_configuration(self, name, dictionary=None, xml_data=None, binary
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.WellknownFolder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -3770,7 +3786,6 @@ def update_user_configuration(self, name, dictionary=None, xml_data=None, binary
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -3845,7 +3860,6 @@ def update_user_configuration(self, name, dictionary=None, xml_data=None, binary
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.WellknownFolder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -3922,7 +3936,6 @@ def update_user_configuration(self, name, dictionary=None, xml_data=None, binary
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -3991,7 +4004,6 @@ def update_user_configuration(self, name, dictionary=None, xml_data=None, binary
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -4068,7 +4080,6 @@ def update_user_configuration(self, name, dictionary=None, xml_data=None, binary
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -4140,7 +4151,6 @@ def update_user_configuration(self, name, dictionary=None, xml_data=None, binary
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -4235,7 +4245,6 @@ def update_user_configuration(self, name, dictionary=None, xml_data=None, binary
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -4310,7 +4319,6 @@ def update_user_configuration(self, name, dictionary=None, xml_data=None, binary
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.WellknownFolder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -4462,7 +4470,6 @@ def update_user_configuration(self, name, dictionary=None, xml_data=None, binary
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -4548,7 +4555,6 @@ def update_user_configuration(self, name, dictionary=None, xml_data=None, binary
 <li><code><a title="exchangelib.folders.known_folders.Messages.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Messages.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Messages.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.Messages.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Messages.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Messages.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Messages.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -4566,6 +4572,74 @@ def update_user_configuration(self, name, dictionary=None, xml_data=None, binary
 <li><code><a title="exchangelib.folders.known_folders.Messages.tree" href="base.html#exchangelib.folders.base.BaseFolder.tree">tree</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Messages.unsubscribe" href="base.html#exchangelib.folders.base.BaseFolder.unsubscribe">unsubscribe</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Messages.validate_field" href="../properties.html#exchangelib.properties.EWSElement.validate_field">validate_field</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="exchangelib.folders.EventCheckPoints"><code class="flex name class">
+<span>class <span class="ident">EventCheckPoints</span></span>
+<span>(</span><span>**kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/folder">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/folder</a></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class EventCheckPoints(Folder):
+    CONTAINER_CLASS = &#34;IPF.StoreItem.EventCheckPoints&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="exchangelib.folders.base.Folder" href="base.html#exchangelib.folders.base.Folder">Folder</a></li>
+<li><a title="exchangelib.folders.base.BaseFolder" href="base.html#exchangelib.folders.base.BaseFolder">BaseFolder</a></li>
+<li><a title="exchangelib.items.base.RegisterMixIn" href="../items/base.html#exchangelib.items.base.RegisterMixIn">RegisterMixIn</a></li>
+<li><a title="exchangelib.properties.IdChangeKeyMixIn" href="../properties.html#exchangelib.properties.IdChangeKeyMixIn">IdChangeKeyMixIn</a></li>
+<li><a title="exchangelib.properties.EWSElement" href="../properties.html#exchangelib.properties.EWSElement">EWSElement</a></li>
+<li><a title="exchangelib.queryset.SearchableMixIn" href="../queryset.html#exchangelib.queryset.SearchableMixIn">SearchableMixIn</a></li>
+<li><a title="exchangelib.version.SupportedVersionClassMixIn" href="../version.html#exchangelib.version.SupportedVersionClassMixIn">SupportedVersionClassMixIn</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="exchangelib.folders.EventCheckPoints.CONTAINER_CLASS"><code class="name">var <span class="ident">CONTAINER_CLASS</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="exchangelib.folders.base.Folder" href="base.html#exchangelib.folders.base.Folder">Folder</a></b></code>:
+<ul class="hlist">
+<li><code><a title="exchangelib.folders.base.Folder.ID_ELEMENT_CLS" href="base.html#exchangelib.folders.base.BaseFolder.ID_ELEMENT_CLS">ID_ELEMENT_CLS</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.account" href="base.html#exchangelib.folders.base.BaseFolder.account">account</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.add_field" href="../properties.html#exchangelib.properties.EWSElement.add_field">add_field</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.all" href="../queryset.html#exchangelib.queryset.SearchableMixIn.all">all</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.deregister" href="../items/base.html#exchangelib.items.base.RegisterMixIn.deregister">deregister</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.exclude" href="../queryset.html#exchangelib.queryset.SearchableMixIn.exclude">exclude</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.filter" href="../queryset.html#exchangelib.queryset.SearchableMixIn.filter">filter</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.folder_cls_from_container_class" href="base.html#exchangelib.folders.base.BaseFolder.folder_cls_from_container_class">folder_cls_from_container_class</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.folder_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.folder_sync_state">folder_sync_state</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.get" href="../queryset.html#exchangelib.queryset.SearchableMixIn.get">get</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.people" href="../queryset.html#exchangelib.queryset.SearchableMixIn.people">people</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.register" href="../items/base.html#exchangelib.items.base.RegisterMixIn.register">register</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.remove_field" href="../properties.html#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.root" href="base.html#exchangelib.folders.base.BaseFolder.root">root</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.subscribe_to_pull" href="base.html#exchangelib.folders.base.BaseFolder.subscribe_to_pull">subscribe_to_pull</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.subscribe_to_push" href="base.html#exchangelib.folders.base.BaseFolder.subscribe_to_push">subscribe_to_push</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.subscribe_to_streaming" href="base.html#exchangelib.folders.base.BaseFolder.subscribe_to_streaming">subscribe_to_streaming</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.supported_fields" href="../properties.html#exchangelib.properties.EWSElement.supported_fields">supported_fields</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.sync_hierarchy" href="base.html#exchangelib.folders.base.BaseFolder.sync_hierarchy">sync_hierarchy</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.sync_items" href="base.html#exchangelib.folders.base.BaseFolder.sync_items">sync_items</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.test_access" href="base.html#exchangelib.folders.base.BaseFolder.test_access">test_access</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.tree" href="base.html#exchangelib.folders.base.BaseFolder.tree">tree</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.unsubscribe" href="base.html#exchangelib.folders.base.BaseFolder.unsubscribe">unsubscribe</a></code></li>
+<li><code><a title="exchangelib.folders.base.Folder.validate_field" href="../properties.html#exchangelib.properties.EWSElement.validate_field">validate_field</a></code></li>
 </ul>
 </li>
 </ul>
@@ -4620,7 +4694,6 @@ def update_user_configuration(self, name, dictionary=None, xml_data=None, binary
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -4700,7 +4773,6 @@ def update_user_configuration(self, name, dictionary=None, xml_data=None, binary
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.WellknownFolder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -4778,7 +4850,6 @@ def update_user_configuration(self, name, dictionary=None, xml_data=None, binary
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -4869,7 +4940,11 @@ def update_user_configuration(self, name, dictionary=None, xml_data=None, binary
         &#34;&#34;&#34;
         try:
             return cls.resolve(
-                account=root.account, folder=cls(root=root, name=cls.DISTINGUISHED_FOLDER_ID, is_distinguished=True)
+                account=root.account,
+                folder=DistinguishedFolderId(
+                    id=cls.DISTINGUISHED_FOLDER_ID,
+                    mailbox=Mailbox(email_address=root.account.primary_smtp_address),
+                ),
             )
         except MISSING_FOLDER_ERRORS:
             raise ErrorFolderNotFound(f&#34;Could not find distinguished folder {cls.DISTINGUISHED_FOLDER_ID!r}&#34;)
@@ -4924,7 +4999,11 @@ def update_user_configuration(self, name, dictionary=None, xml_data=None, binary
             if folder.name:
                 with suppress(KeyError):
                     # TODO: fld_class.LOCALIZED_NAMES is most definitely neither complete nor authoritative
-                    folder_cls = root.folder_cls_from_folder_name(folder_name=folder.name, locale=root.account.locale)
+                    folder_cls = root.folder_cls_from_folder_name(
+                        folder_name=folder.name,
+                        folder_class=folder.folder_class,
+                        locale=root.account.locale,
+                    )
                     log.debug(&#34;Folder class %s matches localized folder name %s&#34;, folder_cls, folder.name)
             if folder.folder_class and folder_cls == Folder:
                 with suppress(KeyError):
@@ -4961,6 +5040,7 @@ def update_user_configuration(self, name, dictionary=None, xml_data=None, binary
 <li><a title="exchangelib.folders.known_folders.DeferredAction" href="known_folders.html#exchangelib.folders.known_folders.DeferredAction">DeferredAction</a></li>
 <li><a title="exchangelib.folders.known_folders.DeletedItems" href="known_folders.html#exchangelib.folders.known_folders.DeletedItems">DeletedItems</a></li>
 <li><a title="exchangelib.folders.known_folders.DlpPolicyEvaluation" href="known_folders.html#exchangelib.folders.known_folders.DlpPolicyEvaluation">DlpPolicyEvaluation</a></li>
+<li><a title="exchangelib.folders.known_folders.EventCheckPoints" href="known_folders.html#exchangelib.folders.known_folders.EventCheckPoints">EventCheckPoints</a></li>
 <li><a title="exchangelib.folders.known_folders.ExchangeSyncData" href="known_folders.html#exchangelib.folders.known_folders.ExchangeSyncData">ExchangeSyncData</a></li>
 <li><a title="exchangelib.folders.known_folders.Files" href="known_folders.html#exchangelib.folders.known_folders.Files">Files</a></li>
 <li><a title="exchangelib.folders.known_folders.FreeBusyCache" href="known_folders.html#exchangelib.folders.known_folders.FreeBusyCache">FreeBusyCache</a></li>
@@ -5033,7 +5113,11 @@ def from_xml_with_root(cls, elem, root):
         if folder.name:
             with suppress(KeyError):
                 # TODO: fld_class.LOCALIZED_NAMES is most definitely neither complete nor authoritative
-                folder_cls = root.folder_cls_from_folder_name(folder_name=folder.name, locale=root.account.locale)
+                folder_cls = root.folder_cls_from_folder_name(
+                    folder_name=folder.name,
+                    folder_class=folder.folder_class,
+                    locale=root.account.locale,
+                )
                 log.debug(&#34;Folder class %s matches localized folder name %s&#34;, folder_cls, folder.name)
         if folder.folder_class and folder_cls == Folder:
             with suppress(KeyError):
@@ -5066,7 +5150,11 @@ def get_distinguished(cls, root):
     &#34;&#34;&#34;
     try:
         return cls.resolve(
-            account=root.account, folder=cls(root=root, name=cls.DISTINGUISHED_FOLDER_ID, is_distinguished=True)
+            account=root.account,
+            folder=DistinguishedFolderId(
+                id=cls.DISTINGUISHED_FOLDER_ID,
+                mailbox=Mailbox(email_address=root.account.primary_smtp_address),
+            ),
         )
     except MISSING_FOLDER_ERRORS:
         raise ErrorFolderNotFound(f&#34;Could not find distinguished folder {cls.DISTINGUISHED_FOLDER_ID!r}&#34;)</code></pre>
@@ -5120,7 +5208,6 @@ def get_distinguished(cls, root):
 <li><code><a title="exchangelib.folders.base.BaseFolder.get" href="../queryset.html#exchangelib.queryset.SearchableMixIn.get">get</a></code></li>
 <li><code><a title="exchangelib.folders.base.BaseFolder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.BaseFolder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.BaseFolder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.BaseFolder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.BaseFolder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.BaseFolder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -5581,13 +5668,13 @@ def get_distinguished(cls, root):
         return SubscribeToStreaming(account=self.account).get(folders=self.folders, event_types=event_types)
 
     def pull_subscription(self, **kwargs):
-        return PullSubscription(folder=self, **kwargs)
+        return PullSubscription(target=self, **kwargs)
 
     def push_subscription(self, **kwargs):
-        return PushSubscription(folder=self, **kwargs)
+        return PushSubscription(target=self, **kwargs)
 
     def streaming_subscription(self, **kwargs):
-        return StreamingSubscription(folder=self, **kwargs)
+        return StreamingSubscription(target=self, **kwargs)
 
     def unsubscribe(self, subscription_id):
         &#34;&#34;&#34;Unsubscribe. Only applies to pull and streaming notifications.
@@ -6063,7 +6150,7 @@ non-null, we always return Persona objects. (Default value = ID_ONLY)
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def pull_subscription(self, **kwargs):
-    return PullSubscription(folder=self, **kwargs)</code></pre>
+    return PullSubscription(target=self, **kwargs)</code></pre>
 </details>
 </dd>
 <dt id="exchangelib.folders.FolderCollection.push_subscription"><code class="name flex">
@@ -6076,7 +6163,7 @@ non-null, we always return Persona objects. (Default value = ID_ONLY)
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def push_subscription(self, **kwargs):
-    return PushSubscription(folder=self, **kwargs)</code></pre>
+    return PushSubscription(target=self, **kwargs)</code></pre>
 </details>
 </dd>
 <dt id="exchangelib.folders.FolderCollection.resolve"><code class="name flex">
@@ -6116,7 +6203,7 @@ non-null, we always return Persona objects. (Default value = ID_ONLY)
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def streaming_subscription(self, **kwargs):
-    return StreamingSubscription(folder=self, **kwargs)</code></pre>
+    return StreamingSubscription(target=self, **kwargs)</code></pre>
 </details>
 </dd>
 <dt id="exchangelib.folders.FolderCollection.subscribe_to_pull"><code class="name flex">
@@ -6751,7 +6838,6 @@ MultipleObjectsReturned if there are multiple results.</p></div>
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -6823,7 +6909,6 @@ MultipleObjectsReturned if there are multiple results.</p></div>
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -6902,7 +6987,6 @@ MultipleObjectsReturned if there are multiple results.</p></div>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.Contacts.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -6986,7 +7070,6 @@ MultipleObjectsReturned if there are multiple results.</p></div>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.Contacts.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -7063,7 +7146,6 @@ MultipleObjectsReturned if there are multiple results.</p></div>
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -7143,7 +7225,6 @@ MultipleObjectsReturned if there are multiple results.</p></div>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.WellknownFolder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -7229,7 +7310,6 @@ MultipleObjectsReturned if there are multiple results.</p></div>
 <li><code><a title="exchangelib.folders.known_folders.Messages.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Messages.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Messages.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.Messages.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Messages.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Messages.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Messages.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -7304,7 +7384,6 @@ MultipleObjectsReturned if there are multiple results.</p></div>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.WellknownFolder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -7390,7 +7469,6 @@ MultipleObjectsReturned if there are multiple results.</p></div>
 <li><code><a title="exchangelib.folders.known_folders.Messages.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Messages.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Messages.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.Messages.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Messages.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Messages.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Messages.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -7465,7 +7543,6 @@ MultipleObjectsReturned if there are multiple results.</p></div>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.WellknownFolder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -7537,7 +7614,6 @@ MultipleObjectsReturned if there are multiple results.</p></div>
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -7609,7 +7685,6 @@ MultipleObjectsReturned if there are multiple results.</p></div>
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -7691,7 +7766,6 @@ MultipleObjectsReturned if there are multiple results.</p></div>
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -7772,7 +7846,6 @@ MultipleObjectsReturned if there are multiple results.</p></div>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.WellknownFolder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -7852,7 +7925,6 @@ MultipleObjectsReturned if there are multiple results.</p></div>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.WellknownFolder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -7930,7 +8002,6 @@ MultipleObjectsReturned if there are multiple results.</p></div>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.Contacts.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -8084,7 +8155,6 @@ def is_deletable(self):
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.WellknownFolder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -8118,7 +8188,7 @@ def is_deletable(self):
 </summary>
 <pre><code class="python">class OrganizationalContacts(NonDeletableFolderMixIn, Contacts):
     DISTINGUISHED_FOLDER_ID = None
-    CONTAINTER_CLASS = &#34;IPF.Contact.OrganizationalContacts&#34;
+    CONTAINER_CLASS = &#34;IPF.Contact.OrganizationalContacts&#34;
     LOCALIZED_NAMES = {
         None: (&#34;Organizational Contacts&#34;,),
     }</code></pre>
@@ -8137,7 +8207,7 @@ def is_deletable(self):
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="exchangelib.folders.OrganizationalContacts.CONTAINTER_CLASS"><code class="name">var <span class="ident">CONTAINTER_CLASS</span></code></dt>
+<dt id="exchangelib.folders.OrganizationalContacts.CONTAINER_CLASS"><code class="name">var <span class="ident">CONTAINER_CLASS</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -8167,7 +8237,6 @@ def is_deletable(self):
 <li><code><a title="exchangelib.folders.known_folders.Contacts.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.Contacts.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -8253,7 +8322,6 @@ def is_deletable(self):
 <li><code><a title="exchangelib.folders.known_folders.Messages.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Messages.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Messages.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.Messages.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Messages.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Messages.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Messages.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -8330,7 +8398,6 @@ def is_deletable(self):
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -8407,7 +8474,6 @@ def is_deletable(self):
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -8484,7 +8550,6 @@ def is_deletable(self):
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -8518,7 +8583,7 @@ def is_deletable(self):
 </summary>
 <pre><code class="python">class PeopleCentricConversationBuddies(NonDeletableFolderMixIn, Contacts):
     DISTINGUISHED_FOLDER_ID = None
-    CONTAINTER_CLASS = &#34;IPF.Contact.PeopleCentricConversationBuddies&#34;
+    CONTAINER_CLASS = &#34;IPF.Contact.PeopleCentricConversationBuddies&#34;
     LOCALIZED_NAMES = {
         None: (&#34;PeopleCentricConversation Buddies&#34;,),
     }</code></pre>
@@ -8537,7 +8602,7 @@ def is_deletable(self):
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="exchangelib.folders.PeopleCentricConversationBuddies.CONTAINTER_CLASS"><code class="name">var <span class="ident">CONTAINTER_CLASS</span></code></dt>
+<dt id="exchangelib.folders.PeopleCentricConversationBuddies.CONTAINER_CLASS"><code class="name">var <span class="ident">CONTAINER_CLASS</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -8567,7 +8632,6 @@ def is_deletable(self):
 <li><code><a title="exchangelib.folders.known_folders.Contacts.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.Contacts.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -8642,7 +8706,6 @@ def is_deletable(self):
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.WellknownFolder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -8810,7 +8873,6 @@ def is_deletable(self):
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.get_distinguished" href="roots.html#exchangelib.folders.roots.RootOfHierarchy.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.roots.RootOfHierarchy.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -8890,7 +8952,6 @@ def is_deletable(self):
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.WellknownFolder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -8967,7 +9028,6 @@ def is_deletable(self):
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -9053,7 +9113,6 @@ def is_deletable(self):
 <li><code><a title="exchangelib.folders.known_folders.Contacts.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.Contacts.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Contacts.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -9128,7 +9187,6 @@ def is_deletable(self):
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.WellknownFolder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -9203,7 +9261,6 @@ def is_deletable(self):
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.WellknownFolder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -9278,7 +9335,6 @@ def is_deletable(self):
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.WellknownFolder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -9353,7 +9409,6 @@ def is_deletable(self):
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.WellknownFolder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -9422,7 +9477,6 @@ def is_deletable(self):
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -9499,7 +9553,6 @@ def is_deletable(self):
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -9646,7 +9699,6 @@ def tois(self):
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.get_distinguished" href="roots.html#exchangelib.folders.roots.RootOfHierarchy.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.roots.RootOfHierarchy.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -9687,8 +9739,6 @@ def tois(self):
     # &#39;RootOfHierarchy&#39; subclasses must not be in this list.
     WELLKNOWN_FOLDERS = []
 
-    _subfolders_lock = Lock()
-
     # This folder type also has &#39;folder:PermissionSet&#39; on some server versions, but requesting it sometimes causes
     # &#39;ErrorAccessDenied&#39;, as reported by some users. Ignore it entirely for root folders - it&#39;s usefulness is
     # deemed minimal at best.
@@ -9696,13 +9746,14 @@ def tois(self):
         field_uri=&#34;folder:EffectiveRights&#34;, is_read_only=True, supported_from=EXCHANGE_2007_SP1
     )
 
-    __slots__ = &#34;_account&#34;, &#34;_subfolders&#34;
+    __slots__ = &#34;_account&#34;, &#34;_subfolders&#34;, &#34;_subfolders_lock&#34;
 
     # A special folder that acts as the top of a folder hierarchy. Finds and caches sub-folders at arbitrary depth.
     def __init__(self, **kwargs):
         self._account = kwargs.pop(&#34;account&#34;, None)  # A pointer back to the account holding the folder hierarchy
         super().__init__(**kwargs)
         self._subfolders = None  # See self._folders_map()
+        self._subfolders_lock = Lock()
 
     @property
     def account(self):
@@ -9770,7 +9821,11 @@ def tois(self):
             raise ValueError(f&#34;Class {cls} must have a DISTINGUISHED_FOLDER_ID value&#34;)
         try:
             return cls.resolve(
-                account=account, folder=cls(account=account, name=cls.DISTINGUISHED_FOLDER_ID, is_distinguished=True)
+                account=account,
+                folder=DistinguishedFolderId(
+                    id=cls.DISTINGUISHED_FOLDER_ID,
+                    mailbox=Mailbox(email_address=account.primary_smtp_address),
+                ),
             )
         except MISSING_FOLDER_ERRORS:
             raise ErrorFolderNotFound(f&#34;Could not find distinguished folder {cls.DISTINGUISHED_FOLDER_ID}&#34;)
@@ -9793,9 +9848,15 @@ def tois(self):
             log.debug(&#34;Requesting distinguished %s folder explicitly&#34;, folder_cls)
             return folder_cls.get_distinguished(root=self)
         except ErrorAccessDenied:
-            # Maybe we just don&#39;t have GetFolder access? Try FindItems instead
+            # Maybe we just don&#39;t have GetFolder access? Try FindItem instead
             log.debug(&#34;Testing default %s folder with FindItem&#34;, folder_cls)
-            fld = folder_cls(root=self, name=folder_cls.DISTINGUISHED_FOLDER_ID, is_distinguished=True)
+            fld = folder_cls(
+                root=self,
+                _distinguished_id=DistinguishedFolderId(
+                    id=folder_cls.DISTINGUISHED_FOLDER_ID,
+                    mailbox=Mailbox(email_address=self.account.primary_smtp_address),
+                ),
+            )
             fld.test_access()
             return self._folders_map.get(fld.id, fld)  # Use cached instance if available
         except MISSING_FOLDER_ERRORS:
@@ -9813,7 +9874,10 @@ def tois(self):
             # so we are sure to apply the correct Folder class, then fetch all sub-folders of this root.
             folders_map = {self.id: self}
             distinguished_folders = [
-                cls(root=self, name=cls.DISTINGUISHED_FOLDER_ID, is_distinguished=True)
+                DistinguishedFolderId(
+                    id=cls.DISTINGUISHED_FOLDER_ID,
+                    mailbox=Mailbox(email_address=self.account.primary_smtp_address),
+                )
                 for cls in self.WELLKNOWN_FOLDERS
                 if cls.get_folder_allowed and cls.supports_version(self.account.version)
             ]
@@ -9857,16 +9921,37 @@ def tois(self):
         return cls(account=account, **kwargs)
 
     @classmethod
-    def folder_cls_from_folder_name(cls, folder_name, locale):
-        &#34;&#34;&#34;Return the folder class that matches a localized folder name.
+    def folder_cls_from_folder_name(cls, folder_name, folder_class, locale):
+        &#34;&#34;&#34;Return the folder class that matches a localized folder name. Take into account the &#39;folder_class&#39; of the
+        folder, to not identify an &#39;IPF.Note&#39; folder as a &#39;Calendar&#39; class just because it&#39;s called e.g. &#39;Kalender&#39; and
+        the locale is &#39;da_DK&#39;.
+
+        Some folders, e.g. `System`, don&#39;t define a `folder_class`. For these folders, we match on localized folder name
+        if the folder class does not have its &#39;CONTAINER_CLASS&#39; set.
 
         :param folder_name:
+        :param folder_class:
         :param locale: a string, e.g. &#39;da_DK&#39;
         &#34;&#34;&#34;
         for folder_cls in cls.WELLKNOWN_FOLDERS + NON_DELETABLE_FOLDERS + MISC_FOLDERS:
-            if folder_name.lower() in folder_cls.localized_names(locale):
-                return folder_cls
+            if folder_cls.CONTAINER_CLASS != folder_class:
+                continue
+            if folder_name.lower() not in folder_cls.localized_names(locale):
+                continue
+            return folder_cls
         raise KeyError()
+
+    def __getstate__(self):
+        # The lock cannot be pickled
+        state = {k: getattr(self, k) for k in self._slots_keys}
+        del state[&#34;_subfolders_lock&#34;]
+        return state
+
+    def __setstate__(self, state):
+        # Restore the lock
+        for k in self._slots_keys:
+            setattr(self, k, state.get(k))
+        self._subfolders_lock = Lock()
 
     def __repr__(self):
         # Let&#39;s not create an infinite loop when printing self.root
@@ -9913,26 +9998,40 @@ def tois(self):
 <h3>Static methods</h3>
 <dl>
 <dt id="exchangelib.folders.RootOfHierarchy.folder_cls_from_folder_name"><code class="name flex">
-<span>def <span class="ident">folder_cls_from_folder_name</span></span>(<span>folder_name, locale)</span>
+<span>def <span class="ident">folder_cls_from_folder_name</span></span>(<span>folder_name, folder_class, locale)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Return the folder class that matches a localized folder name.</p>
+<div class="desc"><p>Return the folder class that matches a localized folder name. Take into account the 'folder_class' of the
+folder, to not identify an 'IPF.Note' folder as a 'Calendar' class just because it's called e.g. 'Kalender' and
+the locale is 'da_DK'.</p>
+<p>Some folders, e.g. <code><a title="exchangelib.folders.System" href="#exchangelib.folders.System">System</a></code>, don't define a <code>folder_class</code>. For these folders, we match on localized folder name
+if the folder class does not have its 'CONTAINER_CLASS' set.</p>
 <p>:param folder_name:
+:param folder_class:
 :param locale: a string, e.g. 'da_DK'</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
-def folder_cls_from_folder_name(cls, folder_name, locale):
-    &#34;&#34;&#34;Return the folder class that matches a localized folder name.
+def folder_cls_from_folder_name(cls, folder_name, folder_class, locale):
+    &#34;&#34;&#34;Return the folder class that matches a localized folder name. Take into account the &#39;folder_class&#39; of the
+    folder, to not identify an &#39;IPF.Note&#39; folder as a &#39;Calendar&#39; class just because it&#39;s called e.g. &#39;Kalender&#39; and
+    the locale is &#39;da_DK&#39;.
+
+    Some folders, e.g. `System`, don&#39;t define a `folder_class`. For these folders, we match on localized folder name
+    if the folder class does not have its &#39;CONTAINER_CLASS&#39; set.
 
     :param folder_name:
+    :param folder_class:
     :param locale: a string, e.g. &#39;da_DK&#39;
     &#34;&#34;&#34;
     for folder_cls in cls.WELLKNOWN_FOLDERS + NON_DELETABLE_FOLDERS + MISC_FOLDERS:
-        if folder_name.lower() in folder_cls.localized_names(locale):
-            return folder_cls
+        if folder_cls.CONTAINER_CLASS != folder_class:
+            continue
+        if folder_name.lower() not in folder_cls.localized_names(locale):
+            continue
+        return folder_cls
     raise KeyError()</code></pre>
 </details>
 </dd>
@@ -9972,7 +10071,11 @@ def get_distinguished(cls, account):
         raise ValueError(f&#34;Class {cls} must have a DISTINGUISHED_FOLDER_ID value&#34;)
     try:
         return cls.resolve(
-            account=account, folder=cls(account=account, name=cls.DISTINGUISHED_FOLDER_ID, is_distinguished=True)
+            account=account,
+            folder=DistinguishedFolderId(
+                id=cls.DISTINGUISHED_FOLDER_ID,
+                mailbox=Mailbox(email_address=account.primary_smtp_address),
+            ),
         )
     except MISSING_FOLDER_ERRORS:
         raise ErrorFolderNotFound(f&#34;Could not find distinguished folder {cls.DISTINGUISHED_FOLDER_ID}&#34;)</code></pre>
@@ -10062,9 +10165,15 @@ folder was found, try as best we can to return the default folder of type 'folde
         log.debug(&#34;Requesting distinguished %s folder explicitly&#34;, folder_cls)
         return folder_cls.get_distinguished(root=self)
     except ErrorAccessDenied:
-        # Maybe we just don&#39;t have GetFolder access? Try FindItems instead
+        # Maybe we just don&#39;t have GetFolder access? Try FindItem instead
         log.debug(&#34;Testing default %s folder with FindItem&#34;, folder_cls)
-        fld = folder_cls(root=self, name=folder_cls.DISTINGUISHED_FOLDER_ID, is_distinguished=True)
+        fld = folder_cls(
+            root=self,
+            _distinguished_id=DistinguishedFolderId(
+                id=folder_cls.DISTINGUISHED_FOLDER_ID,
+                mailbox=Mailbox(email_address=self.account.primary_smtp_address),
+            ),
+        )
         fld.test_access()
         return self._folders_map.get(fld.id, fld)  # Use cached instance if available
     except MISSING_FOLDER_ERRORS:
@@ -10136,7 +10245,6 @@ folder was found, try as best we can to return the default folder of type 'folde
 <li><code><a title="exchangelib.folders.base.BaseFolder.get" href="../queryset.html#exchangelib.queryset.SearchableMixIn.get">get</a></code></li>
 <li><code><a title="exchangelib.folders.base.BaseFolder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.BaseFolder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.BaseFolder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.BaseFolder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.BaseFolder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.BaseFolder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -10208,7 +10316,6 @@ folder was found, try as best we can to return the default folder of type 'folde
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -10278,7 +10385,6 @@ folder was found, try as best we can to return the default folder of type 'folde
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.WellknownFolder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -10364,7 +10470,6 @@ folder was found, try as best we can to return the default folder of type 'folde
 <li><code><a title="exchangelib.folders.known_folders.Messages.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Messages.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Messages.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.Messages.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Messages.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Messages.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.Messages.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -10439,7 +10544,6 @@ folder was found, try as best we can to return the default folder of type 'folde
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.WellknownFolder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -10516,7 +10620,6 @@ folder was found, try as best we can to return the default folder of type 'folde
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -10588,7 +10691,6 @@ folder was found, try as best we can to return the default folder of type 'folde
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -10665,7 +10767,6 @@ folder was found, try as best we can to return the default folder of type 'folde
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -10798,7 +10899,6 @@ folder was found, try as best we can to return the default folder of type 'folde
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -10875,7 +10975,6 @@ folder was found, try as best we can to return the default folder of type 'folde
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -10947,7 +11046,6 @@ folder was found, try as best we can to return the default folder of type 'folde
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -11016,7 +11114,6 @@ folder was found, try as best we can to return the default folder of type 'folde
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -11096,7 +11193,6 @@ folder was found, try as best we can to return the default folder of type 'folde
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.WellknownFolder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -11173,7 +11269,6 @@ folder was found, try as best we can to return the default folder of type 'folde
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -11268,7 +11363,6 @@ folder was found, try as best we can to return the default folder of type 'folde
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -11340,7 +11434,6 @@ folder was found, try as best we can to return the default folder of type 'folde
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -11428,7 +11521,6 @@ folder was found, try as best we can to return the default folder of type 'folde
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.WellknownFolder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -11500,7 +11592,6 @@ folder was found, try as best we can to return the default folder of type 'folde
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -11582,7 +11673,6 @@ folder was found, try as best we can to return the default folder of type 'folde
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.known_folders.WellknownFolder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.known_folders.WellknownFolder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -11685,7 +11775,6 @@ folder was found, try as best we can to return the default folder of type 'folde
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -11757,7 +11846,6 @@ folder was found, try as best we can to return the default folder of type 'folde
 <li><code><a title="exchangelib.folders.base.Folder.get_distinguished" href="base.html#exchangelib.folders.base.Folder.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.Folder.is_distinguished" href="base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.Folder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -12000,7 +12088,7 @@ folder was found, try as best we can to return the default folder of type 'folde
 <li>
 <h4><code><a title="exchangelib.folders.Companies" href="#exchangelib.folders.Companies">Companies</a></code></h4>
 <ul class="">
-<li><code><a title="exchangelib.folders.Companies.CONTAINTER_CLASS" href="#exchangelib.folders.Companies.CONTAINTER_CLASS">CONTAINTER_CLASS</a></code></li>
+<li><code><a title="exchangelib.folders.Companies.CONTAINER_CLASS" href="#exchangelib.folders.Companies.CONTAINER_CLASS">CONTAINER_CLASS</a></code></li>
 <li><code><a title="exchangelib.folders.Companies.DISTINGUISHED_FOLDER_ID" href="#exchangelib.folders.Companies.DISTINGUISHED_FOLDER_ID">DISTINGUISHED_FOLDER_ID</a></code></li>
 <li><code><a title="exchangelib.folders.Companies.LOCALIZED_NAMES" href="#exchangelib.folders.Companies.LOCALIZED_NAMES">LOCALIZED_NAMES</a></code></li>
 </ul>
@@ -12090,6 +12178,12 @@ folder was found, try as best we can to return the default folder of type 'folde
 <ul class="">
 <li><code><a title="exchangelib.folders.Drafts.DISTINGUISHED_FOLDER_ID" href="#exchangelib.folders.Drafts.DISTINGUISHED_FOLDER_ID">DISTINGUISHED_FOLDER_ID</a></code></li>
 <li><code><a title="exchangelib.folders.Drafts.LOCALIZED_NAMES" href="#exchangelib.folders.Drafts.LOCALIZED_NAMES">LOCALIZED_NAMES</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="exchangelib.folders.EventCheckPoints" href="#exchangelib.folders.EventCheckPoints">EventCheckPoints</a></code></h4>
+<ul class="">
+<li><code><a title="exchangelib.folders.EventCheckPoints.CONTAINER_CLASS" href="#exchangelib.folders.EventCheckPoints.CONTAINER_CLASS">CONTAINER_CLASS</a></code></li>
 </ul>
 </li>
 <li>
@@ -12295,7 +12389,7 @@ folder was found, try as best we can to return the default folder of type 'folde
 <li>
 <h4><code><a title="exchangelib.folders.OrganizationalContacts" href="#exchangelib.folders.OrganizationalContacts">OrganizationalContacts</a></code></h4>
 <ul class="">
-<li><code><a title="exchangelib.folders.OrganizationalContacts.CONTAINTER_CLASS" href="#exchangelib.folders.OrganizationalContacts.CONTAINTER_CLASS">CONTAINTER_CLASS</a></code></li>
+<li><code><a title="exchangelib.folders.OrganizationalContacts.CONTAINER_CLASS" href="#exchangelib.folders.OrganizationalContacts.CONTAINER_CLASS">CONTAINER_CLASS</a></code></li>
 <li><code><a title="exchangelib.folders.OrganizationalContacts.DISTINGUISHED_FOLDER_ID" href="#exchangelib.folders.OrganizationalContacts.DISTINGUISHED_FOLDER_ID">DISTINGUISHED_FOLDER_ID</a></code></li>
 <li><code><a title="exchangelib.folders.OrganizationalContacts.LOCALIZED_NAMES" href="#exchangelib.folders.OrganizationalContacts.LOCALIZED_NAMES">LOCALIZED_NAMES</a></code></li>
 </ul>
@@ -12331,7 +12425,7 @@ folder was found, try as best we can to return the default folder of type 'folde
 <li>
 <h4><code><a title="exchangelib.folders.PeopleCentricConversationBuddies" href="#exchangelib.folders.PeopleCentricConversationBuddies">PeopleCentricConversationBuddies</a></code></h4>
 <ul class="">
-<li><code><a title="exchangelib.folders.PeopleCentricConversationBuddies.CONTAINTER_CLASS" href="#exchangelib.folders.PeopleCentricConversationBuddies.CONTAINTER_CLASS">CONTAINTER_CLASS</a></code></li>
+<li><code><a title="exchangelib.folders.PeopleCentricConversationBuddies.CONTAINER_CLASS" href="#exchangelib.folders.PeopleCentricConversationBuddies.CONTAINER_CLASS">CONTAINER_CLASS</a></code></li>
 <li><code><a title="exchangelib.folders.PeopleCentricConversationBuddies.DISTINGUISHED_FOLDER_ID" href="#exchangelib.folders.PeopleCentricConversationBuddies.DISTINGUISHED_FOLDER_ID">DISTINGUISHED_FOLDER_ID</a></code></li>
 <li><code><a title="exchangelib.folders.PeopleCentricConversationBuddies.LOCALIZED_NAMES" href="#exchangelib.folders.PeopleCentricConversationBuddies.LOCALIZED_NAMES">LOCALIZED_NAMES</a></code></li>
 </ul>

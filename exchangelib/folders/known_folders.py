@@ -16,13 +16,57 @@ from .base import Folder
 from .collections import FolderCollection
 
 
-class Calendar(Folder):
+class Birthdays(Folder):
+    CONTAINER_CLASS = "IPF.Appointment.Birthday"
+    LOCALIZED_NAMES = {
+        "da_DK": ("Fødselsdage",),
+    }
+
+
+class CrawlerData(Folder):
+    CONTAINER_CLASS = "IPF.StoreItem.CrawlerData"
+
+
+class EventCheckPoints(Folder):
+    CONTAINER_CLASS = "IPF.StoreItem.EventCheckPoints"
+
+
+class FreeBusyCache(Folder):
+    CONTAINER_CLASS = "IPF.StoreItem.FreeBusyCache"
+
+
+class RecoveryPoints(Folder):
+    CONTAINER_CLASS = "IPF.StoreItem.RecoveryPoints"
+
+
+class SkypeTeamsMessages(Folder):
+    CONTAINER_CLASS = "IPF.SkypeTeams.Message"
+    LOCALIZED_NAMES = {
+        None: ("Team-chat",),
+    }
+
+
+class SwssItems(Folder):
+    CONTAINER_CLASS = "IPF.StoreItem.SwssItems"
+
+
+class WellknownFolder(Folder, metaclass=EWSMeta):
+    """Base class to use until we have a more specific folder implementation for this folder."""
+
+    supported_item_models = ITEM_CLASSES
+
+
+class Messages(WellknownFolder):
+    CONTAINER_CLASS = "IPF.Note"
+    supported_item_models = (Message, MeetingRequest, MeetingResponse, MeetingCancellation)
+
+
+class Calendar(WellknownFolder):
     """An interface for the Exchange calendar."""
 
     DISTINGUISHED_FOLDER_ID = "calendar"
     CONTAINER_CLASS = "IPF.Appointment"
     supported_item_models = (CalendarItem,)
-
     LOCALIZED_NAMES = {
         "da_DK": ("Kalender",),
         "de_DE": ("Kalender",),
@@ -39,11 +83,27 @@ class Calendar(Folder):
         return FolderCollection(account=self.account, folders=[self]).view(*args, **kwargs)
 
 
-class DeletedItems(Folder):
+class Contacts(WellknownFolder):
+    DISTINGUISHED_FOLDER_ID = "contacts"
+    CONTAINER_CLASS = "IPF.Contact"
+    supported_item_models = (Contact, DistributionList)
+    LOCALIZED_NAMES = {
+        "da_DK": ("Kontaktpersoner",),
+        "de_DE": ("Kontakte",),
+        "en_US": ("Contacts",),
+        "es_ES": ("Contactos",),
+        "fr_CA": ("Contacts",),
+        "nl_NL": ("Contactpersonen",),
+        "ru_RU": ("Контакты",),
+        "sv_SE": ("Kontakter",),
+        "zh_CN": ("联系人",),
+    }
+
+
+class DeletedItems(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = "deleteditems"
     CONTAINER_CLASS = "IPF.Note"
     supported_item_models = ITEM_CLASSES
-
     LOCALIZED_NAMES = {
         "da_DK": ("Slettet post",),
         "de_DE": ("Gelöschte Elemente",),
@@ -57,49 +117,8 @@ class DeletedItems(Folder):
     }
 
 
-class Messages(Folder):
-    CONTAINER_CLASS = "IPF.Note"
-    supported_item_models = (Message, MeetingRequest, MeetingResponse, MeetingCancellation)
-
-
-class CrawlerData(Folder):
-    CONTAINER_CLASS = "IPF.StoreItem.CrawlerData"
-
-
-class DlpPolicyEvaluation(Folder):
-    CONTAINER_CLASS = "IPF.StoreItem.DlpPolicyEvaluation"
-
-
-class FreeBusyCache(Folder):
-    CONTAINER_CLASS = "IPF.StoreItem.FreeBusyCache"
-
-
-class RecoveryPoints(Folder):
-    CONTAINER_CLASS = "IPF.StoreItem.RecoveryPoints"
-
-
-class SwssItems(Folder):
-    CONTAINER_CLASS = "IPF.StoreItem.SwssItems"
-
-
-class SkypeTeamsMessages(Folder):
-    CONTAINER_CLASS = "IPF.SkypeTeams.Message"
-    LOCALIZED_NAMES = {
-        None: ("Team-chat",),
-    }
-
-
-class Birthdays(Folder):
-    CONTAINER_CLASS = "IPF.Appointment.Birthday"
-    LOCALIZED_NAMES = {
-        None: ("Birthdays",),
-        "da_DK": ("Fødselsdage",),
-    }
-
-
 class Drafts(Messages):
     DISTINGUISHED_FOLDER_ID = "drafts"
-
     LOCALIZED_NAMES = {
         "da_DK": ("Kladder",),
         "de_DE": ("Entwürfe",),
@@ -115,7 +134,6 @@ class Drafts(Messages):
 
 class Inbox(Messages):
     DISTINGUISHED_FOLDER_ID = "inbox"
-
     LOCALIZED_NAMES = {
         "da_DK": ("Indbakke",),
         "de_DE": ("Posteingang",),
@@ -129,9 +147,23 @@ class Inbox(Messages):
     }
 
 
+class JunkEmail(Messages):
+    DISTINGUISHED_FOLDER_ID = "junkemail"
+    LOCALIZED_NAMES = {
+        "da_DK": ("Uønsket e-mail",),
+        "de_DE": ("Junk-E-Mail",),
+        "en_US": ("Junk E-mail",),
+        "es_ES": ("Correo no deseado",),
+        "fr_CA": ("Courrier indésirables",),
+        "nl_NL": ("Ongewenste e-mail",),
+        "ru_RU": ("Нежелательная почта",),
+        "sv_SE": ("Skräppost",),
+        "zh_CN": ("垃圾邮件",),
+    }
+
+
 class Outbox(Messages):
     DISTINGUISHED_FOLDER_ID = "outbox"
-
     LOCALIZED_NAMES = {
         "da_DK": ("Udbakke",),
         "de_DE": ("Postausgang",),
@@ -147,7 +179,6 @@ class Outbox(Messages):
 
 class SentItems(Messages):
     DISTINGUISHED_FOLDER_ID = "sentitems"
-
     LOCALIZED_NAMES = {
         "da_DK": ("Sendt post",),
         "de_DE": ("Gesendete Elemente",),
@@ -161,27 +192,10 @@ class SentItems(Messages):
     }
 
 
-class JunkEmail(Messages):
-    DISTINGUISHED_FOLDER_ID = "junkemail"
-
-    LOCALIZED_NAMES = {
-        "da_DK": ("Uønsket e-mail",),
-        "de_DE": ("Junk-E-Mail",),
-        "en_US": ("Junk E-mail",),
-        "es_ES": ("Correo no deseado",),
-        "fr_CA": ("Courrier indésirables",),
-        "nl_NL": ("Ongewenste e-mail",),
-        "ru_RU": ("Нежелательная почта",),
-        "sv_SE": ("Skräppost",),
-        "zh_CN": ("垃圾邮件",),
-    }
-
-
-class Tasks(Folder):
+class Tasks(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = "tasks"
     CONTAINER_CLASS = "IPF.Task"
     supported_item_models = (Task,)
-
     LOCALIZED_NAMES = {
         "da_DK": ("Opgaver",),
         "de_DE": ("Aufgaben",),
@@ -195,34 +209,30 @@ class Tasks(Folder):
     }
 
 
-class Contacts(Folder):
-    DISTINGUISHED_FOLDER_ID = "contacts"
-    CONTAINER_CLASS = "IPF.Contact"
-    supported_item_models = (Contact, DistributionList)
-
-    LOCALIZED_NAMES = {
-        "da_DK": ("Kontaktpersoner",),
-        "de_DE": ("Kontakte",),
-        "en_US": ("Contacts",),
-        "es_ES": ("Contactos",),
-        "fr_CA": ("Contacts",),
-        "nl_NL": ("Contactpersonen",),
-        "ru_RU": ("Контакты",),
-        "sv_SE": ("Kontakter",),
-        "zh_CN": ("联系人",),
-    }
-
-
-class WellknownFolder(Folder, metaclass=EWSMeta):
-    """Base class to use until we have a more specific folder implementation for this folder."""
-
-    supported_item_models = ITEM_CLASSES
-
-
 class AdminAuditLogs(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = "adminauditlogs"
     supported_from = EXCHANGE_2013
     get_folder_allowed = False
+
+
+class AllContacts(WellknownFolder):
+    DISTINGUISHED_FOLDER_ID = "allcontacts"
+    CONTAINER_CLASS = "IPF.Note"
+
+
+class AllItems(WellknownFolder):
+    DISTINGUISHED_FOLDER_ID = "allitems"
+    CONTAINER_CLASS = "IPF"
+
+
+class AllCategorizedItems(WellknownFolder):
+    DISTINGUISHED_FOLDER_ID = "allcategorizeditems"
+    CONTAINER_CLASS = "IPF.Note"
+
+
+class AllPersonMetadata(WellknownFolder):
+    DISTINGUISHED_FOLDER_ID = "allpersonmetadata"
+    CONTAINER_CLASS = "IPF.Note"
 
 
 class ArchiveDeletedItems(WellknownFolder):
@@ -260,6 +270,15 @@ class ArchiveRecoverableItemsVersions(WellknownFolder):
     supported_from = EXCHANGE_2010_SP1
 
 
+class Companies(WellknownFolder):
+    DISTINGUISHED_FOLDER_ID = "companycontacts"
+    CONTAINER_CLASS = "IPF.Contact.Company"
+    supported_item_models = (Contact, DistributionList)
+    LOCALIZED_NAMES = {
+        "da_DK": ("Firmaer",),
+    }
+
+
 class Conflicts(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = "conflicts"
     supported_from = EXCHANGE_2013
@@ -275,16 +294,40 @@ class Directory(WellknownFolder):
     supported_from = EXCHANGE_2013_SP1
 
 
+class DlpPolicyEvaluation(WellknownFolder):
+    DISTINGUISHED_FOLDER_ID = "dlppolicyevaluation"
+    CONTAINER_CLASS = "IPF.StoreItem.DlpPolicyEvaluation"
+
+
 class Favorites(WellknownFolder):
     CONTAINER_CLASS = "IPF.Note"
     DISTINGUISHED_FOLDER_ID = "favorites"
     supported_from = EXCHANGE_2013
 
 
+class FolderMemberships(Folder):
+    CONTAINER_CLASS = "IPF.Task"
+    LOCALIZED_NAMES = {
+        None: ("Folder Memberships",),
+    }
+
+
+class FromFavoriteSenders(WellknownFolder):
+    CONTAINER_CLASS = "IPF.Note"
+    DISTINGUISHED_FOLDER_ID = "fromfavoritesenders"
+    LOCALIZED_NAMES = {
+        "da_DK": ("Personer jeg kender",),
+    }
+
+
 class IMContactList(WellknownFolder):
     CONTAINER_CLASS = "IPF.Contact.MOC.ImContactList"
     DISTINGUISHED_FOLDER_ID = "imcontactlist"
     supported_from = EXCHANGE_2013
+
+
+class Inference(WellknownFolder):
+    DISTINGUISHED_FOLDER_ID = "inference"
 
 
 class Journal(WellknownFolder):
@@ -322,9 +365,45 @@ class Notes(WellknownFolder):
     }
 
 
+class OneNotePagePreviews(WellknownFolder):
+    DISTINGUISHED_FOLDER_ID = "onenotepagepreviews"
+
+
+class PeopleCentricConversationBuddies(WellknownFolder):
+    DISTINGUISHED_FOLDER_ID = "peoplecentricconversationbuddies"
+    CONTAINER_CLASS = "IPF.Contact.PeopleCentricConversationBuddies"
+    LOCALIZED_NAMES = {
+        None: ("PeopleCentricConversation Buddies",),
+    }
+
+
 class PeopleConnect(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = "peopleconnect"
     supported_from = EXCHANGE_2013
+
+
+class QedcDefaultRetention(WellknownFolder):
+    DISTINGUISHED_FOLDER_ID = "qedcdefaultretention"
+
+
+class QedcLongRetention(WellknownFolder):
+    DISTINGUISHED_FOLDER_ID = "qedclongretention"
+
+
+class QedcMediumRetention(WellknownFolder):
+    DISTINGUISHED_FOLDER_ID = "qedcmediumretention"
+
+
+class QedcShortRetention(WellknownFolder):
+    DISTINGUISHED_FOLDER_ID = "qedcshortretention"
+
+
+class QuarantinedEmail(WellknownFolder):
+    DISTINGUISHED_FOLDER_ID = "quarantinedemail"
+
+
+class QuarantinedEmailDefaultCategory(WellknownFolder):
+    DISTINGUISHED_FOLDER_ID = "quarantinedemaildefaultcategory"
 
 
 class QuickContacts(WellknownFolder):
@@ -333,12 +412,21 @@ class QuickContacts(WellknownFolder):
     supported_from = EXCHANGE_2013
 
 
-class RecipientCache(Contacts):
+class RecipientCache(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = "recipientcache"
     CONTAINER_CLASS = "IPF.Contact.RecipientCache"
     supported_from = EXCHANGE_2013
+    LOCALIZED_NAMES = {
+        None: ("RecipientCache",),
+    }
 
-    LOCALIZED_NAMES = {}
+
+class RelevantContacts(WellknownFolder):
+    DISTINGUISHED_FOLDER_ID = "relevantcontacts"
+    CONTAINER_CLASS = "IPF.Note"
+    LOCALIZED_NAMES = {
+        None: ("RelevantContacts",),
+    }
 
 
 class RecoverableItemsDeletions(WellknownFolder):
@@ -356,6 +444,14 @@ class RecoverableItemsRoot(WellknownFolder):
     supported_from = EXCHANGE_2010_SP1
 
 
+class RecoverableItemsSubstrateHolds(WellknownFolder):
+    DISTINGUISHED_FOLDER_ID = "recoverableitemssubstrateholds"
+    supported_from = EXCHANGE_2010_SP1
+    LOCALIZED_NAMES = {
+        None: ("SubstrateHolds",),
+    }
+
+
 class RecoverableItemsVersions(WellknownFolder):
     DISTINGUISHED_FOLDER_ID = "recoverableitemsversions"
     supported_from = EXCHANGE_2010_SP1
@@ -370,20 +466,36 @@ class ServerFailures(WellknownFolder):
     supported_from = EXCHANGE_2013
 
 
+class SharePointNotifications(WellknownFolder):
+    DISTINGUISHED_FOLDER_ID = "sharepointnotifications"
+
+
+class ShortNotes(WellknownFolder):
+    DISTINGUISHED_FOLDER_ID = "shortnotes"
+
+
 class SyncIssues(WellknownFolder):
     CONTAINER_CLASS = "IPF.Note"
     DISTINGUISHED_FOLDER_ID = "syncissues"
     supported_from = EXCHANGE_2013
 
 
+class TemporarySaves(WellknownFolder):
+    DISTINGUISHED_FOLDER_ID = "temporarysaves"
+
+
 class ToDoSearch(WellknownFolder):
     CONTAINER_CLASS = "IPF.Task"
     DISTINGUISHED_FOLDER_ID = "todosearch"
     supported_from = EXCHANGE_2013
-
     LOCALIZED_NAMES = {
         None: ("To-Do Search",),
     }
+
+
+class UserCuratedContacts(WellknownFolder):
+    CONTAINER_CLASS = "IPF.Note"
+    DISTINGUISHED_FOLDER_ID = "usercuratedcontacts"
 
 
 class VoiceMail(WellknownFolder):
@@ -394,7 +506,7 @@ class VoiceMail(WellknownFolder):
     }
 
 
-class NonDeletableFolderMixIn:
+class NonDeletableFolder(Folder):
     """A mixin for non-wellknown folders than that are not deletable."""
 
     @property
@@ -402,274 +514,206 @@ class NonDeletableFolderMixIn:
         return False
 
 
-class AllContacts(NonDeletableFolderMixIn, Contacts):
-    CONTAINER_CLASS = "IPF.Note"
-
+class ExternalContacts(NonDeletableFolder):
+    DISTINGUISHED_FOLDER_ID = None
+    CONTAINER_CLASS = "IPF.Contact"
+    supported_item_models = (Contact, DistributionList)
     LOCALIZED_NAMES = {
-        None: ("AllContacts",),
+        None: ("ExternalContacts",),
     }
 
 
-class AllItems(NonDeletableFolderMixIn, Folder):
-    CONTAINER_CLASS = "IPF"
-
+class AllTodoTasks(NonDeletableFolder):
+    DISTINGUISHED_FOLDER_ID = None
+    CONTAINER_CLASS = "IPF.Task"
+    supported_item_models = (Task,)
     LOCALIZED_NAMES = {
-        None: ("AllItems",),
+        None: ("AllTodoTasks",),
     }
 
 
-class ApplicationData(NonDeletableFolderMixIn, Folder):
+class ApplicationData(NonDeletableFolder):
     CONTAINER_CLASS = "IPM.ApplicationData"
 
 
-class Audits(NonDeletableFolderMixIn, Folder):
-    LOCALIZED_NAMES = {
-        None: ("Audits",),
-    }
+class Audits(NonDeletableFolder):
     get_folder_allowed = False
 
 
-class CalendarLogging(NonDeletableFolderMixIn, Folder):
+class CalendarLogging(NonDeletableFolder):
     LOCALIZED_NAMES = {
         None: ("Calendar Logging",),
     }
 
 
-class CommonViews(NonDeletableFolderMixIn, Folder):
+class CommonViews(NonDeletableFolder):
     DEFAULT_ITEM_TRAVERSAL_DEPTH = ASSOCIATED
     LOCALIZED_NAMES = {
         None: ("Common Views",),
     }
 
 
-class Companies(NonDeletableFolderMixIn, Contacts):
-    DISTINGUISHED_FOLDER_ID = None
-    CONTAINTER_CLASS = "IPF.Contact.Company"
-    LOCALIZED_NAMES = {
-        None: ("Companies",),
-        "da_DK": ("Firmaer",),
-    }
-
-
-class ConversationSettings(NonDeletableFolderMixIn, Folder):
+class ConversationSettings(NonDeletableFolder):
     CONTAINER_CLASS = "IPF.Configuration"
     LOCALIZED_NAMES = {
         "da_DK": ("Indstillinger for samtalehandlinger",),
     }
 
 
-class DefaultFoldersChangeHistory(NonDeletableFolderMixIn, Folder):
+class DefaultFoldersChangeHistory(NonDeletableFolder):
     CONTAINER_CLASS = "IPM.DefaultFolderHistoryItem"
-    LOCALIZED_NAMES = {
-        None: ("DefaultFoldersChangeHistory",),
-    }
 
 
-class DeferredAction(NonDeletableFolderMixIn, Folder):
+class DeferredAction(NonDeletableFolder):
     LOCALIZED_NAMES = {
         None: ("Deferred Action",),
     }
 
 
-class ExchangeSyncData(NonDeletableFolderMixIn, Folder):
-    LOCALIZED_NAMES = {
-        None: ("ExchangeSyncData",),
-    }
+class ExchangeSyncData(NonDeletableFolder):
+    pass
 
 
-class Files(NonDeletableFolderMixIn, Folder):
+class Files(NonDeletableFolder):
     CONTAINER_CLASS = "IPF.Files"
-
     LOCALIZED_NAMES = {
         "da_DK": ("Filer",),
     }
 
 
-class FreebusyData(NonDeletableFolderMixIn, Folder):
+class FreebusyData(NonDeletableFolder):
     LOCALIZED_NAMES = {
         None: ("Freebusy Data",),
     }
 
 
-class Friends(NonDeletableFolderMixIn, Contacts):
+class Friends(NonDeletableFolder):
     CONTAINER_CLASS = "IPF.Note"
-
+    supported_item_models = (Contact, DistributionList)
     LOCALIZED_NAMES = {
         "de_DE": ("Bekannte",),
     }
 
 
-class GALContacts(NonDeletableFolderMixIn, Contacts):
-    DISTINGUISHED_FOLDER_ID = None
+class GALContacts(NonDeletableFolder):
     CONTAINER_CLASS = "IPF.Contact.GalContacts"
-
+    supported_item_models = (Contact, DistributionList)
     LOCALIZED_NAMES = {
         None: ("GAL Contacts",),
     }
 
 
-class GraphAnalytics(NonDeletableFolderMixIn, Folder):
+class GraphAnalytics(NonDeletableFolder):
     CONTAINER_CLASS = "IPF.StoreItem.GraphAnalytics"
-    LOCALIZED_NAMES = {
-        None: ("GraphAnalytics",),
-    }
 
 
-class Location(NonDeletableFolderMixIn, Folder):
-    LOCALIZED_NAMES = {
-        None: ("Location",),
-    }
+class Location(NonDeletableFolder):
+    pass
 
 
-class MailboxAssociations(NonDeletableFolderMixIn, Folder):
-    LOCALIZED_NAMES = {
-        None: ("MailboxAssociations",),
-    }
+class MailboxAssociations(NonDeletableFolder):
+    pass
 
 
-class MyContactsExtended(NonDeletableFolderMixIn, Contacts):
+class MyContactsExtended(NonDeletableFolder):
     CONTAINER_CLASS = "IPF.Note"
-    LOCALIZED_NAMES = {
-        None: ("MyContactsExtended",),
-    }
+    supported_item_models = (Contact, DistributionList)
 
 
-class OrganizationalContacts(NonDeletableFolderMixIn, Contacts):
-    DISTINGUISHED_FOLDER_ID = None
-    CONTAINTER_CLASS = "IPF.Contact.OrganizationalContacts"
+class OrganizationalContacts(NonDeletableFolder):
+    CONTAINER_CLASS = "IPF.Contact.OrganizationalContacts"
+    supported_item_models = (Contact, DistributionList)
     LOCALIZED_NAMES = {
         None: ("Organizational Contacts",),
     }
 
 
-class ParkedMessages(NonDeletableFolderMixIn, Folder):
+class ParkedMessages(NonDeletableFolder):
     CONTAINER_CLASS = None
-    LOCALIZED_NAMES = {
-        None: ("ParkedMessages",),
-    }
 
 
-class PassThroughSearchResults(NonDeletableFolderMixIn, Folder):
+class PassThroughSearchResults(NonDeletableFolder):
     CONTAINER_CLASS = "IPF.StoreItem.PassThroughSearchResults"
     LOCALIZED_NAMES = {
         None: ("Pass-Through Search Results",),
     }
 
 
-class PeopleCentricConversationBuddies(NonDeletableFolderMixIn, Contacts):
-    DISTINGUISHED_FOLDER_ID = None
-    CONTAINTER_CLASS = "IPF.Contact.PeopleCentricConversationBuddies"
-    LOCALIZED_NAMES = {
-        None: ("PeopleCentricConversation Buddies",),
-    }
-
-
-class PdpProfileV2Secured(NonDeletableFolderMixIn, Folder):
+class PdpProfileV2Secured(NonDeletableFolder):
     CONTAINER_CLASS = "IPF.StoreItem.PdpProfileSecured"
-    LOCALIZED_NAMES = {
-        None: ("PdpProfileV2Secured",),
-    }
 
 
-class Reminders(NonDeletableFolderMixIn, Folder):
+class Reminders(NonDeletableFolder):
     CONTAINER_CLASS = "Outlook.Reminder"
     LOCALIZED_NAMES = {
         "da_DK": ("Påmindelser",),
     }
 
 
-class RSSFeeds(NonDeletableFolderMixIn, Folder):
+class RSSFeeds(NonDeletableFolder):
     CONTAINER_CLASS = "IPF.Note.OutlookHomepage"
     LOCALIZED_NAMES = {
         None: ("RSS Feeds",),
     }
 
 
-class Schedule(NonDeletableFolderMixIn, Folder):
-    LOCALIZED_NAMES = {
-        None: ("Schedule",),
-    }
+class Schedule(NonDeletableFolder):
+    pass
 
 
-class Sharing(NonDeletableFolderMixIn, Folder):
+class Sharing(NonDeletableFolder):
     CONTAINER_CLASS = "IPF.Note"
-    LOCALIZED_NAMES = {
-        None: ("Sharing",),
-    }
 
 
-class Shortcuts(NonDeletableFolderMixIn, Folder):
-    LOCALIZED_NAMES = {
-        None: ("Shortcuts",),
-    }
+class Shortcuts(NonDeletableFolder):
+    pass
 
 
-class Signal(NonDeletableFolderMixIn, Folder):
+class Signal(NonDeletableFolder):
     CONTAINER_CLASS = "IPF.StoreItem.Signal"
-    LOCALIZED_NAMES = {
-        None: ("Signal",),
-    }
 
 
-class SmsAndChatsSync(NonDeletableFolderMixIn, Folder):
+class SmsAndChatsSync(NonDeletableFolder):
     CONTAINER_CLASS = "IPF.SmsAndChatsSync"
-    LOCALIZED_NAMES = {
-        None: ("SmsAndChatsSync",),
-    }
 
 
-class SpoolerQueue(NonDeletableFolderMixIn, Folder):
+class SpoolerQueue(NonDeletableFolder):
     LOCALIZED_NAMES = {
         None: ("Spooler Queue",),
     }
 
 
-class System(NonDeletableFolderMixIn, Folder):
-    LOCALIZED_NAMES = {
-        None: ("System",),
-    }
+class System(NonDeletableFolder):
     get_folder_allowed = False
 
 
-class System1(NonDeletableFolderMixIn, Folder):
-    LOCALIZED_NAMES = {
-        None: ("System1",),
-    }
+class System1(NonDeletableFolder):
     get_folder_allowed = False
 
 
-class TemporarySaves(NonDeletableFolderMixIn, Folder):
-    LOCALIZED_NAMES = {
-        None: ("TemporarySaves",),
-    }
+class Views(NonDeletableFolder):
+    pass
 
 
-class Views(NonDeletableFolderMixIn, Folder):
-    LOCALIZED_NAMES = {
-        None: ("Views",),
-    }
-
-
-class WorkingSet(NonDeletableFolderMixIn, Folder):
+class WorkingSet(NonDeletableFolder):
     LOCALIZED_NAMES = {
         None: ("Working Set",),
     }
 
 
-# Folders that return 'ErrorDeleteDistinguishedFolder' when we try to delete them. I can't find any official docs
-# listing these folders.
+# Folders that do not have a distinguished folder ID but return 'ErrorDeleteDistinguishedFolder' or
+# 'ErrorCannotDeleteObject' when we try to delete them. I can't find any official docs listing these folders.
 NON_DELETABLE_FOLDERS = [
-    AllContacts,
-    AllItems,
     ApplicationData,
+    AllTodoTasks,
     Audits,
     CalendarLogging,
     CommonViews,
-    Companies,
     ConversationSettings,
     DefaultFoldersChangeHistory,
     DeferredAction,
     ExchangeSyncData,
+    ExternalContacts,
     FreebusyData,
     Files,
     Friends,
@@ -681,7 +725,6 @@ NON_DELETABLE_FOLDERS = [
     OrganizationalContacts,
     ParkedMessages,
     PassThroughSearchResults,
-    PeopleCentricConversationBuddies,
     PdpProfileV2Secured,
     Reminders,
     RSSFeeds,
@@ -693,22 +736,30 @@ NON_DELETABLE_FOLDERS = [
     SpoolerQueue,
     System,
     System1,
-    TemporarySaves,
     Views,
     WorkingSet,
 ]
 
+# Folders that have a distinguished ID and are located in the root folder hierarchy
 WELLKNOWN_FOLDERS_IN_ROOT = [
     AdminAuditLogs,
+    AllCategorizedItems,
+    AllContacts,
+    AllItems,
+    AllPersonMetadata,
     Calendar,
+    Companies,
     Conflicts,
     Contacts,
     ConversationHistory,
     DeletedItems,
     Directory,
+    DlpPolicyEvaluation,
     Drafts,
     Favorites,
+    FromFavoriteSenders,
     IMContactList,
+    Inference,
     Inbox,
     Journal,
     JunkEmail,
@@ -716,23 +767,38 @@ WELLKNOWN_FOLDERS_IN_ROOT = [
     MsgFolderRoot,
     MyContacts,
     Notes,
+    OneNotePagePreviews,
     Outbox,
+    PeopleCentricConversationBuddies,
     PeopleConnect,
+    QedcDefaultRetention,
+    QedcLongRetention,
+    QedcMediumRetention,
+    QedcShortRetention,
+    QuarantinedEmail,
+    QuarantinedEmailDefaultCategory,
     QuickContacts,
     RecipientCache,
+    RelevantContacts,
     RecoverableItemsDeletions,
     RecoverableItemsPurges,
     RecoverableItemsRoot,
+    RecoverableItemsSubstrateHolds,
     RecoverableItemsVersions,
     SearchFolders,
     SentItems,
     ServerFailures,
+    SharePointNotifications,
+    ShortNotes,
     SyncIssues,
     Tasks,
+    TemporarySaves,
     ToDoSearch,
+    UserCuratedContacts,
     VoiceMail,
 ]
 
+# Folders that have a distinguished ID and are located in the archive root folder hierarchy
 WELLKNOWN_FOLDERS_IN_ARCHIVE_ROOT = [
     ArchiveDeletedItems,
     ArchiveInbox,
@@ -743,9 +809,11 @@ WELLKNOWN_FOLDERS_IN_ARCHIVE_ROOT = [
     ArchiveRecoverableItemsVersions,
 ]
 
+# Folders that do not have a distinguished ID but have their own container class
 MISC_FOLDERS = [
     CrawlerData,
-    DlpPolicyEvaluation,
+    EventCheckPoints,
+    FolderMemberships,
     FreeBusyCache,
     RecoveryPoints,
     SwssItems,

@@ -134,6 +134,9 @@ class Contact(Item):
     direct_reports = MailboxListField(
         field_uri="contacts:DirectReports", supported_from=EXCHANGE_2010_SP2, is_read_only=True
     )
+    # O365 throws ErrorInternalServerError "[0x004f0102] MapiReplyToBlob" if UniqueBody is requested
+    unique_body_idx = Item.FIELDS.index_by_name("unique_body")
+    FIELDS = Item.FIELDS[:unique_body_idx] + Item.FIELDS[unique_body_idx + 1 :]
 
 
 class Persona(IdChangeKeyMixIn):
@@ -253,3 +256,7 @@ class DistributionList(Item):
         field_uri="contacts:ContactSource", choices={Choice("Store"), Choice("ActiveDirectory")}, is_read_only=True
     )
     members = MemberListField(field_uri="distributionlist:Members")
+
+    # O365 throws ErrorInternalServerError "[0x004f0102] MapiReplyToBlob" if UniqueBody is requested
+    unique_body_idx = Item.FIELDS.index_by_name("unique_body")
+    FIELDS = Item.FIELDS[:unique_body_idx] + Item.FIELDS[unique_body_idx + 1 :]

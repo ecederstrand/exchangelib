@@ -29,18 +29,18 @@ jobs:
     needs: pre_job
     strategy:
       matrix:
-        python-version: ['3.7', '3.11']
-        include:
-          # Allow failure on Python dev - e.g. Cython install regularly fails
-          - python-version: "3.12-dev"
-            allowed_failure: true
+        python-version: ['3.8', '3.12']
+        #include:
+        #  # Allow failure on Python dev - e.g. Cython install regularly fails
+        #  - python-version: "3.13-dev"
+        #    allowed_failure: true
       max-parallel: 1
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
 
@@ -58,7 +58,7 @@ jobs:
 
     - name: Install cutting-edge Cython-based packages on Python dev versions
       continue-on-error: ${{ matrix.allowed_failure || false }}
-      if: matrix.python-version == '3.12-dev'
+      if: matrix.python-version == '3.13-dev'
       run: |
         sudo apt-get install libxml2-dev libxslt1-dev
         python -m pip install hg+https://foss.heptapod.net/pypy/cffi
@@ -77,10 +77,11 @@ jobs:
       env:
        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        black --check --diff exchangelib tests scripts setup.py
-        isort --check --diff exchangelib tests scripts setup.py
-        flake8 exchangelib tests scripts setup.py
-        unittest-parallel -j 4 --class-fixtures --coverage --coverage-source exchangelib
+        black --check --diff exchangelib tests scripts
+        isort --check --diff exchangelib tests scripts
+        flake8 exchangelib tests scripts
+        blacken-docs *.md docs/*.md
+        unittest-parallel -j 4 --level=class --coverage --coverage-source exchangelib
         coveralls --service=github
 
   cleanup:
@@ -90,10 +91,10 @@ jobs:
     if: ${{ always() }}
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.11'
 

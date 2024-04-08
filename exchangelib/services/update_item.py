@@ -87,7 +87,8 @@ class UpdateItem(BaseUpdateService):
 
         return value
 
-    def _target_elem(self, target):
+    @staticmethod
+    def _target_elem(target):
         return to_item_id(target, ItemId)
 
     def get_payload(

@@ -127,7 +127,7 @@ EXCHANGE_O365 = Build(15, 20)
 # The list is sorted from newest to oldest build
 VERSIONS = (
     (EXCHANGE_O365, "Exchange2016", "Microsoft Exchange Server Office365"),  # Not mentioned in list of build numbers
-    (EXCHANGE_2019, "Exchange2019", "Microsoft Exchange Server 2019"),
+    (EXCHANGE_2019, "Exchange2016", "Microsoft Exchange Server 2019"),
     (EXCHANGE_2016, "Exchange2016", "Microsoft Exchange Server 2016"),
     (EXCHANGE_2015_SP1, "Exchange2015_SP1", "Microsoft Exchange Server 2015 SP1"),
     (EXCHANGE_2015, "Exchange2015", "Microsoft Exchange Server 2015"),
@@ -165,12 +165,14 @@ class Version:
     @property
     def fullname(self):
         for build, api_version, full_name in VERSIONS:
-            if self.build:
-                if self.build.major_version != build.major_version or self.build.minor_version != build.minor_version:
-                    continue
+            if self.build and (
+                self.build.major_version != build.major_version or self.build.minor_version != build.minor_version
+            ):
+                continue
             if self.api_version == api_version:
                 return full_name
-        raise ValueError(f"Full name for API version {self.api_version} build {self.build} is unknown")
+        log.warning("Full name for API version %s build %s is unknown", self.api_version, self.build)
+        return "UNKNOWN"
 
     @classmethod
     def guess(cls, protocol, api_version_hint=None):
@@ -252,6 +254,9 @@ class Version:
     def all_versions(cls):
         # Return all supported versions, sorted newest to oldest
         return [cls(build=build, api_version=api_version) for build, api_version, _ in VERSIONS]
+
+    def __hash__(self):
+        return hash((self.build, self.api_version))
 
     def __eq__(self, other):
         if self.api_version != other.api_version:

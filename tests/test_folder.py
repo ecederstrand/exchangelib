@@ -1,8 +1,14 @@
 from contextlib import suppress
+from inspect import isclass
 from unittest.mock import Mock
 
+import requests_mock
+
+import exchangelib.folders
+import exchangelib.folders.known_folders
 from exchangelib.errors import (
     DoesNotExist,
+    ErrorCannotDeleteObject,
     ErrorCannotEmptyFolder,
     ErrorDeleteDistinguishedFolder,
     ErrorFolderExists,
@@ -16,13 +22,17 @@ from exchangelib.errors import (
 )
 from exchangelib.extended_properties import ExtendedProperty
 from exchangelib.folders import (
-    NON_DELETABLE_FOLDERS,
     SHALLOW,
+    AllCategorizedItems,
     AllContacts,
     AllItems,
+    AllPersonMetadata,
+    AllTodoTasks,
     ApplicationData,
+    BaseFolder,
     Birthdays,
     Calendar,
+    CommonViews,
     Companies,
     Contacts,
     ConversationSettings,
@@ -32,13 +42,17 @@ from exchangelib.folders import (
     DistinguishedFolderId,
     DlpPolicyEvaluation,
     Drafts,
+    EventCheckPoints,
+    ExternalContacts,
     Favorites,
     Files,
     Folder,
     FolderCollection,
+    FolderMemberships,
     FolderQuerySet,
     FreeBusyCache,
     Friends,
+    FromFavoriteSenders,
     GALContacts,
     GraphAnalytics,
     IMContactList,
@@ -48,6 +62,7 @@ from exchangelib.folders import (
     Messages,
     MyContacts,
     MyContactsExtended,
+    NonDeletableFolder,
     Notes,
     OrganizationalContacts,
     Outbox,
@@ -58,6 +73,7 @@ from exchangelib.folders import (
     QuickContacts,
     RecipientCache,
     RecoveryPoints,
+    RelevantContacts,
     Reminders,
     RootOfHierarchy,
     RSSFeeds,
@@ -71,7 +87,15 @@ from exchangelib.folders import (
     SyncIssues,
     Tasks,
     ToDoSearch,
+    UserCuratedContacts,
     VoiceMail,
+    WellknownFolder,
+)
+from exchangelib.folders.known_folders import (
+    MISC_FOLDERS,
+    NON_DELETABLE_FOLDERS,
+    WELLKNOWN_FOLDERS_IN_ARCHIVE_ROOT,
+    WELLKNOWN_FOLDERS_IN_ROOT,
 )
 from exchangelib.items import Message
 from exchangelib.properties import CalendarPermission, EffectiveRights, InvalidField, Mailbox, PermissionSet, UserId
@@ -130,7 +154,7 @@ class FolderTest(EWSTest):
         self.account.root.remove_folder(Folder(id="XXX"))
         # Must be called on a distinguished folder class
         with self.assertRaises(ValueError):
-            RootOfHierarchy.get_distinguished(self.account)
+            RootOfHierarchy.get_distinguished(account=self.account)
         with self.assertRaises(ValueError):
             self.account.root.get_default_folder(Folder)
 
@@ -156,17 +180,210 @@ class FolderTest(EWSTest):
             Folder.item_model_from_tag("XXX")
         self.assertEqual(e.exception.args[0], "Item type XXX was unexpected in a Folder folder")
 
-    def test_public_folders_root(self):
+    @requests_mock.mock(real_http=True)
+    def test_public_folders_root(self, m):
         # Test account does not have a public folders root. Make a dummy query just to hit .get_children()
         with suppress(ErrorNoPublicFolderReplicaAvailable):
             self.assertGreaterEqual(
-                len(
-                    list(
-                        PublicFoldersRoot(account=self.account, is_distinguished=True).get_children(self.account.inbox)
-                    )
-                ),
+                len(list(PublicFoldersRoot(account=self.account).get_children(self.account.inbox))),
                 0,
             )
+        # Test public folders root with mocked responses
+        get_public_folder_xml = b"""\
+<?xml version="1.0" ?>
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+    <s:Body>
+        <m:GetFolderResponse xmlns:m="http://schemas.microsoft.com/exchange/services/2006/messages"
+                             xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types">
+            <m:ResponseMessages>
+                <m:GetFolderResponseMessage ResponseClass="Success">
+                    <m:ResponseCode>NoError</m:ResponseCode>
+                    <m:Folders>
+                        <t:Folder>
+                            <t:FolderId Id="YAABdofPkAAA=" ChangeKey="AwAAABYAAABGDloItRzyTrAt+"/>
+                            <t:FolderClass>IPF.Note</t:FolderClass>
+                            <t:DisplayName>publicfoldersroot</t:DisplayName>
+                        </t:Folder>
+                    </m:Folders>
+                </m:GetFolderResponseMessage>
+            </m:ResponseMessages>
+        </m:GetFolderResponse>
+    </s:Body>
+</s:Envelope>"""
+        find_public_folder_children_xml = b"""\
+<?xml version="1.0" ?>
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+    <s:Body>
+        <m:FindFolderResponse
+                xmlns:m="http://schemas.microsoft.com/exchange/services/2006/messages"
+                xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types">
+            <m:ResponseMessages>
+                <m:FindFolderResponseMessage ResponseClass="Success">
+                    <m:ResponseCode>NoError</m:ResponseCode>
+                    <m:RootFolder IndexedPagingOffset="2" TotalItemsInView="2" IncludesLastItemInRange="true">
+                        <t:Folders>
+                            <t:Folder>
+                                <t:FolderId Id="2BBBBxEAAAA=" ChangeKey="AQBBBBYBBBAGDloItRzyTrAt+"/>
+                                <t:ParentFolderId Id="YAABdofPkAAA=" ChangeKey="AwAAABYAAABGDloItRzyTrAt+"/>
+                                <t:FolderClass>IPF.Contact</t:FolderClass>
+                                <t:DisplayName>Sample Contacts</t:DisplayName>
+                                <t:ChildFolderCount>2</t:ChildFolderCount>
+                                <t:TotalCount>0</t:TotalCount>
+                                <t:UnreadCount>0</t:UnreadCount>
+                            </t:Folder>
+                            <t:Folder>
+                                <t:FolderId Id="2AAAAxEAAAA=" ChangeKey="AQAAABYAAABGDloItRzyTrAt+"/>
+                                <t:ParentFolderId Id="YAABdofPkAAA=" ChangeKey="AwAAABYAAABGDloItRzyTrAt+"/>
+                                <t:FolderClass>IPF.Note</t:FolderClass>
+                                <t:DisplayName>Sample Folder</t:DisplayName>
+                                <t:ChildFolderCount>0</t:ChildFolderCount>
+                                <t:TotalCount>0</t:TotalCount>
+                                <t:UnreadCount>0</t:UnreadCount>
+                            </t:Folder>
+                        </t:Folders>
+                    </m:RootFolder>
+                </m:FindFolderResponseMessage>
+            </m:ResponseMessages>
+        </m:FindFolderResponse>
+    </s:Body>
+</s:Envelope>"""
+        get_public_folder_children_xml = b"""\
+<?xml version="1.0" ?>
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+    <s:Body>
+        <m:GetFolderResponse xmlns:m="http://schemas.microsoft.com/exchange/services/2006/messages"
+                             xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types">
+            <m:ResponseMessages>
+                <m:GetFolderResponseMessage ResponseClass="Success">
+                    <m:ResponseCode>NoError</m:ResponseCode>
+                    <m:Folders>
+                        <t:Folder>
+                            <t:FolderId Id="2BBBBxEAAAA=" ChangeKey="AQBBBBYBBBAGDloItRzyTrAt+"/>
+                            <t:FolderClass>IPF.Contact</t:FolderClass>
+                            <t:DisplayName>Sample Contacts</t:DisplayName>
+                        </t:Folder>
+                        <t:Folder>
+                            <t:FolderId Id="2AAAAxEAAAA=" ChangeKey="AQAAABYAAABGDloItRzyTrAt+"/>
+                            <t:FolderClass>IPF.Note</t:FolderClass>
+                            <t:DisplayName>Sample Folder</t:DisplayName>
+                        </t:Folder>
+                    </m:Folders>
+                </m:GetFolderResponseMessage>
+            </m:ResponseMessages>
+        </m:GetFolderResponse>
+    </s:Body>
+</s:Envelope>"""
+        m.post(
+            self.account.protocol.service_endpoint,
+            [
+                dict(status_code=200, content=get_public_folder_xml),
+                dict(status_code=200, content=find_public_folder_children_xml),
+                dict(status_code=200, content=get_public_folder_children_xml),
+            ],
+        )
+        # Test top-level .children
+        self.assertListEqual(
+            [f.name for f in self.account.public_folders_root.children], ["Sample Contacts", "Sample Folder"]
+        )
+
+        find_public_subfolder1_children_xml = b"""\
+<?xml version="1.0" ?>
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+    <s:Body>
+        <m:FindFolderResponse
+                xmlns:m="http://schemas.microsoft.com/exchange/services/2006/messages"
+                xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types">
+            <m:ResponseMessages>
+                <m:FindFolderResponseMessage ResponseClass="Success">
+                    <m:ResponseCode>NoError</m:ResponseCode>
+                    <m:RootFolder IndexedPagingOffset="2" TotalItemsInView="2" IncludesLastItemInRange="true">
+                        <t:Folders>
+                            <t:Folder>
+                                <t:FolderId Id="YCCBdofPkCCC=" ChangeKey="AwCCCBYAAABGDloItRzyTrAt+"/>
+                                <t:ParentFolderId Id="2BBBBxEAAAA=" ChangeKey="AQBBBBYBBBAGDloItRzyTrAt+"/>
+                                <t:FolderClass>IPF.Contact</t:FolderClass>
+                                <t:DisplayName>Sample Subfolder1</t:DisplayName>
+                                <t:ChildFolderCount>0</t:ChildFolderCount>
+                                <t:TotalCount>0</t:TotalCount>
+                                <t:UnreadCount>0</t:UnreadCount>
+                            </t:Folder>
+                            <t:Folder>
+                                <t:FolderId Id="2DDDDxEAAAA=" ChangeKey="AwDDDBYAAABGDloItRzyTrAt+"/>
+                                <t:ParentFolderId Id="2BBBBxEAAAA=" ChangeKey="AQBBBBYBBBAGDloItRzyTrAt+"/>
+                                <t:FolderClass>IPF.Note</t:FolderClass>
+                                <t:DisplayName>Sample Subfolder2</t:DisplayName>
+                                <t:ChildFolderCount>0</t:ChildFolderCount>
+                                <t:TotalCount>0</t:TotalCount>
+                                <t:UnreadCount>0</t:UnreadCount>
+                            </t:Folder>
+                        </t:Folders>
+                    </m:RootFolder>
+                </m:FindFolderResponseMessage>
+            </m:ResponseMessages>
+        </m:FindFolderResponse>
+    </s:Body>
+</s:Envelope>"""
+        get_public_subfolder1_children_xml = b"""\
+<?xml version="1.0" ?>
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+    <s:Body>
+        <m:GetFolderResponse xmlns:m="http://schemas.microsoft.com/exchange/services/2006/messages"
+                             xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types">
+            <m:ResponseMessages>
+                <m:GetFolderResponseMessage ResponseClass="Success">
+                    <m:ResponseCode>NoError</m:ResponseCode>
+                    <m:Folders>
+                        <t:Folder>
+                            <t:FolderId Id="YCCBdofPkCCC=" ChangeKey="AwCCCBYAAABGDloItRzyTrAt+"/>
+                            <t:FolderClass>IPF.Contact</t:FolderClass>
+                            <t:DisplayName>Sample Subfolder1</t:DisplayName>
+                        </t:Folder>
+                        <t:Folder>
+                            <t:FolderId Id="2DDDDxEAAAA=" ChangeKey="AwDDDBYAAABGDloItRzyTrAt+"/>
+                            <t:FolderClass>IPF.Note</t:FolderClass>
+                            <t:DisplayName>Sample Subfolder2</t:DisplayName>
+                        </t:Folder>
+                    </m:Folders>
+                </m:GetFolderResponseMessage>
+            </m:ResponseMessages>
+        </m:GetFolderResponse>
+    </s:Body>
+</s:Envelope>"""
+        find_public_subfolder2_children_xml = b"""\
+<?xml version="1.0" ?>
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+    <s:Body>
+        <m:FindFolderResponse
+                xmlns:m="http://schemas.microsoft.com/exchange/services/2006/messages"
+                xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types">
+            <m:ResponseMessages>
+                <m:FindFolderResponseMessage ResponseClass="Success">
+                    <m:ResponseCode>NoError</m:ResponseCode>
+                    <m:RootFolder IndexedPagingOffset="0" TotalItemsInView="0" IncludesLastItemInRange="true">
+                        <t:Folders>
+                        </t:Folders>
+                    </m:RootFolder>
+                </m:FindFolderResponseMessage>
+            </m:ResponseMessages>
+        </m:FindFolderResponse>
+    </s:Body>
+</s:Envelope>"""
+        m.post(
+            self.account.protocol.service_endpoint,
+            [
+                dict(status_code=200, content=find_public_subfolder1_children_xml),
+                dict(status_code=200, content=get_public_subfolder1_children_xml),
+                dict(status_code=200, content=find_public_subfolder2_children_xml),
+            ],
+        )
+        # Test .get_children() on subfolders
+        f_1 = self.account.public_folders_root / "Sample Contacts"
+        f_2 = self.account.public_folders_root / "Sample Folder"
+        self.assertListEqual(
+            [f.name for f in self.account.public_folders_root.get_children(f_1)],
+            ["Sample Subfolder1", "Sample Subfolder2"],
+        )
+        self.assertListEqual([f.name for f in self.account.public_folders_root.get_children(f_2)], [])
 
     def test_invalid_deletefolder_args(self):
         with self.assertRaises(ValueError) as e:
@@ -221,7 +438,7 @@ class FolderTest(EWSTest):
         # Test failure on different roots
         with self.assertRaises(ValueError) as e:
             list(FolderCollection(account=self.account, folders=[Folder(root="A"), Folder(root="B")]).find_folders())
-        self.assertIn("All folders in 'roots' must have the same root hierarchy", e.exception.args[0])
+        self.assertIn("All folders must have the same root hierarchy", e.exception.args[0])
 
     def test_find_folders_compat(self):
         account = self.get_account()
@@ -282,7 +499,8 @@ class FolderTest(EWSTest):
         # Test that we return an Inbox instance and not a generic Messages or Folder instance when we call GetFolder
         # with a DistinguishedFolderId instance with an ID of Inbox.DISTINGUISHED_FOLDER_ID.
         inbox_folder_id = DistinguishedFolderId(
-            id=Inbox.DISTINGUISHED_FOLDER_ID, mailbox=Mailbox(email_address=self.account.primary_smtp_address)
+            id=Inbox.DISTINGUISHED_FOLDER_ID,
+            mailbox=Mailbox(email_address=self.account.primary_smtp_address),
         )
         inbox = list(
             GetFolder(account=self.account).call(
@@ -301,17 +519,27 @@ class FolderTest(EWSTest):
         # If you get errors here, you probably need to fill out [folder class].LOCALIZED_NAMES for your locale.
         for f in self.account.root.walk():
             with self.subTest(f=f):
+                if f.is_distinguished:
+                    self.assertIsNotNone(f.DISTINGUISHED_FOLDER_ID)
+                else:
+                    self.assertIsNone(f.DISTINGUISHED_FOLDER_ID)
+            with self.subTest(f=f):
                 if isinstance(
                     f,
                     (
                         Messages,
                         DeletedItems,
+                        AllCategorizedItems,
                         AllContacts,
+                        AllPersonMetadata,
                         MyContactsExtended,
                         Sharing,
                         Favorites,
+                        FromFavoriteSenders,
+                        RelevantContacts,
                         SyncIssues,
                         MyContacts,
+                        UserCuratedContacts,
                     ),
                 ):
                     self.assertEqual(f.folder_class, "IPF.Note")
@@ -327,6 +555,8 @@ class FolderTest(EWSTest):
                     self.assertEqual(f.folder_class, "IPF.StoreItem.RecoveryPoints")
                 elif isinstance(f, SwssItems):
                     self.assertEqual(f.folder_class, "IPF.StoreItem.SwssItems")
+                elif isinstance(f, EventCheckPoints):
+                    self.assertEqual(f.folder_class, "IPF.StoreItem.EventCheckPoints")
                 elif isinstance(f, PassThroughSearchResults):
                     self.assertEqual(f.folder_class, "IPF.StoreItem.PassThroughSearchResults")
                 elif isinstance(f, GraphAnalytics):
@@ -349,13 +579,13 @@ class FolderTest(EWSTest):
                     self.assertEqual(f.folder_class, "IPF.Contact.MOC.ImContactList")
                 elif isinstance(f, QuickContacts):
                     self.assertEqual(f.folder_class, "IPF.Contact.MOC.QuickContacts")
-                elif isinstance(f, Contacts):
+                elif isinstance(f, (Contacts, ExternalContacts)):
                     self.assertEqual(f.folder_class, "IPF.Contact")
                 elif isinstance(f, Birthdays):
                     self.assertEqual(f.folder_class, "IPF.Appointment.Birthday")
                 elif isinstance(f, Calendar):
                     self.assertEqual(f.folder_class, "IPF.Appointment")
-                elif isinstance(f, (Tasks, ToDoSearch)):
+                elif isinstance(f, (Tasks, ToDoSearch, AllTodoTasks, FolderMemberships)):
                     self.assertEqual(f.folder_class, "IPF.Task")
                 elif isinstance(f, Reminders):
                     self.assertEqual(f.folder_class, "Outlook.Reminder")
@@ -436,6 +666,16 @@ class FolderTest(EWSTest):
         self.assertEqual(f.unread_count, 0)
         self.assertEqual(f.child_folder_count, 0)
         f.delete()
+
+    def test_case_sensitivity(self):
+        # Test that the server does not case about folder name case
+        upper_name = get_random_string(16).upper()
+        lower_name = upper_name.lower()
+        self.assertNotEqual(upper_name, lower_name)
+        Folder(parent=self.account.inbox, name=upper_name).save()
+        with self.assertRaises(ErrorFolderExists) as e:
+            Folder(parent=self.account.inbox, name=lower_name).save()
+        self.assertIn(f"Could not create folder '{lower_name}'", e.exception.args[0])
 
     def test_update(self):
         # Test that we can update folder attributes
@@ -542,6 +782,12 @@ class FolderTest(EWSTest):
             list(self.account.root.glob("../*"))
         self.assertEqual(e.exception.args[0], "Already at top")
 
+        # Test globbing with multiple levels of folders ('a/b/c')
+        f1 = Folder(parent=self.account.inbox, name=get_random_string(16)).save()
+        f2 = Folder(parent=f1, name=get_random_string(16)).save()
+        f3 = Folder(parent=f2, name=get_random_string(16)).save()
+        self.assertEqual(len(list(self.account.inbox.glob(f"{f1.name}/{f2.name}/{f3.name}"))), 1)
+
     def test_collection_filtering(self):
         self.assertGreaterEqual(self.account.root.tois.children.all().count(), 0)
         self.assertGreaterEqual(self.account.root.tois.walk().all().count(), 0)
@@ -567,6 +813,10 @@ class FolderTest(EWSTest):
         # Test invalid subfolder
         with self.assertRaises(ErrorFolderNotFound):
             _ = self.account.root / "XXX"
+
+        # Test that we are case-insensitive
+        self.assertNotEqual(self.account.root.tois.name, self.account.root.tois.name.upper())
+        self.assertEqual((self.account.root / self.account.root.tois.name.upper()).id, self.account.root.tois.id)
 
     def test_double_div_navigation(self):
         self.account.root.clear_cache()  # Clear the cache
@@ -594,11 +844,15 @@ class FolderTest(EWSTest):
         # Check that this didn't trigger caching
         self.assertIsNone(self.account.root._subfolders)
 
+        # Test that we are case-insensitive
+        self.assertNotEqual(self.account.root.tois.name, self.account.root.tois.name.upper())
+        self.assertEqual((self.account.root // self.account.root.tois.name.upper()).id, self.account.root.tois.id)
+
     def test_extended_properties(self):
         # Test extended properties on folders and folder roots. This extended prop gets the size (in bytes) of a folder
         class FolderSize(ExtendedProperty):
             property_tag = 0x0E08
-            property_type = "Integer"
+            property_type = "Long"
 
         try:
             Folder.register("size", FolderSize)
@@ -671,6 +925,28 @@ class FolderTest(EWSTest):
         with self.assertRaises(ErrorDeleteDistinguishedFolder):
             self.account.inbox.delete()
 
+    def test_folder_type_guessing(self):
+        old_locale = self.account.locale
+        dk_locale = "da_DK"
+        try:
+            self.account.locale = dk_locale
+            # Create a folder to contain the test
+            f = Messages(parent=self.account.inbox, name=get_random_string(16)).save()
+            # Create a subfolder with a misleading name
+            misleading_name = Calendar.LOCALIZED_NAMES[dk_locale][0]
+            Messages(parent=f, name=misleading_name).save()
+            # Check that it's still detected as a Messages folder
+            self.account.root.clear_cache()
+            test_folder = f / misleading_name
+            self.assertEqual(type(test_folder), Messages)
+            self.assertEqual(test_folder.folder_class, Messages.CONTAINER_CLASS)
+        finally:
+            self.account.locale = old_locale
+
+        # Also test folders that don't have a CONTAINER_CLASS
+        f = self.account.root / "Common Views"
+        self.assertIsInstance(f, CommonViews)
+
     def test_wipe_without_empty(self):
         name = get_random_string(16)
         f = Messages(parent=self.account.inbox, name=name).save()
@@ -722,14 +998,71 @@ class FolderTest(EWSTest):
         self.assertEqual(Folder().has_distinguished_name, None)
         self.assertEqual(Inbox(name="XXX").has_distinguished_name, False)
         self.assertEqual(Inbox(name="Inbox").has_distinguished_name, True)
-        self.assertEqual(Inbox(is_distinguished=False).is_deletable, True)
-        self.assertEqual(Inbox(is_distinguished=True).is_deletable, False)
+        self.assertEqual(Folder().is_deletable, True)
+        self.assertEqual(Inbox().is_deletable, False)
 
     def test_non_deletable_folders(self):
         for f in self.account.root.walk():
-            if f.__class__ not in NON_DELETABLE_FOLDERS:
+            with self.subTest(item=f):
+                if f.__class__ in NON_DELETABLE_FOLDERS + WELLKNOWN_FOLDERS_IN_ARCHIVE_ROOT + WELLKNOWN_FOLDERS_IN_ROOT:
+                    self.assertEqual(f.is_deletable, False)
+                    try:
+                        f.delete()
+                    except (ErrorDeleteDistinguishedFolder, ErrorCannotDeleteObject, ErrorItemNotFound):
+                        pass
+                else:
+                    self.assertEqual(f.is_deletable, True)
+                    # Don't attempt to delete. That could affect parallel tests
+
+    def test_folder_collections(self):
+        # Test that all custom folders are exposed in the top-level module
+        top_level_classes = [
+            cls
+            for cls in vars(exchangelib.folders).values()
+            if isclass(cls) and issubclass(cls, exchangelib.folders.BaseFolder)
+        ]
+        known_folder_classes = [
+            cls
+            for cls in vars(exchangelib.folders.known_folders).values()
+            if isclass(cls) and issubclass(cls, exchangelib.folders.BaseFolder)
+        ]
+        for cls in known_folder_classes:
+            with self.subTest(item=cls):
+                self.assertIn(cls, top_level_classes)
+
+        # Test that all custom folders are in one of the following folder collections
+        all_cls = NON_DELETABLE_FOLDERS + WELLKNOWN_FOLDERS_IN_ARCHIVE_ROOT + WELLKNOWN_FOLDERS_IN_ROOT + MISC_FOLDERS
+        for cls in top_level_classes:
+            if not isclass(cls) or not issubclass(cls, BaseFolder):
                 continue
-            self.assertEqual(f.is_deletable, False)
+            with self.subTest(item=cls):
+                if cls in NON_DELETABLE_FOLDERS + [NonDeletableFolder]:
+                    self.assertTrue(issubclass(cls, NonDeletableFolder))
+                elif cls in WELLKNOWN_FOLDERS_IN_ARCHIVE_ROOT + WELLKNOWN_FOLDERS_IN_ROOT + [WellknownFolder, Messages]:
+                    self.assertTrue(issubclass(cls, WellknownFolder))
+                else:
+                    self.assertFalse(issubclass(cls, WellknownFolder))
+                    self.assertFalse(issubclass(cls, NonDeletableFolder))
+            with self.subTest(item=cls):
+                if cls in WELLKNOWN_FOLDERS_IN_ARCHIVE_ROOT + WELLKNOWN_FOLDERS_IN_ROOT:
+                    self.assertIsNotNone(cls.DISTINGUISHED_FOLDER_ID)
+                elif cls in (BaseFolder, Folder, WellknownFolder, RootOfHierarchy):
+                    self.assertIsNone(cls.DISTINGUISHED_FOLDER_ID)
+                elif issubclass(cls, RootOfHierarchy):
+                    self.assertIsNotNone(cls.DISTINGUISHED_FOLDER_ID)
+                else:
+                    self.assertIsNone(cls.DISTINGUISHED_FOLDER_ID)
+            with self.subTest(item=cls):
+                if issubclass(cls, RootOfHierarchy) or cls in (
+                    BaseFolder,
+                    Folder,
+                    WellknownFolder,
+                    Messages,
+                    NonDeletableFolder,
+                ):
+                    self.assertNotIn(cls, all_cls)
+                else:
+                    self.assertIn(cls, all_cls)
 
     def test_folder_query_set(self):
         # Create a folder hierarchy and test a folder queryset
@@ -1005,7 +1338,7 @@ class FolderTest(EWSTest):
 
     def test_get_candidate(self):
         # _get_candidate is a private method, but it's really difficult to recreate a situation where it's used.
-        f1 = Inbox(name="XXX", is_distinguished=True)
+        f1 = Inbox(name="XXX")
         f2 = Inbox(name=Inbox.LOCALIZED_NAMES[self.account.locale][0])
         with self.assertRaises(ErrorFolderNotFound) as e:
             self.account.root._get_candidate(folder_cls=Inbox, folder_coll=[])

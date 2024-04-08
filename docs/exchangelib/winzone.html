@@ -29,6 +29,7 @@
 </summary>
 <pre><code class="python">&#34;&#34;&#34;A dict to translate from IANA location name to Windows timezone name. Translations taken from CLDR_WINZONE_URL
 &#34;&#34;&#34;
+
 import re
 
 import requests
@@ -55,7 +56,7 @@ def generate_map(timeout=10):
     type_version = timezones_elem.get(&#34;typeVersion&#34;)
     other_version = timezones_elem.get(&#34;otherVersion&#34;)
     for e in timezones_elem.findall(&#34;mapZone&#34;):
-        for location in re.split(r&#34;\s+&#34;, e.get(&#34;type&#34;)):
+        for location in re.split(r&#34;\s+&#34;, e.get(&#34;type&#34;).strip()):
             if e.get(&#34;territory&#34;) == DEFAULT_TERRITORY or location not in tz_map:
                 # Prefer default territory. This is so MS_TIMEZONE_TO_IANA_MAP maps from MS timezone ID back to the
                 # &#34;preferred&#34; region/location timezone name.
@@ -152,7 +153,8 @@ CLDR_TO_MS_TIMEZONE_MAP = {
     &#34;America/Cayenne&#34;: (&#34;SA Eastern Standard Time&#34;, &#34;001&#34;),
     &#34;America/Cayman&#34;: (&#34;SA Pacific Standard Time&#34;, &#34;KY&#34;),
     &#34;America/Chicago&#34;: (&#34;Central Standard Time&#34;, &#34;001&#34;),
-    &#34;America/Chihuahua&#34;: (&#34;Mountain Standard Time (Mexico)&#34;, &#34;001&#34;),
+    &#34;America/Chihuahua&#34;: (&#34;Central Standard Time (Mexico)&#34;, &#34;MX&#34;),
+    &#34;America/Ciudad_Juarez&#34;: (&#34;Mountain Standard Time&#34;, &#34;MX&#34;),
     &#34;America/Coral_Harbour&#34;: (&#34;SA Pacific Standard Time&#34;, &#34;CA&#34;),
     &#34;America/Cordoba&#34;: (&#34;Argentina Standard Time&#34;, &#34;AR&#34;),
     &#34;America/Costa_Rica&#34;: (&#34;Central America Standard Time&#34;, &#34;CR&#34;),
@@ -208,7 +210,7 @@ CLDR_TO_MS_TIMEZONE_MAP = {
     &#34;America/Marigot&#34;: (&#34;SA Western Standard Time&#34;, &#34;MF&#34;),
     &#34;America/Martinique&#34;: (&#34;SA Western Standard Time&#34;, &#34;MQ&#34;),
     &#34;America/Matamoros&#34;: (&#34;Central Standard Time&#34;, &#34;MX&#34;),
-    &#34;America/Mazatlan&#34;: (&#34;Mountain Standard Time (Mexico)&#34;, &#34;MX&#34;),
+    &#34;America/Mazatlan&#34;: (&#34;Mountain Standard Time (Mexico)&#34;, &#34;001&#34;),
     &#34;America/Mendoza&#34;: (&#34;Argentina Standard Time&#34;, &#34;AR&#34;),
     &#34;America/Menominee&#34;: (&#34;Central Standard Time&#34;, &#34;US&#34;),
     &#34;America/Merida&#34;: (&#34;Central Standard Time (Mexico)&#34;, &#34;MX&#34;),
@@ -218,19 +220,16 @@ CLDR_TO_MS_TIMEZONE_MAP = {
     &#34;America/Moncton&#34;: (&#34;Atlantic Standard Time&#34;, &#34;CA&#34;),
     &#34;America/Monterrey&#34;: (&#34;Central Standard Time (Mexico)&#34;, &#34;MX&#34;),
     &#34;America/Montevideo&#34;: (&#34;Montevideo Standard Time&#34;, &#34;001&#34;),
-    &#34;America/Montreal&#34;: (&#34;Eastern Standard Time&#34;, &#34;CA&#34;),
     &#34;America/Montserrat&#34;: (&#34;SA Western Standard Time&#34;, &#34;MS&#34;),
     &#34;America/Nassau&#34;: (&#34;Eastern Standard Time&#34;, &#34;BS&#34;),
     &#34;America/New_York&#34;: (&#34;Eastern Standard Time&#34;, &#34;001&#34;),
-    &#34;America/Nipigon&#34;: (&#34;Eastern Standard Time&#34;, &#34;CA&#34;),
     &#34;America/Nome&#34;: (&#34;Alaskan Standard Time&#34;, &#34;US&#34;),
     &#34;America/Noronha&#34;: (&#34;UTC-02&#34;, &#34;BR&#34;),
     &#34;America/North_Dakota/Beulah&#34;: (&#34;Central Standard Time&#34;, &#34;US&#34;),
     &#34;America/North_Dakota/Center&#34;: (&#34;Central Standard Time&#34;, &#34;US&#34;),
     &#34;America/North_Dakota/New_Salem&#34;: (&#34;Central Standard Time&#34;, &#34;US&#34;),
-    &#34;America/Ojinaga&#34;: (&#34;Mountain Standard Time&#34;, &#34;MX&#34;),
+    &#34;America/Ojinaga&#34;: (&#34;Central Standard Time&#34;, &#34;MX&#34;),
     &#34;America/Panama&#34;: (&#34;SA Pacific Standard Time&#34;, &#34;PA&#34;),
-    &#34;America/Pangnirtung&#34;: (&#34;Eastern Standard Time&#34;, &#34;CA&#34;),
     &#34;America/Paramaribo&#34;: (&#34;SA Eastern Standard Time&#34;, &#34;SR&#34;),
     &#34;America/Phoenix&#34;: (&#34;US Mountain Standard Time&#34;, &#34;001&#34;),
     &#34;America/Port-au-Prince&#34;: (&#34;Haiti Standard Time&#34;, &#34;001&#34;),
@@ -238,13 +237,11 @@ CLDR_TO_MS_TIMEZONE_MAP = {
     &#34;America/Porto_Velho&#34;: (&#34;SA Western Standard Time&#34;, &#34;BR&#34;),
     &#34;America/Puerto_Rico&#34;: (&#34;SA Western Standard Time&#34;, &#34;PR&#34;),
     &#34;America/Punta_Arenas&#34;: (&#34;Magallanes Standard Time&#34;, &#34;001&#34;),
-    &#34;America/Rainy_River&#34;: (&#34;Central Standard Time&#34;, &#34;CA&#34;),
     &#34;America/Rankin_Inlet&#34;: (&#34;Central Standard Time&#34;, &#34;CA&#34;),
     &#34;America/Recife&#34;: (&#34;SA Eastern Standard Time&#34;, &#34;BR&#34;),
     &#34;America/Regina&#34;: (&#34;Canada Central Standard Time&#34;, &#34;001&#34;),
     &#34;America/Resolute&#34;: (&#34;Central Standard Time&#34;, &#34;CA&#34;),
     &#34;America/Rio_Branco&#34;: (&#34;SA Pacific Standard Time&#34;, &#34;BR&#34;),
-    &#34;America/Santa_Isabel&#34;: (&#34;Pacific Standard Time (Mexico)&#34;, &#34;MX&#34;),
     &#34;America/Santarem&#34;: (&#34;SA Eastern Standard Time&#34;, &#34;BR&#34;),
     &#34;America/Santiago&#34;: (&#34;Pacific SA Standard Time&#34;, &#34;001&#34;),
     &#34;America/Santo_Domingo&#34;: (&#34;SA Western Standard Time&#34;, &#34;DO&#34;),
@@ -260,7 +257,6 @@ CLDR_TO_MS_TIMEZONE_MAP = {
     &#34;America/Swift_Current&#34;: (&#34;Canada Central Standard Time&#34;, &#34;CA&#34;),
     &#34;America/Tegucigalpa&#34;: (&#34;Central America Standard Time&#34;, &#34;HN&#34;),
     &#34;America/Thule&#34;: (&#34;Atlantic Standard Time&#34;, &#34;GL&#34;),
-    &#34;America/Thunder_Bay&#34;: (&#34;Eastern Standard Time&#34;, &#34;CA&#34;),
     &#34;America/Tijuana&#34;: (&#34;Pacific Standard Time (Mexico)&#34;, &#34;001&#34;),
     &#34;America/Toronto&#34;: (&#34;Eastern Standard Time&#34;, &#34;CA&#34;),
     &#34;America/Tortola&#34;: (&#34;SA Western Standard Time&#34;, &#34;VG&#34;),
@@ -268,7 +264,6 @@ CLDR_TO_MS_TIMEZONE_MAP = {
     &#34;America/Whitehorse&#34;: (&#34;Yukon Standard Time&#34;, &#34;001&#34;),
     &#34;America/Winnipeg&#34;: (&#34;Central Standard Time&#34;, &#34;CA&#34;),
     &#34;America/Yakutat&#34;: (&#34;Alaskan Standard Time&#34;, &#34;US&#34;),
-    &#34;America/Yellowknife&#34;: (&#34;Mountain Standard Time&#34;, &#34;CA&#34;),
     &#34;Antarctica/Casey&#34;: (&#34;Central Pacific Standard Time&#34;, &#34;AQ&#34;),
     &#34;Antarctica/Davis&#34;: (&#34;SE Asia Standard Time&#34;, &#34;AQ&#34;),
     &#34;Antarctica/DumontDUrville&#34;: (&#34;West Pacific Standard Time&#34;, &#34;AQ&#34;),
@@ -281,7 +276,7 @@ CLDR_TO_MS_TIMEZONE_MAP = {
     &#34;Antarctica/Vostok&#34;: (&#34;Central Asia Standard Time&#34;, &#34;AQ&#34;),
     &#34;Arctic/Longyearbyen&#34;: (&#34;W. Europe Standard Time&#34;, &#34;SJ&#34;),
     &#34;Asia/Aden&#34;: (&#34;Arab Standard Time&#34;, &#34;YE&#34;),
-    &#34;Asia/Almaty&#34;: (&#34;Central Asia Standard Time&#34;, &#34;001&#34;),
+    &#34;Asia/Almaty&#34;: (&#34;West Asia Standard Time&#34;, &#34;KZ&#34;),
     &#34;Asia/Amman&#34;: (&#34;Jordan Standard Time&#34;, &#34;001&#34;),
     &#34;Asia/Anadyr&#34;: (&#34;Russia Time Zone 11&#34;, &#34;RU&#34;),
     &#34;Asia/Aqtau&#34;: (&#34;West Asia Standard Time&#34;, &#34;KZ&#34;),
@@ -294,7 +289,7 @@ CLDR_TO_MS_TIMEZONE_MAP = {
     &#34;Asia/Bangkok&#34;: (&#34;SE Asia Standard Time&#34;, &#34;001&#34;),
     &#34;Asia/Barnaul&#34;: (&#34;Altai Standard Time&#34;, &#34;001&#34;),
     &#34;Asia/Beirut&#34;: (&#34;Middle East Standard Time&#34;, &#34;001&#34;),
-    &#34;Asia/Bishkek&#34;: (&#34;Central Asia Standard Time&#34;, &#34;KG&#34;),
+    &#34;Asia/Bishkek&#34;: (&#34;Central Asia Standard Time&#34;, &#34;001&#34;),
     &#34;Asia/Brunei&#34;: (&#34;Singapore Standard Time&#34;, &#34;BN&#34;),
     &#34;Asia/Calcutta&#34;: (&#34;India Standard Time&#34;, &#34;001&#34;),
     &#34;Asia/Chita&#34;: (&#34;Transbaikal Standard Time&#34;, &#34;001&#34;),
@@ -337,7 +332,7 @@ CLDR_TO_MS_TIMEZONE_MAP = {
     &#34;Asia/Pontianak&#34;: (&#34;SE Asia Standard Time&#34;, &#34;ID&#34;),
     &#34;Asia/Pyongyang&#34;: (&#34;North Korea Standard Time&#34;, &#34;001&#34;),
     &#34;Asia/Qatar&#34;: (&#34;Arab Standard Time&#34;, &#34;QA&#34;),
-    &#34;Asia/Qostanay&#34;: (&#34;Central Asia Standard Time&#34;, &#34;KZ&#34;),
+    &#34;Asia/Qostanay&#34;: (&#34;West Asia Standard Time&#34;, &#34;KZ&#34;),
     &#34;Asia/Qyzylorda&#34;: (&#34;Qyzylorda Standard Time&#34;, &#34;001&#34;),
     &#34;Asia/Rangoon&#34;: (&#34;Myanmar Standard Time&#34;, &#34;001&#34;),
     &#34;Asia/Riyadh&#34;: (&#34;Arab Standard Time&#34;, &#34;001&#34;),
@@ -376,7 +371,6 @@ CLDR_TO_MS_TIMEZONE_MAP = {
     &#34;Australia/Adelaide&#34;: (&#34;Cen. Australia Standard Time&#34;, &#34;001&#34;),
     &#34;Australia/Brisbane&#34;: (&#34;E. Australia Standard Time&#34;, &#34;001&#34;),
     &#34;Australia/Broken_Hill&#34;: (&#34;Cen. Australia Standard Time&#34;, &#34;AU&#34;),
-    &#34;Australia/Currie&#34;: (&#34;Tasmania Standard Time&#34;, &#34;AU&#34;),
     &#34;Australia/Darwin&#34;: (&#34;AUS Central Standard Time&#34;, &#34;001&#34;),
     &#34;Australia/Eucla&#34;: (&#34;Aus Central W. Standard Time&#34;, &#34;001&#34;),
     &#34;Australia/Hobart&#34;: (&#34;Tasmania Standard Time&#34;, &#34;001&#34;),
@@ -465,7 +459,6 @@ CLDR_TO_MS_TIMEZONE_MAP = {
     &#34;Europe/Tallinn&#34;: (&#34;FLE Standard Time&#34;, &#34;EE&#34;),
     &#34;Europe/Tirane&#34;: (&#34;Central Europe Standard Time&#34;, &#34;AL&#34;),
     &#34;Europe/Ulyanovsk&#34;: (&#34;Astrakhan Standard Time&#34;, &#34;RU&#34;),
-    &#34;Europe/Uzhgorod&#34;: (&#34;FLE Standard Time&#34;, &#34;UA&#34;),
     &#34;Europe/Vaduz&#34;: (&#34;W. Europe Standard Time&#34;, &#34;LI&#34;),
     &#34;Europe/Vatican&#34;: (&#34;W. Europe Standard Time&#34;, &#34;VA&#34;),
     &#34;Europe/Vienna&#34;: (&#34;W. Europe Standard Time&#34;, &#34;AT&#34;),
@@ -473,7 +466,6 @@ CLDR_TO_MS_TIMEZONE_MAP = {
     &#34;Europe/Volgograd&#34;: (&#34;Volgograd Standard Time&#34;, &#34;001&#34;),
     &#34;Europe/Warsaw&#34;: (&#34;Central European Standard Time&#34;, &#34;001&#34;),
     &#34;Europe/Zagreb&#34;: (&#34;Central European Standard Time&#34;, &#34;HR&#34;),
-    &#34;Europe/Zaporozhye&#34;: (&#34;FLE Standard Time&#34;, &#34;UA&#34;),
     &#34;Europe/Zurich&#34;: (&#34;W. Europe Standard Time&#34;, &#34;CH&#34;),
     &#34;Indian/Antananarivo&#34;: (&#34;E. Africa Standard Time&#34;, &#34;MG&#34;),
     &#34;Indian/Chagos&#34;: (&#34;Central Asia Standard Time&#34;, &#34;IO&#34;),
@@ -503,7 +495,6 @@ CLDR_TO_MS_TIMEZONE_MAP = {
     &#34;Pacific/Guadalcanal&#34;: (&#34;Central Pacific Standard Time&#34;, &#34;001&#34;),
     &#34;Pacific/Guam&#34;: (&#34;West Pacific Standard Time&#34;, &#34;GU&#34;),
     &#34;Pacific/Honolulu&#34;: (&#34;Hawaiian Standard Time&#34;, &#34;001&#34;),
-    &#34;Pacific/Johnston&#34;: (&#34;Hawaiian Standard Time&#34;, &#34;UM&#34;),
     &#34;Pacific/Kiritimati&#34;: (&#34;Line Islands Standard Time&#34;, &#34;001&#34;),
     &#34;Pacific/Kosrae&#34;: (&#34;Central Pacific Standard Time&#34;, &#34;FM&#34;),
     &#34;Pacific/Kwajalein&#34;: (&#34;UTC+12&#34;, &#34;MH&#34;),
@@ -561,6 +552,7 @@ IANA_TO_MS_TIMEZONE_MAP = dict(
         &#34;Asia/Chongqing&#34;: CLDR_TO_MS_TIMEZONE_MAP[&#34;Asia/Shanghai&#34;],
         &#34;Asia/Chungking&#34;: CLDR_TO_MS_TIMEZONE_MAP[&#34;Asia/Shanghai&#34;],
         &#34;Asia/Dacca&#34;: CLDR_TO_MS_TIMEZONE_MAP[&#34;Asia/Dhaka&#34;],
+        &#34;Asia/Hanoi&#34;: CLDR_TO_MS_TIMEZONE_MAP[&#34;Asia/Saigon&#34;],
         &#34;Asia/Harbin&#34;: CLDR_TO_MS_TIMEZONE_MAP[&#34;Asia/Shanghai&#34;],
         &#34;Asia/Ho_Chi_Minh&#34;: CLDR_TO_MS_TIMEZONE_MAP[&#34;Asia/Saigon&#34;],
         &#34;Asia/Istanbul&#34;: CLDR_TO_MS_TIMEZONE_MAP[&#34;Europe/Istanbul&#34;],
@@ -718,7 +710,7 @@ MS_TIMEZONE_TO_IANA_MAP = dict(
     type_version = timezones_elem.get(&#34;typeVersion&#34;)
     other_version = timezones_elem.get(&#34;otherVersion&#34;)
     for e in timezones_elem.findall(&#34;mapZone&#34;):
-        for location in re.split(r&#34;\s+&#34;, e.get(&#34;type&#34;)):
+        for location in re.split(r&#34;\s+&#34;, e.get(&#34;type&#34;).strip()):
             if e.get(&#34;territory&#34;) == DEFAULT_TERRITORY or location not in tz_map:
                 # Prefer default territory. This is so MS_TIMEZONE_TO_IANA_MAP maps from MS timezone ID back to the
                 # &#34;preferred&#34; region/location timezone name.

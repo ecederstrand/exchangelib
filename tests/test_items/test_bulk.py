@@ -1,4 +1,5 @@
 import datetime
+import time
 
 from exchangelib.errors import ErrorInvalidChangeKey, ErrorInvalidIdMalformed, ErrorItemNotFound
 from exchangelib.fields import FieldPath
@@ -199,3 +200,20 @@ class CalendarBulkMethodTest(BaseItemTest):
         item.id, item.changekey = res.id, res.changekey
         item.account = None
         self.account.bulk_update(items=[(item, ("start",))])
+
+
+class MessagesBulkMethodTest(BaseItemTest):
+    TEST_FOLDER = "inbox"
+    FOLDER_CLASS = Inbox
+    ITEM_CLASS = Message
+
+    def test_bulk_send(self):
+        with self.assertRaises(AttributeError):
+            self.account.bulk_send(ids=[], save_copy=False, copy_to_folder=self.account.trash)
+        item = self.get_test_item()
+        item.save()
+        for res in self.account.bulk_send(ids=[item]):
+            self.assertEqual(res, True)
+        time.sleep(10)  # Requests are supposed to be transactional, but apparently not...
+        # By default, sent items are placed in the sent folder
+        self.assertEqual(self.account.sent.filter(categories__contains=item.categories).count(), 1)

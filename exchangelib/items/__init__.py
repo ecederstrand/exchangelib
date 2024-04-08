@@ -40,6 +40,7 @@ from .calendar_item import (
     MeetingRequest,
     MeetingResponse,
     TentativelyAcceptItem,
+    _Booking,
 )
 from .contact import Contact, DistributionList, Persona
 from .item import BaseItem, Item
@@ -62,6 +63,7 @@ SEARCH_SCOPE_CHOICES = (ACTIVE_DIRECTORY, ACTIVE_DIRECTORY_CONTACTS, CONTACTS, C
 
 
 ITEM_CLASSES = (
+    _Booking,
     CalendarItem,
     Contact,
     DistributionList,

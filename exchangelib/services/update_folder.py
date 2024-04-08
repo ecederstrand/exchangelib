@@ -105,8 +105,9 @@ class BaseUpdateService(EWSAccountService, metaclass=abc.ABCMeta):
         change.append(updates)
         return change
 
+    @staticmethod
     @abc.abstractmethod
-    def _target_elem(self, target):
+    def _target_elem(target):
         """Convert the object to update to an XML element"""
 
     def _changes_elem(self, target_changes):
@@ -145,7 +146,8 @@ class UpdateFolder(BaseUpdateService):
                 continue
             yield parse_folder_elem(elem=elem, folder=folder, account=self.account)
 
-    def _target_elem(self, target):
+    @staticmethod
+    def _target_elem(target):
         return to_item_id(target, FolderId)
 
     def get_payload(self, folders):

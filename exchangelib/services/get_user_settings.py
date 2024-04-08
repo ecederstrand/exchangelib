@@ -1,9 +1,9 @@
 import logging
 
-from ..errors import ErrorInternalServerError, ErrorOrganizationNotFederated, ErrorServerBusy, MalformedResponseError
+from ..errors import MalformedResponseError
 from ..properties import UserResponse
 from ..transport import DEFAULT_ENCODING
-from ..util import ANS, add_xml_child, create_element, get_xml_attr, ns_translation, set_xml_value, xml_to_str
+from ..util import ANS, add_xml_child, create_element, ns_translation, set_xml_value, xml_to_str
 from ..version import EXCHANGE_2010
 from .common import EWSService
 
@@ -74,21 +74,18 @@ class GetUserSettings(EWSService):
         response = message.find(f"{{{ANS}}}Response")
         # ErrorCode: See
         # https://learn.microsoft.com/en-us/exchange/client-developer/web-service-reference/errorcode-soap
-        error_code = get_xml_attr(response, f"{{{ANS}}}ErrorCode")
-        if error_code == "NoError":
+        # There are two 'ErrorCode' elements in the response; one is a child of the 'Response' element, the other is a
+        # child of the 'UserResponse' element. Let's handle both with the same code.
+        res = UserResponse.parse_elem(response)
+        if isinstance(res, Exception):
+            raise res
+        if res.error_code == "NoError":
             container = response.find(name)
             if container is None:
                 raise MalformedResponseError(f"No {name} elements in ResponseMessage ({xml_to_str(response)})")
             return container
-        # Raise any non-acceptable errors in the container, or return the container or the acceptable exception instance
-        msg_text = get_xml_attr(response, f"{{{ANS}}}ErrorMessage")
-        if error_code == "InternalServerError":
-            raise ErrorInternalServerError(msg_text)
-        if error_code == "ServerBusy":
-            raise ErrorServerBusy(msg_text)
-        if error_code == "NotFederated":
-            raise ErrorOrganizationNotFederated(msg_text)
+        # Raise any non-acceptable errors in the container, or return the acceptable exception instance
         try:
-            raise self._get_exception(code=error_code, text=msg_text, msg_xml=None)
+            raise self._get_exception(code=res.error_code, text=res.error_message, msg_xml=None)
         except self.ERRORS_TO_CATCH_IN_RESPONSE as e:
             return e

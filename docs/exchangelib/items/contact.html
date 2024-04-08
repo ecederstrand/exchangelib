@@ -162,6 +162,9 @@ class Contact(Item):
     direct_reports = MailboxListField(
         field_uri=&#34;contacts:DirectReports&#34;, supported_from=EXCHANGE_2010_SP2, is_read_only=True
     )
+    # O365 throws ErrorInternalServerError &#34;[0x004f0102] MapiReplyToBlob&#34; if UniqueBody is requested
+    unique_body_idx = Item.FIELDS.index_by_name(&#34;unique_body&#34;)
+    FIELDS = Item.FIELDS[:unique_body_idx] + Item.FIELDS[unique_body_idx + 1 :]
 
 
 class Persona(IdChangeKeyMixIn):
@@ -280,7 +283,11 @@ class DistributionList(Item):
     contact_source = ChoiceField(
         field_uri=&#34;contacts:ContactSource&#34;, choices={Choice(&#34;Store&#34;), Choice(&#34;ActiveDirectory&#34;)}, is_read_only=True
     )
-    members = MemberListField(field_uri=&#34;distributionlist:Members&#34;)</code></pre>
+    members = MemberListField(field_uri=&#34;distributionlist:Members&#34;)
+
+    # O365 throws ErrorInternalServerError &#34;[0x004f0102] MapiReplyToBlob&#34; if UniqueBody is requested
+    unique_body_idx = Item.FIELDS.index_by_name(&#34;unique_body&#34;)
+    FIELDS = Item.FIELDS[:unique_body_idx] + Item.FIELDS[unique_body_idx + 1 :]</code></pre>
 </details>
 </section>
 <section>
@@ -403,7 +410,10 @@ we use folder.account.</p></div>
     )
     direct_reports = MailboxListField(
         field_uri=&#34;contacts:DirectReports&#34;, supported_from=EXCHANGE_2010_SP2, is_read_only=True
-    )</code></pre>
+    )
+    # O365 throws ErrorInternalServerError &#34;[0x004f0102] MapiReplyToBlob&#34; if UniqueBody is requested
+    unique_body_idx = Item.FIELDS.index_by_name(&#34;unique_body&#34;)
+    FIELDS = Item.FIELDS[:unique_body_idx] + Item.FIELDS[unique_body_idx + 1 :]</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -420,6 +430,10 @@ we use folder.account.</p></div>
 <div class="desc"></div>
 </dd>
 <dt id="exchangelib.items.contact.Contact.FIELDS"><code class="name">var <span class="ident">FIELDS</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.items.contact.Contact.unique_body_idx"><code class="name">var <span class="ident">unique_body_idx</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -639,7 +653,11 @@ we use folder.account.</p></div>
     contact_source = ChoiceField(
         field_uri=&#34;contacts:ContactSource&#34;, choices={Choice(&#34;Store&#34;), Choice(&#34;ActiveDirectory&#34;)}, is_read_only=True
     )
-    members = MemberListField(field_uri=&#34;distributionlist:Members&#34;)</code></pre>
+    members = MemberListField(field_uri=&#34;distributionlist:Members&#34;)
+
+    # O365 throws ErrorInternalServerError &#34;[0x004f0102] MapiReplyToBlob&#34; if UniqueBody is requested
+    unique_body_idx = Item.FIELDS.index_by_name(&#34;unique_body&#34;)
+    FIELDS = Item.FIELDS[:unique_body_idx] + Item.FIELDS[unique_body_idx + 1 :]</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -656,6 +674,10 @@ we use folder.account.</p></div>
 <div class="desc"></div>
 </dd>
 <dt id="exchangelib.items.contact.DistributionList.FIELDS"><code class="name">var <span class="ident">FIELDS</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.items.contact.DistributionList.unique_body_idx"><code class="name">var <span class="ident">unique_body_idx</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1289,6 +1311,7 @@ we use folder.account.</p></div>
 <li><code><a title="exchangelib.items.contact.Contact.profession" href="#exchangelib.items.contact.Contact.profession">profession</a></code></li>
 <li><code><a title="exchangelib.items.contact.Contact.spouse_name" href="#exchangelib.items.contact.Contact.spouse_name">spouse_name</a></code></li>
 <li><code><a title="exchangelib.items.contact.Contact.surname" href="#exchangelib.items.contact.Contact.surname">surname</a></code></li>
+<li><code><a title="exchangelib.items.contact.Contact.unique_body_idx" href="#exchangelib.items.contact.Contact.unique_body_idx">unique_body_idx</a></code></li>
 <li><code><a title="exchangelib.items.contact.Contact.user_smime_certificate" href="#exchangelib.items.contact.Contact.user_smime_certificate">user_smime_certificate</a></code></li>
 <li><code><a title="exchangelib.items.contact.Contact.wedding_anniversary" href="#exchangelib.items.contact.Contact.wedding_anniversary">wedding_anniversary</a></code></li>
 </ul>
@@ -1302,6 +1325,7 @@ we use folder.account.</p></div>
 <li><code><a title="exchangelib.items.contact.DistributionList.display_name" href="#exchangelib.items.contact.DistributionList.display_name">display_name</a></code></li>
 <li><code><a title="exchangelib.items.contact.DistributionList.file_as" href="#exchangelib.items.contact.DistributionList.file_as">file_as</a></code></li>
 <li><code><a title="exchangelib.items.contact.DistributionList.members" href="#exchangelib.items.contact.DistributionList.members">members</a></code></li>
+<li><code><a title="exchangelib.items.contact.DistributionList.unique_body_idx" href="#exchangelib.items.contact.DistributionList.unique_body_idx">unique_body_idx</a></code></li>
 </ul>
 </li>
 <li>

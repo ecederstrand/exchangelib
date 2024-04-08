@@ -28,6 +28,7 @@
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">&#34;&#34;&#34;Stores errors specific to this package, and mirrors all the possible errors that EWS can return.&#34;&#34;&#34;
+
 from urllib.parse import urlparse
 
 
@@ -89,17 +90,12 @@ class TransportError(EWSError):
 
 
 class RateLimitError(TransportError):
-    def __init__(self, value, url, status_code, total_wait):
+    def __init__(self, value, wait):
         super().__init__(value)
-        self.url = url
-        self.status_code = status_code
-        self.total_wait = total_wait
+        self.wait = wait
 
     def __str__(self):
-        return (
-            f&#34;{self.value} (gave up after {self.total_wait:.3f} seconds. &#34;
-            f&#34;URL {self.url} returned status code {self.status_code})&#34;
-        )
+        return f&#34;{self.value} (gave up when asked to back off {self.wait:.3f} seconds)&#34;
 
 
 class SOAPError(TransportError):
@@ -10524,7 +10520,7 @@ This exception is for those cases. The caller may want to do something with the 
 </dd>
 <dt id="exchangelib.errors.RateLimitError"><code class="flex name class">
 <span>class <span class="ident">RateLimitError</span></span>
-<span>(</span><span>value, url, status_code, total_wait)</span>
+<span>(</span><span>value, wait)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Global error type within this module.</p></div>
@@ -10533,17 +10529,12 @@ This exception is for those cases. The caller may want to do something with the 
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class RateLimitError(TransportError):
-    def __init__(self, value, url, status_code, total_wait):
+    def __init__(self, value, wait):
         super().__init__(value)
-        self.url = url
-        self.status_code = status_code
-        self.total_wait = total_wait
+        self.wait = wait
 
     def __str__(self):
-        return (
-            f&#34;{self.value} (gave up after {self.total_wait:.3f} seconds. &#34;
-            f&#34;URL {self.url} returned status code {self.status_code})&#34;
-        )</code></pre>
+        return f&#34;{self.value} (gave up when asked to back off {self.wait:.3f} seconds)&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">

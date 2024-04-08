@@ -4,7 +4,7 @@ from threading import Lock
 
 from ..errors import ErrorAccessDenied, ErrorFolderNotFound, ErrorInvalidOperation
 from ..fields import EffectiveRightsField
-from ..properties import EWSMeta
+from ..properties import DistinguishedFolderId, EWSMeta, Mailbox
 from ..version import EXCHANGE_2007_SP1, EXCHANGE_2010_SP1
 from .base import BaseFolder
 from .collections import FolderCollection
@@ -29,8 +29,6 @@ class RootOfHierarchy(BaseFolder, metaclass=EWSMeta):
     # 'RootOfHierarchy' subclasses must not be in this list.
     WELLKNOWN_FOLDERS = []
 
-    _subfolders_lock = Lock()
-
     # This folder type also has 'folder:PermissionSet' on some server versions, but requesting it sometimes causes
     # 'ErrorAccessDenied', as reported by some users. Ignore it entirely for root folders - it's usefulness is
     # deemed minimal at best.
@@ -38,13 +36,14 @@ class RootOfHierarchy(BaseFolder, metaclass=EWSMeta):
         field_uri="folder:EffectiveRights", is_read_only=True, supported_from=EXCHANGE_2007_SP1
     )
 
-    __slots__ = "_account", "_subfolders"
+    __slots__ = "_account", "_subfolders", "_subfolders_lock"
 
     # A special folder that acts as the top of a folder hierarchy. Finds and caches sub-folders at arbitrary depth.
     def __init__(self, **kwargs):
         self._account = kwargs.pop("account", None)  # A pointer back to the account holding the folder hierarchy
         super().__init__(**kwargs)
         self._subfolders = None  # See self._folders_map()
+        self._subfolders_lock = Lock()
 
     @property
     def account(self):
@@ -112,7 +111,11 @@ class RootOfHierarchy(BaseFolder, metaclass=EWSMeta):
             raise ValueError(f"Class {cls} must have a DISTINGUISHED_FOLDER_ID value")
         try:
             return cls.resolve(
-                account=account, folder=cls(account=account, name=cls.DISTINGUISHED_FOLDER_ID, is_distinguished=True)
+                account=account,
+                folder=DistinguishedFolderId(
+                    id=cls.DISTINGUISHED_FOLDER_ID,
+                    mailbox=Mailbox(email_address=account.primary_smtp_address),
+                ),
             )
         except MISSING_FOLDER_ERRORS:
             raise ErrorFolderNotFound(f"Could not find distinguished folder {cls.DISTINGUISHED_FOLDER_ID}")
@@ -133,11 +136,17 @@ class RootOfHierarchy(BaseFolder, metaclass=EWSMeta):
                     return f
         try:
             log.debug("Requesting distinguished %s folder explicitly", folder_cls)
-            return folder_cls.get_distinguished(root=self)
+            return folder_cls.get_distinguished(account=self.account)
         except ErrorAccessDenied:
-            # Maybe we just don't have GetFolder access? Try FindItems instead
+            # Maybe we just don't have GetFolder access? Try FindItem instead
             log.debug("Testing default %s folder with FindItem", folder_cls)
-            fld = folder_cls(root=self, name=folder_cls.DISTINGUISHED_FOLDER_ID, is_distinguished=True)
+            fld = folder_cls(
+                root=self,
+                _distinguished_id=DistinguishedFolderId(
+                    id=folder_cls.DISTINGUISHED_FOLDER_ID,
+                    mailbox=Mailbox(email_address=self.account.primary_smtp_address),
+                ),
+            )
             fld.test_access()
             return self._folders_map.get(fld.id, fld)  # Use cached instance if available
         except MISSING_FOLDER_ERRORS:
@@ -155,7 +164,10 @@ class RootOfHierarchy(BaseFolder, metaclass=EWSMeta):
             # so we are sure to apply the correct Folder class, then fetch all sub-folders of this root.
             folders_map = {self.id: self}
             distinguished_folders = [
-                cls(root=self, name=cls.DISTINGUISHED_FOLDER_ID, is_distinguished=True)
+                DistinguishedFolderId(
+                    id=cls.DISTINGUISHED_FOLDER_ID,
+                    mailbox=Mailbox(email_address=self.account.primary_smtp_address),
+                )
                 for cls in self.WELLKNOWN_FOLDERS
                 if cls.get_folder_allowed and cls.supports_version(self.account.version)
             ]
@@ -199,16 +211,37 @@ class RootOfHierarchy(BaseFolder, metaclass=EWSMeta):
         return cls(account=account, **kwargs)
 
     @classmethod
-    def folder_cls_from_folder_name(cls, folder_name, locale):
-        """Return the folder class that matches a localized folder name.
+    def folder_cls_from_folder_name(cls, folder_name, folder_class, locale):
+        """Return the folder class that matches a localized folder name. Take into account the 'folder_class' of the
+        folder, to not identify an 'IPF.Note' folder as a 'Calendar' class just because it's called e.g. 'Kalender' and
+        the locale is 'da_DK'.
+
+        Some folders, e.g. `System`, don't define a `folder_class`. For these folders, we match on localized folder name
+        if the folder class does not have its 'CONTAINER_CLASS' set.
 
         :param folder_name:
+        :param folder_class:
         :param locale: a string, e.g. 'da_DK'
         """
         for folder_cls in cls.WELLKNOWN_FOLDERS + NON_DELETABLE_FOLDERS + MISC_FOLDERS:
-            if folder_name.lower() in folder_cls.localized_names(locale):
-                return folder_cls
+            if folder_cls.CONTAINER_CLASS != folder_class:
+                continue
+            if folder_name.lower() not in folder_cls.localized_names(locale):
+                continue
+            return folder_cls
         raise KeyError()
+
+    def __getstate__(self):
+        # The lock cannot be pickled
+        state = {k: getattr(self, k) for k in self._slots_keys}
+        del state["_subfolders_lock"]
+        return state
+
+    def __setstate__(self, state):
+        # Restore the lock
+        for k in self._slots_keys:
+            setattr(self, k, state.get(k))
+        self._subfolders_lock = Lock()
 
     def __repr__(self):
         # Let's not create an infinite loop when printing self.root

@@ -31,6 +31,8 @@ import logging
 from contextlib import suppress
 from itertools import chain
 
+from oauthlib.oauth2 import TokenExpiredError
+
 from .. import errors
 from ..attachments import AttachmentId
 from ..credentials import IMPERSONATION, BaseOAuth2Credentials
@@ -64,7 +66,7 @@ from ..errors import (
     SOAPError,
     TransportError,
 )
-from ..folders import BaseFolder, Folder, RootOfHierarchy
+from ..folders import ArchiveRoot, BaseFolder, Folder, PublicFoldersRoot, Root, RootOfHierarchy
 from ..items import BaseItem
 from ..properties import (
     BaseItemId,
@@ -326,30 +328,46 @@ class EWSService(SupportedVersionClassMixIn, metaclass=abc.ABCMeta):
         &#34;&#34;&#34;Send the payload to be sent and parsed. Handles and re-raise exceptions that are not meant to be returned
         to the caller as exception objects. Retry the request according to the retry policy.
         &#34;&#34;&#34;
+        wait = self.protocol.RETRY_WAIT
         while True:
             try:
                 # Create a generator over the response elements so exceptions in response elements are also raised
                 # here and can be handled.
                 yield from self._response_generator(payload=payload)
+                # TODO: Restore session pool size on succeeding request?
                 return
-            except ErrorServerBusy as e:
-                self._handle_backoff(e)
+            except TokenExpiredError:
+                # Retry immediately
                 continue
-            except (ErrorTooManyObjectsOpened, ErrorTimeoutExpired, ErrorInternalServerTransientError) as e:
+            except ErrorServerBusy as e:
+                if not e.back_off:
+                    e.back_off = wait
+                self._handle_backoff(e)
+            except ErrorExceededConnectionCount as e:
+                # ErrorExceededConnectionCount indicates that the connecting user has too many open TCP connections to
+                # the server. Decrease our session pool size and retry immediately.
+                try:
+                    self.protocol.decrease_poolsize()
+                    continue
+                except SessionPoolMinSizeReached:
+                    # We&#39;re already as low as we can go. Let the user handle this.
+                    raise e
+            except ErrorTimeoutExpired as e:
+                # ErrorTimeoutExpired can be caused by a busy server, or by an overly large request. If it&#39;s the latter,
+                # we don&#39;t want to continue hammering the server with this request indefinitely. Instead, lower the
+                # connection count, if possible, and retry the request.
+                if self.protocol.session_pool_size &lt;= 1:
+                    # We&#39;re already as low as we can go. We can no longer use the session count to put less load
+                    # on the server. If this is a chunked request we could lower the chunk size, but we don&#39;t have a
+                    # way of doing that from this part of the code yet. Let the user handle this.
+                    raise e
+                self._handle_backoff(ErrorServerBusy(f&#34;Reraised from {e.__class__.__name__}({e})&#34;, back_off=wait))
+            except (ErrorTooManyObjectsOpened, ErrorInternalServerTransientError) as e:
                 # ErrorTooManyObjectsOpened means there are too many connections to the Exchange database. This is very
                 # often a symptom of sending too many requests.
-                #
-                # ErrorTimeoutExpired can be caused by a busy server, or by overly large requests. Start by lowering the
-                # session count. This is done by downstream code.
-                if isinstance(e, ErrorTimeoutExpired) and self.protocol.session_pool_size &lt;= 1:
-                    # We&#39;re already as low as we can go, so downstream cannot limit the session count to put less load
-                    # on the server. We don&#39;t have a way of lowering the page size of requests from
-                    # this part of the code yet. Let the user handle this.
-                    raise e
-
-                # Re-raise as an ErrorServerBusy with a default delay of 5 minutes
-                raise ErrorServerBusy(f&#34;Reraised from {e.__class__.__name__}({e})&#34;)
+                self._handle_backoff(ErrorServerBusy(f&#34;Reraised from {e.__class__.__name__}({e})&#34;, back_off=wait))
             finally:
+                wait *= 2  # Increase delay for every retry
                 if self.streaming:
                     self.stop_streaming()
 
@@ -434,15 +452,6 @@ class EWSService(SupportedVersionClassMixIn, metaclass=abc.ABCMeta):
                 # The guessed server version is wrong. Try the next version
                 log.debug(&#34;API version %s was invalid&#34;, api_version)
                 continue
-            except ErrorExceededConnectionCount as e:
-                # This indicates that the connecting user has too many open TCP connections to the server. Decrease
-                # our session pool size.
-                try:
-                    self.protocol.decrease_poolsize()
-                    continue
-                except SessionPoolMinSizeReached:
-                    # We&#39;re already as low as we can go. Let the user handle this.
-                    raise e
             finally:
                 if not self.streaming:
                     # In streaming mode, we may not have accessed the raw stream yet. Caller must handle this.
@@ -538,11 +547,12 @@ class EWSService(SupportedVersionClassMixIn, metaclass=abc.ABCMeta):
         fault_actor = get_xml_attr(fault, &#34;faultactor&#34;)
         detail = fault.find(&#34;detail&#34;)
         if detail is not None:
-            code, msg = None, &#34;&#34;
-            if detail.find(f&#34;{{{ENS}}}ResponseCode&#34;) is not None:
-                code = get_xml_attr(detail, f&#34;{{{ENS}}}ResponseCode&#34;).strip()
-            if detail.find(f&#34;{{{ENS}}}Message&#34;) is not None:
-                msg = get_xml_attr(detail, f&#34;{{{ENS}}}Message&#34;).strip()
+            code = get_xml_attr(detail, f&#34;{{{ENS}}}ResponseCode&#34;)
+            if code:
+                code = code.strip()
+            msg = get_xml_attr(detail, f&#34;{{{ENS}}}Message&#34;)
+            if msg:
+                msg = msg.strip()
             msg_xml = detail.find(f&#34;{{{TNS}}}MessageXml&#34;)  # Crazy. Here, it&#39;s in the TNS namespace
             if code == &#34;ErrorServerBusy&#34;:
                 back_off = None
@@ -945,10 +955,7 @@ def to_item_id(item, item_cls):
         # Allow any BaseItemId subclass to pass unaltered
         return item
     if isinstance(item, (BaseFolder, BaseItem)):
-        try:
-            return item.to_id()
-        except ValueError:
-            return item
+        return item.to_id()
     if isinstance(item, (str, tuple, list)):
         return item_cls(*item)
     return item_cls(item.id, item.changekey)
@@ -996,22 +1003,26 @@ def parse_folder_elem(elem, folder, account):
         f = folder.from_xml(elem=elem, account=folder.account)
     elif isinstance(folder, Folder):
         f = folder.from_xml_with_root(elem=elem, root=folder.root)
+        f._distinguished_id = folder._distinguished_id
     elif isinstance(folder, DistinguishedFolderId):
-        # We don&#39;t know the root, so assume account.root.
-        for cls in account.root.WELLKNOWN_FOLDERS:
+        # We don&#39;t know the root or even account, but we need to attach the folder to something if we want to make
+        # future requests with this folder. Use &#39;account&#39; but make sure to always use the distinguished folder ID going
+        # forward, instead of referencing anything connected to &#39;account&#39;.
+        roots = (Root, ArchiveRoot, PublicFoldersRoot)
+        for cls in roots + tuple(chain(*(r.WELLKNOWN_FOLDERS for r in roots))):
             if cls.DISTINGUISHED_FOLDER_ID == folder.id:
                 folder_cls = cls
                 break
         else:
             raise ValueError(f&#34;Unknown distinguished folder ID: {folder.id}&#34;)
-        f = folder_cls.from_xml_with_root(elem=elem, root=account.root)
+        if folder_cls in roots:
+            f = folder_cls.from_xml(elem=elem, account=account)
+        else:
+            f = folder_cls.from_xml_with_root(elem=elem, root=account.root)
+        f._distinguished_id = folder
     else:
         # &#39;folder&#39; is a generic FolderId instance. We don&#39;t know the root so assume account.root.
         f = Folder.from_xml_with_root(elem=elem, root=account.root)
-    if isinstance(folder, DistinguishedFolderId):
-        f.is_distinguished = True
-    elif isinstance(folder, BaseFolder) and folder.is_distinguished:
-        f.is_distinguished = True
     return f</code></pre>
 </details>
 </section>
@@ -1075,22 +1086,26 @@ def parse_folder_elem(elem, folder, account):
         f = folder.from_xml(elem=elem, account=folder.account)
     elif isinstance(folder, Folder):
         f = folder.from_xml_with_root(elem=elem, root=folder.root)
+        f._distinguished_id = folder._distinguished_id
     elif isinstance(folder, DistinguishedFolderId):
-        # We don&#39;t know the root, so assume account.root.
-        for cls in account.root.WELLKNOWN_FOLDERS:
+        # We don&#39;t know the root or even account, but we need to attach the folder to something if we want to make
+        # future requests with this folder. Use &#39;account&#39; but make sure to always use the distinguished folder ID going
+        # forward, instead of referencing anything connected to &#39;account&#39;.
+        roots = (Root, ArchiveRoot, PublicFoldersRoot)
+        for cls in roots + tuple(chain(*(r.WELLKNOWN_FOLDERS for r in roots))):
             if cls.DISTINGUISHED_FOLDER_ID == folder.id:
                 folder_cls = cls
                 break
         else:
             raise ValueError(f&#34;Unknown distinguished folder ID: {folder.id}&#34;)
-        f = folder_cls.from_xml_with_root(elem=elem, root=account.root)
+        if folder_cls in roots:
+            f = folder_cls.from_xml(elem=elem, account=account)
+        else:
+            f = folder_cls.from_xml_with_root(elem=elem, root=account.root)
+        f._distinguished_id = folder
     else:
         # &#39;folder&#39; is a generic FolderId instance. We don&#39;t know the root so assume account.root.
         f = Folder.from_xml_with_root(elem=elem, root=account.root)
-    if isinstance(folder, DistinguishedFolderId):
-        f.is_distinguished = True
-    elif isinstance(folder, BaseFolder) and folder.is_distinguished:
-        f.is_distinguished = True
     return f</code></pre>
 </details>
 </dd>
@@ -1137,10 +1152,7 @@ def parse_folder_elem(elem, folder, account):
         # Allow any BaseItemId subclass to pass unaltered
         return item
     if isinstance(item, (BaseFolder, BaseItem)):
-        try:
-            return item.to_id()
-        except ValueError:
-            return item
+        return item.to_id()
     if isinstance(item, (str, tuple, list)):
         return item_cls(*item)
     return item_cls(item.id, item.changekey)</code></pre>
@@ -1243,6 +1255,8 @@ def parse_folder_elem(elem, folder, account):
 <li><a title="exchangelib.services.get_streaming_events.GetStreamingEvents" href="get_streaming_events.html#exchangelib.services.get_streaming_events.GetStreamingEvents">GetStreamingEvents</a></li>
 <li><a title="exchangelib.services.get_user_configuration.GetUserConfiguration" href="get_user_configuration.html#exchangelib.services.get_user_configuration.GetUserConfiguration">GetUserConfiguration</a></li>
 <li><a title="exchangelib.services.get_user_oof_settings.GetUserOofSettings" href="get_user_oof_settings.html#exchangelib.services.get_user_oof_settings.GetUserOofSettings">GetUserOofSettings</a></li>
+<li><a title="exchangelib.services.inbox_rules.GetInboxRules" href="inbox_rules.html#exchangelib.services.inbox_rules.GetInboxRules">GetInboxRules</a></li>
+<li><a title="exchangelib.services.inbox_rules.UpdateInboxRules" href="inbox_rules.html#exchangelib.services.inbox_rules.UpdateInboxRules">UpdateInboxRules</a></li>
 <li><a title="exchangelib.services.mark_as_junk.MarkAsJunk" href="mark_as_junk.html#exchangelib.services.mark_as_junk.MarkAsJunk">MarkAsJunk</a></li>
 <li><a title="exchangelib.services.move_folder.MoveFolder" href="move_folder.html#exchangelib.services.move_folder.MoveFolder">MoveFolder</a></li>
 <li><a title="exchangelib.services.move_item.MoveItem" href="move_item.html#exchangelib.services.move_item.MoveItem">MoveItem</a></li>
@@ -1717,30 +1731,46 @@ def parse_folder_elem(elem, folder, account):
         &#34;&#34;&#34;Send the payload to be sent and parsed. Handles and re-raise exceptions that are not meant to be returned
         to the caller as exception objects. Retry the request according to the retry policy.
         &#34;&#34;&#34;
+        wait = self.protocol.RETRY_WAIT
         while True:
             try:
                 # Create a generator over the response elements so exceptions in response elements are also raised
                 # here and can be handled.
                 yield from self._response_generator(payload=payload)
+                # TODO: Restore session pool size on succeeding request?
                 return
-            except ErrorServerBusy as e:
-                self._handle_backoff(e)
+            except TokenExpiredError:
+                # Retry immediately
                 continue
-            except (ErrorTooManyObjectsOpened, ErrorTimeoutExpired, ErrorInternalServerTransientError) as e:
+            except ErrorServerBusy as e:
+                if not e.back_off:
+                    e.back_off = wait
+                self._handle_backoff(e)
+            except ErrorExceededConnectionCount as e:
+                # ErrorExceededConnectionCount indicates that the connecting user has too many open TCP connections to
+                # the server. Decrease our session pool size and retry immediately.
+                try:
+                    self.protocol.decrease_poolsize()
+                    continue
+                except SessionPoolMinSizeReached:
+                    # We&#39;re already as low as we can go. Let the user handle this.
+                    raise e
+            except ErrorTimeoutExpired as e:
+                # ErrorTimeoutExpired can be caused by a busy server, or by an overly large request. If it&#39;s the latter,
+                # we don&#39;t want to continue hammering the server with this request indefinitely. Instead, lower the
+                # connection count, if possible, and retry the request.
+                if self.protocol.session_pool_size &lt;= 1:
+                    # We&#39;re already as low as we can go. We can no longer use the session count to put less load
+                    # on the server. If this is a chunked request we could lower the chunk size, but we don&#39;t have a
+                    # way of doing that from this part of the code yet. Let the user handle this.
+                    raise e
+                self._handle_backoff(ErrorServerBusy(f&#34;Reraised from {e.__class__.__name__}({e})&#34;, back_off=wait))
+            except (ErrorTooManyObjectsOpened, ErrorInternalServerTransientError) as e:
                 # ErrorTooManyObjectsOpened means there are too many connections to the Exchange database. This is very
                 # often a symptom of sending too many requests.
-                #
-                # ErrorTimeoutExpired can be caused by a busy server, or by overly large requests. Start by lowering the
-                # session count. This is done by downstream code.
-                if isinstance(e, ErrorTimeoutExpired) and self.protocol.session_pool_size &lt;= 1:
-                    # We&#39;re already as low as we can go, so downstream cannot limit the session count to put less load
-                    # on the server. We don&#39;t have a way of lowering the page size of requests from
-                    # this part of the code yet. Let the user handle this.
-                    raise e
-
-                # Re-raise as an ErrorServerBusy with a default delay of 5 minutes
-                raise ErrorServerBusy(f&#34;Reraised from {e.__class__.__name__}({e})&#34;)
+                self._handle_backoff(ErrorServerBusy(f&#34;Reraised from {e.__class__.__name__}({e})&#34;, back_off=wait))
             finally:
+                wait *= 2  # Increase delay for every retry
                 if self.streaming:
                     self.stop_streaming()
 
@@ -1825,15 +1855,6 @@ def parse_folder_elem(elem, folder, account):
                 # The guessed server version is wrong. Try the next version
                 log.debug(&#34;API version %s was invalid&#34;, api_version)
                 continue
-            except ErrorExceededConnectionCount as e:
-                # This indicates that the connecting user has too many open TCP connections to the server. Decrease
-                # our session pool size.
-                try:
-                    self.protocol.decrease_poolsize()
-                    continue
-                except SessionPoolMinSizeReached:
-                    # We&#39;re already as low as we can go. Let the user handle this.
-                    raise e
             finally:
                 if not self.streaming:
                     # In streaming mode, we may not have accessed the raw stream yet. Caller must handle this.
@@ -1929,11 +1950,12 @@ def parse_folder_elem(elem, folder, account):
         fault_actor = get_xml_attr(fault, &#34;faultactor&#34;)
         detail = fault.find(&#34;detail&#34;)
         if detail is not None:
-            code, msg = None, &#34;&#34;
-            if detail.find(f&#34;{{{ENS}}}ResponseCode&#34;) is not None:
-                code = get_xml_attr(detail, f&#34;{{{ENS}}}ResponseCode&#34;).strip()
-            if detail.find(f&#34;{{{ENS}}}Message&#34;) is not None:
-                msg = get_xml_attr(detail, f&#34;{{{ENS}}}Message&#34;).strip()
+            code = get_xml_attr(detail, f&#34;{{{ENS}}}ResponseCode&#34;)
+            if code:
+                code = code.strip()
+            msg = get_xml_attr(detail, f&#34;{{{ENS}}}Message&#34;)
+            if msg:
+                msg = msg.strip()
             msg_xml = detail.find(f&#34;{{{TNS}}}MessageXml&#34;)  # Crazy. Here, it&#39;s in the TNS namespace
             if code == &#34;ErrorServerBusy&#34;:
                 back_off = None

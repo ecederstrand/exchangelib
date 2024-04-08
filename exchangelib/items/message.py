@@ -98,32 +98,30 @@ class Message(Item):
     ):
         # Sends Message and saves a copy in the parent folder. Does not return an ItemId.
         if self.id:
-            self._update(
+            return self._update(
                 update_fieldnames=update_fields,
                 message_disposition=SEND_AND_SAVE_COPY,
                 conflict_resolution=conflict_resolution,
                 send_meeting_invitations=send_meeting_invitations,
             )
-        else:
-            if self.account.version.build < EXCHANGE_2013 and self.attachments:
-                # At least some versions prior to Exchange 2013 can't send-and-save attachments immediately. You need
-                # to first save, then attach, then send. This is done in save().
-                self.save(
-                    update_fields=update_fields,
-                    conflict_resolution=conflict_resolution,
-                    send_meeting_invitations=send_meeting_invitations,
-                )
-                self.send(
-                    save_copy=False,
-                    conflict_resolution=conflict_resolution,
-                    send_meeting_invitations=send_meeting_invitations,
-                )
-            else:
-                self._create(message_disposition=SEND_AND_SAVE_COPY, send_meeting_invitations=send_meeting_invitations)
+        if self.account.version.build < EXCHANGE_2013 and self.attachments:
+            # At least some versions prior to Exchange 2013 can't send-and-save attachments immediately. You need
+            # to first save, then attach, then send. This is done in save().
+            self.save(
+                update_fields=update_fields,
+                conflict_resolution=conflict_resolution,
+                send_meeting_invitations=send_meeting_invitations,
+            )
+            return self.send(
+                save_copy=False,
+                conflict_resolution=conflict_resolution,
+                send_meeting_invitations=send_meeting_invitations,
+            )
+        return self._create(message_disposition=SEND_AND_SAVE_COPY, send_meeting_invitations=send_meeting_invitations)
 
     @require_id
-    def create_reply(self, subject, body, to_recipients=None, cc_recipients=None, bcc_recipients=None):
-        if to_recipients is None:
+    def create_reply(self, subject, body, to_recipients=None, cc_recipients=None, bcc_recipients=None, author=None):
+        if not to_recipients:
             if not self.author:
                 raise ValueError("'to_recipients' must be set when message has no 'author'")
             to_recipients = [self.author]
@@ -135,28 +133,36 @@ class Message(Item):
             to_recipients=to_recipients,
             cc_recipients=cc_recipients,
             bcc_recipients=bcc_recipients,
+            author=author,
         )
 
-    def reply(self, subject, body, to_recipients=None, cc_recipients=None, bcc_recipients=None):
-        return self.create_reply(subject, body, to_recipients, cc_recipients, bcc_recipients).send()
+    def reply(self, subject, body, to_recipients=None, cc_recipients=None, bcc_recipients=None, author=None):
+        return self.create_reply(subject, body, to_recipients, cc_recipients, bcc_recipients, author).send()
 
     @require_id
-    def create_reply_all(self, subject, body):
-        to_recipients = list(self.to_recipients) if self.to_recipients else []
+    def create_reply_all(self, subject, body, author=None):
+        me = MailboxField().clean(self.account.primary_smtp_address.lower())
+        to_recipients = set(self.to_recipients or [])
+        to_recipients.discard(me)
+        cc_recipients = set(self.cc_recipients or [])
+        cc_recipients.discard(me)
+        bcc_recipients = set(self.bcc_recipients or [])
+        bcc_recipients.discard(me)
         if self.author:
-            to_recipients.append(self.author)
+            to_recipients.add(self.author)
         return ReplyAllToItem(
             account=self.account,
             reference_item_id=ReferenceItemId(id=self.id, changekey=self.changekey),
             subject=subject,
             new_body=body,
-            to_recipients=to_recipients,
-            cc_recipients=self.cc_recipients,
-            bcc_recipients=self.bcc_recipients,
+            to_recipients=list(to_recipients),
+            cc_recipients=list(cc_recipients),
+            bcc_recipients=list(bcc_recipients),
+            author=author,
         )
 
-    def reply_all(self, subject, body):
-        return self.create_reply_all(subject, body).send()
+    def reply_all(self, subject, body, author=None):
+        return self.create_reply_all(subject, body, author).send()
 
     def mark_as_junk(self, is_junk=True, move_item=True):
         """Mark or un-marks items as junk email.

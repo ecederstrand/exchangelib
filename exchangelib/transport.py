@@ -117,9 +117,12 @@ def get_autodiscover_authtype(protocol):
     data = protocol.dummy_xml()
     headers = {"X-AnchorMailbox": "DUMMY@example.com"}  # Required in case of OAuth
     r = get_unauthenticated_autodiscover_response(protocol=protocol, method="post", headers=headers, data=data)
-    auth_type = get_auth_method_from_response(response=r)
-    log.debug("Auth type is %s", auth_type)
-    return auth_type
+    try:
+        auth_type = get_auth_method_from_response(response=r)
+        log.debug("Auth type is %s", auth_type)
+        return auth_type
+    except UnauthorizedError:
+        raise TransportError("Failed to get autodiscover auth type from service")
 
 
 def get_unauthenticated_autodiscover_response(protocol, method, headers=None, data=None):

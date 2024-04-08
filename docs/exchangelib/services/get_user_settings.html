@@ -28,10 +28,10 @@
 </summary>
 <pre><code class="python">import logging
 
-from ..errors import ErrorInvalidServerVersion, MalformedResponseError
+from ..errors import MalformedResponseError
 from ..properties import UserResponse
 from ..transport import DEFAULT_ENCODING
-from ..util import ANS, add_xml_child, create_element, get_xml_attr, ns_translation, set_xml_value, xml_to_str
+from ..util import ANS, add_xml_child, create_element, ns_translation, set_xml_value, xml_to_str
 from ..version import EXCHANGE_2010
 from .common import EWSService
 
@@ -102,26 +102,21 @@ class GetUserSettings(EWSService):
         response = message.find(f&#34;{{{ANS}}}Response&#34;)
         # ErrorCode: See
         # https://learn.microsoft.com/en-us/exchange/client-developer/web-service-reference/errorcode-soap
-        error_code = get_xml_attr(response, f&#34;{{{ANS}}}ErrorCode&#34;)
-        if error_code == &#34;NoError&#34;:
+        # There are two &#39;ErrorCode&#39; elements in the response; one is a child of the &#39;Response&#39; element, the other is a
+        # child of the &#39;UserResponse&#39; element. Let&#39;s handle both with the same code.
+        res = UserResponse.parse_elem(response)
+        if isinstance(res, Exception):
+            raise res
+        if res.error_code == &#34;NoError&#34;:
             container = response.find(name)
             if container is None:
                 raise MalformedResponseError(f&#34;No {name} elements in ResponseMessage ({xml_to_str(response)})&#34;)
             return container
-        # Raise any non-acceptable errors in the container, or return the container or the acceptable exception instance
-        msg_text = get_xml_attr(response, f&#34;{{{ANS}}}ErrorMessage&#34;)
+        # Raise any non-acceptable errors in the container, or return the acceptable exception instance
         try:
-            raise self._get_exception(code=error_code, text=msg_text, msg_xml=None)
+            raise self._get_exception(code=res.error_code, text=res.error_message, msg_xml=None)
         except self.ERRORS_TO_CATCH_IN_RESPONSE as e:
-            return e
-
-    @classmethod
-    def _raise_soap_errors(cls, fault):
-        fault_code = get_xml_attr(fault, &#34;faultcode&#34;)
-        fault_string = get_xml_attr(fault, &#34;faultstring&#34;)
-        if fault_code == &#34;a:ActionNotSupported&#34; and &#34;ContractFilter mismatch&#34; in fault_string:
-            raise ErrorInvalidServerVersion(f&#34;SOAP error code: {fault_code} string: {fault_string}&#34;)
-        super()._raise_soap_errors(fault=fault)</code></pre>
+            return e</code></pre>
 </details>
 </section>
 <section>
@@ -209,26 +204,21 @@ class GetUserSettings(EWSService):
         response = message.find(f&#34;{{{ANS}}}Response&#34;)
         # ErrorCode: See
         # https://learn.microsoft.com/en-us/exchange/client-developer/web-service-reference/errorcode-soap
-        error_code = get_xml_attr(response, f&#34;{{{ANS}}}ErrorCode&#34;)
-        if error_code == &#34;NoError&#34;:
+        # There are two &#39;ErrorCode&#39; elements in the response; one is a child of the &#39;Response&#39; element, the other is a
+        # child of the &#39;UserResponse&#39; element. Let&#39;s handle both with the same code.
+        res = UserResponse.parse_elem(response)
+        if isinstance(res, Exception):
+            raise res
+        if res.error_code == &#34;NoError&#34;:
             container = response.find(name)
             if container is None:
                 raise MalformedResponseError(f&#34;No {name} elements in ResponseMessage ({xml_to_str(response)})&#34;)
             return container
-        # Raise any non-acceptable errors in the container, or return the container or the acceptable exception instance
-        msg_text = get_xml_attr(response, f&#34;{{{ANS}}}ErrorMessage&#34;)
+        # Raise any non-acceptable errors in the container, or return the acceptable exception instance
         try:
-            raise self._get_exception(code=error_code, text=msg_text, msg_xml=None)
+            raise self._get_exception(code=res.error_code, text=res.error_message, msg_xml=None)
         except self.ERRORS_TO_CATCH_IN_RESPONSE as e:
-            return e
-
-    @classmethod
-    def _raise_soap_errors(cls, fault):
-        fault_code = get_xml_attr(fault, &#34;faultcode&#34;)
-        fault_string = get_xml_attr(fault, &#34;faultstring&#34;)
-        if fault_code == &#34;a:ActionNotSupported&#34; and &#34;ContractFilter mismatch&#34; in fault_string:
-            raise ErrorInvalidServerVersion(f&#34;SOAP error code: {fault_code} string: {fault_string}&#34;)
-        super()._raise_soap_errors(fault=fault)</code></pre>
+            return e</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">

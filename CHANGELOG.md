@@ -3,10 +3,46 @@ Change Log
 
 HEAD
 ----
+
+
+5.2.0
+-----
+- Allow setting a custom `Configuration.max_conections` in autodiscover mode
+- Add support for inbox rules. See documentation for examples.
+- Fix shared folder access in delegate mode
+- Support subscribing to all folders instead of specific folders
+
+
+
+5.1.0
+-----
+- Fix QuerySet operations on shared folders
+- Fix globbing on patterns with more than two folder levels
+- Fix case sensitivity of "/" folder navigation
+- Multiple improvements related to consistency and graceful error handling
+
+
+5.0.3
+-----
+- Bugfix release
+
+
+5.0.2
+-----
+- Fix bug where certain folders were being assigned the wrong Python class.
+
+
+5.0.1
+-----
+- Fix PyPI package. No source code changes.
+
+
+5.0.0
+-----
 - Make SOAP-based autodiscovery the default, and remove support for POX-based
   discovery. This also removes support for autodiscovery on Exchange 2007.
   Only `Account(..., autodiscover=True)` is supported again.
-- Deprecated `RetryPolicy.may_retry_on_error`. Instead, ad custom retry logic
+- Deprecated `RetryPolicy.may_retry_on_error`. Instead, add custom retry logic
   in `RetryPolicy.raise_response_errors`.
 - Moved `exchangelib.util.RETRY_WAIT` to `BaseProtocol.RETRY_WAIT`.
 
@@ -119,10 +155,13 @@ from exchangelib.folders import Calendar, SingleFolderQuerySet
 from exchangelib.properties import DistinguishedFolderId, Mailbox
 
 account = Account(primary_smtp_address="some_user@example.com", ...)
-shared_calendar = SingleFolderQuerySet(account=account, folder=DistinguishedFolderId(
-    id=Calendar.DISTINGUISHED_FOLDER_ID,
-    mailbox=Mailbox(email_address="other_user@example.com")
-)).resolve()
+shared_calendar = SingleFolderQuerySet(
+    account=account,
+    folder=DistinguishedFolderId(
+        id=Calendar.DISTINGUISHED_FOLDER_ID,
+        mailbox=Mailbox(email_address="other_user@example.com"),
+    ),
+).resolve()
 ```
 
 - Minor bugfixes
@@ -339,17 +378,18 @@ shared_calendar = SingleFolderQuerySet(account=account, folder=DistinguishedFold
     from exchangelib import CalendarItem, Message, Contact, Task
     from exchangelib.extended_properties import ExternId
 
-    CalendarItem.register('extern_id', ExternId)
-    Message.register('extern_id', ExternId)
-    Contact.register('extern_id', ExternId)
-    Task.register('extern_id', ExternId)
+    CalendarItem.register("extern_id", ExternId)
+    Message.register("extern_id", ExternId)
+    Contact.register("extern_id", ExternId)
+    Task.register("extern_id", ExternId)
     ```
 - The `ServiceAccount` class has been removed. If you want fault tolerance, set it in a
   `Configuration` object:
 
     ```python
     from exchangelib import Configuration, Credentials, FaultTolerance
-    c = Credentials('foo', 'bar')
+
+    c = Credentials("foo", "bar")
     config = Configuration(credentials=c, retry_policy=FaultTolerance())
     ```
 - It is now possible to use Kerberos and SSPI auth without providing a dummy
@@ -517,6 +557,7 @@ shared_calendar = SingleFolderQuerySet(account=account, folder=DistinguishedFold
 
     ```python
     from exchangelib.protocol import BaseProtocol, NoVerifyHTTPAdapter
+
     BaseProtocol.HTTP_ADAPTER_CLS = NoVerifyHTTPAdapter
     ```
 
@@ -630,10 +671,10 @@ shared_calendar = SingleFolderQuerySet(account=account, folder=DistinguishedFold
 - Allow setting `Mailbox` and `Attendee`-type attributes as plain strings, e.g.:
 
     ```python
-    calendar_item.organizer =  'anne@example.com'
-    calendar_item.required_attendees =  ['john@example.com', 'bill@example.com']
+    calendar_item.organizer = "anne@example.com"
+    calendar_item.required_attendees = ["john@example.com", "bill@example.com"]
 
-    message.to_recipients =  ['john@example.com', 'anne@example.com']
+    message.to_recipients = ["john@example.com", "anne@example.com"]
     ```
 
 1.7.6
@@ -665,23 +706,25 @@ shared_calendar = SingleFolderQuerySet(account=account, folder=DistinguishedFold
     # Process attachments on existing items
     for item in my_folder.all():
         for attachment in item.attachments:
-            local_path = os.path.join('/tmp', attachment.name)
-            with open(local_path, 'wb') as f:
+            local_path = os.path.join("/tmp", attachment.name)
+            with open(local_path, "wb") as f:
                 f.write(attachment.content)
-                print('Saved attachment to', local_path)
+                print("Saved attachment to", local_path)
 
     # Create a new item with an attachment
     item = Message(...)
-    binary_file_content = 'Hello from unicode æøå'.encode('utf-8')  # Or read from file, BytesIO etc.
-    my_file = FileAttachment(name='my_file.txt', content=binary_file_content)
+    binary_file_content = "Hello from unicode æøå".encode(
+        "utf-8"
+    )  # Or read from file, BytesIO etc.
+    my_file = FileAttachment(name="my_file.txt", content=binary_file_content)
     item.attach(my_file)
     my_calendar_item = CalendarItem(...)
-    my_appointment = ItemAttachment(name='my_appointment', item=my_calendar_item)
+    my_appointment = ItemAttachment(name="my_appointment", item=my_calendar_item)
     item.attach(my_appointment)
     item.save()
 
     # Add an attachment on an existing item
-    my_other_file = FileAttachment(name='my_other_file.txt', content=binary_file_content)
+    my_other_file = FileAttachment(name="my_other_file.txt", content=binary_file_content)
     item.attach(my_other_file)
 
     # Remove the attachment again
@@ -714,14 +757,15 @@ shared_calendar = SingleFolderQuerySet(account=account, folder=DistinguishedFold
 
     ```python
     class LunchMenu(ExtendedProperty):
-        property_id = '12345678-1234-1234-1234-123456781234'
-        property_name = 'Catering from the cafeteria'
-        property_type = 'String'
+        property_id = "12345678-1234-1234-1234-123456781234"
+        property_name = "Catering from the cafeteria"
+        property_type = "String"
 
-    CalendarItem.register('lunch_menu', LunchMenu)
-    item = CalendarItem(..., lunch_menu='Foie gras et consommé de légumes')
+
+    CalendarItem.register("lunch_menu", LunchMenu)
+    item = CalendarItem(..., lunch_menu="Foie gras et consommé de légumes")
     item.save()
-    CalendarItem.deregister('lunch_menu')
+    CalendarItem.deregister("lunch_menu")
     ```
 
 - Fixed a bug on folder items where an existing HTML body would be converted to text when calling `save()`. When
@@ -731,11 +775,11 @@ shared_calendar = SingleFolderQuerySet(account=account, folder=DistinguishedFold
     ```python
     item = CalendarItem(...)
     # Plain-text body
-    item.body = Body('Hello UNIX-beard pine user!')
+    item.body = Body("Hello UNIX-beard pine user!")
     # Also plain-text body, works as before
-    item.body = 'Hello UNIX-beard pine user!'
+    item.body = "Hello UNIX-beard pine user!"
     # Exchange will see this as an HTML body and display nicely in clients
-    item.body = HTMLBody('<html><body>Hello happy <blink>OWA user!</blink></body></html>')
+    item.body = HTMLBody("<html><body>Hello happy <blink>OWA user!</blink></body></html>")
     item.save()
     ```
 
@@ -759,14 +803,14 @@ shared_calendar = SingleFolderQuerySet(account=account, folder=DistinguishedFold
     ```python
     items = []
     for i in range(4):
-        item = Message(subject='Test %s' % i)
+        item = Message(subject="Test %s" % i)
         items.append(item)
     account.sent.bulk_create(items=items)
 
     item_changes = []
     for i, item in enumerate(items):
-        item.subject = 'Changed subject' % i
-        item_changes.append(item, ['subject'])
+        item.subject = "Changed subject" % i
+        item_changes.append(item, ["subject"])
     account.bulk_update(items=item_changes)
     ```
 
@@ -814,11 +858,13 @@ shared_calendar = SingleFolderQuerySet(account=account, folder=DistinguishedFold
 
     ```python
     ids = account.calendar.find_items(
-          "start < '2016-01-02T03:04:05T' and end > '2016-01-01T03:04:05T' and categories in ('foo', 'bar')",
-          shape=IdOnly
+        "start < '2016-01-02T03:04:05T' and end > '2016-01-01T03:04:05T' and categories in ('foo', 'bar')",
+        shape=IdOnly,
     )
 
-    q1, q2 = (Q(subject__iexact='foo') | Q(subject__contains='bar')), ~Q(subject__startswith='baz')
+    q1, q2 = (Q(subject__iexact="foo") | Q(subject__contains="bar")), ~Q(
+        subject__startswith="baz"
+    )
     ids = account.calendar.find_items(q1, q2, shape=IdOnly)
     ```
 
@@ -840,7 +886,7 @@ shared_calendar = SingleFolderQuerySet(account=account, folder=DistinguishedFold
     ids = account.calendar.find_items(
         start=tz.localize(EWSDateTime(year, month, day)),
         end=tz.localize(EWSDateTime(year, month, day + 1)),
-        categories=['foo', 'bar'],
+        categories=["foo", "bar"],
     )
     ```
 
@@ -850,7 +896,7 @@ shared_calendar = SingleFolderQuerySet(account=account, folder=DistinguishedFold
     ids = account.calendar.find_items(
         start__lt=tz.localize(EWSDateTime(year, month, day + 1)),
         end__gt=tz.localize(EWSDateTime(year, month, day)),
-        categories__contains=['foo', 'bar'],
+        categories__contains=["foo", "bar"],
     )
     ```
 

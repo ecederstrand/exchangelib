@@ -8,6 +8,9 @@ from .common import TimedTestCase
 
 
 class VersionTest(TimedTestCase):
+    def test_magic(self):
+        hash(Version(Build(15, 1, 2, 3)))
+
     def test_invalid_version_args(self):
         with self.assertRaises(TypeError) as e:
             Version(build="XXX")

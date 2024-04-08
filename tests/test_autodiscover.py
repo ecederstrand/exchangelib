@@ -14,14 +14,20 @@ from exchangelib.autodiscover.discovery import Autodiscovery, SrvRecord, _select
 from exchangelib.autodiscover.protocol import AutodiscoverProtocol
 from exchangelib.configuration import Configuration
 from exchangelib.credentials import DELEGATE, Credentials, OAuth2LegacyCredentials
-from exchangelib.errors import AutoDiscoverCircularRedirect, AutoDiscoverFailed, ErrorNonExistentMailbox
+from exchangelib.errors import (
+    AutoDiscoverCircularRedirect,
+    AutoDiscoverFailed,
+    ErrorInternalServerError,
+    ErrorNonExistentMailbox,
+    TransportError,
+)
 from exchangelib.properties import UserResponse
 from exchangelib.protocol import FailFast, FaultTolerance
 from exchangelib.transport import NTLM
 from exchangelib.util import get_domain
 from exchangelib.version import EXCHANGE_2013, Version
 
-from .common import EWSTest, get_random_hostname, get_random_string
+from .common import EWSTest, get_random_email, get_random_hostname, get_random_string
 
 
 class AutodiscoverTest(EWSTest):
@@ -225,6 +231,11 @@ class AutodiscoverTest(EWSTest):
         if not self.settings.get("client_id") or not self.settings.get("username"):
             self.skipTest("This test requires delegate OAuth setup")
 
+        self.skipTest(
+            "Currently throws this error: Due to a configuration change made by your administrator, or because "
+            "you moved to a new location, you must use multi-factor authentication to access '0000-aaa-bbb-0000'"
+        )
+
         credentials = OAuth2LegacyCredentials(
             client_id=self.settings["client_id"],
             client_secret=self.settings["client_secret"],
@@ -240,9 +251,75 @@ class AutodiscoverTest(EWSTest):
         self.assertEqual(ad_response.autodiscover_smtp_address, self.account.primary_smtp_address)
         self.assertEqual(protocol.service_endpoint.lower(), self.account.protocol.service_endpoint.lower())
 
+    @requests_mock.mock(real_http=True)
+    def test_get_user_settings(self, m):
+        # Create a real Autodiscovery protocol instance
+        ad = Autodiscovery(
+            email=self.account.primary_smtp_address,
+            credentials=self.account.protocol.credentials,
+        )
+        ad.discover()
+        p = autodiscover_cache[ad._cache_key]
+
+        # Test invalid settings
+        with self.assertRaises(ValueError) as e:
+            p.get_user_settings(user=None, settings=["XXX"])
+        self.assertIn(
+            "Setting 'XXX' is invalid. Valid options are:",
+            e.exception.args[0],
+        )
+
+        # Test invalid email
+        invalid_email = get_random_email()
+        r = p.get_user_settings(user=invalid_email)
+        self.assertIsInstance(r, UserResponse)
+        self.assertEqual(r.error_code, "InvalidUser")
+        self.assertIn(f"Invalid user '{invalid_email}'", r.error_message)
+
+        # Test error response
+        xml = """\
+<?xml version="1.0" encoding="utf-8"?>
+<s:Envelope
+    xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:a="http://www.w3.org/2005/08/addressing">
+  <s:Body>
+    <GetUserSettingsResponseMessage xmlns="http://schemas.microsoft.com/exchange/2010/Autodiscover">
+      <Response>
+        <ErrorCode>InvalidSetting</ErrorCode>
+        <ErrorMessage>An error message</ErrorMessage>
+      </Response>
+    </GetUserSettingsResponseMessage>
+  </s:Body>
+</s:Envelope>""".encode()
+        m.post(p.service_endpoint, status_code=200, content=xml)
+        with self.assertRaises(TransportError) as e:
+            p.get_user_settings(user="foo")
+        self.assertEqual(
+            e.exception.args[0],
+            "Unknown ResponseCode in ResponseMessage: InvalidSetting (MessageText: An error message, MessageXml: None)",
+        )
+        xml = """\
+<?xml version="1.0" encoding="utf-8"?>
+<s:Envelope
+    xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:a="http://www.w3.org/2005/08/addressing">
+  <s:Body>
+    <GetUserSettingsResponseMessage xmlns="http://schemas.microsoft.com/exchange/2010/Autodiscover">
+      <Response>
+        <ErrorCode>InternalServerError</ErrorCode>
+        <ErrorMessage>An internal error</ErrorMessage>
+      </Response>
+    </GetUserSettingsResponseMessage>
+  </s:Body>
+</s:Envelope>""".encode()
+        m.post(p.service_endpoint, status_code=200, content=xml)
+        with self.assertRaises(ErrorInternalServerError) as e:
+            p.get_user_settings(user="foo")
+        self.assertEqual(e.exception.args[0], "An internal error")
+
     @requests_mock.mock(real_http=False)  # Just make sure we don't issue any real HTTP here
     def test_close_autodiscover_connections(self, m):
-        # A live test that we can close TCP connections
+        # Test that we can close TCP connections
         p = self.get_test_protocol()
         autodiscover_cache[(p.config.server, p.config.credentials)] = p
         self.assertEqual(len(autodiscover_cache), 1)
@@ -671,6 +748,9 @@ class AutodiscoverTest(EWSTest):
         dns.resolver.Resolver = _orig
         del ad.resolver
 
+    def test_srv_magic(self):
+        hash(SrvRecord(priority=1, weight=2, port=3, srv="example.com"))
+
     def test_select_srv_host(self):
         with self.assertRaises(ValueError):
             # Empty list
@@ -707,6 +787,7 @@ class AutodiscoverTest(EWSTest):
         UserResponse().raise_errors()
         with self.assertRaises(ErrorNonExistentMailbox) as e:
             UserResponse(error_code="InvalidUser", error_message="Foo").raise_errors()
+        self.assertEqual(e.exception.args[0], "Foo")
         with self.assertRaises(AutoDiscoverFailed) as e:
             UserResponse(error_code="InvalidRequest", error_message="FOO").raise_errors()
         self.assertEqual(e.exception.args[0], "InvalidRequest: FOO")
@@ -766,16 +847,22 @@ class AutodiscoverTest(EWSTest):
         self.assertTrue(a._redirect_url_is_valid(self.account.protocol.config.service_endpoint))
 
     def test_protocol_default_values(self):
-        # Test that retry_policy and auth_type always get a value regardless of how we create an Account
-        self.get_account()
-        a = Account(
-            self.account.primary_smtp_address,
-            autodiscover=True,
-            config=self.account.protocol.config,
-        )
-        self.assertIsNotNone(a.protocol.auth_type)
-        self.assertIsNotNone(a.protocol.retry_policy)
+        # Test that retry_policy, auth_type and max_connections always get values regardless of how we create an Account
+        _max_conn = self.account.protocol.config.max_connections
+        try:
+            self.account.protocol.config.max_connections = 3
+            a = Account(
+                self.account.primary_smtp_address,
+                autodiscover=True,
+                config=self.account.protocol.config,
+            )
+            self.assertIsNotNone(a.protocol.auth_type)
+            self.assertIsNotNone(a.protocol.retry_policy)
+            self.assertEqual(a.protocol._session_pool_maxsize, 3)
+        finally:
+            self.account.protocol.config.max_connections = _max_conn
 
         a = Account(self.account.primary_smtp_address, autodiscover=True, credentials=self.account.protocol.credentials)
         self.assertIsNotNone(a.protocol.auth_type)
         self.assertIsNotNone(a.protocol.retry_policy)
+        self.assertEqual(a.protocol._session_pool_maxsize, a.protocol.SESSION_POOLSIZE)

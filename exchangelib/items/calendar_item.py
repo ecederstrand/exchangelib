@@ -454,3 +454,13 @@ class CancelCalendarItem(BaseReplyItem):
     ELEMENT_NAME = "CancelCalendarItem"
     author_idx = BaseReplyItem.FIELDS.index_by_name("author")
     FIELDS = BaseReplyItem.FIELDS[:author_idx] + BaseReplyItem.FIELDS[author_idx + 1 :]
+
+
+class _Booking(Item):
+    """Not mentioned anywhere in MSDN docs, but it's common enough that we want to at least not crash when we encounter
+    an item of this type in a folder. For more information, see https://github.com/ecederstrand/exchangelib/issues/877
+
+    Not supported in any way except to not crash on calendar folder reads
+    """
+
+    ELEMENT_NAME = "Booking"

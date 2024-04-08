@@ -82,6 +82,10 @@ class Task(Item):
     status_description = CharField(field_uri="task:StatusDescription", is_read_only=True)
     total_work = IntegerField(field_uri="task:TotalWork", min=0)
 
+    # O365 throws ErrorInternalServerError "[0x004f0102] MapiReplyToBlob" if UniqueBody is requested
+    unique_body_idx = Item.FIELDS.index_by_name("unique_body")
+    FIELDS = Item.FIELDS[:unique_body_idx] + Item.FIELDS[unique_body_idx + 1 :]
+
     def clean(self, version=None):
         super().clean(version=version)
         if self.due_date and self.start_date and self.due_date < self.start_date:

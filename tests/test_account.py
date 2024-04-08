@@ -19,11 +19,17 @@ from exchangelib.ewsdatetime import UTC
 from exchangelib.folders import Calendar
 from exchangelib.items import Message
 from exchangelib.properties import (
+    Actions,
+    Address,
+    Conditions,
     DelegatePermissions,
     DelegateUser,
+    Exceptions,
     MailTips,
+    MoveToFolder,
     OutOfOffice,
     RecipientAddress,
+    Rule,
     SendingAs,
     UserId,
 )
@@ -31,7 +37,7 @@ from exchangelib.protocol import FaultTolerance, Protocol
 from exchangelib.services import GetDelegate, GetMailTips
 from exchangelib.version import EXCHANGE_2007_SP1, Version
 
-from .common import EWSTest
+from .common import EWSTest, get_random_choice, get_random_email, get_random_int, get_random_string
 
 
 class AccountTest(EWSTest):
@@ -106,22 +112,26 @@ class AccountTest(EWSTest):
         folder = self.account.root.get_default_folder(Calendar)
         self.assertIsInstance(folder, Calendar)
         self.assertNotEqual(folder.id, None)
+        self.assertEqual(folder.to_id().id, Calendar.DISTINGUISHED_FOLDER_ID)
         self.assertEqual(folder.name.lower(), Calendar.localized_names(self.account.locale)[0])
 
         class MockCalendar1(Calendar):
             @classmethod
-            def get_distinguished(cls, root):
+            def get_distinguished(cls, account):
                 raise ErrorAccessDenied("foo")
 
-        # Test an indirect folder lookup with FindItems
+        # Test an indirect folder lookup with FindItem, when we're not allowed to do a GetFolder. We don't get the
+        # folder element back from the server, just test for existence indirectly be asking for items in the folder.
+        # Therefore, we don't expect ID or name values.
         folder = self.account.root.get_default_folder(MockCalendar1)
         self.assertIsInstance(folder, MockCalendar1)
         self.assertEqual(folder.id, None)
-        self.assertEqual(folder.name, MockCalendar1.DISTINGUISHED_FOLDER_ID)
+        self.assertEqual(folder.to_id().id, Calendar.DISTINGUISHED_FOLDER_ID)
+        self.assertEqual(folder.name, None)
 
         class MockCalendar2(Calendar):
             @classmethod
-            def get_distinguished(cls, root):
+            def get_distinguished(cls, account):
                 raise ErrorFolderNotFound("foo")
 
         # Test using the one folder of this folder type
@@ -333,3 +343,58 @@ class AccountTest(EWSTest):
         )
         self.assertIsNotNone(a.protocol.auth_type)
         self.assertIsNotNone(a.protocol.retry_policy)
+
+    def test_basic_inbox_rule(self):
+        # Create rule
+        display_name = get_random_string(16)
+        rule = Rule(
+            account=self.account,
+            display_name=display_name,
+            priority=1,
+            is_enabled=True,
+            conditions=Conditions(contains_sender_strings=[get_random_string(8)]),
+            exceptions=Exceptions(),
+            actions=Actions(delete=True),
+        )
+        self.assertIsNone(rule.id)
+        rule.save()
+        self.assertIsNotNone(rule.id)
+        self.assertIn(display_name, {r.display_name for r in self.account.rules})
+
+        # Update rule
+        rule.display_name = get_random_string(16)
+        rule.save()
+        self.assertIn(rule.display_name, {r.display_name for r in self.account.rules})
+        self.assertNotIn(display_name, {r.display_name for r in self.account.rules})
+
+        # Delete rule
+        rule.delete()
+        self.assertNotIn(rule.display_name, {r.display_name for r in self.account.rules})
+
+    def test_all_inbox_rule_actions(self):
+        for action_name, action in {
+            "assign_categories": ["foo", "bar"],
+            "copy_to_folder": self.account.trash,
+            "delete": True,  # Cannot be random. False would be a no-op action
+            "forward_as_attachment_to_recipients": [Address(email_address=get_random_email())],
+            "mark_importance": get_random_choice(
+                Actions.mark_importance.supported_choices(version=self.account.version)
+            ),
+            "mark_as_read": True,  # Cannot be random. False would be a no-op action
+            "move_to_folder": MoveToFolder(distinguished_folder_id=self.account.trash.to_id()),
+            "permanent_delete": True,  # Cannot be random. False would be a no-op action
+            "redirect_to_recipients": [Address(email_address=get_random_email())],
+            # TODO: Throws "UnsupportedRule: The operation on this unsupported rule is not allowed."
+            # "send_sms_alert_to_recipients": [Address(email_address=get_random_email())],
+            # TODO: throws "InvalidValue: Id must be non-empty." even though we follow MSDN docs
+            # "server_reply_with_message": Message(folder=self.account.inbox, subject="Foo").save().to_id(),
+            "stop_processing_rules": True,  # Cannot be random. False would be a no-op action
+        }.items():
+            with self.subTest(action_name=action_name, action=action):
+                rule = Rule(
+                    account=self.account,
+                    display_name=get_random_string(16),
+                    priority=get_random_int(),
+                    actions=Actions(**{action_name: action}),
+                ).save()
+                rule.delete()

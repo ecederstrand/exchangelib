@@ -1,4 +1,10 @@
-from ..errors import ErrorFolderNotFound, ErrorInvalidOperation, ErrorNoPublicFolderReplicaAvailable
+from ..errors import (
+    ErrorAccessDenied,
+    ErrorFolderNotFound,
+    ErrorInvalidOperation,
+    ErrorItemNotFound,
+    ErrorNoPublicFolderReplicaAvailable,
+)
 from ..util import MNS, create_element
 from .common import EWSAccountService, folder_ids_element, parse_folder_elem, shape_element
 
@@ -9,9 +15,11 @@ class GetFolder(EWSAccountService):
     SERVICE_NAME = "GetFolder"
     element_container_name = f"{{{MNS}}}Folders"
     ERRORS_TO_CATCH_IN_RESPONSE = EWSAccountService.ERRORS_TO_CATCH_IN_RESPONSE + (
+        ErrorAccessDenied,
         ErrorFolderNotFound,
         ErrorNoPublicFolderReplicaAvailable,
         ErrorInvalidOperation,
+        ErrorItemNotFound,
     )
 
     def __init__(self, *args, **kwargs):

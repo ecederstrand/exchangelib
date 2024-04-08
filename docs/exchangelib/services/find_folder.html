@@ -65,7 +65,7 @@ class FindFolder(EWSPagingService):
             raise InvalidEnumValue(&#34;depth&#34;, depth, FOLDER_TRAVERSAL_CHOICES)
         roots = {f.root for f in folders}
         if len(roots) != 1:
-            raise ValueError(f&#34;All folders in &#39;roots&#39; must have the same root hierarchy ({roots})&#34;)
+            raise ValueError(f&#34;All folders must have the same root hierarchy ({roots})&#34;)
         self.root = roots.pop()
         return self._elems_to_objs(
             self._paged_call(
@@ -157,7 +157,7 @@ class FindFolder(EWSPagingService):
             raise InvalidEnumValue(&#34;depth&#34;, depth, FOLDER_TRAVERSAL_CHOICES)
         roots = {f.root for f in folders}
         if len(roots) != 1:
-            raise ValueError(f&#34;All folders in &#39;roots&#39; must have the same root hierarchy ({roots})&#34;)
+            raise ValueError(f&#34;All folders must have the same root hierarchy ({roots})&#34;)
         self.root = roots.pop()
         return self._elems_to_objs(
             self._paged_call(
@@ -259,7 +259,7 @@ class FindFolder(EWSPagingService):
         raise InvalidEnumValue(&#34;depth&#34;, depth, FOLDER_TRAVERSAL_CHOICES)
     roots = {f.root for f in folders}
     if len(roots) != 1:
-        raise ValueError(f&#34;All folders in &#39;roots&#39; must have the same root hierarchy ({roots})&#34;)
+        raise ValueError(f&#34;All folders must have the same root hierarchy ({roots})&#34;)
     self.root = roots.pop()
     return self._elems_to_objs(
         self._paged_call(

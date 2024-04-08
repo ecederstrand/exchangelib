@@ -239,12 +239,9 @@ class Item(BaseItem):
     @require_id
     def refresh(self):
         # Updates the item based on fresh data from EWS
-        from ..folders import Folder
         from ..services import GetItem
 
-        additional_fields = {
-            FieldPath(field=f) for f in Folder(root=self.account.root).allowed_item_fields(version=self.account.version)
-        }
+        additional_fields = {FieldPath(field=f) for f in self.supported_fields(version=self.account.version)}
         res = GetItem(account=self.account).get(items=[self], additional_fields=additional_fields, shape=ID_ONLY)
         if self.id != res.id and not isinstance(self._id, (OccurrenceItemId, RecurringMasterItemId)):
             # When we refresh an item with an OccurrenceItemId as ID, EWS returns the ID of the occurrence, so

@@ -64,7 +64,7 @@ from .settings import OofSettings
 from .transport import BASIC, CBA, DIGEST, GSSAPI, NTLM, OAUTH2, SSPI
 from .version import Build, Version
 
-__version__ = &#34;4.9.0&#34;
+__version__ = &#34;5.2.0&#34;
 
 __all__ = [
     &#34;__version__&#34;,
@@ -289,7 +289,7 @@ login to a specific account …</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def discover(email, credentials=None, auth_type=None, retry_policy=None):
-    ad_response, protocol = PoxAutodiscovery(email=email, credentials=credentials).discover()
+    ad_response, protocol = Autodiscovery(email=email, credentials=credentials).discover()
     protocol.config.auth_typ = auth_type
     protocol.config.retry_policy = retry_policy
     return ad_response, protocol</code></pre>
@@ -363,7 +363,7 @@ we use folder.account.</p></div>
 :param access_type: The access type granted to 'credentials' for this account. Valid options are 'delegate'
 and 'impersonation'. 'delegate' is default if 'credentials' is set. Otherwise, 'impersonation' is default.
 :param autodiscover: Whether to look up the EWS endpoint automatically using the autodiscover protocol.
-Can also be set to "pox" or "soap" to choose the autodiscover implementation (Default value = False)
+(Default value = False)
 :param credentials: A Credentials object containing valid credentials for this account. (Default value = None)
 :param config: A Configuration object containing EWS endpoint information. Required if autodiscover is disabled
 (Default value = None)
@@ -377,8 +377,6 @@ assume values to be in the provided timezone. Defaults to the timezone of the ho
 </summary>
 <pre><code class="python">class Account:
     &#34;&#34;&#34;Models an Exchange server user account.&#34;&#34;&#34;
-
-    DEFAULT_DISCOVERY_CLS = PoxAutodiscovery
 
     def __init__(
         self,
@@ -398,7 +396,7 @@ assume values to be in the provided timezone. Defaults to the timezone of the ho
         :param access_type: The access type granted to &#39;credentials&#39; for this account. Valid options are &#39;delegate&#39;
             and &#39;impersonation&#39;. &#39;delegate&#39; is default if &#39;credentials&#39; is set. Otherwise, &#39;impersonation&#39; is default.
         :param autodiscover: Whether to look up the EWS endpoint automatically using the autodiscover protocol.
-            Can also be set to &#34;pox&#34; or &#34;soap&#34; to choose the autodiscover implementation (Default value = False)
+            (Default value = False)
         :param credentials: A Credentials object containing valid credentials for this account. (Default value = None)
         :param config: A Configuration object containing EWS endpoint information. Required if autodiscover is disabled
             (Default value = None)
@@ -440,17 +438,17 @@ assume values to be in the provided timezone. Defaults to the timezone of the ho
             raise InvalidTypeError(&#34;config&#34;, config, Configuration)
         if autodiscover:
             if config:
-                auth_type, retry_policy, version = config.auth_type, config.retry_policy, config.version
+                auth_type, retry_policy, version, max_connections = (
+                    config.auth_type,
+                    config.retry_policy,
+                    config.version,
+                    config.max_connections,
+                )
                 if not credentials:
                     credentials = config.credentials
             else:
-                auth_type, retry_policy, version = None, None, None
-            discovery_cls = {
-                &#34;pox&#34;: PoxAutodiscovery,
-                &#34;soap&#34;: SoapAutodiscovery,
-                True: self.DEFAULT_DISCOVERY_CLS,
-            }[autodiscover]
-            self.ad_response, self.protocol = discovery_cls(
+                auth_type, retry_policy, version, max_connections = None, None, None, None
+            self.ad_response, self.protocol = Autodiscovery(
                 email=primary_smtp_address, credentials=credentials
             ).discover()
             # Let&#39;s not use the auth_package hint from the AD response. It could be incorrect and we can just guess.
@@ -459,6 +457,7 @@ assume values to be in the provided timezone. Defaults to the timezone of the ho
                 self.protocol.config.retry_policy = retry_policy
             if version:
                 self.protocol.config.version = version
+            self.protocol.max_connections = max_connections
             primary_smtp_address = self.ad_response.autodiscover_smtp_address
         else:
             if not config:
@@ -1030,33 +1029,121 @@ assume values to be in the provided timezone. Defaults to the timezone of the ho
         &#34;&#34;&#34;Return a list of DelegateUser objects representing the delegates that are set on this account.&#34;&#34;&#34;
         return list(GetDelegate(account=self).call(user_ids=None, include_permissions=True))
 
+    @property
+    def rules(self):
+        &#34;&#34;&#34;Return a list of Rule objects representing the rules that are set on this account.&#34;&#34;&#34;
+        return list(GetInboxRules(account=self).call())
+
+    def create_rule(self, rule: Rule):
+        &#34;&#34;&#34;Create an Inbox rule.
+
+        :param rule: The rule to create. Must have at least &#39;display_name&#39; set.
+        :return: None if success, else raises an error.
+        &#34;&#34;&#34;
+        CreateInboxRule(account=self).get(rule=rule, remove_outlook_rule_blob=True)
+        # After creating the rule, query all rules,
+        # find the rule that was just created, and return its ID.
+        try:
+            rule.id = {i.display_name: i for i in GetInboxRules(account=self).call()}[rule.display_name].id
+        except KeyError:
+            raise ResponseMessageError(f&#34;Failed to create rule ({rule.display_name})!&#34;)
+
+    def set_rule(self, rule: Rule):
+        &#34;&#34;&#34;Modify an Inbox rule.
+
+        :param rule: The rule to set. Must have an ID.
+        :return: None if success, else raises an error.
+        &#34;&#34;&#34;
+        SetInboxRule(account=self).get(rule=rule)
+
+    def delete_rule(self, rule: Rule):
+        &#34;&#34;&#34;Delete an Inbox rule.
+
+        :param rule: The rule to delete. Must have ID or &#39;display_name&#39;.
+        :return: None if success, else raises an error.
+        &#34;&#34;&#34;
+        if not rule.id:
+            if not rule.display_name:
+                raise ValueError(&#34;Rule must have ID or display_name&#34;)
+            try:
+                rule = {i.display_name: i for i in GetInboxRules(account=self).call()}[rule.display_name]
+            except KeyError:
+                raise ErrorItemNotFound(f&#34;No rule with name {rule.display_name!r}&#34;)
+        DeleteInboxRule(account=self).get(rule=rule)
+        rule.id = None
+
+    def subscribe_to_pull(self, event_types=None, watermark=None, timeout=60):
+        &#34;&#34;&#34;Create a pull subscription.
+
+        :param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPull.EVENT_TYPES
+        :param watermark: An event bookmark as returned by some sync services
+        :param timeout: Timeout of the subscription, in minutes. Timeout is reset when the server receives a
+        GetEvents request for this subscription.
+        :return: The subscription ID and a watermark
+        &#34;&#34;&#34;
+        if event_types is None:
+            event_types = SubscribeToPull.EVENT_TYPES
+        return SubscribeToPull(account=self).get(
+            folders=None,
+            event_types=event_types,
+            watermark=watermark,
+            timeout=timeout,
+        )
+
+    def subscribe_to_push(self, callback_url, event_types=None, watermark=None, status_frequency=1):
+        &#34;&#34;&#34;Create a push subscription.
+
+        :param callback_url: A client-defined URL that the server will call
+        :param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPush.EVENT_TYPES
+        :param watermark: An event bookmark as returned by some sync services
+        :param status_frequency: The frequency, in minutes, that the callback URL will be called with.
+        :return: The subscription ID and a watermark
+        &#34;&#34;&#34;
+        if event_types is None:
+            event_types = SubscribeToPush.EVENT_TYPES
+        return SubscribeToPush(account=self).get(
+            folders=None,
+            event_types=event_types,
+            watermark=watermark,
+            status_frequency=status_frequency,
+            url=callback_url,
+        )
+
+    def subscribe_to_streaming(self, event_types=None):
+        &#34;&#34;&#34;Create a streaming subscription.
+
+        :param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPush.EVENT_TYPES
+        :return: The subscription ID
+        &#34;&#34;&#34;
+        if event_types is None:
+            event_types = SubscribeToStreaming.EVENT_TYPES
+        return SubscribeToStreaming(account=self).get(folders=None, event_types=event_types)
+
+    def pull_subscription(self, **kwargs):
+        return PullSubscription(target=self, **kwargs)
+
+    def push_subscription(self, **kwargs):
+        return PushSubscription(target=self, **kwargs)
+
+    def streaming_subscription(self, **kwargs):
+        return StreamingSubscription(target=self, **kwargs)
+
+    def unsubscribe(self, subscription_id):
+        &#34;&#34;&#34;Unsubscribe. Only applies to pull and streaming notifications.
+
+        :param subscription_id: A subscription ID as acquired by .subscribe_to_[pull|streaming]()
+        :return: True
+
+        This method doesn&#39;t need the current collection instance, but it makes sense to keep the method along the other
+        sync methods.
+        &#34;&#34;&#34;
+        return Unsubscribe(account=self).get(subscription_id=subscription_id)
+
     def __str__(self):
         if self.fullname:
             return f&#34;{self.primary_smtp_address} ({self.fullname})&#34;
         return self.primary_smtp_address</code></pre>
 </details>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.Account.DEFAULT_DISCOVERY_CLS"><code class="name">var <span class="ident">DEFAULT_DISCOVERY_CLS</span></code></dt>
-<dd>
-<div class="desc"><p>Autodiscover is a Microsoft protocol for automatically getting the endpoint of the Exchange server and other
-connection-related settings holding the email address using only the email address, and username and password of the
-user.</p>
-<p>For a description of the protocol implemented, see "Autodiscover for Exchange ActiveSync developers":</p>
-<p><a href="https://docs.microsoft.com/en-us/previous-versions/office/developer/exchange-server-interoperability-guidance/hh352638%28v%3dexchg.140%29">https://docs.microsoft.com/en-us/previous-versions/office/developer/exchange-server-interoperability-guidance/hh352638%28v%3dexchg.140%29</a></p>
-<p>Descriptions of the steps from the article are provided in their respective methods in this class.</p>
-<p>For a description of how to handle autodiscover error messages, see:</p>
-<p><a href="https://docs.microsoft.com/en-us/exchange/client-developer/exchange-web-services/handling-autodiscover-error-messages">https://docs.microsoft.com/en-us/exchange/client-developer/exchange-web-services/handling-autodiscover-error-messages</a></p>
-<p>A tip from the article:
-The client can perform steps 1 through 4 in any order or in parallel to expedite the process, but it must wait for
-responses to finish at each step before proceeding. Given that many organizations prefer to use the URL in step 2 to
-set up the Autodiscover service, the client might try this step first.</p>
-<p>Another possibly newer resource which has not yet been attempted is "Outlook 2016 Implementation of Autodiscover":
-<a href="https://support.microsoft.com/en-us/help/3211279/outlook-2016-implementation-of-autodiscover">https://support.microsoft.com/en-us/help/3211279/outlook-2016-implementation-of-autodiscover</a></p>
-<p>WARNING: The autodiscover protocol is very complicated. If you have problems autodiscovering using this
-implementation, start by doing an official test at <a href="https://testconnectivity.microsoft.com">https://testconnectivity.microsoft.com</a></p></div>
-</dd>
-</dl>
 <h3>Instance variables</h3>
 <dl>
 <dt id="exchangelib.Account.admin_audit_logs"><code class="name">var <span class="ident">admin_audit_logs</span></code></dt>
@@ -1913,6 +2000,19 @@ def primary_smtp_address(self):
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
 </dd>
+<dt id="exchangelib.Account.rules"><code class="name">var <span class="ident">rules</span></code></dt>
+<dd>
+<div class="desc"><p>Return a list of Rule objects representing the rules that are set on this account.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def rules(self):
+    &#34;&#34;&#34;Return a list of Rule objects representing the rules that are set on this account.&#34;&#34;&#34;
+    return list(GetInboxRules(account=self).call())</code></pre>
+</details>
+</dd>
 <dt id="exchangelib.Account.search_folders"><code class="name">var <span class="ident">search_folders</span></code></dt>
 <dd>
 <div class="desc"></div>
@@ -2480,6 +2580,60 @@ specified in SEND_MEETING_INVITATIONS_AND_CANCELLATIONS_CHOICES (Default value =
     )</code></pre>
 </details>
 </dd>
+<dt id="exchangelib.Account.create_rule"><code class="name flex">
+<span>def <span class="ident">create_rule</span></span>(<span>self, rule: <a title="exchangelib.properties.Rule" href="properties.html#exchangelib.properties.Rule">Rule</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create an Inbox rule.</p>
+<p>:param rule: The rule to create. Must have at least 'display_name' set.
+:return: None if success, else raises an error.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_rule(self, rule: Rule):
+    &#34;&#34;&#34;Create an Inbox rule.
+
+    :param rule: The rule to create. Must have at least &#39;display_name&#39; set.
+    :return: None if success, else raises an error.
+    &#34;&#34;&#34;
+    CreateInboxRule(account=self).get(rule=rule, remove_outlook_rule_blob=True)
+    # After creating the rule, query all rules,
+    # find the rule that was just created, and return its ID.
+    try:
+        rule.id = {i.display_name: i for i in GetInboxRules(account=self).call()}[rule.display_name].id
+    except KeyError:
+        raise ResponseMessageError(f&#34;Failed to create rule ({rule.display_name})!&#34;)</code></pre>
+</details>
+</dd>
+<dt id="exchangelib.Account.delete_rule"><code class="name flex">
+<span>def <span class="ident">delete_rule</span></span>(<span>self, rule: <a title="exchangelib.properties.Rule" href="properties.html#exchangelib.properties.Rule">Rule</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Delete an Inbox rule.</p>
+<p>:param rule: The rule to delete. Must have ID or 'display_name'.
+:return: None if success, else raises an error.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def delete_rule(self, rule: Rule):
+    &#34;&#34;&#34;Delete an Inbox rule.
+
+    :param rule: The rule to delete. Must have ID or &#39;display_name&#39;.
+    :return: None if success, else raises an error.
+    &#34;&#34;&#34;
+    if not rule.id:
+        if not rule.display_name:
+            raise ValueError(&#34;Rule must have ID or display_name&#34;)
+        try:
+            rule = {i.display_name: i for i in GetInboxRules(account=self).call()}[rule.display_name]
+        except KeyError:
+            raise ErrorItemNotFound(f&#34;No rule with name {rule.display_name!r}&#34;)
+    DeleteInboxRule(account=self).get(rule=rule)
+    rule.id = None</code></pre>
+</details>
+</dd>
 <dt id="exchangelib.Account.export"><code class="name flex">
 <span>def <span class="ident">export</span></span>(<span>self, items, chunk_size=None)</span>
 </code></dt>
@@ -2583,6 +2737,179 @@ specified in SEND_MEETING_INVITATIONS_AND_CANCELLATIONS_CHOICES (Default value =
     yield from GetPersona(account=self).call(personas=ids)</code></pre>
 </details>
 </dd>
+<dt id="exchangelib.Account.pull_subscription"><code class="name flex">
+<span>def <span class="ident">pull_subscription</span></span>(<span>self, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def pull_subscription(self, **kwargs):
+    return PullSubscription(target=self, **kwargs)</code></pre>
+</details>
+</dd>
+<dt id="exchangelib.Account.push_subscription"><code class="name flex">
+<span>def <span class="ident">push_subscription</span></span>(<span>self, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def push_subscription(self, **kwargs):
+    return PushSubscription(target=self, **kwargs)</code></pre>
+</details>
+</dd>
+<dt id="exchangelib.Account.set_rule"><code class="name flex">
+<span>def <span class="ident">set_rule</span></span>(<span>self, rule: <a title="exchangelib.properties.Rule" href="properties.html#exchangelib.properties.Rule">Rule</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Modify an Inbox rule.</p>
+<p>:param rule: The rule to set. Must have an ID.
+:return: None if success, else raises an error.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_rule(self, rule: Rule):
+    &#34;&#34;&#34;Modify an Inbox rule.
+
+    :param rule: The rule to set. Must have an ID.
+    :return: None if success, else raises an error.
+    &#34;&#34;&#34;
+    SetInboxRule(account=self).get(rule=rule)</code></pre>
+</details>
+</dd>
+<dt id="exchangelib.Account.streaming_subscription"><code class="name flex">
+<span>def <span class="ident">streaming_subscription</span></span>(<span>self, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def streaming_subscription(self, **kwargs):
+    return StreamingSubscription(target=self, **kwargs)</code></pre>
+</details>
+</dd>
+<dt id="exchangelib.Account.subscribe_to_pull"><code class="name flex">
+<span>def <span class="ident">subscribe_to_pull</span></span>(<span>self, event_types=None, watermark=None, timeout=60)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create a pull subscription.</p>
+<p>:param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPull.EVENT_TYPES
+:param watermark: An event bookmark as returned by some sync services
+:param timeout: Timeout of the subscription, in minutes. Timeout is reset when the server receives a
+GetEvents request for this subscription.
+:return: The subscription ID and a watermark</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def subscribe_to_pull(self, event_types=None, watermark=None, timeout=60):
+    &#34;&#34;&#34;Create a pull subscription.
+
+    :param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPull.EVENT_TYPES
+    :param watermark: An event bookmark as returned by some sync services
+    :param timeout: Timeout of the subscription, in minutes. Timeout is reset when the server receives a
+    GetEvents request for this subscription.
+    :return: The subscription ID and a watermark
+    &#34;&#34;&#34;
+    if event_types is None:
+        event_types = SubscribeToPull.EVENT_TYPES
+    return SubscribeToPull(account=self).get(
+        folders=None,
+        event_types=event_types,
+        watermark=watermark,
+        timeout=timeout,
+    )</code></pre>
+</details>
+</dd>
+<dt id="exchangelib.Account.subscribe_to_push"><code class="name flex">
+<span>def <span class="ident">subscribe_to_push</span></span>(<span>self, callback_url, event_types=None, watermark=None, status_frequency=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create a push subscription.</p>
+<p>:param callback_url: A client-defined URL that the server will call
+:param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPush.EVENT_TYPES
+:param watermark: An event bookmark as returned by some sync services
+:param status_frequency: The frequency, in minutes, that the callback URL will be called with.
+:return: The subscription ID and a watermark</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def subscribe_to_push(self, callback_url, event_types=None, watermark=None, status_frequency=1):
+    &#34;&#34;&#34;Create a push subscription.
+
+    :param callback_url: A client-defined URL that the server will call
+    :param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPush.EVENT_TYPES
+    :param watermark: An event bookmark as returned by some sync services
+    :param status_frequency: The frequency, in minutes, that the callback URL will be called with.
+    :return: The subscription ID and a watermark
+    &#34;&#34;&#34;
+    if event_types is None:
+        event_types = SubscribeToPush.EVENT_TYPES
+    return SubscribeToPush(account=self).get(
+        folders=None,
+        event_types=event_types,
+        watermark=watermark,
+        status_frequency=status_frequency,
+        url=callback_url,
+    )</code></pre>
+</details>
+</dd>
+<dt id="exchangelib.Account.subscribe_to_streaming"><code class="name flex">
+<span>def <span class="ident">subscribe_to_streaming</span></span>(<span>self, event_types=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create a streaming subscription.</p>
+<p>:param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPush.EVENT_TYPES
+:return: The subscription ID</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def subscribe_to_streaming(self, event_types=None):
+    &#34;&#34;&#34;Create a streaming subscription.
+
+    :param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPush.EVENT_TYPES
+    :return: The subscription ID
+    &#34;&#34;&#34;
+    if event_types is None:
+        event_types = SubscribeToStreaming.EVENT_TYPES
+    return SubscribeToStreaming(account=self).get(folders=None, event_types=event_types)</code></pre>
+</details>
+</dd>
+<dt id="exchangelib.Account.unsubscribe"><code class="name flex">
+<span>def <span class="ident">unsubscribe</span></span>(<span>self, subscription_id)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Unsubscribe. Only applies to pull and streaming notifications.</p>
+<p>:param subscription_id: A subscription ID as acquired by .subscribe_to_<a href="">pull|streaming</a>
+:return: True</p>
+<p>This method doesn't need the current collection instance, but it makes sense to keep the method along the other
+sync methods.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def unsubscribe(self, subscription_id):
+    &#34;&#34;&#34;Unsubscribe. Only applies to pull and streaming notifications.
+
+    :param subscription_id: A subscription ID as acquired by .subscribe_to_[pull|streaming]()
+    :return: True
+
+    This method doesn&#39;t need the current collection instance, but it makes sense to keep the method along the other
+    sync methods.
+    &#34;&#34;&#34;
+    return Unsubscribe(account=self).get(subscription_id=subscription_id)</code></pre>
+</details>
+</dd>
 <dt id="exchangelib.Account.upload"><code class="name flex">
 <span>def <span class="ident">upload</span></span>(<span>self, data, chunk_size=None)</span>
 </code></dt>
@@ -2651,6 +2978,8 @@ account.upload([
         field_uri=&#34;ResponseType&#34;, choices={Choice(c) for c in RESPONSE_TYPES}, default=&#34;Unknown&#34;
     )
     last_response_time = DateTimeField(field_uri=&#34;LastResponseTime&#34;)
+    proposed_start = DateTimeField(field_uri=&#34;ProposedStart&#34;)
+    proposed_end = DateTimeField(field_uri=&#34;ProposedEnd&#34;)
 
     def __hash__(self):
         return hash(self.mailbox)</code></pre>
@@ -2681,6 +3010,14 @@ account.upload([
 <div class="desc"></div>
 </dd>
 <dt id="exchangelib.Attendee.mailbox"><code class="name">var <span class="ident">mailbox</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.Attendee.proposed_end"><code class="name">var <span class="ident">proposed_end</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.Attendee.proposed_start"><code class="name">var <span class="ident">proposed_start</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -2729,6 +3066,7 @@ account.upload([
     MAX_SESSION_USAGE_COUNT = None
     # Timeout for HTTP requests
     TIMEOUT = 120
+    RETRY_WAIT = 10  # Seconds to wait before retry on connection errors
 
     # The adapter class to use for HTTP requests. Override this if you need e.g. proxy support or specific TLS versions
     HTTP_ADAPTER_CLS = requests.adapters.HTTPAdapter
@@ -2774,6 +3112,15 @@ account.upload([
         with self._session_pool_lock:
             self.config._credentials = value
             self.close()
+
+    @property
+    def max_connections(self):
+        return self._session_pool_maxsize
+
+    @max_connections.setter
+    def max_connections(self, value):
+        with self._session_pool_lock:
+            self._session_pool_maxsize = value or self.SESSION_POOLSIZE
 
     @property
     def retry_policy(self):
@@ -3049,6 +3396,10 @@ s.mount('http://', a)</p>
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="exchangelib.BaseProtocol.RETRY_WAIT"><code class="name">var <span class="ident">RETRY_WAIT</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="exchangelib.BaseProtocol.SESSION_POOLSIZE"><code class="name">var <span class="ident">SESSION_POOLSIZE</span></code></dt>
 <dd>
 <div class="desc"></div>
@@ -3135,6 +3486,18 @@ def auth_type(self):
 <pre><code class="python">@property
 def credentials(self):
     return self.config.credentials</code></pre>
+</details>
+</dd>
+<dt id="exchangelib.BaseProtocol.max_connections"><code class="name">var <span class="ident">max_connections</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def max_connections(self):
+    return self._session_pool_maxsize</code></pre>
 </details>
 </dd>
 <dt id="exchangelib.BaseProtocol.retry_policy"><code class="name">var <span class="ident">retry_policy</span></code></dt>
@@ -3601,26 +3964,6 @@ The substitutions are identified by braces ('{' and '}').</p></div>
             kwargs[k] = int(v)  # Also raises ValueError
         return cls(**kwargs)
 
-    @classmethod
-    def from_hex_string(cls, s):
-        &#34;&#34;&#34;Parse a server version string as returned in an autodiscover response. The process is described here:
-        https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/serverversion-pox#example
-
-        The string is a hex string that, converted to a 32-bit binary, encodes the server version. The rules are:
-            * The first 4 bits contain the version number structure version. Can be ignored
-            * The next 6 bits contain the major version number
-            * The next 6 bits contain the minor version number
-            * The next bit contains a flag. Can be ignored
-            * The next 15 bits contain the major build number
-
-        :param s:
-        &#34;&#34;&#34;
-        bin_s = f&#34;{int(s, 16):032b}&#34;  # Convert string to 32-bit binary string
-        major_version = int(bin_s[4:10], 2)
-        minor_version = int(bin_s[10:16], 2)
-        build_number = int(bin_s[17:32], 2)
-        return cls(major_version=major_version, minor_version=minor_version, major_build=build_number)
-
     def api_version(self):
         for build, api_version, _ in VERSIONS:
             if self.major_version != build.major_version or self.minor_version != build.minor_version:
@@ -3673,44 +4016,6 @@ The substitutions are identified by braces ('{' and '}').</p></div>
 </details>
 <h3>Static methods</h3>
 <dl>
-<dt id="exchangelib.Build.from_hex_string"><code class="name flex">
-<span>def <span class="ident">from_hex_string</span></span>(<span>s)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Parse a server version string as returned in an autodiscover response. The process is described here:
-<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/serverversion-pox#example">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/serverversion-pox#example</a></p>
-<p>The string is a hex string that, converted to a 32-bit binary, encodes the server version. The rules are:
-* The first 4 bits contain the version number structure version. Can be ignored
-* The next 6 bits contain the major version number
-* The next 6 bits contain the minor version number
-* The next bit contains a flag. Can be ignored
-* The next 15 bits contain the major build number</p>
-<p>:param s:</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def from_hex_string(cls, s):
-    &#34;&#34;&#34;Parse a server version string as returned in an autodiscover response. The process is described here:
-    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/serverversion-pox#example
-
-    The string is a hex string that, converted to a 32-bit binary, encodes the server version. The rules are:
-        * The first 4 bits contain the version number structure version. Can be ignored
-        * The next 6 bits contain the major version number
-        * The next 6 bits contain the minor version number
-        * The next bit contains a flag. Can be ignored
-        * The next 15 bits contain the major build number
-
-    :param s:
-    &#34;&#34;&#34;
-    bin_s = f&#34;{int(s, 16):032b}&#34;  # Convert string to 32-bit binary string
-    major_version = int(bin_s[4:10], 2)
-    minor_version = int(bin_s[10:16], 2)
-    build_number = int(bin_s[17:32], 2)
-    return cls(major_version=major_version, minor_version=minor_version, major_build=build_number)</code></pre>
-</details>
-</dd>
 <dt id="exchangelib.Build.from_xml"><code class="name flex">
 <span>def <span class="ident">from_xml</span></span>(<span>elem)</span>
 </code></dt>
@@ -4770,7 +5075,10 @@ we use folder.account.</p></div>
     )
     direct_reports = MailboxListField(
         field_uri=&#34;contacts:DirectReports&#34;, supported_from=EXCHANGE_2010_SP2, is_read_only=True
-    )</code></pre>
+    )
+    # O365 throws ErrorInternalServerError &#34;[0x004f0102] MapiReplyToBlob&#34; if UniqueBody is requested
+    unique_body_idx = Item.FIELDS.index_by_name(&#34;unique_body&#34;)
+    FIELDS = Item.FIELDS[:unique_body_idx] + Item.FIELDS[unique_body_idx + 1 :]</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -4787,6 +5095,10 @@ we use folder.account.</p></div>
 <div class="desc"></div>
 </dd>
 <dt id="exchangelib.Contact.FIELDS"><code class="name">var <span class="ident">FIELDS</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.Contact.unique_body_idx"><code class="name">var <span class="ident">unique_body_idx</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -5163,7 +5475,11 @@ we use folder.account.</p></div>
     contact_source = ChoiceField(
         field_uri=&#34;contacts:ContactSource&#34;, choices={Choice(&#34;Store&#34;), Choice(&#34;ActiveDirectory&#34;)}, is_read_only=True
     )
-    members = MemberListField(field_uri=&#34;distributionlist:Members&#34;)</code></pre>
+    members = MemberListField(field_uri=&#34;distributionlist:Members&#34;)
+
+    # O365 throws ErrorInternalServerError &#34;[0x004f0102] MapiReplyToBlob&#34; if UniqueBody is requested
+    unique_body_idx = Item.FIELDS.index_by_name(&#34;unique_body&#34;)
+    FIELDS = Item.FIELDS[:unique_body_idx] + Item.FIELDS[unique_body_idx + 1 :]</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -5180,6 +5496,10 @@ we use folder.account.</p></div>
 <div class="desc"></div>
 </dd>
 <dt id="exchangelib.DistributionList.FIELDS"><code class="name">var <span class="ident">FIELDS</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.DistributionList.unique_body_idx"><code class="name">var <span class="ident">unique_body_idx</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -5754,6 +6074,9 @@ services.GetServerTimeZones.</p></div>
         # long-format names, see output of services.GetServerTimeZones(account.protocol).call()
         instance.ms_name = &#34;&#34;
         return instance
+
+    def __hash__(self):
+        return hash(self.key)
 
     def __eq__(self, other):
         # Microsoft time zones are less granular than IANA, so an EWSTimeZone created from &#39;Europe/Copenhagen&#39; may
@@ -6595,11 +6918,7 @@ def validate_cls(cls):
         return None
 
     def back_off(self, seconds):
-        raise ValueError(&#34;Cannot back off with fail-fast policy&#34;)
-
-    def may_retry_on_error(self, response, wait):
-        log.debug(&#34;No retry with fail-fast policy&#34;)
-        return False</code></pre>
+        raise ValueError(&#34;Cannot back off with fail-fast policy&#34;)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -6612,7 +6931,6 @@ def validate_cls(cls):
 <li><code><a title="exchangelib.protocol.RetryPolicy.back_off" href="protocol.html#exchangelib.protocol.RetryPolicy.back_off">back_off</a></code></li>
 <li><code><a title="exchangelib.protocol.RetryPolicy.back_off_until" href="protocol.html#exchangelib.protocol.RetryPolicy.back_off_until">back_off_until</a></code></li>
 <li><code><a title="exchangelib.protocol.RetryPolicy.fail_fast" href="protocol.html#exchangelib.protocol.RetryPolicy.fail_fast">fail_fast</a></code></li>
-<li><code><a title="exchangelib.protocol.RetryPolicy.may_retry_on_error" href="protocol.html#exchangelib.protocol.RetryPolicy.may_retry_on_error">may_retry_on_error</a></code></li>
 </ul>
 </li>
 </ul>
@@ -6677,44 +6995,22 @@ failing, and wait up to max_wait seconds before failing.</p></div>
     def back_off(self, seconds):
         if seconds is None:
             seconds = self.DEFAULT_BACKOFF
+        if seconds &gt; self.max_wait:
+            # We lost patience. Session is cleaned up in outer loop
+            raise RateLimitError(&#34;Max timeout reached&#34;, wait=seconds)
         value = datetime.datetime.now() + datetime.timedelta(seconds=seconds)
         with self._back_off_lock:
             self._back_off_until = value
 
-    def may_retry_on_error(self, response, wait):
-        if response.status_code not in (301, 302, 401, 500, 503):
-            # Don&#39;t retry if we didn&#39;t get a status code that we can hope to recover from
-            log.debug(&#34;No retry: wrong status code %s&#34;, response.status_code)
-            return False
-        if wait &gt; self.max_wait:
-            # We lost patience. Session is cleaned up in outer loop
-            raise RateLimitError(
-                &#34;Max timeout reached&#34;, url=response.url, status_code=response.status_code, total_wait=wait
-            )
-        if response.status_code == 401:
-            # EWS sometimes throws 401&#39;s when it wants us to throttle connections. OK to retry.
-            return True
-        if response.headers.get(&#34;connection&#34;) == &#34;close&#34;:
-            # Connection closed. OK to retry.
-            return True
-        if (
-            response.status_code == 302
-            and response.headers.get(&#34;location&#34;, &#34;&#34;).lower()
-            == &#34;/ews/genericerrorpage.htm?aspxerrorpath=/ews/exchange.asmx&#34;
-        ):
-            # The genericerrorpage.htm/internalerror.asp is ridiculous behaviour for random outages. OK to retry.
-            #
-            # Redirect to &#39;/internalsite/internalerror.asp&#39; or &#39;/internalsite/initparams.aspx&#39; is caused by e.g. TLS
-            # certificate f*ckups on the Exchange server. We should not retry those.
-            return True
-        if response.status_code == 503:
-            # Internal server error. OK to retry.
-            return True
-        if response.status_code == 500 and b&#34;Server Error in &#39;/EWS&#39; Application&#34; in response.content:
-            # &#34;Server Error in &#39;/EWS&#39; Application&#34; has been seen in highly concurrent settings. OK to retry.
-            log.debug(&#34;Retry allowed: conditions met&#34;)
-            return True
-        return False</code></pre>
+    def raise_response_errors(self, response):
+        try:
+            return super().raise_response_errors(response)
+        except (ErrorInternalServerTransientError, ErrorServerBusy) as e:
+            # Pass on the retry header value
+            retry_after = _get_retry_after(response)
+            if retry_after:
+                raise ErrorServerBusy(e.args[0], back_off=retry_after)
+            raise</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -6751,13 +7047,35 @@ def back_off_until(self):
 </details>
 </dd>
 </dl>
+<h3>Methods</h3>
+<dl>
+<dt id="exchangelib.FaultTolerance.raise_response_errors"><code class="name flex">
+<span>def <span class="ident">raise_response_errors</span></span>(<span>self, response)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def raise_response_errors(self, response):
+    try:
+        return super().raise_response_errors(response)
+    except (ErrorInternalServerTransientError, ErrorServerBusy) as e:
+        # Pass on the retry header value
+        retry_after = _get_retry_after(response)
+        if retry_after:
+            raise ErrorServerBusy(e.args[0], back_off=retry_after)
+        raise</code></pre>
+</details>
+</dd>
+</dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.protocol.RetryPolicy" href="protocol.html#exchangelib.protocol.RetryPolicy">RetryPolicy</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.protocol.RetryPolicy.back_off" href="protocol.html#exchangelib.protocol.RetryPolicy.back_off">back_off</a></code></li>
 <li><code><a title="exchangelib.protocol.RetryPolicy.fail_fast" href="protocol.html#exchangelib.protocol.RetryPolicy.fail_fast">fail_fast</a></code></li>
-<li><code><a title="exchangelib.protocol.RetryPolicy.may_retry_on_error" href="protocol.html#exchangelib.protocol.RetryPolicy.may_retry_on_error">may_retry_on_error</a></code></li>
 </ul>
 </li>
 </ul>
@@ -7025,7 +7343,11 @@ def fp(self):
         &#34;&#34;&#34;
         try:
             return cls.resolve(
-                account=root.account, folder=cls(root=root, name=cls.DISTINGUISHED_FOLDER_ID, is_distinguished=True)
+                account=root.account,
+                folder=DistinguishedFolderId(
+                    id=cls.DISTINGUISHED_FOLDER_ID,
+                    mailbox=Mailbox(email_address=root.account.primary_smtp_address),
+                ),
             )
         except MISSING_FOLDER_ERRORS:
             raise ErrorFolderNotFound(f&#34;Could not find distinguished folder {cls.DISTINGUISHED_FOLDER_ID!r}&#34;)
@@ -7080,7 +7402,11 @@ def fp(self):
             if folder.name:
                 with suppress(KeyError):
                     # TODO: fld_class.LOCALIZED_NAMES is most definitely neither complete nor authoritative
-                    folder_cls = root.folder_cls_from_folder_name(folder_name=folder.name, locale=root.account.locale)
+                    folder_cls = root.folder_cls_from_folder_name(
+                        folder_name=folder.name,
+                        folder_class=folder.folder_class,
+                        locale=root.account.locale,
+                    )
                     log.debug(&#34;Folder class %s matches localized folder name %s&#34;, folder_cls, folder.name)
             if folder.folder_class and folder_cls == Folder:
                 with suppress(KeyError):
@@ -7117,6 +7443,7 @@ def fp(self):
 <li><a title="exchangelib.folders.known_folders.DeferredAction" href="folders/known_folders.html#exchangelib.folders.known_folders.DeferredAction">DeferredAction</a></li>
 <li><a title="exchangelib.folders.known_folders.DeletedItems" href="folders/known_folders.html#exchangelib.folders.known_folders.DeletedItems">DeletedItems</a></li>
 <li><a title="exchangelib.folders.known_folders.DlpPolicyEvaluation" href="folders/known_folders.html#exchangelib.folders.known_folders.DlpPolicyEvaluation">DlpPolicyEvaluation</a></li>
+<li><a title="exchangelib.folders.known_folders.EventCheckPoints" href="folders/known_folders.html#exchangelib.folders.known_folders.EventCheckPoints">EventCheckPoints</a></li>
 <li><a title="exchangelib.folders.known_folders.ExchangeSyncData" href="folders/known_folders.html#exchangelib.folders.known_folders.ExchangeSyncData">ExchangeSyncData</a></li>
 <li><a title="exchangelib.folders.known_folders.Files" href="folders/known_folders.html#exchangelib.folders.known_folders.Files">Files</a></li>
 <li><a title="exchangelib.folders.known_folders.FreeBusyCache" href="folders/known_folders.html#exchangelib.folders.known_folders.FreeBusyCache">FreeBusyCache</a></li>
@@ -7189,7 +7516,11 @@ def from_xml_with_root(cls, elem, root):
         if folder.name:
             with suppress(KeyError):
                 # TODO: fld_class.LOCALIZED_NAMES is most definitely neither complete nor authoritative
-                folder_cls = root.folder_cls_from_folder_name(folder_name=folder.name, locale=root.account.locale)
+                folder_cls = root.folder_cls_from_folder_name(
+                    folder_name=folder.name,
+                    folder_class=folder.folder_class,
+                    locale=root.account.locale,
+                )
                 log.debug(&#34;Folder class %s matches localized folder name %s&#34;, folder_cls, folder.name)
         if folder.folder_class and folder_cls == Folder:
             with suppress(KeyError):
@@ -7222,7 +7553,11 @@ def get_distinguished(cls, root):
     &#34;&#34;&#34;
     try:
         return cls.resolve(
-            account=root.account, folder=cls(root=root, name=cls.DISTINGUISHED_FOLDER_ID, is_distinguished=True)
+            account=root.account,
+            folder=DistinguishedFolderId(
+                id=cls.DISTINGUISHED_FOLDER_ID,
+                mailbox=Mailbox(email_address=root.account.primary_smtp_address),
+            ),
         )
     except MISSING_FOLDER_ERRORS:
         raise ErrorFolderNotFound(f&#34;Could not find distinguished folder {cls.DISTINGUISHED_FOLDER_ID!r}&#34;)</code></pre>
@@ -7276,7 +7611,6 @@ def get_distinguished(cls, root):
 <li><code><a title="exchangelib.folders.base.BaseFolder.get" href="queryset.html#exchangelib.queryset.SearchableMixIn.get">get</a></code></li>
 <li><code><a title="exchangelib.folders.base.BaseFolder.get_events" href="folders/base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.BaseFolder.get_streaming_events" href="folders/base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.BaseFolder.is_distinguished" href="folders/base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.BaseFolder.item_sync_state" href="folders/base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.BaseFolder.none" href="queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.BaseFolder.parent" href="folders/base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -7737,13 +8071,13 @@ def get_distinguished(cls, root):
         return SubscribeToStreaming(account=self.account).get(folders=self.folders, event_types=event_types)
 
     def pull_subscription(self, **kwargs):
-        return PullSubscription(folder=self, **kwargs)
+        return PullSubscription(target=self, **kwargs)
 
     def push_subscription(self, **kwargs):
-        return PushSubscription(folder=self, **kwargs)
+        return PushSubscription(target=self, **kwargs)
 
     def streaming_subscription(self, **kwargs):
-        return StreamingSubscription(folder=self, **kwargs)
+        return StreamingSubscription(target=self, **kwargs)
 
     def unsubscribe(self, subscription_id):
         &#34;&#34;&#34;Unsubscribe. Only applies to pull and streaming notifications.
@@ -8219,7 +8553,7 @@ non-null, we always return Persona objects. (Default value = ID_ONLY)
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def pull_subscription(self, **kwargs):
-    return PullSubscription(folder=self, **kwargs)</code></pre>
+    return PullSubscription(target=self, **kwargs)</code></pre>
 </details>
 </dd>
 <dt id="exchangelib.FolderCollection.push_subscription"><code class="name flex">
@@ -8232,7 +8566,7 @@ non-null, we always return Persona objects. (Default value = ID_ONLY)
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def push_subscription(self, **kwargs):
-    return PushSubscription(folder=self, **kwargs)</code></pre>
+    return PushSubscription(target=self, **kwargs)</code></pre>
 </details>
 </dd>
 <dt id="exchangelib.FolderCollection.resolve"><code class="name flex">
@@ -8272,7 +8606,7 @@ non-null, we always return Persona objects. (Default value = ID_ONLY)
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def streaming_subscription(self, **kwargs):
-    return StreamingSubscription(folder=self, **kwargs)</code></pre>
+    return StreamingSubscription(target=self, **kwargs)</code></pre>
 </details>
 </dd>
 <dt id="exchangelib.FolderCollection.subscribe_to_pull"><code class="name flex">
@@ -9173,32 +9507,30 @@ we use folder.account.</p></div>
     ):
         # Sends Message and saves a copy in the parent folder. Does not return an ItemId.
         if self.id:
-            self._update(
+            return self._update(
                 update_fieldnames=update_fields,
                 message_disposition=SEND_AND_SAVE_COPY,
                 conflict_resolution=conflict_resolution,
                 send_meeting_invitations=send_meeting_invitations,
             )
-        else:
-            if self.account.version.build &lt; EXCHANGE_2013 and self.attachments:
-                # At least some versions prior to Exchange 2013 can&#39;t send-and-save attachments immediately. You need
-                # to first save, then attach, then send. This is done in save().
-                self.save(
-                    update_fields=update_fields,
-                    conflict_resolution=conflict_resolution,
-                    send_meeting_invitations=send_meeting_invitations,
-                )
-                self.send(
-                    save_copy=False,
-                    conflict_resolution=conflict_resolution,
-                    send_meeting_invitations=send_meeting_invitations,
-                )
-            else:
-                self._create(message_disposition=SEND_AND_SAVE_COPY, send_meeting_invitations=send_meeting_invitations)
+        if self.account.version.build &lt; EXCHANGE_2013 and self.attachments:
+            # At least some versions prior to Exchange 2013 can&#39;t send-and-save attachments immediately. You need
+            # to first save, then attach, then send. This is done in save().
+            self.save(
+                update_fields=update_fields,
+                conflict_resolution=conflict_resolution,
+                send_meeting_invitations=send_meeting_invitations,
+            )
+            return self.send(
+                save_copy=False,
+                conflict_resolution=conflict_resolution,
+                send_meeting_invitations=send_meeting_invitations,
+            )
+        return self._create(message_disposition=SEND_AND_SAVE_COPY, send_meeting_invitations=send_meeting_invitations)
 
     @require_id
-    def create_reply(self, subject, body, to_recipients=None, cc_recipients=None, bcc_recipients=None):
-        if to_recipients is None:
+    def create_reply(self, subject, body, to_recipients=None, cc_recipients=None, bcc_recipients=None, author=None):
+        if not to_recipients:
             if not self.author:
                 raise ValueError(&#34;&#39;to_recipients&#39; must be set when message has no &#39;author&#39;&#34;)
             to_recipients = [self.author]
@@ -9210,28 +9542,36 @@ we use folder.account.</p></div>
             to_recipients=to_recipients,
             cc_recipients=cc_recipients,
             bcc_recipients=bcc_recipients,
+            author=author,
         )
 
-    def reply(self, subject, body, to_recipients=None, cc_recipients=None, bcc_recipients=None):
-        self.create_reply(subject, body, to_recipients, cc_recipients, bcc_recipients).send()
+    def reply(self, subject, body, to_recipients=None, cc_recipients=None, bcc_recipients=None, author=None):
+        return self.create_reply(subject, body, to_recipients, cc_recipients, bcc_recipients, author).send()
 
     @require_id
-    def create_reply_all(self, subject, body):
-        to_recipients = list(self.to_recipients) if self.to_recipients else []
+    def create_reply_all(self, subject, body, author=None):
+        me = MailboxField().clean(self.account.primary_smtp_address.lower())
+        to_recipients = set(self.to_recipients or [])
+        to_recipients.discard(me)
+        cc_recipients = set(self.cc_recipients or [])
+        cc_recipients.discard(me)
+        bcc_recipients = set(self.bcc_recipients or [])
+        bcc_recipients.discard(me)
         if self.author:
-            to_recipients.append(self.author)
+            to_recipients.add(self.author)
         return ReplyAllToItem(
             account=self.account,
             reference_item_id=ReferenceItemId(id=self.id, changekey=self.changekey),
             subject=subject,
             new_body=body,
-            to_recipients=to_recipients,
-            cc_recipients=self.cc_recipients,
-            bcc_recipients=self.bcc_recipients,
+            to_recipients=list(to_recipients),
+            cc_recipients=list(cc_recipients),
+            bcc_recipients=list(bcc_recipients),
+            author=author,
         )
 
-    def reply_all(self, subject, body):
-        self.create_reply_all(subject, body).send()
+    def reply_all(self, subject, body, author=None):
+        return self.create_reply_all(subject, body, author).send()
 
     def mark_as_junk(self, is_junk=True, move_item=True):
         &#34;&#34;&#34;Mark or un-marks items as junk email.
@@ -9344,7 +9684,7 @@ we use folder.account.</p></div>
 <h3>Methods</h3>
 <dl>
 <dt id="exchangelib.Message.create_reply"><code class="name flex">
-<span>def <span class="ident">create_reply</span></span>(<span>self, subject, body, to_recipients=None, cc_recipients=None, bcc_recipients=None)</span>
+<span>def <span class="ident">create_reply</span></span>(<span>self, subject, body, to_recipients=None, cc_recipients=None, bcc_recipients=None, author=None)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -9353,8 +9693,8 @@ we use folder.account.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@require_id
-def create_reply(self, subject, body, to_recipients=None, cc_recipients=None, bcc_recipients=None):
-    if to_recipients is None:
+def create_reply(self, subject, body, to_recipients=None, cc_recipients=None, bcc_recipients=None, author=None):
+    if not to_recipients:
         if not self.author:
             raise ValueError(&#34;&#39;to_recipients&#39; must be set when message has no &#39;author&#39;&#34;)
         to_recipients = [self.author]
@@ -9366,11 +9706,12 @@ def create_reply(self, subject, body, to_recipients=None, cc_recipients=None, bc
         to_recipients=to_recipients,
         cc_recipients=cc_recipients,
         bcc_recipients=bcc_recipients,
+        author=author,
     )</code></pre>
 </details>
 </dd>
 <dt id="exchangelib.Message.create_reply_all"><code class="name flex">
-<span>def <span class="ident">create_reply_all</span></span>(<span>self, subject, body)</span>
+<span>def <span class="ident">create_reply_all</span></span>(<span>self, subject, body, author=None)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -9379,18 +9720,25 @@ def create_reply(self, subject, body, to_recipients=None, cc_recipients=None, bc
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@require_id
-def create_reply_all(self, subject, body):
-    to_recipients = list(self.to_recipients) if self.to_recipients else []
+def create_reply_all(self, subject, body, author=None):
+    me = MailboxField().clean(self.account.primary_smtp_address.lower())
+    to_recipients = set(self.to_recipients or [])
+    to_recipients.discard(me)
+    cc_recipients = set(self.cc_recipients or [])
+    cc_recipients.discard(me)
+    bcc_recipients = set(self.bcc_recipients or [])
+    bcc_recipients.discard(me)
     if self.author:
-        to_recipients.append(self.author)
+        to_recipients.add(self.author)
     return ReplyAllToItem(
         account=self.account,
         reference_item_id=ReferenceItemId(id=self.id, changekey=self.changekey),
         subject=subject,
         new_body=body,
-        to_recipients=to_recipients,
-        cc_recipients=self.cc_recipients,
-        bcc_recipients=self.bcc_recipients,
+        to_recipients=list(to_recipients),
+        cc_recipients=list(cc_recipients),
+        bcc_recipients=list(bcc_recipients),
+        author=author,
     )</code></pre>
 </details>
 </dd>
@@ -9427,7 +9775,7 @@ removed.
 </details>
 </dd>
 <dt id="exchangelib.Message.reply"><code class="name flex">
-<span>def <span class="ident">reply</span></span>(<span>self, subject, body, to_recipients=None, cc_recipients=None, bcc_recipients=None)</span>
+<span>def <span class="ident">reply</span></span>(<span>self, subject, body, to_recipients=None, cc_recipients=None, bcc_recipients=None, author=None)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -9435,12 +9783,12 @@ removed.
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def reply(self, subject, body, to_recipients=None, cc_recipients=None, bcc_recipients=None):
-    self.create_reply(subject, body, to_recipients, cc_recipients, bcc_recipients).send()</code></pre>
+<pre><code class="python">def reply(self, subject, body, to_recipients=None, cc_recipients=None, bcc_recipients=None, author=None):
+    return self.create_reply(subject, body, to_recipients, cc_recipients, bcc_recipients, author).send()</code></pre>
 </details>
 </dd>
 <dt id="exchangelib.Message.reply_all"><code class="name flex">
-<span>def <span class="ident">reply_all</span></span>(<span>self, subject, body)</span>
+<span>def <span class="ident">reply_all</span></span>(<span>self, subject, body, author=None)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -9448,8 +9796,8 @@ removed.
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def reply_all(self, subject, body):
-    self.create_reply_all(subject, body).send()</code></pre>
+<pre><code class="python">def reply_all(self, subject, body, author=None):
+    return self.create_reply_all(subject, body, author).send()</code></pre>
 </details>
 </dd>
 <dt id="exchangelib.Message.send"><code class="name flex">
@@ -9518,28 +9866,26 @@ def send(
 ):
     # Sends Message and saves a copy in the parent folder. Does not return an ItemId.
     if self.id:
-        self._update(
+        return self._update(
             update_fieldnames=update_fields,
             message_disposition=SEND_AND_SAVE_COPY,
             conflict_resolution=conflict_resolution,
             send_meeting_invitations=send_meeting_invitations,
         )
-    else:
-        if self.account.version.build &lt; EXCHANGE_2013 and self.attachments:
-            # At least some versions prior to Exchange 2013 can&#39;t send-and-save attachments immediately. You need
-            # to first save, then attach, then send. This is done in save().
-            self.save(
-                update_fields=update_fields,
-                conflict_resolution=conflict_resolution,
-                send_meeting_invitations=send_meeting_invitations,
-            )
-            self.send(
-                save_copy=False,
-                conflict_resolution=conflict_resolution,
-                send_meeting_invitations=send_meeting_invitations,
-            )
-        else:
-            self._create(message_disposition=SEND_AND_SAVE_COPY, send_meeting_invitations=send_meeting_invitations)</code></pre>
+    if self.account.version.build &lt; EXCHANGE_2013 and self.attachments:
+        # At least some versions prior to Exchange 2013 can&#39;t send-and-save attachments immediately. You need
+        # to first save, then attach, then send. This is done in save().
+        self.save(
+            update_fields=update_fields,
+            conflict_resolution=conflict_resolution,
+            send_meeting_invitations=send_meeting_invitations,
+        )
+        return self.send(
+            save_copy=False,
+            conflict_resolution=conflict_resolution,
+            send_meeting_invitations=send_meeting_invitations,
+        )
+    return self._create(message_disposition=SEND_AND_SAVE_COPY, send_meeting_invitations=send_meeting_invitations)</code></pre>
 </details>
 </dd>
 </dl>
@@ -9662,34 +10008,9 @@ with client_id and client_secret, will be used to obtain an access token.</p></d
         self.authorization_code = authorization_code
 
     @property
-    def token_url(self):
-        # We don&#39;t know (or need) the Microsoft tenant ID. Use common/ to let Microsoft select the appropriate
-        # tenant for the provided authorization code or refresh token.
-        return &#34;https://login.microsoftonline.com/common/oauth2/v2.0/token&#34;  # nosec
-
-    @property
     def scope(self):
         res = super().scope
         res.append(&#34;offline_access&#34;)
-        return res
-
-    def session_params(self):
-        res = super().session_params()
-        if self.client_id and self.client_secret:
-            # If we&#39;re given a client ID and secret, we have enough to refresh access tokens ourselves. In other
-            # cases the session will raise TokenExpiredError, and we&#39;ll need to ask the calling application to
-            # refresh the token (that covers cases where the caller doesn&#39;t have access to the client secret but
-            # is working with a service that can provide it refreshed tokens on a limited basis).
-            res.update(
-                {
-                    &#34;auto_refresh_kwargs&#34;: {
-                        &#34;client_id&#34;: self.client_id,
-                        &#34;client_secret&#34;: self.client_secret,
-                    },
-                    &#34;auto_refresh_url&#34;: self.token_url,
-                    &#34;token_updater&#34;: self.on_token_auto_refreshed,
-                }
-            )
         return res
 
     def token_params(self):
@@ -9764,14 +10085,6 @@ the associated auth code grant type for multi-tenant applications.</p>
     information to restrict end users&#39; access to the appropriate account. Use OAuth2AuthorizationCodeCredentials and
     the associated auth code grant type for multi-tenant applications.
     &#34;&#34;&#34;
-
-    @property
-    def token_url(self):
-        return f&#34;https://login.microsoftonline.com/{self.tenant_id}/oauth2/v2.0/token&#34;
-
-    @property
-    def scope(self):
-        return [&#34;https://outlook.office365.com/.default&#34;]
 
     @threaded_cached_property
     def client(self):
@@ -11524,8 +11837,6 @@ def response_tag(cls):
     # &#39;RootOfHierarchy&#39; subclasses must not be in this list.
     WELLKNOWN_FOLDERS = []
 
-    _subfolders_lock = Lock()
-
     # This folder type also has &#39;folder:PermissionSet&#39; on some server versions, but requesting it sometimes causes
     # &#39;ErrorAccessDenied&#39;, as reported by some users. Ignore it entirely for root folders - it&#39;s usefulness is
     # deemed minimal at best.
@@ -11533,13 +11844,14 @@ def response_tag(cls):
         field_uri=&#34;folder:EffectiveRights&#34;, is_read_only=True, supported_from=EXCHANGE_2007_SP1
     )
 
-    __slots__ = &#34;_account&#34;, &#34;_subfolders&#34;
+    __slots__ = &#34;_account&#34;, &#34;_subfolders&#34;, &#34;_subfolders_lock&#34;
 
     # A special folder that acts as the top of a folder hierarchy. Finds and caches sub-folders at arbitrary depth.
     def __init__(self, **kwargs):
         self._account = kwargs.pop(&#34;account&#34;, None)  # A pointer back to the account holding the folder hierarchy
         super().__init__(**kwargs)
         self._subfolders = None  # See self._folders_map()
+        self._subfolders_lock = Lock()
 
     @property
     def account(self):
@@ -11607,7 +11919,11 @@ def response_tag(cls):
             raise ValueError(f&#34;Class {cls} must have a DISTINGUISHED_FOLDER_ID value&#34;)
         try:
             return cls.resolve(
-                account=account, folder=cls(account=account, name=cls.DISTINGUISHED_FOLDER_ID, is_distinguished=True)
+                account=account,
+                folder=DistinguishedFolderId(
+                    id=cls.DISTINGUISHED_FOLDER_ID,
+                    mailbox=Mailbox(email_address=account.primary_smtp_address),
+                ),
             )
         except MISSING_FOLDER_ERRORS:
             raise ErrorFolderNotFound(f&#34;Could not find distinguished folder {cls.DISTINGUISHED_FOLDER_ID}&#34;)
@@ -11630,9 +11946,15 @@ def response_tag(cls):
             log.debug(&#34;Requesting distinguished %s folder explicitly&#34;, folder_cls)
             return folder_cls.get_distinguished(root=self)
         except ErrorAccessDenied:
-            # Maybe we just don&#39;t have GetFolder access? Try FindItems instead
+            # Maybe we just don&#39;t have GetFolder access? Try FindItem instead
             log.debug(&#34;Testing default %s folder with FindItem&#34;, folder_cls)
-            fld = folder_cls(root=self, name=folder_cls.DISTINGUISHED_FOLDER_ID, is_distinguished=True)
+            fld = folder_cls(
+                root=self,
+                _distinguished_id=DistinguishedFolderId(
+                    id=folder_cls.DISTINGUISHED_FOLDER_ID,
+                    mailbox=Mailbox(email_address=self.account.primary_smtp_address),
+                ),
+            )
             fld.test_access()
             return self._folders_map.get(fld.id, fld)  # Use cached instance if available
         except MISSING_FOLDER_ERRORS:
@@ -11650,7 +11972,10 @@ def response_tag(cls):
             # so we are sure to apply the correct Folder class, then fetch all sub-folders of this root.
             folders_map = {self.id: self}
             distinguished_folders = [
-                cls(root=self, name=cls.DISTINGUISHED_FOLDER_ID, is_distinguished=True)
+                DistinguishedFolderId(
+                    id=cls.DISTINGUISHED_FOLDER_ID,
+                    mailbox=Mailbox(email_address=self.account.primary_smtp_address),
+                )
                 for cls in self.WELLKNOWN_FOLDERS
                 if cls.get_folder_allowed and cls.supports_version(self.account.version)
             ]
@@ -11694,16 +12019,37 @@ def response_tag(cls):
         return cls(account=account, **kwargs)
 
     @classmethod
-    def folder_cls_from_folder_name(cls, folder_name, locale):
-        &#34;&#34;&#34;Return the folder class that matches a localized folder name.
+    def folder_cls_from_folder_name(cls, folder_name, folder_class, locale):
+        &#34;&#34;&#34;Return the folder class that matches a localized folder name. Take into account the &#39;folder_class&#39; of the
+        folder, to not identify an &#39;IPF.Note&#39; folder as a &#39;Calendar&#39; class just because it&#39;s called e.g. &#39;Kalender&#39; and
+        the locale is &#39;da_DK&#39;.
+
+        Some folders, e.g. `System`, don&#39;t define a `folder_class`. For these folders, we match on localized folder name
+        if the folder class does not have its &#39;CONTAINER_CLASS&#39; set.
 
         :param folder_name:
+        :param folder_class:
         :param locale: a string, e.g. &#39;da_DK&#39;
         &#34;&#34;&#34;
         for folder_cls in cls.WELLKNOWN_FOLDERS + NON_DELETABLE_FOLDERS + MISC_FOLDERS:
-            if folder_name.lower() in folder_cls.localized_names(locale):
-                return folder_cls
+            if folder_cls.CONTAINER_CLASS != folder_class:
+                continue
+            if folder_name.lower() not in folder_cls.localized_names(locale):
+                continue
+            return folder_cls
         raise KeyError()
+
+    def __getstate__(self):
+        # The lock cannot be pickled
+        state = {k: getattr(self, k) for k in self._slots_keys}
+        del state[&#34;_subfolders_lock&#34;]
+        return state
+
+    def __setstate__(self, state):
+        # Restore the lock
+        for k in self._slots_keys:
+            setattr(self, k, state.get(k))
+        self._subfolders_lock = Lock()
 
     def __repr__(self):
         # Let&#39;s not create an infinite loop when printing self.root
@@ -11750,26 +12096,40 @@ def response_tag(cls):
 <h3>Static methods</h3>
 <dl>
 <dt id="exchangelib.RootOfHierarchy.folder_cls_from_folder_name"><code class="name flex">
-<span>def <span class="ident">folder_cls_from_folder_name</span></span>(<span>folder_name, locale)</span>
+<span>def <span class="ident">folder_cls_from_folder_name</span></span>(<span>folder_name, folder_class, locale)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Return the folder class that matches a localized folder name.</p>
+<div class="desc"><p>Return the folder class that matches a localized folder name. Take into account the 'folder_class' of the
+folder, to not identify an 'IPF.Note' folder as a 'Calendar' class just because it's called e.g. 'Kalender' and
+the locale is 'da_DK'.</p>
+<p>Some folders, e.g. <code>System</code>, don't define a <code>folder_class</code>. For these folders, we match on localized folder name
+if the folder class does not have its 'CONTAINER_CLASS' set.</p>
 <p>:param folder_name:
+:param folder_class:
 :param locale: a string, e.g. 'da_DK'</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
-def folder_cls_from_folder_name(cls, folder_name, locale):
-    &#34;&#34;&#34;Return the folder class that matches a localized folder name.
+def folder_cls_from_folder_name(cls, folder_name, folder_class, locale):
+    &#34;&#34;&#34;Return the folder class that matches a localized folder name. Take into account the &#39;folder_class&#39; of the
+    folder, to not identify an &#39;IPF.Note&#39; folder as a &#39;Calendar&#39; class just because it&#39;s called e.g. &#39;Kalender&#39; and
+    the locale is &#39;da_DK&#39;.
+
+    Some folders, e.g. `System`, don&#39;t define a `folder_class`. For these folders, we match on localized folder name
+    if the folder class does not have its &#39;CONTAINER_CLASS&#39; set.
 
     :param folder_name:
+    :param folder_class:
     :param locale: a string, e.g. &#39;da_DK&#39;
     &#34;&#34;&#34;
     for folder_cls in cls.WELLKNOWN_FOLDERS + NON_DELETABLE_FOLDERS + MISC_FOLDERS:
-        if folder_name.lower() in folder_cls.localized_names(locale):
-            return folder_cls
+        if folder_cls.CONTAINER_CLASS != folder_class:
+            continue
+        if folder_name.lower() not in folder_cls.localized_names(locale):
+            continue
+        return folder_cls
     raise KeyError()</code></pre>
 </details>
 </dd>
@@ -11809,7 +12169,11 @@ def get_distinguished(cls, account):
         raise ValueError(f&#34;Class {cls} must have a DISTINGUISHED_FOLDER_ID value&#34;)
     try:
         return cls.resolve(
-            account=account, folder=cls(account=account, name=cls.DISTINGUISHED_FOLDER_ID, is_distinguished=True)
+            account=account,
+            folder=DistinguishedFolderId(
+                id=cls.DISTINGUISHED_FOLDER_ID,
+                mailbox=Mailbox(email_address=account.primary_smtp_address),
+            ),
         )
     except MISSING_FOLDER_ERRORS:
         raise ErrorFolderNotFound(f&#34;Could not find distinguished folder {cls.DISTINGUISHED_FOLDER_ID}&#34;)</code></pre>
@@ -11899,9 +12263,15 @@ folder was found, try as best we can to return the default folder of type 'folde
         log.debug(&#34;Requesting distinguished %s folder explicitly&#34;, folder_cls)
         return folder_cls.get_distinguished(root=self)
     except ErrorAccessDenied:
-        # Maybe we just don&#39;t have GetFolder access? Try FindItems instead
+        # Maybe we just don&#39;t have GetFolder access? Try FindItem instead
         log.debug(&#34;Testing default %s folder with FindItem&#34;, folder_cls)
-        fld = folder_cls(root=self, name=folder_cls.DISTINGUISHED_FOLDER_ID, is_distinguished=True)
+        fld = folder_cls(
+            root=self,
+            _distinguished_id=DistinguishedFolderId(
+                id=folder_cls.DISTINGUISHED_FOLDER_ID,
+                mailbox=Mailbox(email_address=self.account.primary_smtp_address),
+            ),
+        )
         fld.test_access()
         return self._folders_map.get(fld.id, fld)  # Use cached instance if available
     except MISSING_FOLDER_ERRORS:
@@ -11973,7 +12343,6 @@ folder was found, try as best we can to return the default folder of type 'folde
 <li><code><a title="exchangelib.folders.base.BaseFolder.get" href="queryset.html#exchangelib.queryset.SearchableMixIn.get">get</a></code></li>
 <li><code><a title="exchangelib.folders.base.BaseFolder.get_events" href="folders/base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.BaseFolder.get_streaming_events" href="folders/base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.BaseFolder.is_distinguished" href="folders/base.html#exchangelib.folders.base.BaseFolder.is_distinguished">is_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.base.BaseFolder.item_sync_state" href="folders/base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.BaseFolder.none" href="queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.BaseFolder.parent" href="folders/base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
@@ -12127,6 +12496,10 @@ we use folder.account.</p></div>
     status_description = CharField(field_uri=&#34;task:StatusDescription&#34;, is_read_only=True)
     total_work = IntegerField(field_uri=&#34;task:TotalWork&#34;, min=0)
 
+    # O365 throws ErrorInternalServerError &#34;[0x004f0102] MapiReplyToBlob&#34; if UniqueBody is requested
+    unique_body_idx = Item.FIELDS.index_by_name(&#34;unique_body&#34;)
+    FIELDS = Item.FIELDS[:unique_body_idx] + Item.FIELDS[unique_body_idx + 1 :]
+
     def clean(self, version=None):
         super().clean(version=version)
         if self.due_date and self.start_date and self.due_date &lt; self.start_date:
@@ -12202,6 +12575,10 @@ we use folder.account.</p></div>
 <div class="desc"></div>
 </dd>
 <dt id="exchangelib.Task.NOT_STARTED"><code class="name">var <span class="ident">NOT_STARTED</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.Task.unique_body_idx"><code class="name">var <span class="ident">unique_body_idx</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -12553,12 +12930,14 @@ def to_global_object_id(cls, uid):
     @property
     def fullname(self):
         for build, api_version, full_name in VERSIONS:
-            if self.build:
-                if self.build.major_version != build.major_version or self.build.minor_version != build.minor_version:
-                    continue
+            if self.build and (
+                self.build.major_version != build.major_version or self.build.minor_version != build.minor_version
+            ):
+                continue
             if self.api_version == api_version:
                 return full_name
-        raise ValueError(f&#34;Full name for API version {self.api_version} build {self.build} is unknown&#34;)
+        log.warning(&#34;Full name for API version %s build %s is unknown&#34;, self.api_version, self.build)
+        return &#34;UNKNOWN&#34;
 
     @classmethod
     def guess(cls, protocol, api_version_hint=None):
@@ -12640,6 +13019,9 @@ def to_global_object_id(cls, uid):
     def all_versions(cls):
         # Return all supported versions, sorted newest to oldest
         return [cls(build=build, api_version=api_version) for build, api_version, _ in VERSIONS]
+
+    def __hash__(self):
+        return hash((self.build, self.api_version))
 
     def __eq__(self, other):
         if self.api_version != other.api_version:
@@ -12789,12 +13171,14 @@ def guess(cls, protocol, api_version_hint=None):
 <pre><code class="python">@property
 def fullname(self):
     for build, api_version, full_name in VERSIONS:
-        if self.build:
-            if self.build.major_version != build.major_version or self.build.minor_version != build.minor_version:
-                continue
+        if self.build and (
+            self.build.major_version != build.major_version or self.build.minor_version != build.minor_version
+        ):
+            continue
         if self.api_version == api_version:
             return full_name
-    raise ValueError(f&#34;Full name for API version {self.api_version} build {self.build} is unknown&#34;)</code></pre>
+    log.warning(&#34;Full name for API version %s build %s is unknown&#34;, self.api_version, self.build)
+    return &#34;UNKNOWN&#34;</code></pre>
 </details>
 </dd>
 </dl>
@@ -12869,7 +13253,6 @@ def fullname(self):
 <li>
 <h4><code><a title="exchangelib.Account" href="#exchangelib.Account">Account</a></code></h4>
 <ul class="">
-<li><code><a title="exchangelib.Account.DEFAULT_DISCOVERY_CLS" href="#exchangelib.Account.DEFAULT_DISCOVERY_CLS">DEFAULT_DISCOVERY_CLS</a></code></li>
 <li><code><a title="exchangelib.Account.admin_audit_logs" href="#exchangelib.Account.admin_audit_logs">admin_audit_logs</a></code></li>
 <li><code><a title="exchangelib.Account.archive_deleted_items" href="#exchangelib.Account.archive_deleted_items">archive_deleted_items</a></code></li>
 <li><code><a title="exchangelib.Account.archive_inbox" href="#exchangelib.Account.archive_inbox">archive_inbox</a></code></li>
@@ -12891,7 +13274,9 @@ def fullname(self):
 <li><code><a title="exchangelib.Account.conflicts" href="#exchangelib.Account.conflicts">conflicts</a></code></li>
 <li><code><a title="exchangelib.Account.contacts" href="#exchangelib.Account.contacts">contacts</a></code></li>
 <li><code><a title="exchangelib.Account.conversation_history" href="#exchangelib.Account.conversation_history">conversation_history</a></code></li>
+<li><code><a title="exchangelib.Account.create_rule" href="#exchangelib.Account.create_rule">create_rule</a></code></li>
 <li><code><a title="exchangelib.Account.delegates" href="#exchangelib.Account.delegates">delegates</a></code></li>
+<li><code><a title="exchangelib.Account.delete_rule" href="#exchangelib.Account.delete_rule">delete_rule</a></code></li>
 <li><code><a title="exchangelib.Account.directory" href="#exchangelib.Account.directory">directory</a></code></li>
 <li><code><a title="exchangelib.Account.domain" href="#exchangelib.Account.domain">domain</a></code></li>
 <li><code><a title="exchangelib.Account.drafts" href="#exchangelib.Account.drafts">drafts</a></code></li>
@@ -12913,6 +13298,8 @@ def fullname(self):
 <li><code><a title="exchangelib.Account.people_connect" href="#exchangelib.Account.people_connect">people_connect</a></code></li>
 <li><code><a title="exchangelib.Account.primary_smtp_address" href="#exchangelib.Account.primary_smtp_address">primary_smtp_address</a></code></li>
 <li><code><a title="exchangelib.Account.public_folders_root" href="#exchangelib.Account.public_folders_root">public_folders_root</a></code></li>
+<li><code><a title="exchangelib.Account.pull_subscription" href="#exchangelib.Account.pull_subscription">pull_subscription</a></code></li>
+<li><code><a title="exchangelib.Account.push_subscription" href="#exchangelib.Account.push_subscription">push_subscription</a></code></li>
 <li><code><a title="exchangelib.Account.quick_contacts" href="#exchangelib.Account.quick_contacts">quick_contacts</a></code></li>
 <li><code><a title="exchangelib.Account.recipient_cache" href="#exchangelib.Account.recipient_cache">recipient_cache</a></code></li>
 <li><code><a title="exchangelib.Account.recoverable_items_deletions" href="#exchangelib.Account.recoverable_items_deletions">recoverable_items_deletions</a></code></li>
@@ -12920,13 +13307,20 @@ def fullname(self):
 <li><code><a title="exchangelib.Account.recoverable_items_root" href="#exchangelib.Account.recoverable_items_root">recoverable_items_root</a></code></li>
 <li><code><a title="exchangelib.Account.recoverable_items_versions" href="#exchangelib.Account.recoverable_items_versions">recoverable_items_versions</a></code></li>
 <li><code><a title="exchangelib.Account.root" href="#exchangelib.Account.root">root</a></code></li>
+<li><code><a title="exchangelib.Account.rules" href="#exchangelib.Account.rules">rules</a></code></li>
 <li><code><a title="exchangelib.Account.search_folders" href="#exchangelib.Account.search_folders">search_folders</a></code></li>
 <li><code><a title="exchangelib.Account.sent" href="#exchangelib.Account.sent">sent</a></code></li>
 <li><code><a title="exchangelib.Account.server_failures" href="#exchangelib.Account.server_failures">server_failures</a></code></li>
+<li><code><a title="exchangelib.Account.set_rule" href="#exchangelib.Account.set_rule">set_rule</a></code></li>
+<li><code><a title="exchangelib.Account.streaming_subscription" href="#exchangelib.Account.streaming_subscription">streaming_subscription</a></code></li>
+<li><code><a title="exchangelib.Account.subscribe_to_pull" href="#exchangelib.Account.subscribe_to_pull">subscribe_to_pull</a></code></li>
+<li><code><a title="exchangelib.Account.subscribe_to_push" href="#exchangelib.Account.subscribe_to_push">subscribe_to_push</a></code></li>
+<li><code><a title="exchangelib.Account.subscribe_to_streaming" href="#exchangelib.Account.subscribe_to_streaming">subscribe_to_streaming</a></code></li>
 <li><code><a title="exchangelib.Account.sync_issues" href="#exchangelib.Account.sync_issues">sync_issues</a></code></li>
 <li><code><a title="exchangelib.Account.tasks" href="#exchangelib.Account.tasks">tasks</a></code></li>
 <li><code><a title="exchangelib.Account.todo_search" href="#exchangelib.Account.todo_search">todo_search</a></code></li>
 <li><code><a title="exchangelib.Account.trash" href="#exchangelib.Account.trash">trash</a></code></li>
+<li><code><a title="exchangelib.Account.unsubscribe" href="#exchangelib.Account.unsubscribe">unsubscribe</a></code></li>
 <li><code><a title="exchangelib.Account.upload" href="#exchangelib.Account.upload">upload</a></code></li>
 <li><code><a title="exchangelib.Account.voice_mail" href="#exchangelib.Account.voice_mail">voice_mail</a></code></li>
 </ul>
@@ -12939,6 +13333,8 @@ def fullname(self):
 <li><code><a title="exchangelib.Attendee.RESPONSE_TYPES" href="#exchangelib.Attendee.RESPONSE_TYPES">RESPONSE_TYPES</a></code></li>
 <li><code><a title="exchangelib.Attendee.last_response_time" href="#exchangelib.Attendee.last_response_time">last_response_time</a></code></li>
 <li><code><a title="exchangelib.Attendee.mailbox" href="#exchangelib.Attendee.mailbox">mailbox</a></code></li>
+<li><code><a title="exchangelib.Attendee.proposed_end" href="#exchangelib.Attendee.proposed_end">proposed_end</a></code></li>
+<li><code><a title="exchangelib.Attendee.proposed_start" href="#exchangelib.Attendee.proposed_start">proposed_start</a></code></li>
 <li><code><a title="exchangelib.Attendee.response_type" href="#exchangelib.Attendee.response_type">response_type</a></code></li>
 </ul>
 </li>
@@ -12948,6 +13344,7 @@ def fullname(self):
 <li><code><a title="exchangelib.BaseProtocol.CONNECTIONS_PER_SESSION" href="#exchangelib.BaseProtocol.CONNECTIONS_PER_SESSION">CONNECTIONS_PER_SESSION</a></code></li>
 <li><code><a title="exchangelib.BaseProtocol.HTTP_ADAPTER_CLS" href="#exchangelib.BaseProtocol.HTTP_ADAPTER_CLS">HTTP_ADAPTER_CLS</a></code></li>
 <li><code><a title="exchangelib.BaseProtocol.MAX_SESSION_USAGE_COUNT" href="#exchangelib.BaseProtocol.MAX_SESSION_USAGE_COUNT">MAX_SESSION_USAGE_COUNT</a></code></li>
+<li><code><a title="exchangelib.BaseProtocol.RETRY_WAIT" href="#exchangelib.BaseProtocol.RETRY_WAIT">RETRY_WAIT</a></code></li>
 <li><code><a title="exchangelib.BaseProtocol.SESSION_POOLSIZE" href="#exchangelib.BaseProtocol.SESSION_POOLSIZE">SESSION_POOLSIZE</a></code></li>
 <li><code><a title="exchangelib.BaseProtocol.TIMEOUT" href="#exchangelib.BaseProtocol.TIMEOUT">TIMEOUT</a></code></li>
 <li><code><a title="exchangelib.BaseProtocol.USERAGENT" href="#exchangelib.BaseProtocol.USERAGENT">USERAGENT</a></code></li>
@@ -12962,6 +13359,7 @@ def fullname(self):
 <li><code><a title="exchangelib.BaseProtocol.get_auth_type" href="#exchangelib.BaseProtocol.get_auth_type">get_auth_type</a></code></li>
 <li><code><a title="exchangelib.BaseProtocol.get_session" href="#exchangelib.BaseProtocol.get_session">get_session</a></code></li>
 <li><code><a title="exchangelib.BaseProtocol.increase_poolsize" href="#exchangelib.BaseProtocol.increase_poolsize">increase_poolsize</a></code></li>
+<li><code><a title="exchangelib.BaseProtocol.max_connections" href="#exchangelib.BaseProtocol.max_connections">max_connections</a></code></li>
 <li><code><a title="exchangelib.BaseProtocol.raw_session" href="#exchangelib.BaseProtocol.raw_session">raw_session</a></code></li>
 <li><code><a title="exchangelib.BaseProtocol.refresh_credentials" href="#exchangelib.BaseProtocol.refresh_credentials">refresh_credentials</a></code></li>
 <li><code><a title="exchangelib.BaseProtocol.release_session" href="#exchangelib.BaseProtocol.release_session">release_session</a></code></li>
@@ -12984,7 +13382,6 @@ def fullname(self):
 <h4><code><a title="exchangelib.Build" href="#exchangelib.Build">Build</a></code></h4>
 <ul class="two-column">
 <li><code><a title="exchangelib.Build.api_version" href="#exchangelib.Build.api_version">api_version</a></code></li>
-<li><code><a title="exchangelib.Build.from_hex_string" href="#exchangelib.Build.from_hex_string">from_hex_string</a></code></li>
 <li><code><a title="exchangelib.Build.from_xml" href="#exchangelib.Build.from_xml">from_xml</a></code></li>
 <li><code><a title="exchangelib.Build.major_build" href="#exchangelib.Build.major_build">major_build</a></code></li>
 <li><code><a title="exchangelib.Build.major_version" href="#exchangelib.Build.major_version">major_version</a></code></li>
@@ -13107,6 +13504,7 @@ def fullname(self):
 <li><code><a title="exchangelib.Contact.profession" href="#exchangelib.Contact.profession">profession</a></code></li>
 <li><code><a title="exchangelib.Contact.spouse_name" href="#exchangelib.Contact.spouse_name">spouse_name</a></code></li>
 <li><code><a title="exchangelib.Contact.surname" href="#exchangelib.Contact.surname">surname</a></code></li>
+<li><code><a title="exchangelib.Contact.unique_body_idx" href="#exchangelib.Contact.unique_body_idx">unique_body_idx</a></code></li>
 <li><code><a title="exchangelib.Contact.user_smime_certificate" href="#exchangelib.Contact.user_smime_certificate">user_smime_certificate</a></code></li>
 <li><code><a title="exchangelib.Contact.wedding_anniversary" href="#exchangelib.Contact.wedding_anniversary">wedding_anniversary</a></code></li>
 </ul>
@@ -13140,6 +13538,7 @@ def fullname(self):
 <li><code><a title="exchangelib.DistributionList.display_name" href="#exchangelib.DistributionList.display_name">display_name</a></code></li>
 <li><code><a title="exchangelib.DistributionList.file_as" href="#exchangelib.DistributionList.file_as">file_as</a></code></li>
 <li><code><a title="exchangelib.DistributionList.members" href="#exchangelib.DistributionList.members">members</a></code></li>
+<li><code><a title="exchangelib.DistributionList.unique_body_idx" href="#exchangelib.DistributionList.unique_body_idx">unique_body_idx</a></code></li>
 </ul>
 </li>
 <li>
@@ -13216,6 +13615,7 @@ def fullname(self):
 <ul class="">
 <li><code><a title="exchangelib.FaultTolerance.DEFAULT_BACKOFF" href="#exchangelib.FaultTolerance.DEFAULT_BACKOFF">DEFAULT_BACKOFF</a></code></li>
 <li><code><a title="exchangelib.FaultTolerance.back_off_until" href="#exchangelib.FaultTolerance.back_off_until">back_off_until</a></code></li>
+<li><code><a title="exchangelib.FaultTolerance.raise_response_errors" href="#exchangelib.FaultTolerance.raise_response_errors">raise_response_errors</a></code></li>
 </ul>
 </li>
 <li>
@@ -13573,6 +13973,7 @@ def fullname(self):
 <li><code><a title="exchangelib.Task.status" href="#exchangelib.Task.status">status</a></code></li>
 <li><code><a title="exchangelib.Task.status_description" href="#exchangelib.Task.status_description">status_description</a></code></li>
 <li><code><a title="exchangelib.Task.total_work" href="#exchangelib.Task.total_work">total_work</a></code></li>
+<li><code><a title="exchangelib.Task.unique_body_idx" href="#exchangelib.Task.unique_body_idx">unique_body_idx</a></code></li>
 </ul>
 </li>
 <li>

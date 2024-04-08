@@ -76,6 +76,9 @@ class PropertiesTest(TimedTestCase):
                     if cls.__doc__.startswith("Base class "):
                         # Base classes don't have an MSDN link
                         continue
+                    if cls.__name__.startswith("_"):
+                        # Non-public item class
+                        continue
                     if issubclass(cls, RootOfHierarchy):
                         # Root folders don't have an MSDN link
                         continue

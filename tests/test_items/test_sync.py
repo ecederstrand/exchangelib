@@ -54,6 +54,26 @@ class SyncTest(BaseItemTest):
             self.account.root.tois.children.unsubscribe(subscription_id)
         # Affinity cookie is not always sent by the server for pull subscriptions
 
+    def test_pull_subscribe_from_account(self):
+        self.account.affinity_cookie = None
+        with self.account.pull_subscription() as (subscription_id, watermark):
+            self.assertIsNotNone(subscription_id)
+            self.assertIsNotNone(watermark)
+        # Test with watermark
+        with self.account.pull_subscription(watermark=watermark) as (subscription_id, watermark):
+            self.assertIsNotNone(subscription_id)
+            self.assertIsNotNone(watermark)
+        # Context manager already unsubscribed us
+        with self.assertRaises(ErrorSubscriptionNotFound):
+            self.account.unsubscribe(subscription_id)
+        # Test without watermark
+        with self.account.pull_subscription() as (subscription_id, watermark):
+            self.assertIsNotNone(subscription_id)
+            self.assertIsNotNone(watermark)
+        with self.assertRaises(ErrorSubscriptionNotFound):
+            self.account.unsubscribe(subscription_id)
+        # Affinity cookie is not always sent by the server for pull subscriptions
+
     def test_push_subscribe(self):
         with self.account.inbox.push_subscription(callback_url="https://example.com/foo") as (
             subscription_id,
@@ -81,6 +101,33 @@ class SyncTest(BaseItemTest):
         with self.assertRaises(ErrorInvalidSubscription):
             self.account.root.tois.children.unsubscribe(subscription_id)
 
+    def test_push_subscribe_from_account(self):
+        with self.account.push_subscription(callback_url="https://example.com/foo") as (
+            subscription_id,
+            watermark,
+        ):
+            self.assertIsNotNone(subscription_id)
+            self.assertIsNotNone(watermark)
+        # Test with watermark
+        with self.account.push_subscription(
+            callback_url="https://example.com/foo",
+            watermark=watermark,
+        ) as (subscription_id, watermark):
+            self.assertIsNotNone(subscription_id)
+            self.assertIsNotNone(watermark)
+        # Cannot unsubscribe. Must be done as response to callback URL request
+        with self.assertRaises(ErrorInvalidSubscription):
+            self.account.unsubscribe(subscription_id)
+        # Test via folder collection
+        with self.account.push_subscription(callback_url="https://example.com/foo") as (
+            subscription_id,
+            watermark,
+        ):
+            self.assertIsNotNone(subscription_id)
+            self.assertIsNotNone(watermark)
+        with self.assertRaises(ErrorInvalidSubscription):
+            self.account.unsubscribe(subscription_id)
+
     def test_empty_folder_collection(self):
         self.assertEqual(FolderCollection(account=None, folders=[]).subscribe_to_pull(), None)
         self.assertEqual(FolderCollection(account=None, folders=[]).subscribe_to_push("http://example.com"), None)
@@ -98,6 +145,22 @@ class SyncTest(BaseItemTest):
             self.assertIsNotNone(subscription_id)
         with self.assertRaises(ErrorSubscriptionNotFound):
             self.account.root.tois.children.unsubscribe(subscription_id)
+
+        # Test affinity cookie
+        self.assertIsNotNone(self.account.affinity_cookie)
+
+    def test_streaming_subscribe_from_account(self):
+        self.account.affinity_cookie = None
+        with self.account.streaming_subscription() as subscription_id:
+            self.assertIsNotNone(subscription_id)
+        # Context manager already unsubscribed us
+        with self.assertRaises(ErrorSubscriptionNotFound):
+            self.account.unsubscribe(subscription_id)
+        # Test via folder collection
+        with self.account.streaming_subscription() as subscription_id:
+            self.assertIsNotNone(subscription_id)
+        with self.assertRaises(ErrorSubscriptionNotFound):
+            self.account.unsubscribe(subscription_id)
 
         # Test affinity cookie
         self.assertIsNotNone(self.account.affinity_cookie)

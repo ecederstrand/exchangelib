@@ -17,6 +17,7 @@ from .errors import (
 )
 from .fields import (
     WEEKDAY_NAMES,
+    AddressListField,
     AssociatedCalendarItemIdField,
     Base64Field,
     BooleanField,
@@ -36,10 +37,13 @@ from .fields import (
     ExtendedPropertyField,
     Field,
     FieldPath,
+    FlaggedForActionField,
+    FolderActionField,
     FreeBusyStatusField,
     GenericEventListField,
     IdElementField,
     IdField,
+    ImportanceField,
     IntegerField,
     InvalidField,
     InvalidFieldForVersion,
@@ -48,6 +52,7 @@ from .fields import (
     RecipientAddressField,
     ReferenceItemIdField,
     RoutingTypeField,
+    SensitivityField,
     SubField,
     TextField,
     TimeDeltaField,
@@ -746,6 +751,10 @@ class DistinguishedFolderId(FolderId):
 
     mailbox = MailboxField()
 
+    @classmethod
+    def from_xml(cls, elem, account):
+        return cls(id=elem.text or None)
+
     def clean(self, version=None):
         from .folders import PublicFoldersRoot
 
@@ -796,6 +805,8 @@ class Attendee(EWSElement):
         field_uri="ResponseType", choices={Choice(c) for c in RESPONSE_TYPES}, default="Unknown"
     )
     last_response_time = DateTimeField(field_uri="LastResponseTime")
+    proposed_start = DateTimeField(field_uri="ProposedStart")
+    proposed_end = DateTimeField(field_uri="ProposedEnd")
 
     def __hash__(self):
         return hash(self.mailbox)
@@ -813,7 +824,7 @@ class TimeZoneTransition(EWSElement, metaclass=EWSMeta):
 
     @classmethod
     def from_xml(cls, elem, account):
-        res = super().from_xml(elem, account)
+        res = super().from_xml(elem=elem, account=account)
         # Some parts of EWS use '5' to mean 'last occurrence in month', others use '-1'. Let's settle on '5' because
         # only '5' is accepted in requests.
         if res.occurrence == -1:
@@ -1860,7 +1871,7 @@ class RecurringDayTransition(BaseTransition):
 
     @classmethod
     def from_xml(cls, elem, account):
-        res = super().from_xml(elem, account)
+        res = super().from_xml(elem=elem, account=account)
         # See TimeZoneTransition.from_xml()
         if res.occurrence == -1:
             res.occurrence = 5
@@ -1911,10 +1922,6 @@ class TimeZoneDefinition(EWSElement):
     periods = EWSElementListField(field_uri="Periods", value_cls=Period)
     transitions_groups = EWSElementListField(field_uri="TransitionsGroups", value_cls=TransitionsGroup)
     transitions = TransitionListField(field_uri="Transitions", value_cls=BaseTransition)
-
-    @classmethod
-    def from_xml(cls, elem, account):
-        return super().from_xml(elem, account)
 
     def _get_standard_period(self, transitions_group):
         # Find the first standard period referenced from transitions_group
@@ -2093,23 +2100,30 @@ class UserResponse(EWSElement):
             raise AutoDiscoverFailed(f"User settings errors: {self.user_settings_errors}")
 
     @classmethod
-    def from_xml(cls, elem, account):
+    def parse_elem(cls, elem):
         # Possible ErrorCode values:
         #   https://learn.microsoft.com/en-us/exchange/client-developer/web-service-reference/errorcode-soap
         error_code = get_xml_attr(elem, f"{{{ANS}}}ErrorCode")
         error_message = get_xml_attr(elem, f"{{{ANS}}}ErrorMessage")
         if error_code == "InternalServerError":
-            raise ErrorInternalServerError(error_message)
+            return ErrorInternalServerError(error_message)
         if error_code == "ServerBusy":
-            raise ErrorServerBusy(error_message)
+            return ErrorServerBusy(error_message)
         if error_code == "NotFederated":
-            raise ErrorOrganizationNotFederated(error_message)
-        if error_code not in ("NoError", "RedirectAddress", "RedirectUrl"):
-            return cls(error_code=error_code, error_message=error_message)
+            return ErrorOrganizationNotFederated(error_message)
+        return cls(error_code=error_code, error_message=error_message)
+
+    @classmethod
+    def from_xml(cls, elem, account):
+        res = cls.parse_elem(elem)
+        if isinstance(res, Exception):
+            raise res
+        if res.error_code not in ("NoError", "RedirectAddress", "RedirectUrl"):
+            return cls(error_code=res.error_code, error_message=res.error_message)
 
         redirect_target = get_xml_attr(elem, f"{{{ANS}}}RedirectTarget")
-        redirect_address = redirect_target if error_code == "RedirectAddress" else None
-        redirect_url = redirect_target if error_code == "RedirectUrl" else None
+        redirect_address = redirect_target if res.error_code == "RedirectAddress" else None
+        redirect_url = redirect_target if res.error_code == "RedirectUrl" else None
         user_settings_errors = {}
         settings_errors_elem = elem.find(f"{{{ANS}}}UserSettingErrors")
         if settings_errors_elem is not None:
@@ -2131,3 +2145,206 @@ class UserResponse(EWSElement):
             user_settings_errors=user_settings_errors,
             user_settings=user_settings,
         )
+
+
+class WithinDateRange(EWSElement):
+    """MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/withindaterange
+    """
+
+    ELEMENT_NAME = "DateRange"
+    NAMESPACE = MNS
+
+    start_date_time = DateTimeField(field_uri="StartDateTime", is_required=True)
+    end_date_time = DateTimeField(field_uri="EndDateTime", is_required=True)
+
+
+class WithinSizeRange(EWSElement):
+    """MSDN:
+    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/withinsizerange
+    """
+
+    ELEMENT_NAME = "SizeRange"
+    NAMESPACE = MNS
+
+    minimum_size = IntegerField(field_uri="MinimumSize", is_required=True)
+    maximum_size = IntegerField(field_uri="MaximumSize", is_required=True)
+
+
+class Conditions(EWSElement):
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/conditions"""
+
+    ELEMENT_NAME = "Conditions"
+    NAMESPACE = TNS
+
+    categories = CharListField(field_uri="Categories")
+    contains_body_strings = CharListField(field_uri="ContainsBodyStrings")
+    contains_header_strings = CharListField(field_uri="ContainsHeaderStrings")
+    contains_recipient_strings = CharListField(field_uri="ContainsRecipientStrings")
+    contains_sender_strings = CharListField(field_uri="ContainsSenderStrings")
+    contains_subject_or_body_strings = CharListField(field_uri="ContainsSubjectOrBodyStrings")
+    contains_subject_strings = CharListField(field_uri="ContainsSubjectStrings")
+    flagged_for_action = FlaggedForActionField(field_uri="FlaggedForAction")
+    from_addresses = EWSElementField(value_cls=Mailbox, field_uri="FromAddresses")
+    from_connected_accounts = CharListField(field_uri="FromConnectedAccounts")
+    has_attachments = BooleanField(field_uri="HasAttachments")
+    importance = ImportanceField(field_uri="Importance")
+    is_approval_request = BooleanField(field_uri="IsApprovalRequest")
+    is_automatic_forward = BooleanField(field_uri="IsAutomaticForward")
+    is_automatic_reply = BooleanField(field_uri="IsAutomaticReply")
+    is_encrypted = BooleanField(field_uri="IsEncrypted")
+    is_meeting_request = BooleanField(field_uri="IsMeetingRequest")
+    is_meeting_response = BooleanField(field_uri="IsMeetingResponse")
+    is_ndr = BooleanField(field_uri="IsNDR")
+    is_permission_controlled = BooleanField(field_uri="IsPermissionControlled")
+    is_read_receipt = BooleanField(field_uri="IsReadReceipt")
+    is_signed = BooleanField(field_uri="IsSigned")
+    is_voicemail = BooleanField(field_uri="IsVoicemail")
+    item_classes = CharListField(field_uri="ItemClasses")
+    message_classifications = CharListField(field_uri="MessageClassifications")
+    not_sent_to_me = BooleanField(field_uri="NotSentToMe")
+    sent_cc_me = BooleanField(field_uri="SentCcMe")
+    sent_only_to_me = BooleanField(field_uri="SentOnlyToMe")
+    sent_to_addresses = EWSElementField(value_cls=Mailbox, field_uri="SentToAddresses")
+    sent_to_me = BooleanField(field_uri="SentToMe")
+    sent_to_or_cc_me = BooleanField(field_uri="SentToOrCcMe")
+    sensitivity = SensitivityField(field_uri="Sensitivity")
+    within_date_range = EWSElementField(value_cls=WithinDateRange, field_uri="WithinDateRange")
+    within_size_range = EWSElementField(value_cls=WithinSizeRange, field_uri="WithinSizeRange")
+
+
+class Exceptions(Conditions):
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/exceptions"""
+
+    ELEMENT_NAME = "Exceptions"
+    NAMESPACE = TNS
+
+
+class CopyToFolder(EWSElement):
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/copytofolder"""
+
+    ELEMENT_NAME = "CopyToFolder"
+
+    folder_id = EWSElementField(value_cls=FolderId)
+    distinguished_folder_id = EWSElementField(value_cls=DistinguishedFolderId)
+
+
+class MoveToFolder(CopyToFolder):
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/movetofolder"""
+
+    ELEMENT_NAME = "MoveToFolder"
+
+
+class Actions(EWSElement):
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/actions"""
+
+    ELEMENT_NAME = "Actions"
+
+    assign_categories = CharListField(field_uri="AssignCategories")
+    copy_to_folder = FolderActionField(value_cls=CopyToFolder)
+    delete = BooleanField(field_uri="Delete")
+    forward_as_attachment_to_recipients = AddressListField(field_uri="ForwardAsAttachmentToRecipients")
+    forward_to_recipients = AddressListField(field_uri="ForwardToRecipients")
+    mark_importance = ImportanceField(field_uri="MarkImportance")
+    mark_as_read = BooleanField(field_uri="MarkAsRead")
+    move_to_folder = FolderActionField(value_cls=MoveToFolder)
+    permanent_delete = BooleanField(field_uri="PermanentDelete")
+    redirect_to_recipients = AddressListField(field_uri="RedirectToRecipients")
+    send_sms_alert_to_recipients = AddressListField(field_uri="SendSMSAlertToRecipients")
+    server_reply_with_message = EWSElementField(value_cls=ItemId, field_uri="ServerReplyWithMessage")
+    stop_processing_rules = BooleanField(field_uri="StopProcessingRules")
+
+
+class Rule(EWSElement):
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/rule-ruletype"""
+
+    def __init__(self, **kwargs):
+        """Pick out optional 'account' kwarg, and pass the rest to the parent class.
+
+        :param kwargs:
+            'account' is optional but allows calling 'send()' and 'delete()'
+        """
+        from .account import Account
+
+        self.account = kwargs.pop("account", None)
+        if self.account is not None and not isinstance(self.account, Account):
+            raise InvalidTypeError("account", self.account, Account)
+        super().__init__(**kwargs)
+
+    __slots__ = ("account",)
+
+    ELEMENT_NAME = "Rule"
+
+    id = CharField(field_uri="RuleId")
+    display_name = CharField(field_uri="DisplayName", is_required=True)
+    priority = IntegerField(field_uri="Priority", is_required=True)
+    is_enabled = BooleanField(field_uri="IsEnabled")
+    is_not_supported = BooleanField(field_uri="IsNotSupported")
+    is_in_error = BooleanField(field_uri="IsInError")
+    conditions = EWSElementField(value_cls=Conditions)
+    exceptions = EWSElementField(value_cls=Exceptions)
+    actions = EWSElementField(value_cls=Actions, is_required=True)
+
+    @classmethod
+    def from_xml(cls, elem, account):
+        res = super().from_xml(elem=elem, account=account)
+        res.account = account
+        return res
+
+    def save(self):
+        if self.id is None:
+            self.account.create_rule(self)
+        else:
+            self.account.set_rule(self)
+        return self
+
+    def delete(self):
+        if self.is_enabled is False:
+            # Cannot delete a disabled rule - server throws 'ErrorItemNotFound'
+            self.is_enabled = True
+            self.save()
+        self.account.delete_rule(self)
+
+
+class InboxRules(EWSElement):
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/inboxrules"""
+
+    ELEMENT_NAME = "InboxRules"
+    NAMESPACE = MNS
+
+    rule = EWSElementListField(value_cls=Rule)
+
+
+class CreateRuleOperation(EWSElement):
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createruleoperation"""
+
+    ELEMENT_NAME = "CreateRuleOperation"
+
+    rule = EWSElementField(value_cls=Rule)
+
+
+class SetRuleOperation(EWSElement):
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/setruleoperation"""
+
+    ELEMENT_NAME = "SetRuleOperation"
+
+    rule = EWSElementField(value_cls=Rule)
+
+
+class DeleteRuleOperation(EWSElement):
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/deleteruleoperation"""
+
+    ELEMENT_NAME = "DeleteRuleOperation"
+
+    id = CharField(field_uri="RuleId")
+
+
+class Operations(EWSElement):
+    """MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/operations"""
+
+    ELEMENT_NAME = "Operations"
+    NAMESPACE = MNS
+
+    create_rule_operation = EWSElementField(value_cls=CreateRuleOperation)
+    set_rule_operation = EWSElementField(value_cls=SetRuleOperation)
+    delete_rule_operation = EWSElementField(value_cls=DeleteRuleOperation)

@@ -24,6 +24,7 @@ from exchangelib.util import (
     DocumentYielder,
     ParseError,
     PrettyXmlHandler,
+    StreamingBase64Parser,
     chunkify,
     get_domain,
     get_redirect_url,
@@ -129,8 +130,9 @@ class UtilTest(EWSTest):
 
     def test_to_xml(self):
         to_xml(b'<?xml version="1.0" encoding="UTF-8"?><foo></foo>')
+        to_xml(b'<?xml version="1.0" encoding="UTF-8"?><foo>&broken</foo>')
+        to_xml(b'<?xml version="1.0" encoding="UTF-8"?><foo>&#x13;</foo>')
         to_xml(BOM_UTF8 + b'<?xml version="1.0" encoding="UTF-8"?><foo></foo>')
-        to_xml(BOM_UTF8 + b'<?xml version="1.0" encoding="UTF-8"?><foo>&broken</foo>')
         with self.assertRaises(ParseError):
             to_xml(b"foo")
 
@@ -165,6 +167,11 @@ class UtilTest(EWSTest):
     def test_xml_to_str(self):
         with self.assertRaises(AttributeError):
             xml_to_str("XXX", encoding=None, xml_declaration=True)
+
+    def test_streaming_parser(self):
+        StreamingBase64Parser().feed(b"<Name>SomeName.png</Name>", 1)
+        # Test that we can handle invalid chars in the streaming parser
+        StreamingBase64Parser().feed(b"<Name>SomeName&#x13;.png</Name>", 1)
 
     def test_anonymizing_handler(self):
         h = AnonymizingXmlHandler(forbidden_strings=("XXX", "yyy"))
@@ -222,8 +229,8 @@ class UtilTest(EWSTest):
         h.stream.seek(0)
         self.assertEqual(
             h.stream.read(),
-            "hello \x1b[36m<?xml version='1.0' encoding='utf-8'?>\x1b[39;49;00m\n\x1b[94m"
-            "<foo\x1b[39;49;00m\x1b[94m>\x1b[39;49;00mbar\x1b[94m</foo>\x1b[39;49;00m\n",
+            "hello \x1b[36m<?xml version='1.0' encoding='utf-8'?>\x1b[39;49;00m\x1b[37m\x1b[39;49;00m\n\x1b[94m"
+            "<foo\x1b[39;49;00m\x1b[94m>\x1b[39;49;00mbar\x1b[94m</foo>\x1b[39;49;00m\x1b[37m\x1b[39;49;00m\n",
         )
 
     def test_post_ratelimited(self):
