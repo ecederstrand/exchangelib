@@ -1,8 +1,8 @@
 import logging
 from urllib.parse import urlparse
 
-import dns.name
-import dns.resolver
+from dns.name import EmptyLabel
+from dns.resolver import LifetimeTimeout, NXDOMAIN, NoAnswer, NoNameservers, Resolver
 from cached_property import threaded_cached_property
 
 from ..configuration import Configuration
@@ -16,11 +16,11 @@ from .protocol import AutodiscoverProtocol
 log = logging.getLogger(__name__)
 
 DNS_LOOKUP_ERRORS = (
-    dns.name.EmptyLabel,
-    dns.resolver.LifetimeTimeout,
-    dns.resolver.NXDOMAIN,
-    dns.resolver.NoAnswer,
-    dns.resolver.NoNameservers,
+    EmptyLabel,
+    LifetimeTimeout,
+    NXDOMAIN,
+    NoAnswer,
+    NoNameservers,
 )
 
 
@@ -152,7 +152,7 @@ class Autodiscovery:
 
     @threaded_cached_property
     def resolver(self):
-        resolver = dns.resolver.Resolver(**self.DNS_RESOLVER_KWARGS)
+        resolver = Resolver(**self.DNS_RESOLVER_KWARGS)
         for k, v in self.DNS_RESOLVER_ATTRS.items():
             setattr(resolver, k, v)
         return resolver
