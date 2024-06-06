@@ -341,7 +341,8 @@ class PublicFoldersRoot(RootOfHierarchy):
         if fix_parents:
             with self._subfolders_lock:
                 for f in res.values():
-                    f.parent = None if f.id == self.id else self
+                    if f.id != self.id:
+                        f.parent = self
         return res
 
     def get_children(self, folder):
