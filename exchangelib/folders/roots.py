@@ -332,11 +332,12 @@ class PublicFoldersRoot(RootOfHierarchy):
         if self._distinguished_id:
             self._distinguished_id.mailbox = None  # See DistinguishedFolderId.clean()
 
+    @property
     def _folders_map(self):
         # Top-level public folders may point to the root folder of the owning account and not the public folders root
         # of this account. This breaks the assumption of get_children(). Fix it by overwriting the parent folder.
         fix_parents = self._subfolders is None
-        res = super()._folders_map()
+        res = super()._folders_map
         if fix_parents:
             with self._subfolders_lock:
                 for f in res.values():
