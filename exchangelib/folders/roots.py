@@ -332,6 +332,17 @@ class PublicFoldersRoot(RootOfHierarchy):
         if self._distinguished_id:
             self._distinguished_id.mailbox = None  # See DistinguishedFolderId.clean()
 
+    def _folders_map(self):
+        # Top-level public folders may point to the root folder of the owning account and not the public folders root
+        # of this account. This breaks the assumption of get_children(). Fix it by overwriting the parent folder.
+        fix_parents = self._subfolders is None
+        res = super()._folders_map()
+        if fix_parents:
+            with self._subfolders_lock:
+                for f in res.values():
+                    f.parent = None if f.id == self.id else self
+        return res
+
     def get_children(self, folder):
         # EWS does not allow deep traversal of public folders, so self._folders_map will only populate the top-level
         # subfolders. To traverse public folders at arbitrary depth, we need to get child folders on demand.
