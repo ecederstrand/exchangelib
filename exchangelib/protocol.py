@@ -638,6 +638,31 @@ class NoVerifyHTTPAdapter(requests.adapters.HTTPAdapter):
         # We're overriding a method, so we have to keep the signature
         super().cert_verify(conn=conn, url=url, verify=False, cert=cert)
 
+    def get_connection_with_tls_context(self, request, verify, proxies=None, cert=None):
+        """Returns a urllib3 connection for the given request and TLS settings.
+        This should not be called from user code, and is only exposed for use
+        when subclassing the :class:`HTTPAdapter <requests.adapters.HTTPAdapter>`.
+
+        :param request:
+            The :class:`PreparedRequest <PreparedRequest>` object to be sent
+            over the connection.
+        :param verify:
+            Either a boolean, in which case it controls whether we verify the
+            server's TLS certificate, or a string, in which case it must be a
+            path to a CA bundle to use.
+        :param proxies:
+            (optional) The proxies dictionary to apply to the request.
+        :param cert:
+            (optional) Any user-provided SSL certificate to be used for client
+            authentication (a.k.a., mTLS).
+        :rtype:
+            urllib3.ConnectionPool
+        """
+        # pylint: disable=unused-argument
+        # Required for requests >= 2.32.3
+        # See: https://github.com/psf/requests/pull/6710
+        return super().get_connection_with_tls_context(request=request, verify=False, proxies=proxies, cert=cert)
+
 
 class TLSClientAuth(requests.adapters.HTTPAdapter):
     """An HTTP adapter that implements Certificate Based Authentication (CBA)."""
