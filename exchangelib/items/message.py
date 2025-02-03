@@ -19,13 +19,13 @@ class Message(Item):
 
     sender = MailboxField(field_uri="message:Sender", is_read_only=True, is_read_only_after_send=True)
     to_recipients = MailboxListField(
-        field_uri="message:ToRecipients", is_read_only_after_send=True, is_searchable=False
+        field_uri="message:ToRecipients", is_read_only_after_send=True
     )
     cc_recipients = MailboxListField(
-        field_uri="message:CcRecipients", is_read_only_after_send=True, is_searchable=False
+        field_uri="message:CcRecipients", is_read_only_after_send=True
     )
     bcc_recipients = MailboxListField(
-        field_uri="message:BccRecipients", is_read_only_after_send=True, is_searchable=False
+        field_uri="message:BccRecipients", is_read_only_after_send=True
     )
     is_read_receipt_requested = BooleanField(
         field_uri="message:IsReadReceiptRequested", is_required=True, default=False, is_read_only_after_send=True
@@ -41,7 +41,7 @@ class Message(Item):
     is_read = BooleanField(field_uri="message:IsRead", is_required=True, default=False)
     is_response_requested = BooleanField(field_uri="message:IsResponseRequested", default=False, is_required=True)
     references = TextField(field_uri="message:References")
-    reply_to = MailboxListField(field_uri="message:ReplyTo", is_read_only_after_send=True, is_searchable=False)
+    reply_to = MailboxListField(field_uri="message:ReplyTo", is_read_only_after_send=True)
     received_by = MailboxField(field_uri="message:ReceivedBy", is_read_only=True)
     received_representing = MailboxField(field_uri="message:ReceivedRepresenting", is_read_only=True)
     reminder_message_data = EWSElementField(
