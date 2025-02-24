@@ -5,7 +5,9 @@ from exchangelib.errors import ErrorInvalidIdMalformed
 from exchangelib.folders import Contacts
 from exchangelib.indexed_properties import EmailAddress, PhoneNumber, PhysicalAddress
 from exchangelib.items import Contact, DistributionList, Persona
-from exchangelib.properties import Attribution
+from exchangelib.properties import (
+    Attribution,
+)
 from exchangelib.properties import EmailAddress as EmailAddressProp
 from exchangelib.properties import (
     FolderId,

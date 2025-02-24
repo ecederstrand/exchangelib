@@ -67,7 +67,7 @@ class ElementNotFound(Exception):
 
 # Regex of UTF-8 control characters that are illegal in XML 1.0 (and XML 1.1).
 # See https://stackoverflow.com/a/22273639/219640
-_ILLEGAL_XML_CHARS_RE = re.compile("[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F-\x84\x86-\x9F\uFDD0-\uFDDF\uFFFE\uFFFF]")
+_ILLEGAL_XML_CHARS_RE = re.compile("[\x00-\x08\x0b-\x0c\x0e-\x1f\x7f-\x84\x86-\x9f\ufdd0-\ufddf\ufffe\uffff]")
 _ILLEGAL_XML_ESCAPE_CHARS_RE = re.compile(rb"&(#[0-9]+;?|#[xX][0-9a-fA-F]+;?)")  # Could match the above better
 
 # XML namespaces

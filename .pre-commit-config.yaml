@@ -18,25 +18,25 @@ repos:
     hooks:
       - id: black
         name: black
-        stages: [ commit ]
+        stages: [ pre-commit ]
         entry: black --check --diff
         language: system
         types: [ python ]
       - id: isort
         name: isort
-        stages: [ commit ]
+        stages: [ pre-commit ]
         entry: isort --check --diff
         types: [ python ]
         language: system
       - id: flake8
         name: flake8
-        stages: [ commit ]
+        stages: [ pre-commit ]
         entry: flake8
         types: [ python ]
         language: system
       - id: blacken-docs
         name: blacken-docs
-        stages: [ commit ]
+        stages: [ pre-commit ]
         entry: blacken-docs
         types: [ markdown ]
         language: system

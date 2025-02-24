@@ -1,5 +1,4 @@
-"""A dict to translate from IANA location name to Windows timezone name. Translations taken from CLDR_WINZONE_URL
-"""
+"""A dict to translate from IANA location name to Windows timezone name. Translations taken from CLDR_WINZONE_URL"""
 
 # Data taken from https://github.com/unicode-org/cldr/blob/main/common/supplemental/windowsZones.xml
 # SPDX-FileCopyrightText: Copyright © 1991-2013 Unicode, Inc.
