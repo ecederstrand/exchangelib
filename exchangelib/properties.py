@@ -635,7 +635,7 @@ class Mailbox(EWSElement):
     # https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/routingtype-emailaddresstype
     routing_type = TextField(field_uri="RoutingType", default="SMTP")
     mailbox_type = ChoiceField(field_uri="MailboxType", choices=MAILBOX_TYPE_CHOICES, default=MAILBOX)
-    item_id = EWSElementField(value_cls=ItemId, is_read_only=True)
+    item_id = EWSElementField(value_cls=ItemId)
 
     def clean(self, version=None):
         super().clean(version=version)
