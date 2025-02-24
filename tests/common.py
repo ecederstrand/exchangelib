@@ -127,6 +127,7 @@ class EWSTest(TimedTestCase, metaclass=abc.ABCMeta):
             retry_policy=cls.retry_policy,
         )
         cls.account = cls.get_account()
+        _ = cls.account.version  # Some mocked-out tests require version
 
     @classmethod
     def credentials(cls):

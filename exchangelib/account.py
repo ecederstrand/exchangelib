@@ -1,5 +1,6 @@
 import locale as stdlib_locale
 from logging import getLogger
+from threading import Lock
 
 from cached_property import threaded_cached_property
 
@@ -199,15 +200,31 @@ class Account:
         # For maintaining affinity in e.g. subscriptions
         self.affinity_cookie = None
 
-        # We may need to override the default server version on a per-account basis because Microsoft may report one
-        # server version up-front but delegate account requests to an older backend server. Create a new instance to
-        # avoid changing the protocol version.
-        self.version = self.protocol.version.copy()
+        self._version = None
+        self._version_lock = Lock()
         log.debug("Added account: %s", self)
 
     @property
     def primary_smtp_address(self):
         return self.identity.primary_smtp_address
+
+    @property
+    def version(self):
+        # We may need to override the default server version on a per-account basis because Microsoft may report one
+        # server version up-front but delegate account requests to an older backend server. Create a new instance to
+        # avoid changing the protocol version instance.
+        if self._version:
+            return self._version
+        with self._version_lock:
+            if self._version:
+                return self._version
+            self._version = self.protocol.version.copy()
+            return self._version
+
+    @version.setter
+    def version(self, value):
+        with self._version_lock:
+            self._version = value
 
     @threaded_cached_property
     def admin_audit_logs(self):
@@ -861,6 +878,17 @@ class Account:
         sync methods.
         """
         return Unsubscribe(account=self).get(subscription_id=subscription_id)
+
+    def __getstate__(self):
+        # The lock cannot be pickled
+        state = self.__dict__.copy()
+        del state["_version_lock"]
+        return state
+
+    def __setstate__(self, state):
+        # Restore the lock
+        self.__dict__.update(state)
+        self._version_lock = Lock()
 
     def __str__(self):
         if self.fullname:
