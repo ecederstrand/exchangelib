@@ -1,0 +1,163 @@
+from ..fields import Base64Field as Base64Field, BodyContentAttributedValueField as BodyContentAttributedValueField, BooleanField as BooleanField, CharField as CharField, Choice as Choice, ChoiceField as ChoiceField, DateTimeBackedDateField as DateTimeBackedDateField, DateTimeField as DateTimeField, EWSElementField as EWSElementField, EWSElementListField as EWSElementListField, EmailAddressAttributedValueField as EmailAddressAttributedValueField, EmailAddressField as EmailAddressField, EmailAddressesField as EmailAddressesField, IdElementField as IdElementField, ImAddressField as ImAddressField, MailboxField as MailboxField, MailboxListField as MailboxListField, MemberListField as MemberListField, PersonaPhoneNumberField as PersonaPhoneNumberField, PhoneNumberAttributedValueField as PhoneNumberAttributedValueField, PhoneNumberField as PhoneNumberField, PhysicalAddressField as PhysicalAddressField, PostalAddressAttributedValueField as PostalAddressAttributedValueField, StringAttributedValueField as StringAttributedValueField, TextField as TextField, TextListField as TextListField, URIField as URIField
+from ..properties import Address as Address, Attribution as Attribution, CompleteName as CompleteName, EmailAddress as EmailAddress, FolderId as FolderId, IdChangeKeyMixIn as IdChangeKeyMixIn, PersonaId as PersonaId
+from ..util import TNS as TNS
+from ..version import EXCHANGE_2010 as EXCHANGE_2010, EXCHANGE_2010_SP2 as EXCHANGE_2010_SP2
+from .item import Item as Item
+from _typeshed import Incomplete
+
+log: Incomplete
+
+class Contact(Item):
+    ELEMENT_NAME: str
+    file_as: Incomplete
+    file_as_mapping: Incomplete
+    display_name: Incomplete
+    given_name: Incomplete
+    initials: Incomplete
+    middle_name: Incomplete
+    nickname: Incomplete
+    complete_name: Incomplete
+    company_name: Incomplete
+    email_addresses: Incomplete
+    physical_addresses: Incomplete
+    phone_numbers: Incomplete
+    assistant_name: Incomplete
+    birthday: Incomplete
+    business_homepage: Incomplete
+    children: Incomplete
+    companies: Incomplete
+    contact_source: Incomplete
+    department: Incomplete
+    generation: Incomplete
+    im_addresses: Incomplete
+    job_title: Incomplete
+    manager: Incomplete
+    mileage: Incomplete
+    office: Incomplete
+    postal_address_index: Incomplete
+    profession: Incomplete
+    spouse_name: Incomplete
+    surname: Incomplete
+    wedding_anniversary: Incomplete
+    has_picture: Incomplete
+    phonetic_full_name: Incomplete
+    phonetic_first_name: Incomplete
+    phonetic_last_name: Incomplete
+    email_alias: Incomplete
+    notes: Incomplete
+    photo: Incomplete
+    user_smime_certificate: Incomplete
+    ms_exchange_certificate: Incomplete
+    directory_id: Incomplete
+    manager_mailbox: Incomplete
+    direct_reports: Incomplete
+    unique_body_idx: Incomplete
+    FIELDS: Incomplete
+
+class Persona(IdChangeKeyMixIn):
+    ELEMENT_NAME: str
+    ID_ELEMENT_CLS = PersonaId
+    persona_type: Incomplete
+    persona_object_type: Incomplete
+    creation_time: Incomplete
+    bodies: Incomplete
+    display_name_first_last_sort_key: Incomplete
+    display_name_last_first_sort_key: Incomplete
+    company_sort_key: Incomplete
+    home_sort_key: Incomplete
+    work_city_sort_key: Incomplete
+    display_name_first_last_header: Incomplete
+    display_name_last_first_header: Incomplete
+    file_as_header: Incomplete
+    display_name: Incomplete
+    display_name_first_last: Incomplete
+    display_name_last_first: Incomplete
+    file_as: Incomplete
+    file_as_id: Incomplete
+    display_name_prefix: Incomplete
+    given_name: Incomplete
+    middle_name: Incomplete
+    surname: Incomplete
+    generation: Incomplete
+    nickname: Incomplete
+    yomi_company_name: Incomplete
+    yomi_first_name: Incomplete
+    yomi_last_name: Incomplete
+    title: Incomplete
+    department: Incomplete
+    company_name: Incomplete
+    email_address: Incomplete
+    email_addresses: Incomplete
+    PhoneNumber: Incomplete
+    im_address: Incomplete
+    home_city: Incomplete
+    work_city: Incomplete
+    relevance_score: Incomplete
+    folder_ids: Incomplete
+    attributions: Incomplete
+    display_names: Incomplete
+    file_ases: Incomplete
+    file_as_ids: Incomplete
+    display_name_prefixes: Incomplete
+    given_names: Incomplete
+    middle_names: Incomplete
+    surnames: Incomplete
+    generations: Incomplete
+    nicknames: Incomplete
+    initials: Incomplete
+    yomi_company_names: Incomplete
+    yomi_first_names: Incomplete
+    yomi_last_names: Incomplete
+    business_phone_numbers: Incomplete
+    business_phone_numbers2: Incomplete
+    home_phones: Incomplete
+    home_phones2: Incomplete
+    mobile_phones: Incomplete
+    mobile_phones2: Incomplete
+    assistant_phone_numbers: Incomplete
+    callback_phones: Incomplete
+    car_phones: Incomplete
+    home_faxes: Incomplete
+    organization_main_phones: Incomplete
+    other_faxes: Incomplete
+    other_telephones: Incomplete
+    other_phones2: Incomplete
+    pagers: Incomplete
+    radio_phones: Incomplete
+    telex_numbers: Incomplete
+    tty_tdd_phone_numbers: Incomplete
+    work_faxes: Incomplete
+    emails1: Incomplete
+    emails2: Incomplete
+    emails3: Incomplete
+    business_home_pages: Incomplete
+    personal_home_pages: Incomplete
+    office_locations: Incomplete
+    im_addresses: Incomplete
+    im_addresses2: Incomplete
+    im_addresses3: Incomplete
+    business_addresses: Incomplete
+    home_addresses: Incomplete
+    other_addresses: Incomplete
+    titles: Incomplete
+    departments: Incomplete
+    company_names: Incomplete
+    managers: Incomplete
+    assistant_names: Incomplete
+    professions: Incomplete
+    spouse_names: Incomplete
+    children: Incomplete
+    schools: Incomplete
+    hobbies: Incomplete
+    wedding_anniversaries: Incomplete
+    birthdays: Incomplete
+    locations: Incomplete
+
+class DistributionList(Item):
+    ELEMENT_NAME: str
+    display_name: Incomplete
+    file_as: Incomplete
+    contact_source: Incomplete
+    members: Incomplete
+    unique_body_idx: Incomplete
+    FIELDS: Incomplete

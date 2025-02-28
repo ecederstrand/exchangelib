@@ -1,0 +1,23 @@
+from ..errors import ErrorInvalidOperation as ErrorInvalidOperation
+from ..properties import CreateRuleOperation as CreateRuleOperation, DeleteRuleOperation as DeleteRuleOperation, InboxRules as InboxRules, Operations as Operations, Rule as Rule, SetRuleOperation as SetRuleOperation
+from ..util import MNS as MNS, add_xml_child as add_xml_child, create_element as create_element, get_xml_attr as get_xml_attr, set_xml_value as set_xml_value
+from .common import EWSAccountService as EWSAccountService
+from _typeshed import Incomplete
+from typing import Any, Generator
+
+class GetInboxRules(EWSAccountService):
+    SERVICE_NAME: str
+    element_container_name: Incomplete
+    ERRORS_TO_CATCH_IN_RESPONSE: Incomplete
+    def call(self, mailbox: str | None = None) -> Generator[Rule | Exception | None, Any, None]: ...
+    def get_payload(self, mailbox): ...
+
+class UpdateInboxRules(EWSAccountService):
+    SERVICE_NAME: str
+    ERRORS_TO_CATCH_IN_RESPONSE: Incomplete
+    def call(self, rule: Rule, remove_outlook_rule_blob: bool = True): ...
+    def get_payload(self, rule: Rule, remove_outlook_rule_blob: bool = True): ...
+
+class CreateInboxRule(UpdateInboxRules): ...
+class SetInboxRule(UpdateInboxRules): ...
+class DeleteInboxRule(UpdateInboxRules): ...
