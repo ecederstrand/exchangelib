@@ -5,10 +5,17 @@ HEAD
 ----
 
 
+5.5.1
+-----
+- `Account.version` is now lazy and merely creating an `Account` will not throw errors if the specified credentials
+  have insufficient permissions to the account. This only happens if an attempt is made to access the mailbox.
+
+
 5.5.0
 -----
 - Dropped support for Python 3.8 which is EOL per October 7, 2024.
 - Fix setting OOF on servers that only accept UTC timestamps.
+
 
 5.4.3
 -----
