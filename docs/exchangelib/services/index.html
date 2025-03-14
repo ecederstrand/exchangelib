@@ -2,18 +2,32 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.10.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.5">
 <title>exchangelib.services API documentation</title>
-<meta name="description" content="Implement a selection of EWS services (operations) …" />
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
-<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
-<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<meta name="description" content="Implement a selection of EWS services (operations) …">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
-<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
 </head>
 <body>
 <main>
@@ -27,128 +41,6 @@
 automatically instead of taking advantage of Python SOAP libraries and the WSDL file.</p>
 <p>Exchange EWS operations overview:
 <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/ews-operations-in-exchange">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/ews-operations-in-exchange</a></p>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">&#34;&#34;&#34;Implement a selection of EWS services (operations).
-
-Exchange is very picky about things like the order of XML elements in SOAP requests, so we need to generate XML
-automatically instead of taking advantage of Python SOAP libraries and the WSDL file.
-
-Exchange EWS operations overview:
-    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/ews-operations-in-exchange
-&#34;&#34;&#34;
-
-from .archive_item import ArchiveItem
-from .common import EWSService
-from .convert_id import ConvertId
-from .copy_item import CopyItem
-from .create_attachment import CreateAttachment
-from .create_folder import CreateFolder
-from .create_item import CreateItem
-from .create_user_configuration import CreateUserConfiguration
-from .delete_attachment import DeleteAttachment
-from .delete_folder import DeleteFolder
-from .delete_item import DeleteItem
-from .delete_user_configuration import DeleteUserConfiguration
-from .empty_folder import EmptyFolder
-from .expand_dl import ExpandDL
-from .export_items import ExportItems
-from .find_folder import FindFolder
-from .find_item import FindItem
-from .find_people import FindPeople
-from .get_attachment import GetAttachment
-from .get_delegate import GetDelegate
-from .get_events import GetEvents
-from .get_folder import GetFolder
-from .get_item import GetItem
-from .get_mail_tips import GetMailTips
-from .get_persona import GetPersona
-from .get_room_lists import GetRoomLists
-from .get_rooms import GetRooms
-from .get_searchable_mailboxes import GetSearchableMailboxes
-from .get_server_time_zones import GetServerTimeZones
-from .get_streaming_events import GetStreamingEvents
-from .get_user_availability import GetUserAvailability
-from .get_user_configuration import GetUserConfiguration
-from .get_user_oof_settings import GetUserOofSettings
-from .get_user_settings import GetUserSettings
-from .inbox_rules import CreateInboxRule, DeleteInboxRule, GetInboxRules, SetInboxRule
-from .mark_as_junk import MarkAsJunk
-from .move_folder import MoveFolder
-from .move_item import MoveItem
-from .resolve_names import ResolveNames
-from .send_item import SendItem
-from .send_notification import SendNotification
-from .set_user_oof_settings import SetUserOofSettings
-from .subscribe import SubscribeToPull, SubscribeToPush, SubscribeToStreaming
-from .sync_folder_hierarchy import SyncFolderHierarchy
-from .sync_folder_items import SyncFolderItems
-from .unsubscribe import Unsubscribe
-from .update_folder import UpdateFolder
-from .update_item import UpdateItem
-from .update_user_configuration import UpdateUserConfiguration
-from .upload_items import UploadItems
-
-__all__ = [
-    &#34;ArchiveItem&#34;,
-    &#34;ConvertId&#34;,
-    &#34;CopyItem&#34;,
-    &#34;CreateAttachment&#34;,
-    &#34;CreateFolder&#34;,
-    &#34;CreateInboxRule&#34;,
-    &#34;CreateItem&#34;,
-    &#34;CreateUserConfiguration&#34;,
-    &#34;DeleteAttachment&#34;,
-    &#34;DeleteFolder&#34;,
-    &#34;DeleteInboxRule&#34;,
-    &#34;DeleteItem&#34;,
-    &#34;DeleteUserConfiguration&#34;,
-    &#34;EWSService&#34;,
-    &#34;EmptyFolder&#34;,
-    &#34;ExpandDL&#34;,
-    &#34;ExportItems&#34;,
-    &#34;FindFolder&#34;,
-    &#34;FindItem&#34;,
-    &#34;FindPeople&#34;,
-    &#34;GetAttachment&#34;,
-    &#34;GetDelegate&#34;,
-    &#34;GetEvents&#34;,
-    &#34;GetFolder&#34;,
-    &#34;GetInboxRules&#34;,
-    &#34;GetItem&#34;,
-    &#34;GetMailTips&#34;,
-    &#34;GetPersona&#34;,
-    &#34;GetRoomLists&#34;,
-    &#34;GetRooms&#34;,
-    &#34;GetSearchableMailboxes&#34;,
-    &#34;GetServerTimeZones&#34;,
-    &#34;GetStreamingEvents&#34;,
-    &#34;GetUserAvailability&#34;,
-    &#34;GetUserConfiguration&#34;,
-    &#34;GetUserOofSettings&#34;,
-    &#34;GetUserSettings&#34;,
-    &#34;MarkAsJunk&#34;,
-    &#34;MoveFolder&#34;,
-    &#34;MoveItem&#34;,
-    &#34;ResolveNames&#34;,
-    &#34;SendItem&#34;,
-    &#34;SendNotification&#34;,
-    &#34;SetInboxRule&#34;,
-    &#34;SetUserOofSettings&#34;,
-    &#34;SubscribeToPull&#34;,
-    &#34;SubscribeToPush&#34;,
-    &#34;SubscribeToStreaming&#34;,
-    &#34;SyncFolderHierarchy&#34;,
-    &#34;SyncFolderItems&#34;,
-    &#34;Unsubscribe&#34;,
-    &#34;UpdateFolder&#34;,
-    &#34;UpdateItem&#34;,
-    &#34;UpdateUserConfiguration&#34;,
-    &#34;UploadItems&#34;,
-]</code></pre>
-</details>
 </section>
 <section>
 <h2 class="section-title" id="header-submodules">Sub-modules</h2>
@@ -368,7 +260,6 @@ as three distinct classes.</p></div>
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/archiveitem-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/archiveitem-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -401,6 +292,7 @@ as three distinct classes.</p></div>
         payload.append(item_ids_element(items=items, version=self.account.version))
         return payload</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/archiveitem-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/archiveitem-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSAccountService" href="common.html#exchangelib.services.common.EWSAccountService">EWSAccountService</a></li>
@@ -428,10 +320,6 @@ as three distinct classes.</p></div>
 <span>def <span class="ident">call</span></span>(<span>self, items, to_folder)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Move a list of items to a specific folder in the archive mailbox.</p>
-<p>:param items: a list of (id, changekey) tuples or Item objects
-:param to_folder:</p>
-<p>:return: None</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -446,12 +334,15 @@ as three distinct classes.</p></div>
     &#34;&#34;&#34;
     return self._elems_to_objs(self._chunked_get_elements(self.get_payload, items=items, to_folder=to_folder))</code></pre>
 </details>
+<div class="desc"><p>Move a list of items to a specific folder in the archive mailbox.</p>
+<p>:param items: a list of (id, changekey) tuples or Item objects
+:param to_folder:</p>
+<p>:return: None</p></div>
 </dd>
 <dt id="exchangelib.services.ArchiveItem.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, items, to_folder)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -464,6 +355,7 @@ as three distinct classes.</p></div>
     payload.append(item_ids_element(items=items, version=self.account.version))
     return payload</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -485,9 +377,6 @@ as three distinct classes.</p></div>
 <span>(</span><span>protocol, chunk_size=None, timeout=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Take a list of IDs to convert. Returns a list of converted IDs or exception instances, in the same order as the
-input list.</p>
-<p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/convertid-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/convertid-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -532,6 +421,9 @@ input list.</p>
             + container.findall(AlternatePublicFolderItemId.response_tag())
         )</code></pre>
 </details>
+<div class="desc"><p>Take a list of IDs to convert. Returns a list of converted IDs or exception instances, in the same order as the
+input list.</p>
+<p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/convertid-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/convertid-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSService" href="common.html#exchangelib.services.common.EWSService">EWSService</a></li>
@@ -554,7 +446,6 @@ input list.</p>
 <span>def <span class="ident">call</span></span>(<span>self, items, destination_format)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -566,12 +457,12 @@ input list.</p>
         self._chunked_get_elements(self.get_payload, items=items, destination_format=destination_format)
     )</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.ConvertId.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, items, destination_format)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -587,6 +478,7 @@ input list.</p>
     payload.append(item_ids)
     return payload</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -608,7 +500,6 @@ input list.</p>
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/copyitem-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/copyitem-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -618,6 +509,7 @@ input list.</p>
 
     SERVICE_NAME = &#34;CopyItem&#34;</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/copyitem-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/copyitem-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.move_item.MoveItem" href="move_item.html#exchangelib.services.move_item.MoveItem">MoveItem</a></li>
@@ -651,8 +543,6 @@ input list.</p>
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN:
-<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createattachment-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createattachment-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -685,6 +575,8 @@ input list.</p>
         payload.append(attachments)
         return payload</code></pre>
 </details>
+<div class="desc"><p>MSDN:
+<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createattachment-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createattachment-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSAccountService" href="common.html#exchangelib.services.common.EWSAccountService">EWSAccountService</a></li>
@@ -712,7 +604,6 @@ input list.</p>
 <span>def <span class="ident">call</span></span>(<span>self, parent_item, items)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -720,12 +611,12 @@ input list.</p>
 <pre><code class="python">def call(self, parent_item, items):
     return self._elems_to_objs(self._chunked_get_elements(self.get_payload, items=items, parent_item=parent_item))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.CreateAttachment.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, items, parent_item)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -743,6 +634,7 @@ input list.</p>
     payload.append(attachments)
     return payload</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -764,7 +656,6 @@ input list.</p>
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createfolder-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createfolder-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -810,6 +701,7 @@ input list.</p>
         payload.append(folder_elems)
         return payload</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createfolder-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createfolder-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSAccountService" href="common.html#exchangelib.services.common.EWSAccountService">EWSAccountService</a></li>
@@ -837,7 +729,6 @@ input list.</p>
 <span>def <span class="ident">call</span></span>(<span>self, parent_folder, folders)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -854,12 +745,12 @@ input list.</p>
         )
     )</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.CreateFolder.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, folders, parent_folder)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -875,6 +766,7 @@ input list.</p>
     payload.append(folder_elems)
     return payload</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -896,8 +788,6 @@ input list.</p>
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN:
-<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/updateinboxrules-operation#updateinboxrules-create-rule-request-example">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/updateinboxrules-operation#updateinboxrules-create-rule-request-example</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -911,6 +801,8 @@ input list.</p>
     def _get_operation(self, rule):
         return Operations(create_rule_operation=CreateRuleOperation(rule=rule))</code></pre>
 </details>
+<div class="desc"><p>MSDN:
+<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/updateinboxrules-operation#updateinboxrules-create-rule-request-example">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/updateinboxrules-operation#updateinboxrules-create-rule-request-example</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.inbox_rules.UpdateInboxRules" href="inbox_rules.html#exchangelib.services.inbox_rules.UpdateInboxRules">UpdateInboxRules</a></li>
@@ -937,9 +829,6 @@ input list.</p>
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Take a folder and a list of items. Return the result of creation as a list of tuples (success[True|False],
-errormessage), in the same order as the input list.</p>
-<p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createitem-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createitem-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1027,6 +916,9 @@ errormessage), in the same order as the input list.</p>
         payload.append(item_elems)
         return payload</code></pre>
 </details>
+<div class="desc"><p>Take a folder and a list of items. Return the result of creation as a list of tuples (success[True|False],
+errormessage), in the same order as the input list.</p>
+<p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createitem-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createitem-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSAccountService" href="common.html#exchangelib.services.common.EWSAccountService">EWSAccountService</a></li>
@@ -1050,7 +942,6 @@ errormessage), in the same order as the input list.</p>
 <span>def <span class="ident">call</span></span>(<span>self, items, folder, message_disposition, send_meeting_invitations)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1083,25 +974,12 @@ errormessage), in the same order as the input list.</p>
         )
     )</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.CreateItem.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, items, folder, message_disposition, send_meeting_invitations)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Take a list of Item objects (CalendarItem, Message etc.) and return the XML for a CreateItem request.
-convert items to XML Elements.</p>
-<p>MessageDisposition is only applicable to email messages, where it is required.</p>
-<p>SendMeetingInvitations is required for calendar items. It is also applicable to tasks, meeting request
-responses (see
-<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createitem-operation-meeting-request">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createitem-operation-meeting-request</a>
-) and sharing
-invitation accepts (see
-<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createitem-acceptsharinginvitation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createitem-acceptsharinginvitation</a>
-). The last two are not supported yet.</p>
-<p>:param items:
-:param folder:
-:param message_disposition:
-:param send_meeting_invitations:</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1141,6 +1019,20 @@ invitation accepts (see
     payload.append(item_elems)
     return payload</code></pre>
 </details>
+<div class="desc"><p>Take a list of Item objects (CalendarItem, Message etc.) and return the XML for a CreateItem request.
+convert items to XML Elements.</p>
+<p>MessageDisposition is only applicable to email messages, where it is required.</p>
+<p>SendMeetingInvitations is required for calendar items. It is also applicable to tasks, meeting request
+responses (see
+<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createitem-operation-meeting-request">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createitem-operation-meeting-request</a>
+) and sharing
+invitation accepts (see
+<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createitem-acceptsharinginvitation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createitem-acceptsharinginvitation</a>
+). The last two are not supported yet.</p>
+<p>:param items:
+:param folder:
+:param message_disposition:
+:param send_meeting_invitations:</p></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -1162,8 +1054,6 @@ invitation accepts (see
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN:
-<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createuserconfiguration-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createuserconfiguration-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1184,6 +1074,8 @@ invitation accepts (see
             create_element(f&#34;m:{self.SERVICE_NAME}&#34;), user_configuration, version=self.protocol.version
         )</code></pre>
 </details>
+<div class="desc"><p>MSDN:
+<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createuserconfiguration-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/createuserconfiguration-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSAccountService" href="common.html#exchangelib.services.common.EWSAccountService">EWSAccountService</a></li>
@@ -1207,7 +1099,6 @@ invitation accepts (see
 <span>def <span class="ident">call</span></span>(<span>self, user_configuration)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1215,12 +1106,12 @@ invitation accepts (see
 <pre><code class="python">def call(self, user_configuration):
     return self._get_elements(payload=self.get_payload(user_configuration=user_configuration))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.CreateUserConfiguration.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, user_configuration)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1230,6 +1121,7 @@ invitation accepts (see
         create_element(f&#34;m:{self.SERVICE_NAME}&#34;), user_configuration, version=self.protocol.version
     )</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -1251,8 +1143,6 @@ invitation accepts (see
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN:
-<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/deleteattachment-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/deleteattachment-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1281,6 +1171,8 @@ invitation accepts (see
             version=self.account.version,
         )</code></pre>
 </details>
+<div class="desc"><p>MSDN:
+<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/deleteattachment-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/deleteattachment-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSAccountService" href="common.html#exchangelib.services.common.EWSAccountService">EWSAccountService</a></li>
@@ -1300,7 +1192,6 @@ invitation accepts (see
 <span>def <span class="ident">call</span></span>(<span>self, items)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1308,12 +1199,12 @@ invitation accepts (see
 <pre><code class="python">def call(self, items):
     return self._elems_to_objs(self._chunked_get_elements(self.get_payload, items=items))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.DeleteAttachment.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, items)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1325,6 +1216,7 @@ invitation accepts (see
         version=self.account.version,
     )</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -1346,7 +1238,6 @@ invitation accepts (see
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/deletefolder-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/deletefolder-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1367,6 +1258,7 @@ invitation accepts (see
         payload.append(folder_ids_element(folders=folders, version=self.account.version))
         return payload</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/deletefolder-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/deletefolder-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSAccountService" href="common.html#exchangelib.services.common.EWSAccountService">EWSAccountService</a></li>
@@ -1390,7 +1282,6 @@ invitation accepts (see
 <span>def <span class="ident">call</span></span>(<span>self, folders, delete_type)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1400,12 +1291,12 @@ invitation accepts (see
         raise InvalidEnumValue(&#34;delete_type&#34;, delete_type, DELETE_TYPE_CHOICES)
     return self._chunked_get_elements(self.get_payload, items=folders, delete_type=delete_type)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.DeleteFolder.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, folders, delete_type)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1415,6 +1306,7 @@ invitation accepts (see
     payload.append(folder_ids_element(folders=folders, version=self.account.version))
     return payload</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -1436,8 +1328,6 @@ invitation accepts (see
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN:
-<a href="https://learn.microsoft.com/en-us/exchange/client-developer/web-service-reference/updateinboxrules-operation#updateinboxrules-delete-rule-request-example">https://learn.microsoft.com/en-us/exchange/client-developer/web-service-reference/updateinboxrules-operation#updateinboxrules-delete-rule-request-example</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1451,6 +1341,8 @@ invitation accepts (see
     def _get_operation(self, rule):
         return Operations(delete_rule_operation=DeleteRuleOperation(id=rule.id))</code></pre>
 </details>
+<div class="desc"><p>MSDN:
+<a href="https://learn.microsoft.com/en-us/exchange/client-developer/web-service-reference/updateinboxrules-operation#updateinboxrules-delete-rule-request-example">https://learn.microsoft.com/en-us/exchange/client-developer/web-service-reference/updateinboxrules-operation#updateinboxrules-delete-rule-request-example</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.inbox_rules.UpdateInboxRules" href="inbox_rules.html#exchangelib.services.inbox_rules.UpdateInboxRules">UpdateInboxRules</a></li>
@@ -1477,9 +1369,6 @@ invitation accepts (see
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Take a folder and a list of (id, changekey) tuples. Return result of deletion as a list of tuples
-(success[True|False], errormessage), in the same order as the input list.</p>
-<p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/deleteitem-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/deleteitem-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1529,6 +1418,9 @@ invitation accepts (see
         payload.append(item_ids_element(items=items, version=self.account.version))
         return payload</code></pre>
 </details>
+<div class="desc"><p>Take a folder and a list of (id, changekey) tuples. Return result of deletion as a list of tuples
+(success[True|False], errormessage), in the same order as the input list.</p>
+<p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/deleteitem-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/deleteitem-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSAccountService" href="common.html#exchangelib.services.common.EWSAccountService">EWSAccountService</a></li>
@@ -1549,10 +1441,9 @@ invitation accepts (see
 <h3>Methods</h3>
 <dl>
 <dt id="exchangelib.services.DeleteItem.call"><code class="name flex">
-<span>def <span class="ident">call</span></span>(<span>self, items, delete_type, send_meeting_cancellations, affected_task_occurrences, suppress_read_receipts)</span>
+<span>def <span class="ident">call</span></span>(<span>self,<br>items,<br>delete_type,<br>send_meeting_cancellations,<br>affected_task_occurrences,<br>suppress_read_receipts)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1577,12 +1468,12 @@ invitation accepts (see
         suppress_read_receipts=suppress_read_receipts,
     )</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.DeleteItem.get_payload"><code class="name flex">
-<span>def <span class="ident">get_payload</span></span>(<span>self, items, delete_type, send_meeting_cancellations, affected_task_occurrences, suppress_read_receipts)</span>
+<span>def <span class="ident">get_payload</span></span>(<span>self,<br>items,<br>delete_type,<br>send_meeting_cancellations,<br>affected_task_occurrences,<br>suppress_read_receipts)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1602,6 +1493,7 @@ invitation accepts (see
     payload.append(item_ids_element(items=items, version=self.account.version))
     return payload</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -1623,8 +1515,6 @@ invitation accepts (see
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN:
-<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/deleteuserconfiguration-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/deleteuserconfiguration-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1645,6 +1535,8 @@ invitation accepts (see
             create_element(f&#34;m:{self.SERVICE_NAME}&#34;), user_configuration_name, version=self.account.version
         )</code></pre>
 </details>
+<div class="desc"><p>MSDN:
+<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/deleteuserconfiguration-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/deleteuserconfiguration-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSAccountService" href="common.html#exchangelib.services.common.EWSAccountService">EWSAccountService</a></li>
@@ -1668,7 +1560,6 @@ invitation accepts (see
 <span>def <span class="ident">call</span></span>(<span>self, user_configuration_name)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1676,12 +1567,12 @@ invitation accepts (see
 <pre><code class="python">def call(self, user_configuration_name):
     return self._get_elements(payload=self.get_payload(user_configuration_name=user_configuration_name))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.DeleteUserConfiguration.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, user_configuration_name)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1691,6 +1582,7 @@ invitation accepts (see
         create_element(f&#34;m:{self.SERVICE_NAME}&#34;), user_configuration_name, version=self.account.version
     )</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -1712,7 +1604,6 @@ invitation accepts (see
 <span>(</span><span>protocol, chunk_size=None, timeout=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Base class for all EWS services.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2359,6 +2250,7 @@ invitation accepts (see
             return list(container)
         return [True]</code></pre>
 </details>
+<div class="desc"><p>Base class for all EWS services.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.version.SupportedVersionClassMixIn" href="../version.html#exchangelib.version.SupportedVersionClassMixIn">SupportedVersionClassMixIn</a></li>
@@ -2424,15 +2316,6 @@ invitation accepts (see
 </code></dt>
 <dd>
 <div class="desc"><p>Return API versions supported by the service, sorted from newest to oldest</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def supported_api_versions(cls):
-    &#34;&#34;&#34;Return API versions supported by the service, sorted from newest to oldest&#34;&#34;&#34;
-    return sorted({v.api_version for v in Version.all_versions() if cls.supports_version(v)}, reverse=True)</code></pre>
-</details>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -2441,11 +2324,6 @@ def supported_api_versions(cls):
 <span>def <span class="ident">get</span></span>(<span>self, expect_result=True, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Like .call(), but expects exactly one result from the server, or zero when expect_result=False, or either
-zero or one when expect_result=None. Returns either one object or None.</p>
-<p>:param expect_result: None, True, or False
-:param kwargs: Same as arguments for .call()
-:return: Same as .call(), but returns either None or exactly one item</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2474,12 +2352,16 @@ zero or one when expect_result=None. Returns either one object or None.</p>
         raise ValueError(f&#34;Expected result length 1, but got {res}&#34;)
     return res[0]</code></pre>
 </details>
+<div class="desc"><p>Like .call(), but expects exactly one result from the server, or zero when expect_result=False, or either
+zero or one when expect_result=None. Returns either one object or None.</p>
+<p>:param expect_result: None, True, or False
+:param kwargs: Same as arguments for .call()
+:return: Same as .call(), but returns either None or exactly one item</p></div>
 </dd>
 <dt id="exchangelib.services.EWSService.parse"><code class="name flex">
 <span>def <span class="ident">parse</span></span>(<span>self, xml)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Used mostly for testing, when we want to parse static XML data.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2490,12 +2372,12 @@ zero or one when expect_result=None. Returns either one object or None.</p>
     _, body = self._get_soap_parts(response=resp)
     return self._elems_to_objs(self._get_elements_in_response(response=self._get_soap_messages(body=body)))</code></pre>
 </details>
+<div class="desc"><p>Used mostly for testing, when we want to parse static XML data.</p></div>
 </dd>
 <dt id="exchangelib.services.EWSService.stop_streaming"><code class="name flex">
 <span>def <span class="ident">stop_streaming</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2510,21 +2392,12 @@ zero or one when expect_result=None. Returns either one object or None.</p>
         self.protocol.release_session(self._streaming_session)
         self._streaming_session = None</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.EWSService.wrap"><code class="name flex">
 <span>def <span class="ident">wrap</span></span>(<span>self, content, api_version=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Generate the necessary boilerplate XML for a raw SOAP request. The XML is specific to the server version.
-ExchangeImpersonation allows to act as the user we want to impersonate.</p>
-<p>RequestServerVersion element on MSDN:
-<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/requestserverversion">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/requestserverversion</a></p>
-<p>ExchangeImpersonation element on MSDN:
-<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/exchangeimpersonation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/exchangeimpersonation</a></p>
-<p>TimeZoneContent element on MSDN:
-<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/timezonecontext">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/timezonecontext</a></p>
-<p>:param content:
-:param api_version:</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2566,6 +2439,16 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
     envelope.append(body)
     return xml_to_str(envelope, encoding=DEFAULT_ENCODING, xml_declaration=True)</code></pre>
 </details>
+<div class="desc"><p>Generate the necessary boilerplate XML for a raw SOAP request. The XML is specific to the server version.
+ExchangeImpersonation allows to act as the user we want to impersonate.</p>
+<p>RequestServerVersion element on MSDN:
+<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/requestserverversion">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/requestserverversion</a></p>
+<p>ExchangeImpersonation element on MSDN:
+<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/exchangeimpersonation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/exchangeimpersonation</a></p>
+<p>TimeZoneContent element on MSDN:
+<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/timezonecontext">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/timezonecontext</a></p>
+<p>:param content:
+:param api_version:</p></div>
 </dd>
 </dl>
 </dd>
@@ -2574,7 +2457,6 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/emptyfolder-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/emptyfolder-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2599,6 +2481,7 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
         payload.append(folder_ids_element(folders=folders, version=self.account.version))
         return payload</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/emptyfolder-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/emptyfolder-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSAccountService" href="common.html#exchangelib.services.common.EWSAccountService">EWSAccountService</a></li>
@@ -2622,7 +2505,6 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <span>def <span class="ident">call</span></span>(<span>self, folders, delete_type, delete_sub_folders)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2634,12 +2516,12 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
         self.get_payload, items=folders, delete_type=delete_type, delete_sub_folders=delete_sub_folders
     )</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.EmptyFolder.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, folders, delete_type, delete_sub_folders)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2651,6 +2533,7 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
     payload.append(folder_ids_element(folders=folders, version=self.account.version))
     return payload</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -2672,7 +2555,6 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <span>(</span><span>protocol, chunk_size=None, timeout=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/expanddl-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/expanddl-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2693,6 +2575,7 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
     def get_payload(self, distribution_list):
         return set_xml_value(create_element(f&#34;m:{self.SERVICE_NAME}&#34;), distribution_list, version=self.protocol.version)</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/expanddl-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/expanddl-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSService" href="common.html#exchangelib.services.common.EWSService">EWSService</a></li>
@@ -2719,7 +2602,6 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <span>def <span class="ident">call</span></span>(<span>self, distribution_list)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2727,12 +2609,12 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <pre><code class="python">def call(self, distribution_list):
     return self._elems_to_objs(self._get_elements(payload=self.get_payload(distribution_list=distribution_list)))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.ExpandDL.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, distribution_list)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2740,6 +2622,7 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <pre><code class="python">def get_payload(self, distribution_list):
     return set_xml_value(create_element(f&#34;m:{self.SERVICE_NAME}&#34;), distribution_list, version=self.protocol.version)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -2761,7 +2644,6 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/exportitems-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/exportitems-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2789,6 +2671,7 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
     def _get_elements_in_container(cls, container):
         return [container]</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/exportitems-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/exportitems-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSAccountService" href="common.html#exchangelib.services.common.EWSAccountService">EWSAccountService</a></li>
@@ -2816,7 +2699,6 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <span>def <span class="ident">call</span></span>(<span>self, items)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2824,12 +2706,12 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <pre><code class="python">def call(self, items):
     return self._elems_to_objs(self._chunked_get_elements(self.get_payload, items=items))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.ExportItems.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, items)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2839,6 +2721,7 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
     payload.append(item_ids_element(items=items, version=self.account.version))
     return payload</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -2860,7 +2743,6 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/findfolder-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/findfolder-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2937,6 +2819,7 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
         payload.append(folder_ids_element(folders=folders, version=self.protocol.version, tag=&#34;m:ParentFolderIds&#34;))
         return payload</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/findfolder-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/findfolder-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSPagingService" href="common.html#exchangelib.services.common.EWSPagingService">EWSPagingService</a></li>
@@ -2965,15 +2848,6 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <span>def <span class="ident">call</span></span>(<span>self, folders, additional_fields, restriction, shape, depth, max_items, offset)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Find sub-folders of a folder.</p>
-<p>:param folders: the folders to act on
-:param additional_fields: the extra fields that should be returned with the folder, as FieldPath objects
-:param restriction: Restriction object that defines the filters for the query
-:param shape: The set of attributes to return
-:param depth: How deep in the folder structure to search for folders
-:param max_items: The maximum number of items to return
-:param offset: the offset relative to the first item in the item collection. Usually 0.</p>
-<p>:return: XML elements for the matching folders</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3015,12 +2889,20 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
         )
     )</code></pre>
 </details>
+<div class="desc"><p>Find sub-folders of a folder.</p>
+<p>:param folders: the folders to act on
+:param additional_fields: the extra fields that should be returned with the folder, as FieldPath objects
+:param restriction: Restriction object that defines the filters for the query
+:param shape: The set of attributes to return
+:param depth: How deep in the folder structure to search for folders
+:param max_items: The maximum number of items to return
+:param offset: the offset relative to the first item in the item collection. Usually 0.</p>
+<p>:return: XML elements for the matching folders</p></div>
 </dd>
 <dt id="exchangelib.services.FindFolder.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, folders, additional_fields, restriction, shape, depth, page_size, offset=0)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3046,6 +2928,7 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
     payload.append(folder_ids_element(folders=folders, version=self.protocol.version, tag=&#34;m:ParentFolderIds&#34;))
     return payload</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -3067,7 +2950,6 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/finditem-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/finditem-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3178,6 +3060,7 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
             payload.append(query_string.to_xml(version=self.account.version))
         return payload</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/finditem-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/finditem-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSPagingService" href="common.html#exchangelib.services.common.EWSPagingService">EWSPagingService</a></li>
@@ -3203,21 +3086,9 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <h3>Methods</h3>
 <dl>
 <dt id="exchangelib.services.FindItem.call"><code class="name flex">
-<span>def <span class="ident">call</span></span>(<span>self, folders, additional_fields, restriction, order_fields, shape, query_string, depth, calendar_view, max_items, offset)</span>
+<span>def <span class="ident">call</span></span>(<span>self,<br>folders,<br>additional_fields,<br>restriction,<br>order_fields,<br>shape,<br>query_string,<br>depth,<br>calendar_view,<br>max_items,<br>offset)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Find items in an account.</p>
-<p>:param folders: the folders to act on
-:param additional_fields: the extra fields that should be returned with the item, as FieldPath objects
-:param restriction: a Restriction object for
-:param order_fields: the fields to sort the results by
-:param shape: The set of attributes to return
-:param query_string: a QueryString object
-:param depth: How deep in the folder structure to search for items
-:param calendar_view: If set, returns recurring calendar items unfolded
-:param max_items: the max number of items to return
-:param offset: the offset relative to the first item in the item collection. Usually 0.</p>
-<p>:return: XML elements for the matching items</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3275,12 +3146,23 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
         )
     )</code></pre>
 </details>
+<div class="desc"><p>Find items in an account.</p>
+<p>:param folders: the folders to act on
+:param additional_fields: the extra fields that should be returned with the item, as FieldPath objects
+:param restriction: a Restriction object for
+:param order_fields: the fields to sort the results by
+:param shape: The set of attributes to return
+:param query_string: a QueryString object
+:param depth: How deep in the folder structure to search for items
+:param calendar_view: If set, returns recurring calendar items unfolded
+:param max_items: the max number of items to return
+:param offset: the offset relative to the first item in the item collection. Usually 0.</p>
+<p>:return: XML elements for the matching items</p></div>
 </dd>
 <dt id="exchangelib.services.FindItem.get_payload"><code class="name flex">
-<span>def <span class="ident">get_payload</span></span>(<span>self, folders, additional_fields, restriction, order_fields, query_string, shape, depth, calendar_view, page_size, offset=0)</span>
+<span>def <span class="ident">get_payload</span></span>(<span>self,<br>folders,<br>additional_fields,<br>restriction,<br>order_fields,<br>query_string,<br>shape,<br>depth,<br>calendar_view,<br>page_size,<br>offset=0)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3320,6 +3202,7 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
         payload.append(query_string.to_xml(version=self.account.version))
     return payload</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -3341,7 +3224,6 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/findpeople-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/findpeople-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3442,6 +3324,7 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
         next_offset = None  # GetPersona does not support fetching more pages
         return item_count, next_offset</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/findpeople-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/findpeople-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSPagingService" href="common.html#exchangelib.services.common.EWSPagingService">EWSPagingService</a></li>
@@ -3467,20 +3350,9 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <h3>Methods</h3>
 <dl>
 <dt id="exchangelib.services.FindPeople.call"><code class="name flex">
-<span>def <span class="ident">call</span></span>(<span>self, folder, additional_fields, restriction, order_fields, shape, query_string, depth, max_items, offset)</span>
+<span>def <span class="ident">call</span></span>(<span>self,<br>folder,<br>additional_fields,<br>restriction,<br>order_fields,<br>shape,<br>query_string,<br>depth,<br>max_items,<br>offset)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Find items in an account. This service can only be called on a single folder.</p>
-<p>:param folder: the Folder object to query
-:param additional_fields: the extra fields that should be returned with the item, as FieldPath objects
-:param restriction: a Restriction object for
-:param order_fields: the fields to sort the results by
-:param shape: The set of attributes to return
-:param query_string: a QueryString object
-:param depth: How deep in the folder structure to search for items
-:param max_items: the max number of items to return
-:param offset: the offset relative to the first item in the item collection. Usually 0.</p>
-<p>:return: XML elements for the matching items</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3524,12 +3396,22 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
         )
     )</code></pre>
 </details>
+<div class="desc"><p>Find items in an account. This service can only be called on a single folder.</p>
+<p>:param folder: the Folder object to query
+:param additional_fields: the extra fields that should be returned with the item, as FieldPath objects
+:param restriction: a Restriction object for
+:param order_fields: the fields to sort the results by
+:param shape: The set of attributes to return
+:param query_string: a QueryString object
+:param depth: How deep in the folder structure to search for items
+:param max_items: the max number of items to return
+:param offset: the offset relative to the first item in the item collection. Usually 0.</p>
+<p>:return: XML elements for the matching items</p></div>
 </dd>
 <dt id="exchangelib.services.FindPeople.get_payload"><code class="name flex">
-<span>def <span class="ident">get_payload</span></span>(<span>self, folders, additional_fields, restriction, order_fields, query_string, shape, depth, page_size, offset=0)</span>
+<span>def <span class="ident">get_payload</span></span>(<span>self,<br>folders,<br>additional_fields,<br>restriction,<br>order_fields,<br>query_string,<br>shape,<br>depth,<br>page_size,<br>offset=0)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3558,6 +3440,7 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
         payload.append(query_string.to_xml(version=self.account.version))
     return payload</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -3579,7 +3462,6 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getattachment-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getattachment-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3682,6 +3564,7 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
             self.stop_streaming()
             self.streaming = False</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getattachment-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getattachment-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSAccountService" href="common.html#exchangelib.services.common.EWSAccountService">EWSAccountService</a></li>
@@ -3709,7 +3592,6 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <span>def <span class="ident">call</span></span>(<span>self, items, include_mime_content, body_type, filter_html_content, additional_fields)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3728,12 +3610,12 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
         )
     )</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.GetAttachment.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, items, include_mime_content, body_type, filter_html_content, additional_fields)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3761,12 +3643,12 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
     payload.append(attachment_ids_element(items=items, version=self.account.version))
     return payload</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.GetAttachment.stream_file_content"><code class="name flex">
 <span>def <span class="ident">stream_file_content</span></span>(<span>self, attachment_id)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3800,6 +3682,7 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
         self.stop_streaming()
         self.streaming = False</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -3821,7 +3704,6 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getdelegate-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getdelegate-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3866,6 +3748,7 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
     def _response_message_tag(cls):
         return f&#34;{{{MNS}}}DelegateUserResponseMessageType&#34;</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getdelegate-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getdelegate-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSAccountService" href="common.html#exchangelib.services.common.EWSAccountService">EWSAccountService</a></li>
@@ -3893,7 +3776,6 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <span>def <span class="ident">call</span></span>(<span>self, user_ids, include_permissions)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3908,12 +3790,12 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
         )
     )</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.GetDelegate.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, user_ids, mailbox, include_permissions)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3930,6 +3812,7 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
         set_xml_value(payload, user_ids_elem, version=self.protocol.version)
     return payload</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -3951,8 +3834,6 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN:
-<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getevents-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getevents-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3988,6 +3869,8 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
         add_xml_child(payload, &#34;m:Watermark&#34;, watermark)
         return payload</code></pre>
 </details>
+<div class="desc"><p>MSDN:
+<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getevents-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getevents-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSAccountService" href="common.html#exchangelib.services.common.EWSAccountService">EWSAccountService</a></li>
@@ -4011,7 +3894,6 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <span>def <span class="ident">call</span></span>(<span>self, subscription_id, watermark)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4026,12 +3908,12 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
         )
     )</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.GetEvents.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, subscription_id, watermark)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4042,6 +3924,7 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
     add_xml_child(payload, &#34;m:Watermark&#34;, watermark)
     return payload</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -4063,7 +3946,6 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getfolder-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getfolder-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4123,6 +4005,7 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
         payload.append(folder_ids_element(folders=folders, version=self.account.version))
         return payload</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getfolder-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getfolder-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSAccountService" href="common.html#exchangelib.services.common.EWSAccountService">EWSAccountService</a></li>
@@ -4150,11 +4033,6 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <span>def <span class="ident">call</span></span>(<span>self, folders, additional_fields, shape)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Take a folder ID and returns the full information for that folder.</p>
-<p>:param folders: a list of Folder objects
-:param additional_fields: the extra fields that should be returned with the folder, as FieldPath objects
-:param shape: The set of attributes to return</p>
-<p>:return: XML elements for the folders, in stable order</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4180,12 +4058,16 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
         )
     )</code></pre>
 </details>
+<div class="desc"><p>Take a folder ID and returns the full information for that folder.</p>
+<p>:param folders: a list of Folder objects
+:param additional_fields: the extra fields that should be returned with the folder, as FieldPath objects
+:param shape: The set of attributes to return</p>
+<p>:return: XML elements for the folders, in stable order</p></div>
 </dd>
 <dt id="exchangelib.services.GetFolder.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, folders, additional_fields, shape)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4200,6 +4082,7 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
     payload.append(folder_ids_element(folders=folders, version=self.account.version))
     return payload</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -4221,8 +4104,6 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getinboxrules-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getinboxrules-operation</a></p>
-<p>The GetInboxRules operation uses Exchange Web Services to retrieve Inbox rules in the identified user's mailbox.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4261,6 +4142,8 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
                 return []
         return super()._get_element_container(message, name)</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getinboxrules-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getinboxrules-operation</a></p>
+<p>The GetInboxRules operation uses Exchange Web Services to retrieve Inbox rules in the identified user's mailbox.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSAccountService" href="common.html#exchangelib.services.common.EWSAccountService">EWSAccountService</a></li>
@@ -4285,10 +4168,9 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <h3>Methods</h3>
 <dl>
 <dt id="exchangelib.services.GetInboxRules.call"><code class="name flex">
-<span>def <span class="ident">call</span></span>(<span>self, mailbox: Optional[str] = None) ‑> Generator[Union[<a title="exchangelib.properties.Rule" href="../properties.html#exchangelib.properties.Rule">Rule</a>, Exception, ForwardRef(None)], Any, None]</span>
+<span>def <span class="ident">call</span></span>(<span>self, mailbox: str | None = None) ‑> Generator[<a title="exchangelib.properties.Rule" href="../properties.html#exchangelib.properties.Rule">Rule</a> | Exception | None, Any, None]</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4300,12 +4182,12 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
     elements = self._get_elements(payload=payload)
     return self._elems_to_objs(elements)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.GetInboxRules.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, mailbox)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4315,6 +4197,7 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
     add_xml_child(payload, &#34;m:MailboxSmtpAddress&#34;, mailbox)
     return payload</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -4336,7 +4219,6 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getitem-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getitem-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4378,6 +4260,7 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
         payload.append(item_ids_element(items=items, version=self.account.version))
         return payload</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getitem-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getitem-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSAccountService" href="common.html#exchangelib.services.common.EWSAccountService">EWSAccountService</a></li>
@@ -4401,11 +4284,6 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <span>def <span class="ident">call</span></span>(<span>self, items, additional_fields, shape)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Return all items in an account that correspond to a list of ID's, in stable order.</p>
-<p>:param items: a list of (id, changekey) tuples or Item objects
-:param additional_fields: the extra fields that should be returned with the item, as FieldPath objects
-:param shape: The shape of returned objects</p>
-<p>:return: XML elements for the items, in stable order</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4428,12 +4306,16 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
         )
     )</code></pre>
 </details>
+<div class="desc"><p>Return all items in an account that correspond to a list of ID's, in stable order.</p>
+<p>:param items: a list of (id, changekey) tuples or Item objects
+:param additional_fields: the extra fields that should be returned with the item, as FieldPath objects
+:param shape: The shape of returned objects</p>
+<p>:return: XML elements for the items, in stable order</p></div>
 </dd>
 <dt id="exchangelib.services.GetItem.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, items, additional_fields, shape)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4448,6 +4330,7 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
     payload.append(item_ids_element(items=items, version=self.account.version))
     return payload</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -4469,7 +4352,6 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <span>(</span><span>protocol, chunk_size=None, timeout=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getmailtips-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getmailtips-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4513,6 +4395,7 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
     def _response_message_tag(cls):
         return f&#34;{{{MNS}}}MailTipsResponseMessageType&#34;</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getmailtips-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getmailtips-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSService" href="common.html#exchangelib.services.common.EWSService">EWSService</a></li>
@@ -4531,7 +4414,6 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <span>def <span class="ident">call</span></span>(<span>self, sending_as, recipients, mail_tips_requested)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4546,12 +4428,12 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
         )
     )</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.GetMailTips.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, recipients, sending_as, mail_tips_requested)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4569,6 +4451,7 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
         set_xml_value(payload, mail_tips_requested, version=self.protocol.version)
     return payload</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -4590,7 +4473,6 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getpersona-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getpersona-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4621,6 +4503,7 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
     def _response_tag(cls):
         return f&#34;{{{MNS}}}{cls.SERVICE_NAME}ResponseMessage&#34;</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getpersona-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getpersona-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSAccountService" href="common.html#exchangelib.services.common.EWSAccountService">EWSAccountService</a></li>
@@ -4640,7 +4523,6 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <span>def <span class="ident">call</span></span>(<span>self, personas)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4650,12 +4532,12 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
     for persona in personas:
         yield from self._elems_to_objs(self._get_elements(payload=self.get_payload(persona=persona)))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.GetPersona.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, persona)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4665,6 +4547,7 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
         create_element(f&#34;m:{self.SERVICE_NAME}&#34;), to_item_id(persona, PersonaId), version=self.protocol.version
     )</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -4686,7 +4569,6 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <span>(</span><span>protocol, chunk_size=None, timeout=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getroomlists-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getroomlists-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4707,6 +4589,7 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
     def get_payload(self):
         return create_element(f&#34;m:{self.SERVICE_NAME}&#34;)</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getroomlists-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getroomlists-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSService" href="common.html#exchangelib.services.common.EWSService">EWSService</a></li>
@@ -4733,7 +4616,6 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <span>def <span class="ident">call</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4741,12 +4623,12 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <pre><code class="python">def call(self):
     return self._elems_to_objs(self._get_elements(payload=self.get_payload()))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.GetRoomLists.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4754,6 +4636,7 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <pre><code class="python">def get_payload(self):
     return create_element(f&#34;m:{self.SERVICE_NAME}&#34;)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -4775,7 +4658,6 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <span>(</span><span>protocol, chunk_size=None, timeout=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getrooms-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getrooms-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4796,6 +4678,7 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
     def get_payload(self, room_list):
         return set_xml_value(create_element(f&#34;m:{self.SERVICE_NAME}&#34;), room_list, version=self.protocol.version)</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getrooms-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getrooms-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSService" href="common.html#exchangelib.services.common.EWSService">EWSService</a></li>
@@ -4822,7 +4705,6 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <span>def <span class="ident">call</span></span>(<span>self, room_list)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4830,12 +4712,12 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <pre><code class="python">def call(self, room_list):
     return self._elems_to_objs(self._get_elements(payload=self.get_payload(room_list=room_list)))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.GetRooms.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, room_list)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4843,6 +4725,7 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <pre><code class="python">def get_payload(self, room_list):
     return set_xml_value(create_element(f&#34;m:{self.SERVICE_NAME}&#34;), room_list, version=self.protocol.version)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -4864,8 +4747,6 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <span>(</span><span>protocol, chunk_size=None, timeout=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN:
-<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getsearchablemailboxes-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getsearchablemailboxes-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4912,6 +4793,8 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
                     continue
                 yield from self._get_elements_in_container(container=container)</code></pre>
 </details>
+<div class="desc"><p>MSDN:
+<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getsearchablemailboxes-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getsearchablemailboxes-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSService" href="common.html#exchangelib.services.common.EWSService">EWSService</a></li>
@@ -4946,7 +4829,6 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <span>def <span class="ident">call</span></span>(<span>self, search_filter, expand_group_membership)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4961,12 +4843,12 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
         )
     )</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.GetSearchableMailboxes.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, search_filter, expand_group_membership)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4979,6 +4861,7 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
         add_xml_child(payload, &#34;m:ExpandGroupMembership&#34;, &#34;true&#34; if expand_group_membership else &#34;false&#34;)
     return payload</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -5000,8 +4883,6 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <span>(</span><span>protocol, chunk_size=None, timeout=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN:
-<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getservertimezones-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getservertimezones-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -5040,6 +4921,8 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
     def _elem_to_obj(self, elem):
         return TimeZoneDefinition.from_xml(elem=elem, account=None)</code></pre>
 </details>
+<div class="desc"><p>MSDN:
+<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getservertimezones-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getservertimezones-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSService" href="common.html#exchangelib.services.common.EWSService">EWSService</a></li>
@@ -5066,7 +4949,6 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <span>def <span class="ident">call</span></span>(<span>self, timezones=None, return_full_timezone_data=False)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -5078,12 +4960,12 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
         )
     )</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.GetServerTimeZones.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, timezones, return_full_timezone_data)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -5103,6 +4985,7 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
             payload.append(tz_ids)
     return payload</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -5124,8 +5007,6 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN:
-<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getstreamingevents-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getstreamingevents-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -5222,6 +5103,8 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
         add_xml_child(payload, &#34;m:ConnectionTimeout&#34;, connection_timeout)
         return payload</code></pre>
 </details>
+<div class="desc"><p>MSDN:
+<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getstreamingevents-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getstreamingevents-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSAccountService" href="common.html#exchangelib.services.common.EWSAccountService">EWSAccountService</a></li>
@@ -5257,7 +5140,6 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <span>def <span class="ident">call</span></span>(<span>self, subscription_ids, connection_timeout)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -5278,12 +5160,12 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
         )
     )</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.GetStreamingEvents.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, subscription_ids, connection_timeout)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -5297,6 +5179,7 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
     add_xml_child(payload, &#34;m:ConnectionTimeout&#34;, connection_timeout)
     return payload</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -5318,9 +5201,6 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Get detailed availability information for a list of users.
-MSDN:
-<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getuseravailability-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getuseravailability-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -5386,6 +5266,9 @@ MSDN:
     def _get_elements_in_container(cls, container):
         return [container.find(f&#34;{{{MNS}}}FreeBusyView&#34;)]</code></pre>
 </details>
+<div class="desc"><p>Get detailed availability information for a list of users.
+MSDN:
+<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getuseravailability-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getuseravailability-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSService" href="common.html#exchangelib.services.common.EWSService">EWSService</a></li>
@@ -5404,7 +5287,6 @@ MSDN:
 <span>def <span class="ident">call</span></span>(<span>self, tzinfo, mailbox_data, timezone, free_busy_view_options)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -5422,12 +5304,12 @@ MSDN:
         )
     )</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.GetUserAvailability.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, mailbox_data, timezone, free_busy_view_options)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -5440,6 +5322,7 @@ MSDN:
     payload.append(mailbox_data_array)
     return set_xml_value(payload, free_busy_view_options, version=self.protocol.version)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -5461,8 +5344,6 @@ MSDN:
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN:
-<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getuserconfiguration-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getuserconfiguration-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -5498,6 +5379,8 @@ MSDN:
         )
         return payload</code></pre>
 </details>
+<div class="desc"><p>MSDN:
+<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getuserconfiguration-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getuserconfiguration-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSAccountService" href="common.html#exchangelib.services.common.EWSAccountService">EWSAccountService</a></li>
@@ -5517,7 +5400,6 @@ MSDN:
 <span>def <span class="ident">call</span></span>(<span>self, user_configuration_name, properties)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -5531,12 +5413,12 @@ MSDN:
         )
     )</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.GetUserConfiguration.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, user_configuration_name, properties)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -5549,6 +5431,7 @@ MSDN:
     )
     return payload</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -5570,8 +5453,6 @@ MSDN:
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Get automatic reply settings for the specified mailbox.
-MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getuseroofsettings-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getuseroofsettings-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -5611,6 +5492,8 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
     def _response_message_tag(cls):
         return f&#34;{{{MNS}}}ResponseMessage&#34;</code></pre>
 </details>
+<div class="desc"><p>Get automatic reply settings for the specified mailbox.
+MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getuseroofsettings-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/getuseroofsettings-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSAccountService" href="common.html#exchangelib.services.common.EWSAccountService">EWSAccountService</a></li>
@@ -5634,7 +5517,6 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <span>def <span class="ident">call</span></span>(<span>self, mailbox)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -5642,12 +5524,12 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <pre><code class="python">def call(self, mailbox):
     return self._elems_to_objs(self._get_elements(payload=self.get_payload(mailbox=mailbox)))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.GetUserOofSettings.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, mailbox)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -5659,6 +5541,7 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
         version=self.account.version,
     )</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -5680,9 +5563,6 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <span>(</span><span>protocol, chunk_size=None, timeout=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Take a list of users and requested Autodiscover settings for these users. Returns the requested settings values.</p>
-<p>MSDN:
-<a href="https://learn.microsoft.com/en-us/exchange/client-developer/web-service-reference/getusersettings-operation-soap">https://learn.microsoft.com/en-us/exchange/client-developer/web-service-reference/getusersettings-operation-soap</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -5763,6 +5643,9 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
         except self.ERRORS_TO_CATCH_IN_RESPONSE as e:
             return e</code></pre>
 </details>
+<div class="desc"><p>Take a list of users and requested Autodiscover settings for these users. Returns the requested settings values.</p>
+<p>MSDN:
+<a href="https://learn.microsoft.com/en-us/exchange/client-developer/web-service-reference/getusersettings-operation-soap">https://learn.microsoft.com/en-us/exchange/client-developer/web-service-reference/getusersettings-operation-soap</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSService" href="common.html#exchangelib.services.common.EWSService">EWSService</a></li>
@@ -5793,7 +5676,6 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <span>def <span class="ident">call</span></span>(<span>self, users, settings)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -5801,12 +5683,12 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <pre><code class="python">def call(self, users, settings):
     return self._elems_to_objs(self._get_elements(self.get_payload(users=users, settings=settings)))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.GetUserSettings.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, users, settings)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -5827,6 +5709,7 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
     payload.append(request)
     return payload</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -5848,7 +5731,6 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/markasjunk-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/markasjunk-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -5876,6 +5758,7 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
         payload.append(item_ids_element(items=items, version=self.account.version))
         return payload</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/markasjunk-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/markasjunk-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSAccountService" href="common.html#exchangelib.services.common.EWSAccountService">EWSAccountService</a></li>
@@ -5895,7 +5778,6 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <span>def <span class="ident">call</span></span>(<span>self, items, is_junk, move_item)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -5905,12 +5787,12 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
         self._chunked_get_elements(self.get_payload, items=items, is_junk=is_junk, move_item=move_item)
     )</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.MarkAsJunk.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, items, is_junk, move_item)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -5921,6 +5803,7 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
     payload.append(item_ids_element(items=items, version=self.account.version))
     return payload</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -5942,7 +5825,6 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/movefolder-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/movefolder-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -5968,6 +5850,7 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
         payload.append(folder_ids_element(folders=folders, version=self.account.version))
         return payload</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/movefolder-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/movefolder-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSAccountService" href="common.html#exchangelib.services.common.EWSAccountService">EWSAccountService</a></li>
@@ -5991,7 +5874,6 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <span>def <span class="ident">call</span></span>(<span>self, folders, to_folder)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -6001,12 +5883,12 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
         raise InvalidTypeError(&#34;to_folder&#34;, to_folder, (BaseFolder, FolderId))
     return self._elems_to_objs(self._chunked_get_elements(self.get_payload, items=folders, to_folder=to_folder))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.MoveFolder.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, folders, to_folder)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -6018,6 +5900,7 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
     payload.append(folder_ids_element(folders=folders, version=self.account.version))
     return payload</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -6039,7 +5922,6 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/moveitem-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/moveitem-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -6065,6 +5947,7 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
         payload.append(item_ids_element(items=items, version=self.account.version))
         return payload</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/moveitem-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/moveitem-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSAccountService" href="common.html#exchangelib.services.common.EWSAccountService">EWSAccountService</a></li>
@@ -6092,7 +5975,6 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <span>def <span class="ident">call</span></span>(<span>self, items, to_folder)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -6102,12 +5984,12 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
         raise InvalidTypeError(&#34;to_folder&#34;, to_folder, (BaseFolder, FolderId))
     return self._elems_to_objs(self._chunked_get_elements(self.get_payload, items=items, to_folder=to_folder))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.MoveItem.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, items, to_folder)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -6119,6 +6001,7 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
     payload.append(item_ids_element(items=items, version=self.account.version))
     return payload</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -6140,7 +6023,6 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/resolvenames-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/resolvenames-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -6237,6 +6119,7 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
             add_xml_child(payload, &#34;m:UnresolvedEntry&#34;, entry)
         return payload</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/resolvenames-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/resolvenames-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSService" href="common.html#exchangelib.services.common.EWSService">EWSService</a></li>
@@ -6268,10 +6151,9 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <h3>Methods</h3>
 <dl>
 <dt id="exchangelib.services.ResolveNames.call"><code class="name flex">
-<span>def <span class="ident">call</span></span>(<span>self, unresolved_entries, parent_folders=None, return_full_contact_data=False, search_scope=None, contact_data_shape=None)</span>
+<span>def <span class="ident">call</span></span>(<span>self,<br>unresolved_entries,<br>parent_folders=None,<br>return_full_contact_data=False,<br>search_scope=None,<br>contact_data_shape=None)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -6305,12 +6187,12 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
         )
     )</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.ResolveNames.get_payload"><code class="name flex">
-<span>def <span class="ident">get_payload</span></span>(<span>self, unresolved_entries, parent_folders, return_full_contact_data, search_scope, contact_data_shape)</span>
+<span>def <span class="ident">get_payload</span></span>(<span>self,<br>unresolved_entries,<br>parent_folders,<br>return_full_contact_data,<br>search_scope,<br>contact_data_shape)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -6336,6 +6218,7 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
         add_xml_child(payload, &#34;m:UnresolvedEntry&#34;, entry)
     return payload</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -6357,7 +6240,6 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/senditem-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/senditem-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -6382,6 +6264,7 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
             )
         return payload</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/senditem-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/senditem-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSAccountService" href="common.html#exchangelib.services.common.EWSAccountService">EWSAccountService</a></li>
@@ -6405,7 +6288,6 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <span>def <span class="ident">call</span></span>(<span>self, items, saved_item_folder)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -6415,12 +6297,12 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
         raise InvalidTypeError(&#34;saved_item_folder&#34;, saved_item_folder, (BaseFolder, FolderId))
     return self._chunked_get_elements(self.get_payload, items=items, saved_item_folder=saved_item_folder)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.SendItem.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, items, saved_item_folder)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -6434,6 +6316,7 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
         )
     return payload</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -6455,10 +6338,6 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <span>(</span><span>protocol, chunk_size=None, timeout=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/sendnotification">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/sendnotification</a></p>
-<p>This service is implemented backwards compared to other services. We use it to parse the XML body of push
-notifications we receive on the callback URL defined in a push subscription, and to create responses to these
-push notifications.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -6501,6 +6380,10 @@ push notifications.</p></div>
         add_xml_child(payload, &#34;m:SubscriptionStatus&#34;, status)
         return payload</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/sendnotification">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/sendnotification</a></p>
+<p>This service is implemented backwards compared to other services. We use it to parse the XML body of push
+notifications we receive on the callback URL defined in a push subscription, and to create responses to these
+push notifications.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSService" href="common.html#exchangelib.services.common.EWSService">EWSService</a></li>
@@ -6531,7 +6414,6 @@ push notifications.</p></div>
 <span>def <span class="ident">get_payload</span></span>(<span>self, status)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -6543,12 +6425,12 @@ push notifications.</p></div>
     add_xml_child(payload, &#34;m:SubscriptionStatus&#34;, status)
     return payload</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.SendNotification.ok_payload"><code class="name flex">
 <span>def <span class="ident">ok_payload</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -6556,12 +6438,12 @@ push notifications.</p></div>
 <pre><code class="python">def ok_payload(self):
     return self.wrap(content=self.get_payload(status=self.OK))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.SendNotification.unsubscribe_payload"><code class="name flex">
 <span>def <span class="ident">unsubscribe_payload</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -6569,6 +6451,7 @@ push notifications.</p></div>
 <pre><code class="python">def unsubscribe_payload(self):
     return self.wrap(content=self.get_payload(status=self.UNSUBSCRIBE))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -6590,8 +6473,6 @@ push notifications.</p></div>
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN:
-<a href="https://learn.microsoft.com/en-us/exchange/client-developer/web-service-reference/updateinboxrules-operation#updateinboxrules-set-rule-request-example">https://learn.microsoft.com/en-us/exchange/client-developer/web-service-reference/updateinboxrules-operation#updateinboxrules-set-rule-request-example</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -6605,6 +6486,8 @@ push notifications.</p></div>
     def _get_operation(self, rule):
         return Operations(set_rule_operation=SetRuleOperation(rule=rule))</code></pre>
 </details>
+<div class="desc"><p>MSDN:
+<a href="https://learn.microsoft.com/en-us/exchange/client-developer/web-service-reference/updateinboxrules-operation#updateinboxrules-set-rule-request-example">https://learn.microsoft.com/en-us/exchange/client-developer/web-service-reference/updateinboxrules-operation#updateinboxrules-set-rule-request-example</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.inbox_rules.UpdateInboxRules" href="inbox_rules.html#exchangelib.services.inbox_rules.UpdateInboxRules">UpdateInboxRules</a></li>
@@ -6631,8 +6514,6 @@ push notifications.</p></div>
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Set automatic replies for the specified mailbox.
-MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/setuseroofsettings-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/setuseroofsettings-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -6665,6 +6546,8 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
     def _response_message_tag(cls):
         return f&#34;{{{MNS}}}ResponseMessage&#34;</code></pre>
 </details>
+<div class="desc"><p>Set automatic replies for the specified mailbox.
+MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/setuseroofsettings-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/setuseroofsettings-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSAccountService" href="common.html#exchangelib.services.common.EWSAccountService">EWSAccountService</a></li>
@@ -6688,7 +6571,6 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <span>def <span class="ident">call</span></span>(<span>self, oof_settings, mailbox)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -6700,12 +6582,12 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
         raise InvalidTypeError(&#34;mailbox&#34;, mailbox, Mailbox)
     return self._get_elements(payload=self.get_payload(oof_settings=oof_settings, mailbox=mailbox))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.SetUserOofSettings.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, oof_settings, mailbox)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -6715,6 +6597,7 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
     set_xml_value(payload, AvailabilityMailbox.from_mailbox(mailbox), version=self.account.version)
     return set_xml_value(payload, oof_settings, version=self.account.version)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -6736,8 +6619,6 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Base class for subscription classes.</p>
-<p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/subscribe-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/subscribe-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -6765,6 +6646,8 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
         payload.append(request_elem)
         return payload</code></pre>
 </details>
+<div class="desc"><p>Base class for subscription classes.</p>
+<p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/subscribe-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/subscribe-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.subscribe.Subscribe" href="subscribe.html#exchangelib.services.subscribe.Subscribe">Subscribe</a></li>
@@ -6789,7 +6672,6 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <span>def <span class="ident">call</span></span>(<span>self, folders, event_types, watermark, timeout)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -6803,12 +6685,12 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
         watermark=watermark,
     )</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.SubscribeToPull.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, folders, event_types, watermark, timeout)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -6822,6 +6704,7 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
     payload.append(request_elem)
     return payload</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -6843,8 +6726,6 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Base class for subscription classes.</p>
-<p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/subscribe-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/subscribe-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -6873,6 +6754,8 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
         payload.append(request_elem)
         return payload</code></pre>
 </details>
+<div class="desc"><p>Base class for subscription classes.</p>
+<p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/subscribe-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/subscribe-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.subscribe.Subscribe" href="subscribe.html#exchangelib.services.subscribe.Subscribe">Subscribe</a></li>
@@ -6893,7 +6776,6 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <span>def <span class="ident">call</span></span>(<span>self, folders, event_types, watermark, status_frequency, url)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -6908,12 +6790,12 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
         watermark=watermark,
     )</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.SubscribeToPush.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, folders, event_types, watermark, status_frequency, url)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -6928,6 +6810,7 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
     payload.append(request_elem)
     return payload</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -6949,8 +6832,6 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Base class for subscription classes.</p>
-<p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/subscribe-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/subscribe-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -6975,6 +6856,8 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
         payload.append(self._partial_payload(folders=folders, event_types=event_types))
         return payload</code></pre>
 </details>
+<div class="desc"><p>Base class for subscription classes.</p>
+<p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/subscribe-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/subscribe-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.subscribe.Subscribe" href="subscribe.html#exchangelib.services.subscribe.Subscribe">Subscribe</a></li>
@@ -6999,7 +6882,6 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <span>def <span class="ident">call</span></span>(<span>self, folders, event_types)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -7007,12 +6889,12 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <pre><code class="python">def call(self, folders, event_types):
     yield from self._partial_call(payload_func=self.get_payload, folders=folders, event_types=event_types)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.SubscribeToStreaming.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, folders, event_types)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -7022,6 +6904,7 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
     payload.append(self._partial_payload(folders=folders, event_types=event_types))
     return payload</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -7043,8 +6926,6 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN:
-<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/syncfolderhierarchy-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/syncfolderhierarchy-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -7092,6 +6973,8 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
             folder=folder, shape=shape, additional_fields=additional_fields, sync_state=sync_state
         )</code></pre>
 </details>
+<div class="desc"><p>MSDN:
+<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/syncfolderhierarchy-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/syncfolderhierarchy-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.sync_folder_hierarchy.SyncFolder" href="sync_folder_hierarchy.html#exchangelib.services.sync_folder_hierarchy.SyncFolder">SyncFolder</a></li>
@@ -7120,7 +7003,6 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <span>def <span class="ident">call</span></span>(<span>self, folder, shape, additional_fields, sync_state)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -7139,12 +7021,12 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
         )
     )</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.SyncFolderHierarchy.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, folder, shape, additional_fields, sync_state)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -7154,6 +7036,7 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
         folder=folder, shape=shape, additional_fields=additional_fields, sync_state=sync_state
     )</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -7175,8 +7058,6 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN:
-<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/syncfolderitems-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/syncfolderitems-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -7251,6 +7132,8 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
             add_xml_child(sync_folder_items, &#34;m:SyncScope&#34;, sync_scope)
         return sync_folder_items</code></pre>
 </details>
+<div class="desc"><p>MSDN:
+<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/syncfolderitems-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/syncfolderitems-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.sync_folder_hierarchy.SyncFolder" href="sync_folder_hierarchy.html#exchangelib.services.sync_folder_hierarchy.SyncFolder">SyncFolder</a></li>
@@ -7292,10 +7175,9 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <h3>Methods</h3>
 <dl>
 <dt id="exchangelib.services.SyncFolderItems.call"><code class="name flex">
-<span>def <span class="ident">call</span></span>(<span>self, folder, shape, additional_fields, sync_state, ignore, max_changes_returned, sync_scope)</span>
+<span>def <span class="ident">call</span></span>(<span>self,<br>folder,<br>shape,<br>additional_fields,<br>sync_state,<br>ignore,<br>max_changes_returned,<br>sync_scope)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -7324,12 +7206,12 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
         )
     )</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.SyncFolderItems.get_payload"><code class="name flex">
-<span>def <span class="ident">get_payload</span></span>(<span>self, folder, shape, additional_fields, sync_state, ignore, max_changes_returned, sync_scope)</span>
+<span>def <span class="ident">get_payload</span></span>(<span>self,<br>folder,<br>shape,<br>additional_fields,<br>sync_state,<br>ignore,<br>max_changes_returned,<br>sync_scope)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -7346,6 +7228,7 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
         add_xml_child(sync_folder_items, &#34;m:SyncScope&#34;, sync_scope)
     return sync_folder_items</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -7367,8 +7250,6 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Unsubscribing is only valid for pull and streaming notifications.</p>
-<p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/unsubscribe-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/unsubscribe-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -7391,6 +7272,8 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
         add_xml_child(payload, &#34;m:SubscriptionId&#34;, subscription_id)
         return payload</code></pre>
 </details>
+<div class="desc"><p>Unsubscribing is only valid for pull and streaming notifications.</p>
+<p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/unsubscribe-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/unsubscribe-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSAccountService" href="common.html#exchangelib.services.common.EWSAccountService">EWSAccountService</a></li>
@@ -7418,7 +7301,6 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <span>def <span class="ident">call</span></span>(<span>self, subscription_id)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -7426,12 +7308,12 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <pre><code class="python">def call(self, subscription_id):
     return self._get_elements(payload=self.get_payload(subscription_id=subscription_id))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.Unsubscribe.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, subscription_id)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -7441,6 +7323,7 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
     add_xml_child(payload, &#34;m:SubscriptionId&#34;, subscription_id)
     return payload</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -7462,7 +7345,6 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/updatefolder-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/updatefolder-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -7505,6 +7387,7 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
         payload.append(self._changes_elem(target_changes=folders))
         return payload</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/updatefolder-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/updatefolder-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.update_folder.BaseUpdateService" href="update_folder.html#exchangelib.services.update_folder.BaseUpdateService">BaseUpdateService</a></li>
@@ -7545,7 +7428,6 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <span>def <span class="ident">call</span></span>(<span>self, folders)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -7556,12 +7438,12 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
     self.folders = list(folders)  # Convert to a list, in case &#39;folders&#39; is a generator. We&#39;re iterating twice.
     return self._elems_to_objs(self._chunked_get_elements(self.get_payload, items=self.folders))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.UpdateFolder.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, folders)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -7573,6 +7455,7 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
     payload.append(self._changes_elem(target_changes=folders))
     return payload</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -7594,7 +7477,6 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/updateitem-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/updateitem-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -7696,6 +7578,7 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
         payload.append(self._changes_elem(target_changes=items))
         return payload</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/updateitem-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/updateitem-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.update_folder.BaseUpdateService" href="update_folder.html#exchangelib.services.update_folder.BaseUpdateService">BaseUpdateService</a></li>
@@ -7733,10 +7616,9 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <h3>Methods</h3>
 <dl>
 <dt id="exchangelib.services.UpdateItem.call"><code class="name flex">
-<span>def <span class="ident">call</span></span>(<span>self, items, conflict_resolution, message_disposition, send_meeting_invitations_or_cancellations, suppress_read_receipts)</span>
+<span>def <span class="ident">call</span></span>(<span>self,<br>items,<br>conflict_resolution,<br>message_disposition,<br>send_meeting_invitations_or_cancellations,<br>suppress_read_receipts)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -7772,12 +7654,12 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
         )
     )</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.UpdateItem.get_payload"><code class="name flex">
-<span>def <span class="ident">get_payload</span></span>(<span>self, items, conflict_resolution, message_disposition, send_meeting_invitations_or_cancellations, suppress_read_receipts)</span>
+<span>def <span class="ident">get_payload</span></span>(<span>self,<br>items,<br>conflict_resolution,<br>message_disposition,<br>send_meeting_invitations_or_cancellations,<br>suppress_read_receipts)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -7803,6 +7685,7 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
     payload.append(self._changes_elem(target_changes=items))
     return payload</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -7824,8 +7707,6 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN:
-<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/updateuserconfiguration-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/updateuserconfiguration-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -7844,6 +7725,8 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
     def get_payload(self, user_configuration):
         return set_xml_value(create_element(f&#34;m:{self.SERVICE_NAME}&#34;), user_configuration, version=self.account.version)</code></pre>
 </details>
+<div class="desc"><p>MSDN:
+<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/updateuserconfiguration-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/updateuserconfiguration-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSAccountService" href="common.html#exchangelib.services.common.EWSAccountService">EWSAccountService</a></li>
@@ -7867,7 +7750,6 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <span>def <span class="ident">call</span></span>(<span>self, user_configuration)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -7875,12 +7757,12 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <pre><code class="python">def call(self, user_configuration):
     return self._get_elements(payload=self.get_payload(user_configuration=user_configuration))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.UpdateUserConfiguration.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, user_configuration)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -7888,6 +7770,7 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <pre><code class="python">def get_payload(self, user_configuration):
     return set_xml_value(create_element(f&#34;m:{self.SERVICE_NAME}&#34;), user_configuration, version=self.account.version)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -7909,7 +7792,6 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/uploaditems-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/uploaditems-operation</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -7957,6 +7839,7 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
     def _get_elements_in_container(cls, container):
         return [container]</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/uploaditems-operation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/uploaditems-operation</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.services.common.EWSAccountService" href="common.html#exchangelib.services.common.EWSAccountService">EWSAccountService</a></li>
@@ -7980,7 +7863,6 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
 <span>def <span class="ident">call</span></span>(<span>self, items)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -7989,17 +7871,12 @@ MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-se
     # _pool_requests expects &#39;items&#39;, not &#39;data&#39;
     return self._elems_to_objs(self._chunked_get_elements(self.get_payload, items=items))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.services.UploadItems.get_payload"><code class="name flex">
 <span>def <span class="ident">get_payload</span></span>(<span>self, items)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Upload given items to given account.</p>
-<p>'items' is an iterable of tuples where the first element is a Folder instance representing the ParentFolder
-that the item will be placed in and the second element is a tuple containing an optional ItemId, an optional
-Item.is_associated boolean, and a Data string returned from an ExportItems.
-call.</p>
-<p>:param items:</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -8030,6 +7907,12 @@ call.</p>
         items_elem.append(item)
     return payload</code></pre>
 </details>
+<div class="desc"><p>Upload given items to given account.</p>
+<p>'items' is an iterable of tuples where the first element is a Folder instance representing the ParentFolder
+that the item will be placed in and the second element is a tuple containing an optional ItemId, an optional
+Item.is_associated boolean, and a Data string returned from an ExportItems.
+call.</p>
+<p>:param items:</p></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -8050,7 +7933,6 @@ call.</p>
 </section>
 </article>
 <nav id="sidebar">
-<h1>Index</h1>
 <div class="toc">
 <ul></ul>
 </div>
@@ -8644,7 +8526,7 @@ call.</p>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
 </footer>
 </body>
 </html>

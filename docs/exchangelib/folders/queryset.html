@@ -2,18 +2,32 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.10.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.5">
 <title>exchangelib.folders.queryset API documentation</title>
-<meta name="description" content="" />
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
-<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
-<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
-<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
 </head>
 <body>
 <main>
@@ -22,198 +36,6 @@
 <h1 class="title">Module <code>exchangelib.folders.queryset</code></h1>
 </header>
 <section id="section-intro">
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">import logging
-from copy import deepcopy
-
-from ..errors import ErrorFolderNotFound, ErrorItemNotFound, ErrorNoPublicFolderReplicaAvailable, InvalidTypeError
-from ..properties import FolderId, InvalidField
-from ..queryset import DoesNotExist, MultipleObjectsReturned
-from ..restriction import Q
-
-# Traversal enums
-SHALLOW = &#34;Shallow&#34;
-SOFT_DELETED = &#34;SoftDeleted&#34;
-DEEP = &#34;Deep&#34;
-FOLDER_TRAVERSAL_CHOICES = (SHALLOW, DEEP, SOFT_DELETED)
-
-MISSING_FOLDER_ERRORS = (ErrorFolderNotFound, ErrorItemNotFound, ErrorNoPublicFolderReplicaAvailable)
-
-
-log = logging.getLogger(__name__)
-
-
-class FolderQuerySet:
-    &#34;&#34;&#34;A QuerySet-like class for finding sub-folders of a folder collection.&#34;&#34;&#34;
-
-    def __init__(self, folder_collection):
-        from .collections import FolderCollection
-
-        if not isinstance(folder_collection, FolderCollection):
-            raise InvalidTypeError(&#34;folder_collection&#34;, folder_collection, FolderCollection)
-        self.folder_collection = folder_collection
-        self.q = Q()  # Default to no restrictions
-        self.only_fields = None
-        self._depth = None
-
-    def _copy_cls(self):
-        return self.__class__(folder_collection=self.folder_collection)
-
-    def _copy_self(self):
-        &#34;&#34;&#34;Chaining operations must make a copy of self before making any modifications.&#34;&#34;&#34;
-        new_qs = self._copy_cls()
-        new_qs.q = deepcopy(self.q)
-        new_qs.only_fields = self.only_fields
-        new_qs._depth = self._depth
-        return new_qs
-
-    def only(self, *args):
-        &#34;&#34;&#34;Restrict the fields returned. &#39;name&#39; and &#39;folder_class&#39; are always returned.&#34;&#34;&#34;
-        from .base import Folder
-
-        # Sub-folders will always be of class Folder
-        all_fields = self.folder_collection.get_folder_fields(target_cls=Folder, is_complex=None)
-        all_fields.update(Folder.attribute_fields())
-        only_fields = []
-        for arg in args:
-            for field_path in all_fields:
-                if field_path.field.name == arg:
-                    only_fields.append(field_path)
-                    break
-            else:
-                raise InvalidField(f&#34;Unknown field {arg!r} on folders {self.folder_collection.folders}&#34;)
-        new_qs = self._copy_self()
-        new_qs.only_fields = only_fields
-        return new_qs
-
-    def depth(self, depth):
-        &#34;&#34;&#34;Specify the search depth. Possible values are: SHALLOW or DEEP.
-
-        :param depth:
-        &#34;&#34;&#34;
-        new_qs = self._copy_self()
-        new_qs._depth = depth
-        return new_qs
-
-    def get(self, *args, **kwargs):
-        &#34;&#34;&#34;Return the query result as exactly one item. Raises DoesNotExist if there are no results, and
-        MultipleObjectsReturned if there are multiple results.
-        &#34;&#34;&#34;
-        from .base import Folder
-        from .collections import FolderCollection
-
-        if not args and set(kwargs) in ({&#34;id&#34;}, {&#34;id&#34;, &#34;changekey&#34;}):
-            roots = {f.root for f in self.folder_collection.folders}
-            if len(roots) != 1:
-                raise ValueError(f&#34;All folders must have the same root hierarchy ({roots})&#34;)
-            folders = list(
-                FolderCollection(
-                    account=self.folder_collection.account,
-                    folders=[
-                        Folder(
-                            _id=FolderId(**kwargs),
-                            root=roots.pop(),
-                        )
-                    ],
-                ).resolve()
-            )
-        elif args or kwargs:
-            folders = list(self.filter(*args, **kwargs))
-        else:
-            folders = list(self.all())
-        if not folders:
-            raise DoesNotExist(&#34;Could not find a child folder matching the query&#34;)
-        if len(folders) != 1:
-            raise MultipleObjectsReturned(f&#34;Expected result length 1, but got {folders}&#34;)
-        f = folders[0]
-        if isinstance(f, Exception):
-            raise f
-        return f
-
-    def all(self):
-        &#34;&#34;&#34; &#34;&#34;&#34;
-        new_qs = self._copy_self()
-        return new_qs
-
-    def filter(self, *args, **kwargs):
-        &#34;&#34;&#34;Add restrictions to the folder search.&#34;&#34;&#34;
-        new_qs = self._copy_self()
-        q = Q(*args, **kwargs)
-        new_qs.q = new_qs.q &amp; q
-        return new_qs
-
-    def __iter__(self):
-        return self._query()
-
-    def _query(self):
-        from .base import Folder
-        from .collections import FolderCollection
-
-        if self.only_fields is None:
-            # Sub-folders will always be of class Folder
-            non_complex_fields = self.folder_collection.get_folder_fields(target_cls=Folder, is_complex=False)
-            complex_fields = self.folder_collection.get_folder_fields(target_cls=Folder, is_complex=True)
-        else:
-            non_complex_fields = {f for f in self.only_fields if not f.field.is_complex}
-            complex_fields = {f for f in self.only_fields if f.field.is_complex}
-
-        # First, fetch all non-complex fields using FindFolder. We do this because some folders do not support
-        # GetFolder, but we still want to get as much information as possible.
-        folders = self.folder_collection.find_folders(q=self.q, depth=self._depth, additional_fields=non_complex_fields)
-        if not complex_fields:
-            yield from folders
-            return
-
-        # Fetch all properties for the found folders
-        resolveable_folders = []
-        for f in folders:
-            if isinstance(f, Exception):
-                yield f
-                continue
-            if not f.get_folder_allowed:
-                log.debug(&#34;GetFolder not allowed on folder %s. Non-complex fields must be fetched with FindFolder&#34;, f)
-                yield f
-            else:
-                resolveable_folders.append(f)
-
-        # Get the complex fields using GetFolder, for the folders that support it, and add the extra field values
-        complex_folders = FolderCollection(
-            account=self.folder_collection.account, folders=resolveable_folders
-        ).get_folders(additional_fields=complex_fields)
-        for f, complex_f in zip(resolveable_folders, complex_folders):
-            if isinstance(f, MISSING_FOLDER_ERRORS):
-                # We were unlucky. The folder disappeared between the FindFolder and the GetFolder calls
-                continue
-            if isinstance(complex_f, Exception):
-                yield complex_f
-                continue
-            # Add the extra field values to the folders we fetched with find_folders()
-            if f.__class__ != complex_f.__class__:
-                raise ValueError(f&#34;Type mismatch: {f} vs {complex_f}&#34;)
-            for complex_field in complex_fields:
-                field_name = complex_field.field.name
-                setattr(f, field_name, getattr(complex_f, field_name))
-            yield f
-
-
-class SingleFolderQuerySet(FolderQuerySet):
-    &#34;&#34;&#34;A helper class with simpler argument types.&#34;&#34;&#34;
-
-    def __init__(self, account, folder):
-        from .collections import FolderCollection
-
-        folder_collection = FolderCollection(account=account, folders=[folder])
-        super().__init__(folder_collection=folder_collection)
-
-    def _copy_cls(self):
-        return self.__class__(account=self.folder_collection.account, folder=self.folder_collection.folders[0])
-
-    def resolve(self):
-        return list(self.folder_collection.resolve())[0]</code></pre>
-</details>
 </section>
 <section>
 </section>
@@ -229,7 +51,6 @@ class SingleFolderQuerySet(FolderQuerySet):
 <span>(</span><span>folder_collection)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>A QuerySet-like class for finding sub-folders of a folder collection.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -386,6 +207,7 @@ class SingleFolderQuerySet(FolderQuerySet):
                 setattr(f, field_name, getattr(complex_f, field_name))
             yield f</code></pre>
 </details>
+<div class="desc"><p>A QuerySet-like class for finding sub-folders of a folder collection.</p></div>
 <h3>Subclasses</h3>
 <ul class="hlist">
 <li><a title="exchangelib.folders.queryset.SingleFolderQuerySet" href="#exchangelib.folders.queryset.SingleFolderQuerySet">SingleFolderQuerySet</a></li>
@@ -396,7 +218,6 @@ class SingleFolderQuerySet(FolderQuerySet):
 <span>def <span class="ident">all</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -406,13 +227,12 @@ class SingleFolderQuerySet(FolderQuerySet):
     new_qs = self._copy_self()
     return new_qs</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.folders.queryset.FolderQuerySet.depth"><code class="name flex">
 <span>def <span class="ident">depth</span></span>(<span>self, depth)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Specify the search depth. Possible values are: SHALLOW or DEEP.</p>
-<p>:param depth:</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -426,12 +246,13 @@ class SingleFolderQuerySet(FolderQuerySet):
     new_qs._depth = depth
     return new_qs</code></pre>
 </details>
+<div class="desc"><p>Specify the search depth. Possible values are: SHALLOW or DEEP.</p>
+<p>:param depth:</p></div>
 </dd>
 <dt id="exchangelib.folders.queryset.FolderQuerySet.filter"><code class="name flex">
 <span>def <span class="ident">filter</span></span>(<span>self, *args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Add restrictions to the folder search.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -443,13 +264,12 @@ class SingleFolderQuerySet(FolderQuerySet):
     new_qs.q = new_qs.q &amp; q
     return new_qs</code></pre>
 </details>
+<div class="desc"><p>Add restrictions to the folder search.</p></div>
 </dd>
 <dt id="exchangelib.folders.queryset.FolderQuerySet.get"><code class="name flex">
 <span>def <span class="ident">get</span></span>(<span>self, *args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Return the query result as exactly one item. Raises DoesNotExist if there are no results, and
-MultipleObjectsReturned if there are multiple results.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -489,12 +309,13 @@ MultipleObjectsReturned if there are multiple results.</p></div>
         raise f
     return f</code></pre>
 </details>
+<div class="desc"><p>Return the query result as exactly one item. Raises DoesNotExist if there are no results, and
+MultipleObjectsReturned if there are multiple results.</p></div>
 </dd>
 <dt id="exchangelib.folders.queryset.FolderQuerySet.only"><code class="name flex">
 <span>def <span class="ident">only</span></span>(<span>self, *args)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Restrict the fields returned. 'name' and 'folder_class' are always returned.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -518,6 +339,7 @@ MultipleObjectsReturned if there are multiple results.</p></div>
     new_qs.only_fields = only_fields
     return new_qs</code></pre>
 </details>
+<div class="desc"><p>Restrict the fields returned. 'name' and 'folder_class' are always returned.</p></div>
 </dd>
 </dl>
 </dd>
@@ -526,7 +348,6 @@ MultipleObjectsReturned if there are multiple results.</p></div>
 <span>(</span><span>account, folder)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>A helper class with simpler argument types.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -546,6 +367,7 @@ MultipleObjectsReturned if there are multiple results.</p></div>
     def resolve(self):
         return list(self.folder_collection.resolve())[0]</code></pre>
 </details>
+<div class="desc"><p>A helper class with simpler argument types.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.folders.queryset.FolderQuerySet" href="#exchangelib.folders.queryset.FolderQuerySet">FolderQuerySet</a></li>
@@ -556,7 +378,6 @@ MultipleObjectsReturned if there are multiple results.</p></div>
 <span>def <span class="ident">resolve</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -564,6 +385,7 @@ MultipleObjectsReturned if there are multiple results.</p></div>
 <pre><code class="python">def resolve(self):
     return list(self.folder_collection.resolve())[0]</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -582,7 +404,6 @@ MultipleObjectsReturned if there are multiple results.</p></div>
 </section>
 </article>
 <nav id="sidebar">
-<h1>Index</h1>
 <div class="toc">
 <ul></ul>
 </div>
@@ -616,7 +437,7 @@ MultipleObjectsReturned if there are multiple results.</p></div>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
 </footer>
 </body>
 </html>

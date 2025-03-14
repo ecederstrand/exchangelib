@@ -2,18 +2,32 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.10.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.5">
 <title>exchangelib.items.calendar_item API documentation</title>
-<meta name="description" content="" />
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
-<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
-<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
-<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
 </head>
 <body>
 <main>
@@ -22,477 +36,6 @@
 <h1 class="title">Module <code>exchangelib.items.calendar_item</code></h1>
 </header>
 <section id="section-intro">
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">import datetime
-import logging
-
-from ..ewsdatetime import EWSDate, EWSDateTime
-from ..fields import (
-    AppointmentStateField,
-    AssociatedCalendarItemIdField,
-    AttachmentField,
-    AttendeesField,
-    BodyField,
-    BooleanField,
-    CharField,
-    Choice,
-    ChoiceField,
-    DateOrDateTimeField,
-    DateTimeField,
-    EnumAsIntField,
-    EWSElementListField,
-    FreeBusyStatusField,
-    IntegerField,
-    MailboxField,
-    MessageHeaderField,
-    OccurrenceField,
-    OccurrenceListField,
-    RecurrenceField,
-    ReferenceItemIdField,
-    TextField,
-    TimeZoneField,
-    URIField,
-)
-from ..properties import Attendee, EWSMeta, OccurrenceItemId, RecurringMasterItemId, ReferenceItemId
-from ..recurrence import DeletedOccurrence, FirstOccurrence, LastOccurrence, Occurrence
-from ..util import require_account, set_xml_value
-from ..version import EXCHANGE_2010, EXCHANGE_2013
-from .base import SEND_AND_SAVE_COPY, SEND_TO_NONE, BaseItem, BaseReplyItem
-from .item import Item
-from .message import Message
-
-log = logging.getLogger(__name__)
-
-# Conference Type values. See
-# https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/conferencetype
-CONFERENCE_TYPES = (&#34;NetMeeting&#34;, &#34;NetShow&#34;, &#34;Chat&#34;)
-
-# CalendarItemType enums
-SINGLE = &#34;Single&#34;
-OCCURRENCE = &#34;Occurrence&#34;
-EXCEPTION = &#34;Exception&#34;
-RECURRING_MASTER = &#34;RecurringMaster&#34;
-CALENDAR_ITEM_CHOICES = (SINGLE, OCCURRENCE, EXCEPTION, RECURRING_MASTER)
-
-
-class AcceptDeclineMixIn:
-    &#34;&#34;&#34;A mixin for items that can be declined or accepted.&#34;&#34;&#34;
-
-    def accept(self, message_disposition=SEND_AND_SAVE_COPY, **kwargs):
-        return AcceptItem(
-            account=self.account, reference_item_id=ReferenceItemId(id=self.id, changekey=self.changekey), **kwargs
-        ).send(message_disposition)
-
-    def decline(self, message_disposition=SEND_AND_SAVE_COPY, **kwargs):
-        return DeclineItem(
-            account=self.account, reference_item_id=ReferenceItemId(id=self.id, changekey=self.changekey), **kwargs
-        ).send(message_disposition)
-
-    def tentatively_accept(self, message_disposition=SEND_AND_SAVE_COPY, **kwargs):
-        return TentativelyAcceptItem(
-            account=self.account, reference_item_id=ReferenceItemId(id=self.id, changekey=self.changekey), **kwargs
-        ).send(message_disposition)
-
-
-class CalendarItem(Item, AcceptDeclineMixIn):
-    &#34;&#34;&#34;MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/calendaritem&#34;&#34;&#34;
-
-    ELEMENT_NAME = &#34;CalendarItem&#34;
-
-    uid = TextField(field_uri=&#34;calendar:UID&#34;, is_required_after_save=True, is_searchable=False)
-    recurrence_id = DateTimeField(field_uri=&#34;calendar:RecurrenceId&#34;, is_read_only=True)
-    start = DateOrDateTimeField(field_uri=&#34;calendar:Start&#34;, is_required=True)
-    end = DateOrDateTimeField(field_uri=&#34;calendar:End&#34;, is_required=True)
-    original_start = DateTimeField(field_uri=&#34;calendar:OriginalStart&#34;, is_read_only=True)
-    is_all_day = BooleanField(field_uri=&#34;calendar:IsAllDayEvent&#34;, is_required=True, default=False)
-    legacy_free_busy_status = FreeBusyStatusField(
-        field_uri=&#34;calendar:LegacyFreeBusyStatus&#34;, is_required=True, default=&#34;Busy&#34;
-    )
-    location = TextField(field_uri=&#34;calendar:Location&#34;)
-    when = TextField(field_uri=&#34;calendar:When&#34;)
-    is_meeting = BooleanField(field_uri=&#34;calendar:IsMeeting&#34;, is_read_only=True)
-    is_cancelled = BooleanField(field_uri=&#34;calendar:IsCancelled&#34;, is_read_only=True)
-    is_recurring = BooleanField(field_uri=&#34;calendar:IsRecurring&#34;, is_read_only=True)
-    meeting_request_was_sent = BooleanField(field_uri=&#34;calendar:MeetingRequestWasSent&#34;, is_read_only=True)
-    is_response_requested = BooleanField(
-        field_uri=&#34;calendar:IsResponseRequested&#34;, default=None, is_required_after_save=True, is_searchable=False
-    )
-    type = ChoiceField(
-        field_uri=&#34;calendar:CalendarItemType&#34;, choices={Choice(c) for c in CALENDAR_ITEM_CHOICES}, is_read_only=True
-    )
-    my_response_type = ChoiceField(
-        field_uri=&#34;calendar:MyResponseType&#34;, choices={Choice(c) for c in Attendee.RESPONSE_TYPES}, is_read_only=True
-    )
-    organizer = MailboxField(field_uri=&#34;calendar:Organizer&#34;, is_read_only=True)
-    required_attendees = AttendeesField(field_uri=&#34;calendar:RequiredAttendees&#34;, is_searchable=False)
-    optional_attendees = AttendeesField(field_uri=&#34;calendar:OptionalAttendees&#34;, is_searchable=False)
-    resources = AttendeesField(field_uri=&#34;calendar:Resources&#34;, is_searchable=False)
-    conflicting_meeting_count = IntegerField(field_uri=&#34;calendar:ConflictingMeetingCount&#34;, is_read_only=True)
-    adjacent_meeting_count = IntegerField(field_uri=&#34;calendar:AdjacentMeetingCount&#34;, is_read_only=True)
-    conflicting_meetings = EWSElementListField(
-        field_uri=&#34;calendar:ConflictingMeetings&#34;, value_cls=&#34;CalendarItem&#34;, namespace=Item.NAMESPACE, is_read_only=True
-    )
-    adjacent_meetings = EWSElementListField(
-        field_uri=&#34;calendar:AdjacentMeetings&#34;, value_cls=&#34;CalendarItem&#34;, namespace=Item.NAMESPACE, is_read_only=True
-    )
-    duration = CharField(field_uri=&#34;calendar:Duration&#34;, is_read_only=True)
-    appointment_reply_time = DateTimeField(field_uri=&#34;calendar:AppointmentReplyTime&#34;, is_read_only=True)
-    appointment_sequence_number = IntegerField(field_uri=&#34;calendar:AppointmentSequenceNumber&#34;, is_read_only=True)
-    appointment_state = AppointmentStateField(field_uri=&#34;calendar:AppointmentState&#34;, is_read_only=True)
-    recurrence = RecurrenceField(field_uri=&#34;calendar:Recurrence&#34;, is_searchable=False)
-    first_occurrence = OccurrenceField(
-        field_uri=&#34;calendar:FirstOccurrence&#34;, value_cls=FirstOccurrence, is_read_only=True
-    )
-    last_occurrence = OccurrenceField(field_uri=&#34;calendar:LastOccurrence&#34;, value_cls=LastOccurrence, is_read_only=True)
-    modified_occurrences = OccurrenceListField(
-        field_uri=&#34;calendar:ModifiedOccurrences&#34;, value_cls=Occurrence, is_read_only=True
-    )
-    deleted_occurrences = OccurrenceListField(
-        field_uri=&#34;calendar:DeletedOccurrences&#34;, value_cls=DeletedOccurrence, is_read_only=True
-    )
-    _meeting_timezone = TimeZoneField(
-        field_uri=&#34;calendar:MeetingTimeZone&#34;, deprecated_from=EXCHANGE_2010, is_searchable=False
-    )
-    _start_timezone = TimeZoneField(
-        field_uri=&#34;calendar:StartTimeZone&#34;, supported_from=EXCHANGE_2010, is_searchable=False
-    )
-    _end_timezone = TimeZoneField(field_uri=&#34;calendar:EndTimeZone&#34;, supported_from=EXCHANGE_2010, is_searchable=False)
-    conference_type = EnumAsIntField(
-        field_uri=&#34;calendar:ConferenceType&#34;, enum=CONFERENCE_TYPES, min=0, default=None, is_required_after_save=True
-    )
-    allow_new_time_proposal = BooleanField(
-        field_uri=&#34;calendar:AllowNewTimeProposal&#34;, default=None, is_required_after_save=True, is_searchable=False
-    )
-    is_online_meeting = BooleanField(field_uri=&#34;calendar:IsOnlineMeeting&#34;, default=None, is_read_only=True)
-    meeting_workspace_url = URIField(field_uri=&#34;calendar:MeetingWorkspaceUrl&#34;)
-    net_show_url = URIField(field_uri=&#34;calendar:NetShowUrl&#34;)
-
-    def occurrence(self, index):
-        &#34;&#34;&#34;Get an occurrence of a recurring master by index. No query is sent to the server to actually fetch the item.
-        Call refresh() on the item to do so.
-
-        Only call this method on a recurring master.
-
-        :param index: The index, which is 1-based
-
-        :return The occurrence
-        &#34;&#34;&#34;
-        return self.__class__(
-            account=self.account,
-            folder=self.folder,
-            _id=OccurrenceItemId(id=self.id, changekey=self.changekey, instance_index=index),
-        )
-
-    def recurring_master(self):
-        &#34;&#34;&#34;Get the recurring master of an occurrence. No query is sent to the server to actually fetch the item.
-        Call refresh() on the item to do so.
-
-        Only call this method on an occurrence of a recurring master.
-
-        :return: The master occurrence
-        &#34;&#34;&#34;
-        return self.__class__(
-            account=self.account,
-            folder=self.folder,
-            _id=RecurringMasterItemId(id=self.id, changekey=self.changekey),
-        )
-
-    @classmethod
-    def timezone_fields(cls):
-        return tuple(f for f in cls.FIELDS if isinstance(f, TimeZoneField))
-
-    def clean_timezone_fields(self, version):
-        # Sets proper values on the timezone fields if they are not already set
-        if self.start is None:
-            start_tz = None
-        elif type(self.start) in (EWSDate, datetime.date):
-            start_tz = self.account.default_timezone
-        else:
-            start_tz = self.start.tzinfo
-        if self.end is None:
-            end_tz = None
-        elif type(self.end) in (EWSDate, datetime.date):
-            end_tz = self.account.default_timezone
-        else:
-            end_tz = self.end.tzinfo
-        if version.build &lt; EXCHANGE_2010:
-            if self._meeting_timezone is None:
-                self._meeting_timezone = start_tz
-            self._start_timezone = None
-            self._end_timezone = None
-        else:
-            self._meeting_timezone = None
-            if self._start_timezone is None:
-                self._start_timezone = start_tz
-            if self._end_timezone is None:
-                self._end_timezone = end_tz
-
-    def clean(self, version=None):
-        super().clean(version=version)
-        if self.start and self.end and self.end &lt; self.start:
-            raise ValueError(f&#34;&#39;end&#39; must be greater than &#39;start&#39; ({self.start} -&gt; {self.end})&#34;)
-        if version:
-            self.clean_timezone_fields(version=version)
-
-    def cancel(self, **kwargs):
-        return CancelCalendarItem(
-            account=self.account, reference_item_id=ReferenceItemId(id=self.id, changekey=self.changekey), **kwargs
-        ).send()
-
-    def _update_fieldnames(self):
-        update_fields = super()._update_fieldnames()
-        if self.type == OCCURRENCE:
-            # Some CalendarItem fields cannot be updated when the item is an occurrence. The values are empty when we
-            # receive them so would have been updated because they are set to None.
-            update_fields.remove(&#34;recurrence&#34;)
-            update_fields.remove(&#34;uid&#34;)
-        return update_fields
-
-    @classmethod
-    def from_xml(cls, elem, account):
-        item = super().from_xml(elem=elem, account=account)
-        # EWS returns the start and end values as a datetime regardless of the is_all_day status. Convert to date if
-        # applicable.
-        if not item.is_all_day:
-            return item
-        for field_name in (&#34;start&#34;, &#34;end&#34;):
-            val = getattr(item, field_name)
-            if val is None:
-                continue
-            # Return just the date part of the value. Subtract 1 day from the date if this is the end field. This is
-            # the inverse of what we do in .to_xml(). Convert to the local timezone before getting the date.
-            if field_name == &#34;end&#34;:
-                val -= datetime.timedelta(days=1)
-            tz = getattr(item, f&#34;_{field_name}_timezone&#34;)
-            setattr(item, field_name, val.astimezone(tz).date())
-        return item
-
-    def tz_field_for_field_name(self, field_name):
-        meeting_tz_field, start_tz_field, end_tz_field = CalendarItem.timezone_fields()
-        if self.account.version.build &lt; EXCHANGE_2010:
-            return meeting_tz_field
-        if field_name == &#34;start&#34;:
-            return start_tz_field
-        if field_name == &#34;end&#34;:
-            return end_tz_field
-        raise ValueError(&#34;Unsupported field_name&#34;)
-
-    def date_to_datetime(self, field_name):
-        # EWS always expects a datetime. If we have a date value, then convert it to datetime in the local
-        # timezone. Additionally, if this the end field, add 1 day to the date. We could add 12 hours to both
-        # start and end values and let EWS apply its logic, but that seems hacky.
-        value = getattr(self, field_name)
-        tz = getattr(self, self.tz_field_for_field_name(field_name).name)
-        value = EWSDateTime.combine(value, datetime.time(0, 0)).replace(tzinfo=tz)
-        if field_name == &#34;end&#34;:
-            value += datetime.timedelta(days=1)
-        return value
-
-    def to_xml(self, version):
-        # EWS has some special logic related to all-day start and end values. Non-midnight start values are pushed to
-        # the previous midnight. Non-midnight end values are pushed to the following midnight. Midnight in this context
-        # refers to midnight in the local timezone. See
-        #
-        # https://docs.microsoft.com/en-us/exchange/client-developer/exchange-web-services/how-to-create-all-day-events-by-using-ews-in-exchange
-        #
-        elem = super().to_xml(version=version)
-        if not self.is_all_day:
-            return elem
-        for field_name in (&#34;start&#34;, &#34;end&#34;):
-            value = getattr(self, field_name)
-            if value is None:
-                continue
-            if type(value) in (EWSDate, datetime.date):
-                # EWS always expects a datetime
-                value = self.date_to_datetime(field_name=field_name)
-                # We already generated an XML element for this field, but it contains a plain date at this point, which
-                # is invalid. Replace the value.
-                field = self.get_field_by_fieldname(field_name)
-                set_xml_value(elem.find(field.response_tag()), value)
-        return elem
-
-
-class BaseMeetingItem(Item, metaclass=EWSMeta):
-    &#34;&#34;&#34;Base class for meeting requests that share the same fields (Message, Request, Response, Cancellation)
-
-    MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/responsecode
-        Certain types are created as a side effect of doing something else. Meeting messages, for example, are created
-        when you send a calendar item to attendees; they are not explicitly created.
-
-    Therefore, BaseMeetingItem inherits from  EWSElement has no save() or send() method
-    &#34;&#34;&#34;
-
-    associated_calendar_item_id = AssociatedCalendarItemIdField(field_uri=&#34;meeting:AssociatedCalendarItemId&#34;)
-    is_delegated = BooleanField(field_uri=&#34;meeting:IsDelegated&#34;, is_read_only=True, default=False)
-    is_out_of_date = BooleanField(field_uri=&#34;meeting:IsOutOfDate&#34;, is_read_only=True, default=False)
-    has_been_processed = BooleanField(field_uri=&#34;meeting:HasBeenProcessed&#34;, is_read_only=True, default=False)
-    response_type = ChoiceField(
-        field_uri=&#34;meeting:ResponseType&#34;,
-        choices={
-            Choice(&#34;Unknown&#34;),
-            Choice(&#34;Organizer&#34;),
-            Choice(&#34;Tentative&#34;),
-            Choice(&#34;Accept&#34;),
-            Choice(&#34;Decline&#34;),
-            Choice(&#34;NoResponseReceived&#34;),
-        },
-        is_required=True,
-        default=&#34;Unknown&#34;,
-    )
-
-    effective_rights_idx = Item.FIELDS.index_by_name(&#34;effective_rights&#34;)
-    sender_idx = Message.FIELDS.index_by_name(&#34;sender&#34;)
-    received_representing_idx = Message.FIELDS.index_by_name(&#34;received_representing&#34;)
-    FIELDS = (
-        Item.FIELDS[:effective_rights_idx]
-        + Message.FIELDS[sender_idx : received_representing_idx + 1]
-        + Item.FIELDS[effective_rights_idx:]
-    )
-
-
-class MeetingRequest(BaseMeetingItem, AcceptDeclineMixIn):
-    &#34;&#34;&#34;MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/meetingrequest&#34;&#34;&#34;
-
-    ELEMENT_NAME = &#34;MeetingRequest&#34;
-
-    meeting_request_type = ChoiceField(
-        field_uri=&#34;meetingRequest:MeetingRequestType&#34;,
-        choices={
-            Choice(&#34;FullUpdate&#34;),
-            Choice(&#34;InformationalUpdate&#34;),
-            Choice(&#34;NewMeetingRequest&#34;),
-            Choice(&#34;None&#34;),
-            Choice(&#34;Outdated&#34;),
-            Choice(&#34;PrincipalWantsCopy&#34;),
-            Choice(&#34;SilentUpdate&#34;),
-        },
-        default=&#34;None&#34;,
-    )
-    intended_free_busy_status = ChoiceField(
-        field_uri=&#34;meetingRequest:IntendedFreeBusyStatus&#34;,
-        choices={Choice(&#34;Free&#34;), Choice(&#34;Tentative&#34;), Choice(&#34;Busy&#34;), Choice(&#34;OOF&#34;), Choice(&#34;NoData&#34;)},
-        is_required=True,
-        default=&#34;Busy&#34;,
-    )
-
-    # This element also has some fields from CalendarItem
-    start_idx = CalendarItem.FIELDS.index_by_name(&#34;start&#34;)
-    is_response_requested_idx = CalendarItem.FIELDS.index_by_name(&#34;is_response_requested&#34;)
-    FIELDS = (
-        BaseMeetingItem.FIELDS
-        + CalendarItem.FIELDS[start_idx:is_response_requested_idx]
-        + CalendarItem.FIELDS[is_response_requested_idx + 1 :]
-    )
-
-
-class MeetingMessage(BaseMeetingItem):
-    &#34;&#34;&#34;MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/meetingmessage&#34;&#34;&#34;
-
-    ELEMENT_NAME = &#34;MeetingMessage&#34;
-
-
-class MeetingResponse(BaseMeetingItem):
-    &#34;&#34;&#34;MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/meetingresponse&#34;&#34;&#34;
-
-    ELEMENT_NAME = &#34;MeetingResponse&#34;
-
-    proposed_start = DateTimeField(field_uri=&#34;meeting:ProposedStart&#34;, supported_from=EXCHANGE_2013)
-    proposed_end = DateTimeField(field_uri=&#34;meeting:ProposedEnd&#34;, supported_from=EXCHANGE_2013)
-
-
-class MeetingCancellation(BaseMeetingItem):
-    &#34;&#34;&#34;MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/meetingcancellation&#34;&#34;&#34;
-
-    ELEMENT_NAME = &#34;MeetingCancellation&#34;
-
-
-class BaseMeetingReplyItem(BaseItem, metaclass=EWSMeta):
-    &#34;&#34;&#34;Base class for meeting request reply items that share the same fields (Accept, TentativelyAccept, Decline).&#34;&#34;&#34;
-
-    item_class = CharField(field_uri=&#34;item:ItemClass&#34;, is_read_only=True)
-    sensitivity = ChoiceField(
-        field_uri=&#34;item:Sensitivity&#34;,
-        choices={Choice(&#34;Normal&#34;), Choice(&#34;Personal&#34;), Choice(&#34;Private&#34;), Choice(&#34;Confidential&#34;)},
-        is_required=True,
-        default=&#34;Normal&#34;,
-    )
-    body = BodyField(field_uri=&#34;item:Body&#34;)  # Accepts and returns Body or HTMLBody instances
-    attachments = AttachmentField(field_uri=&#34;item:Attachments&#34;)  # ItemAttachment or FileAttachment
-    headers = MessageHeaderField(field_uri=&#34;item:InternetMessageHeaders&#34;, is_read_only=True)
-
-    sender = Message.FIELDS[&#34;sender&#34;]
-    to_recipients = Message.FIELDS[&#34;to_recipients&#34;]
-    cc_recipients = Message.FIELDS[&#34;cc_recipients&#34;]
-    bcc_recipients = Message.FIELDS[&#34;bcc_recipients&#34;]
-    is_read_receipt_requested = Message.FIELDS[&#34;is_read_receipt_requested&#34;]
-    is_delivery_receipt_requested = Message.FIELDS[&#34;is_delivery_receipt_requested&#34;]
-
-    reference_item_id = ReferenceItemIdField(field_uri=&#34;item:ReferenceItemId&#34;)
-    received_by = MailboxField(field_uri=&#34;message:ReceivedBy&#34;, is_read_only=True)
-    received_representing = MailboxField(field_uri=&#34;message:ReceivedRepresenting&#34;, is_read_only=True)
-    proposed_start = DateTimeField(field_uri=&#34;meeting:ProposedStart&#34;, supported_from=EXCHANGE_2013)
-    proposed_end = DateTimeField(field_uri=&#34;meeting:ProposedEnd&#34;, supported_from=EXCHANGE_2013)
-
-    @require_account
-    def send(self, message_disposition=SEND_AND_SAVE_COPY):
-        from ..services import CreateItem
-
-        res = list(
-            CreateItem(account=self.account).call(
-                items=[self],
-                folder=self.folder,
-                message_disposition=message_disposition,
-                send_meeting_invitations=SEND_TO_NONE,
-            )
-        )
-        for r in res:
-            if isinstance(r, Exception):
-                raise r
-        # CreateItem may return multiple item IDs when given a meeting reply item. See issue#886. In lack of a better
-        # idea, return either the single ID or the list of IDs here.
-        if len(res) == 1:
-            return res[0]
-        return res
-
-
-class AcceptItem(BaseMeetingReplyItem):
-    &#34;&#34;&#34;MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/acceptitem&#34;&#34;&#34;
-
-    ELEMENT_NAME = &#34;AcceptItem&#34;
-
-
-class TentativelyAcceptItem(BaseMeetingReplyItem):
-    &#34;&#34;&#34;MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/tentativelyacceptitem&#34;&#34;&#34;
-
-    ELEMENT_NAME = &#34;TentativelyAcceptItem&#34;
-
-
-class DeclineItem(BaseMeetingReplyItem):
-    &#34;&#34;&#34;MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/declineitem&#34;&#34;&#34;
-
-    ELEMENT_NAME = &#34;DeclineItem&#34;
-
-
-class CancelCalendarItem(BaseReplyItem):
-    &#34;&#34;&#34;MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/cancelcalendaritem&#34;&#34;&#34;
-
-    ELEMENT_NAME = &#34;CancelCalendarItem&#34;
-    author_idx = BaseReplyItem.FIELDS.index_by_name(&#34;author&#34;)
-    FIELDS = BaseReplyItem.FIELDS[:author_idx] + BaseReplyItem.FIELDS[author_idx + 1 :]
-
-
-class _Booking(Item):
-    &#34;&#34;&#34;Not mentioned anywhere in MSDN docs, but it&#39;s common enough that we want to at least not crash when we encounter
-    an item of this type in a folder. For more information, see https://github.com/ecederstrand/exchangelib/issues/877
-
-    Not supported in any way except to not crash on calendar folder reads
-    &#34;&#34;&#34;
-
-    ELEMENT_NAME = &#34;Booking&#34;</code></pre>
-</details>
 </section>
 <section>
 </section>
@@ -507,7 +50,6 @@ class _Booking(Item):
 <span>class <span class="ident">AcceptDeclineMixIn</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>A mixin for items that can be declined or accepted.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -530,6 +72,7 @@ class _Booking(Item):
             account=self.account, reference_item_id=ReferenceItemId(id=self.id, changekey=self.changekey), **kwargs
         ).send(message_disposition)</code></pre>
 </details>
+<div class="desc"><p>A mixin for items that can be declined or accepted.</p></div>
 <h3>Subclasses</h3>
 <ul class="hlist">
 <li><a title="exchangelib.items.calendar_item.CalendarItem" href="#exchangelib.items.calendar_item.CalendarItem">CalendarItem</a></li>
@@ -541,7 +84,6 @@ class _Booking(Item):
 <span>def <span class="ident">accept</span></span>(<span>self, message_disposition='SendAndSaveCopy', **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -551,12 +93,12 @@ class _Booking(Item):
         account=self.account, reference_item_id=ReferenceItemId(id=self.id, changekey=self.changekey), **kwargs
     ).send(message_disposition)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.AcceptDeclineMixIn.decline"><code class="name flex">
 <span>def <span class="ident">decline</span></span>(<span>self, message_disposition='SendAndSaveCopy', **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -566,12 +108,12 @@ class _Booking(Item):
         account=self.account, reference_item_id=ReferenceItemId(id=self.id, changekey=self.changekey), **kwargs
     ).send(message_disposition)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.AcceptDeclineMixIn.tentatively_accept"><code class="name flex">
 <span>def <span class="ident">tentatively_accept</span></span>(<span>self, message_disposition='SendAndSaveCopy', **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -581,6 +123,7 @@ class _Booking(Item):
         account=self.account, reference_item_id=ReferenceItemId(id=self.id, changekey=self.changekey), **kwargs
     ).send(message_disposition)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 </dd>
@@ -589,12 +132,6 @@ class _Booking(Item):
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/acceptitem">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/acceptitem</a></p>
-<p>Pick out optional 'account' and 'folder' kwargs, and pass the rest to the parent class.</p>
-<p>:param kwargs:
-'account' is optional but allows calling 'send()' and 'delete()'
-'folder' is optional but allows calling 'save()'. If 'folder' has an account, and 'account' is not set,
-we use folder.account.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -604,6 +141,12 @@ we use folder.account.</p></div>
 
     ELEMENT_NAME = &#34;AcceptItem&#34;</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/acceptitem">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/acceptitem</a></p>
+<p>Pick out optional 'account' and 'folder' kwargs, and pass the rest to the parent class.</p>
+<p>:param kwargs:
+'account' is optional but allows calling 'send()' and 'delete()'
+'folder' is optional but allows calling 'save()'. If 'folder' has an account, and 'account' is not set,
+we use folder.account.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem">BaseMeetingReplyItem</a></li>
@@ -624,10 +167,8 @@ we use folder.account.</p></div>
 <li><code><b><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem">BaseMeetingReplyItem</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.ID_ELEMENT_CLS" href="base.html#exchangelib.items.base.BaseItem.ID_ELEMENT_CLS">ID_ELEMENT_CLS</a></code></li>
-<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.account" href="base.html#exchangelib.items.base.BaseItem.account">account</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.add_field" href="../properties.html#exchangelib.properties.EWSElement.add_field">add_field</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.deregister" href="base.html#exchangelib.items.base.RegisterMixIn.deregister">deregister</a></code></li>
-<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.folder" href="base.html#exchangelib.items.base.BaseItem.folder">folder</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.register" href="base.html#exchangelib.items.base.RegisterMixIn.register">register</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.remove_field" href="../properties.html#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.supported_fields" href="../properties.html#exchangelib.properties.EWSElement.supported_fields">supported_fields</a></code></li>
@@ -641,17 +182,6 @@ we use folder.account.</p></div>
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Base class for meeting requests that share the same fields (Message, Request, Response, Cancellation)</p>
-<p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/responsecode">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/responsecode</a>
-Certain types are created as a side effect of doing something else. Meeting messages, for example, are created
-when you send a calendar item to attendees; they are not explicitly created.</p>
-<p>Therefore, BaseMeetingItem inherits from
-EWSElement has no save() or send() method</p>
-<p>Pick out optional 'account' and 'folder' kwargs, and pass the rest to the parent class.</p>
-<p>:param kwargs:
-'account' is optional but allows calling 'send()' and 'delete()'
-'folder' is optional but allows calling 'save()'. If 'folder' has an account, and 'account' is not set,
-we use folder.account.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -693,6 +223,17 @@ we use folder.account.</p></div>
         + Item.FIELDS[effective_rights_idx:]
     )</code></pre>
 </details>
+<div class="desc"><p>Base class for meeting requests that share the same fields (Message, Request, Response, Cancellation)</p>
+<p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/responsecode">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/responsecode</a>
+Certain types are created as a side effect of doing something else. Meeting messages, for example, are created
+when you send a calendar item to attendees; they are not explicitly created.</p>
+<p>Therefore, BaseMeetingItem inherits from
+EWSElement has no save() or send() method</p>
+<p>Pick out optional 'account' and 'folder' kwargs, and pass the rest to the parent class.</p>
+<p>:param kwargs:
+'account' is optional but allows calling 'send()' and 'delete()'
+'folder' is optional but allows calling 'save()'. If 'folder' has an account, and 'account' is not set,
+we use folder.account.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.items.item.Item" href="item.html#exchangelib.items.item.Item">Item</a></li>
@@ -819,12 +360,10 @@ we use folder.account.</p></div>
 <li><code><b><a title="exchangelib.items.item.Item" href="item.html#exchangelib.items.item.Item">Item</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.items.item.Item.ID_ELEMENT_CLS" href="base.html#exchangelib.items.base.BaseItem.ID_ELEMENT_CLS">ID_ELEMENT_CLS</a></code></li>
-<li><code><a title="exchangelib.items.item.Item.account" href="base.html#exchangelib.items.base.BaseItem.account">account</a></code></li>
 <li><code><a title="exchangelib.items.item.Item.add_field" href="../properties.html#exchangelib.properties.EWSElement.add_field">add_field</a></code></li>
 <li><code><a title="exchangelib.items.item.Item.attach" href="item.html#exchangelib.items.item.Item.attach">attach</a></code></li>
 <li><code><a title="exchangelib.items.item.Item.deregister" href="base.html#exchangelib.items.base.RegisterMixIn.deregister">deregister</a></code></li>
 <li><code><a title="exchangelib.items.item.Item.detach" href="item.html#exchangelib.items.item.Item.detach">detach</a></code></li>
-<li><code><a title="exchangelib.items.item.Item.folder" href="base.html#exchangelib.items.base.BaseItem.folder">folder</a></code></li>
 <li><code><a title="exchangelib.items.item.Item.register" href="base.html#exchangelib.items.base.RegisterMixIn.register">register</a></code></li>
 <li><code><a title="exchangelib.items.item.Item.remove_field" href="../properties.html#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
 <li><code><a title="exchangelib.items.item.Item.supported_fields" href="../properties.html#exchangelib.properties.EWSElement.supported_fields">supported_fields</a></code></li>
@@ -838,12 +377,6 @@ we use folder.account.</p></div>
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Base class for meeting request reply items that share the same fields (Accept, TentativelyAccept, Decline).</p>
-<p>Pick out optional 'account' and 'folder' kwargs, and pass the rest to the parent class.</p>
-<p>:param kwargs:
-'account' is optional but allows calling 'send()' and 'delete()'
-'folder' is optional but allows calling 'save()'. If 'folder' has an account, and 'account' is not set,
-we use folder.account.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -896,6 +429,12 @@ we use folder.account.</p></div>
             return res[0]
         return res</code></pre>
 </details>
+<div class="desc"><p>Base class for meeting request reply items that share the same fields (Accept, TentativelyAccept, Decline).</p>
+<p>Pick out optional 'account' and 'folder' kwargs, and pass the rest to the parent class.</p>
+<p>:param kwargs:
+'account' is optional but allows calling 'send()' and 'delete()'
+'folder' is optional but allows calling 'save()'. If 'folder' has an account, and 'account' is not set,
+we use folder.account.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.items.base.BaseItem" href="base.html#exchangelib.items.base.BaseItem">BaseItem</a></li>
@@ -989,7 +528,6 @@ we use folder.account.</p></div>
 <span>def <span class="ident">send</span></span>(<span>self, message_disposition='SendAndSaveCopy')</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1015,6 +553,7 @@ def send(self, message_disposition=SEND_AND_SAVE_COPY):
         return res[0]
     return res</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -1022,10 +561,8 @@ def send(self, message_disposition=SEND_AND_SAVE_COPY):
 <li><code><b><a title="exchangelib.items.base.BaseItem" href="base.html#exchangelib.items.base.BaseItem">BaseItem</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.items.base.BaseItem.ID_ELEMENT_CLS" href="base.html#exchangelib.items.base.BaseItem.ID_ELEMENT_CLS">ID_ELEMENT_CLS</a></code></li>
-<li><code><a title="exchangelib.items.base.BaseItem.account" href="base.html#exchangelib.items.base.BaseItem.account">account</a></code></li>
 <li><code><a title="exchangelib.items.base.BaseItem.add_field" href="../properties.html#exchangelib.properties.EWSElement.add_field">add_field</a></code></li>
 <li><code><a title="exchangelib.items.base.BaseItem.deregister" href="base.html#exchangelib.items.base.RegisterMixIn.deregister">deregister</a></code></li>
-<li><code><a title="exchangelib.items.base.BaseItem.folder" href="base.html#exchangelib.items.base.BaseItem.folder">folder</a></code></li>
 <li><code><a title="exchangelib.items.base.BaseItem.register" href="base.html#exchangelib.items.base.RegisterMixIn.register">register</a></code></li>
 <li><code><a title="exchangelib.items.base.BaseItem.remove_field" href="../properties.html#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
 <li><code><a title="exchangelib.items.base.BaseItem.supported_fields" href="../properties.html#exchangelib.properties.EWSElement.supported_fields">supported_fields</a></code></li>
@@ -1039,12 +576,6 @@ def send(self, message_disposition=SEND_AND_SAVE_COPY):
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/calendaritem">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/calendaritem</a></p>
-<p>Pick out optional 'account' and 'folder' kwargs, and pass the rest to the parent class.</p>
-<p>:param kwargs:
-'account' is optional but allows calling 'send()' and 'delete()'
-'folder' is optional but allows calling 'save()'. If 'folder' has an account, and 'account' is not set,
-we use folder.account.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1266,6 +797,12 @@ we use folder.account.</p></div>
                 set_xml_value(elem.find(field.response_tag()), value)
         return elem</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/calendaritem">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/calendaritem</a></p>
+<p>Pick out optional 'account' and 'folder' kwargs, and pass the rest to the parent class.</p>
+<p>:param kwargs:
+'account' is optional but allows calling 'send()' and 'delete()'
+'folder' is optional but allows calling 'save()'. If 'folder' has an account, and 'account' is not set,
+we use folder.account.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.items.item.Item" href="item.html#exchangelib.items.item.Item">Item</a></li>
@@ -1293,43 +830,12 @@ we use folder.account.</p></div>
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def from_xml(cls, elem, account):
-    item = super().from_xml(elem=elem, account=account)
-    # EWS returns the start and end values as a datetime regardless of the is_all_day status. Convert to date if
-    # applicable.
-    if not item.is_all_day:
-        return item
-    for field_name in (&#34;start&#34;, &#34;end&#34;):
-        val = getattr(item, field_name)
-        if val is None:
-            continue
-        # Return just the date part of the value. Subtract 1 day from the date if this is the end field. This is
-        # the inverse of what we do in .to_xml(). Convert to the local timezone before getting the date.
-        if field_name == &#34;end&#34;:
-            val -= datetime.timedelta(days=1)
-        tz = getattr(item, f&#34;_{field_name}_timezone&#34;)
-        setattr(item, field_name, val.astimezone(tz).date())
-    return item</code></pre>
-</details>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.timezone_fields"><code class="name flex">
 <span>def <span class="ident">timezone_fields</span></span>(<span>)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def timezone_fields(cls):
-    return tuple(f for f in cls.FIELDS if isinstance(f, TimeZoneField))</code></pre>
-</details>
 </dd>
 </dl>
 <h3>Instance variables</h3>
@@ -1493,7 +999,6 @@ def timezone_fields(cls):
 <span>def <span class="ident">cancel</span></span>(<span>self, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1503,12 +1008,12 @@ def timezone_fields(cls):
         account=self.account, reference_item_id=ReferenceItemId(id=self.id, changekey=self.changekey), **kwargs
     ).send()</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.clean"><code class="name flex">
 <span>def <span class="ident">clean</span></span>(<span>self, version=None)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1520,12 +1025,12 @@ def timezone_fields(cls):
     if version:
         self.clean_timezone_fields(version=version)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.clean_timezone_fields"><code class="name flex">
 <span>def <span class="ident">clean_timezone_fields</span></span>(<span>self, version)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1556,12 +1061,12 @@ def timezone_fields(cls):
         if self._end_timezone is None:
             self._end_timezone = end_tz</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.date_to_datetime"><code class="name flex">
 <span>def <span class="ident">date_to_datetime</span></span>(<span>self, field_name)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1577,16 +1082,12 @@ def timezone_fields(cls):
         value += datetime.timedelta(days=1)
     return value</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.occurrence"><code class="name flex">
 <span>def <span class="ident">occurrence</span></span>(<span>self, index)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Get an occurrence of a recurring master by index. No query is sent to the server to actually fetch the item.
-Call refresh() on the item to do so.</p>
-<p>Only call this method on a recurring master.</p>
-<p>:param index: The index, which is 1-based</p>
-<p>:return The occurrence</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1607,15 +1108,16 @@ Call refresh() on the item to do so.</p>
         _id=OccurrenceItemId(id=self.id, changekey=self.changekey, instance_index=index),
     )</code></pre>
 </details>
+<div class="desc"><p>Get an occurrence of a recurring master by index. No query is sent to the server to actually fetch the item.
+Call refresh() on the item to do so.</p>
+<p>Only call this method on a recurring master.</p>
+<p>:param index: The index, which is 1-based</p>
+<p>:return The occurrence</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.recurring_master"><code class="name flex">
 <span>def <span class="ident">recurring_master</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Get the recurring master of an occurrence. No query is sent to the server to actually fetch the item.
-Call refresh() on the item to do so.</p>
-<p>Only call this method on an occurrence of a recurring master.</p>
-<p>:return: The master occurrence</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1634,12 +1136,15 @@ Call refresh() on the item to do so.</p>
         _id=RecurringMasterItemId(id=self.id, changekey=self.changekey),
     )</code></pre>
 </details>
+<div class="desc"><p>Get the recurring master of an occurrence. No query is sent to the server to actually fetch the item.
+Call refresh() on the item to do so.</p>
+<p>Only call this method on an occurrence of a recurring master.</p>
+<p>:return: The master occurrence</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.to_xml"><code class="name flex">
 <span>def <span class="ident">to_xml</span></span>(<span>self, version)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1667,12 +1172,12 @@ Call refresh() on the item to do so.</p>
             set_xml_value(elem.find(field.response_tag()), value)
     return elem</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.tz_field_for_field_name"><code class="name flex">
 <span>def <span class="ident">tz_field_for_field_name</span></span>(<span>self, field_name)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1687,6 +1192,7 @@ Call refresh() on the item to do so.</p>
         return end_tz_field
     raise ValueError(&#34;Unsupported field_name&#34;)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -1694,12 +1200,10 @@ Call refresh() on the item to do so.</p>
 <li><code><b><a title="exchangelib.items.item.Item" href="item.html#exchangelib.items.item.Item">Item</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.items.item.Item.ID_ELEMENT_CLS" href="base.html#exchangelib.items.base.BaseItem.ID_ELEMENT_CLS">ID_ELEMENT_CLS</a></code></li>
-<li><code><a title="exchangelib.items.item.Item.account" href="base.html#exchangelib.items.base.BaseItem.account">account</a></code></li>
 <li><code><a title="exchangelib.items.item.Item.add_field" href="../properties.html#exchangelib.properties.EWSElement.add_field">add_field</a></code></li>
 <li><code><a title="exchangelib.items.item.Item.attach" href="item.html#exchangelib.items.item.Item.attach">attach</a></code></li>
 <li><code><a title="exchangelib.items.item.Item.deregister" href="base.html#exchangelib.items.base.RegisterMixIn.deregister">deregister</a></code></li>
 <li><code><a title="exchangelib.items.item.Item.detach" href="item.html#exchangelib.items.item.Item.detach">detach</a></code></li>
-<li><code><a title="exchangelib.items.item.Item.folder" href="base.html#exchangelib.items.base.BaseItem.folder">folder</a></code></li>
 <li><code><a title="exchangelib.items.item.Item.register" href="base.html#exchangelib.items.base.RegisterMixIn.register">register</a></code></li>
 <li><code><a title="exchangelib.items.item.Item.remove_field" href="../properties.html#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
 <li><code><a title="exchangelib.items.item.Item.supported_fields" href="../properties.html#exchangelib.properties.EWSElement.supported_fields">supported_fields</a></code></li>
@@ -1713,7 +1217,6 @@ Call refresh() on the item to do so.</p>
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/cancelcalendaritem">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/cancelcalendaritem</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1725,6 +1228,7 @@ Call refresh() on the item to do so.</p>
     author_idx = BaseReplyItem.FIELDS.index_by_name(&#34;author&#34;)
     FIELDS = BaseReplyItem.FIELDS[:author_idx] + BaseReplyItem.FIELDS[author_idx + 1 :]</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/cancelcalendaritem">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/cancelcalendaritem</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.items.base.BaseReplyItem" href="base.html#exchangelib.items.base.BaseReplyItem">BaseReplyItem</a></li>
@@ -1749,7 +1253,6 @@ Call refresh() on the item to do so.</p>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.items.base.BaseReplyItem" href="base.html#exchangelib.items.base.BaseReplyItem">BaseReplyItem</a></b></code>:
 <ul class="hlist">
-<li><code><a title="exchangelib.items.base.BaseReplyItem.account" href="base.html#exchangelib.items.base.BaseReplyItem.account">account</a></code></li>
 <li><code><a title="exchangelib.items.base.BaseReplyItem.add_field" href="../properties.html#exchangelib.properties.EWSElement.add_field">add_field</a></code></li>
 <li><code><a title="exchangelib.items.base.BaseReplyItem.remove_field" href="../properties.html#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
 <li><code><a title="exchangelib.items.base.BaseReplyItem.save" href="base.html#exchangelib.items.base.BaseReplyItem.save">save</a></code></li>
@@ -1764,12 +1267,6 @@ Call refresh() on the item to do so.</p>
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/declineitem">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/declineitem</a></p>
-<p>Pick out optional 'account' and 'folder' kwargs, and pass the rest to the parent class.</p>
-<p>:param kwargs:
-'account' is optional but allows calling 'send()' and 'delete()'
-'folder' is optional but allows calling 'save()'. If 'folder' has an account, and 'account' is not set,
-we use folder.account.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1779,6 +1276,12 @@ we use folder.account.</p></div>
 
     ELEMENT_NAME = &#34;DeclineItem&#34;</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/declineitem">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/declineitem</a></p>
+<p>Pick out optional 'account' and 'folder' kwargs, and pass the rest to the parent class.</p>
+<p>:param kwargs:
+'account' is optional but allows calling 'send()' and 'delete()'
+'folder' is optional but allows calling 'save()'. If 'folder' has an account, and 'account' is not set,
+we use folder.account.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem">BaseMeetingReplyItem</a></li>
@@ -1799,10 +1302,8 @@ we use folder.account.</p></div>
 <li><code><b><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem">BaseMeetingReplyItem</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.ID_ELEMENT_CLS" href="base.html#exchangelib.items.base.BaseItem.ID_ELEMENT_CLS">ID_ELEMENT_CLS</a></code></li>
-<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.account" href="base.html#exchangelib.items.base.BaseItem.account">account</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.add_field" href="../properties.html#exchangelib.properties.EWSElement.add_field">add_field</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.deregister" href="base.html#exchangelib.items.base.RegisterMixIn.deregister">deregister</a></code></li>
-<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.folder" href="base.html#exchangelib.items.base.BaseItem.folder">folder</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.register" href="base.html#exchangelib.items.base.RegisterMixIn.register">register</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.remove_field" href="../properties.html#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.supported_fields" href="../properties.html#exchangelib.properties.EWSElement.supported_fields">supported_fields</a></code></li>
@@ -1816,12 +1317,6 @@ we use folder.account.</p></div>
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/meetingcancellation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/meetingcancellation</a></p>
-<p>Pick out optional 'account' and 'folder' kwargs, and pass the rest to the parent class.</p>
-<p>:param kwargs:
-'account' is optional but allows calling 'send()' and 'delete()'
-'folder' is optional but allows calling 'save()'. If 'folder' has an account, and 'account' is not set,
-we use folder.account.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1831,6 +1326,12 @@ we use folder.account.</p></div>
 
     ELEMENT_NAME = &#34;MeetingCancellation&#34;</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/meetingcancellation">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/meetingcancellation</a></p>
+<p>Pick out optional 'account' and 'folder' kwargs, and pass the rest to the parent class.</p>
+<p>:param kwargs:
+'account' is optional but allows calling 'send()' and 'delete()'
+'folder' is optional but allows calling 'save()'. If 'folder' has an account, and 'account' is not set,
+we use folder.account.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.items.calendar_item.BaseMeetingItem" href="#exchangelib.items.calendar_item.BaseMeetingItem">BaseMeetingItem</a></li>
@@ -1852,12 +1353,10 @@ we use folder.account.</p></div>
 <li><code><b><a title="exchangelib.items.calendar_item.BaseMeetingItem" href="#exchangelib.items.calendar_item.BaseMeetingItem">BaseMeetingItem</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.ID_ELEMENT_CLS" href="base.html#exchangelib.items.base.BaseItem.ID_ELEMENT_CLS">ID_ELEMENT_CLS</a></code></li>
-<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.account" href="base.html#exchangelib.items.base.BaseItem.account">account</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.add_field" href="../properties.html#exchangelib.properties.EWSElement.add_field">add_field</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.attach" href="item.html#exchangelib.items.item.Item.attach">attach</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.deregister" href="base.html#exchangelib.items.base.RegisterMixIn.deregister">deregister</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.detach" href="item.html#exchangelib.items.item.Item.detach">detach</a></code></li>
-<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.folder" href="base.html#exchangelib.items.base.BaseItem.folder">folder</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.register" href="base.html#exchangelib.items.base.RegisterMixIn.register">register</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.remove_field" href="../properties.html#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.supported_fields" href="../properties.html#exchangelib.properties.EWSElement.supported_fields">supported_fields</a></code></li>
@@ -1871,12 +1370,6 @@ we use folder.account.</p></div>
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/meetingmessage">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/meetingmessage</a></p>
-<p>Pick out optional 'account' and 'folder' kwargs, and pass the rest to the parent class.</p>
-<p>:param kwargs:
-'account' is optional but allows calling 'send()' and 'delete()'
-'folder' is optional but allows calling 'save()'. If 'folder' has an account, and 'account' is not set,
-we use folder.account.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1886,6 +1379,12 @@ we use folder.account.</p></div>
 
     ELEMENT_NAME = &#34;MeetingMessage&#34;</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/meetingmessage">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/meetingmessage</a></p>
+<p>Pick out optional 'account' and 'folder' kwargs, and pass the rest to the parent class.</p>
+<p>:param kwargs:
+'account' is optional but allows calling 'send()' and 'delete()'
+'folder' is optional but allows calling 'save()'. If 'folder' has an account, and 'account' is not set,
+we use folder.account.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.items.calendar_item.BaseMeetingItem" href="#exchangelib.items.calendar_item.BaseMeetingItem">BaseMeetingItem</a></li>
@@ -1907,12 +1406,10 @@ we use folder.account.</p></div>
 <li><code><b><a title="exchangelib.items.calendar_item.BaseMeetingItem" href="#exchangelib.items.calendar_item.BaseMeetingItem">BaseMeetingItem</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.ID_ELEMENT_CLS" href="base.html#exchangelib.items.base.BaseItem.ID_ELEMENT_CLS">ID_ELEMENT_CLS</a></code></li>
-<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.account" href="base.html#exchangelib.items.base.BaseItem.account">account</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.add_field" href="../properties.html#exchangelib.properties.EWSElement.add_field">add_field</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.attach" href="item.html#exchangelib.items.item.Item.attach">attach</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.deregister" href="base.html#exchangelib.items.base.RegisterMixIn.deregister">deregister</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.detach" href="item.html#exchangelib.items.item.Item.detach">detach</a></code></li>
-<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.folder" href="base.html#exchangelib.items.base.BaseItem.folder">folder</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.register" href="base.html#exchangelib.items.base.RegisterMixIn.register">register</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.remove_field" href="../properties.html#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.supported_fields" href="../properties.html#exchangelib.properties.EWSElement.supported_fields">supported_fields</a></code></li>
@@ -1926,12 +1423,6 @@ we use folder.account.</p></div>
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/meetingrequest">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/meetingrequest</a></p>
-<p>Pick out optional 'account' and 'folder' kwargs, and pass the rest to the parent class.</p>
-<p>:param kwargs:
-'account' is optional but allows calling 'send()' and 'delete()'
-'folder' is optional but allows calling 'save()'. If 'folder' has an account, and 'account' is not set,
-we use folder.account.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1970,6 +1461,12 @@ we use folder.account.</p></div>
         + CalendarItem.FIELDS[is_response_requested_idx + 1 :]
     )</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/meetingrequest">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/meetingrequest</a></p>
+<p>Pick out optional 'account' and 'folder' kwargs, and pass the rest to the parent class.</p>
+<p>:param kwargs:
+'account' is optional but allows calling 'send()' and 'delete()'
+'folder' is optional but allows calling 'save()'. If 'folder' has an account, and 'account' is not set,
+we use folder.account.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.items.calendar_item.BaseMeetingItem" href="#exchangelib.items.calendar_item.BaseMeetingItem">BaseMeetingItem</a></li>
@@ -2155,12 +1652,10 @@ we use folder.account.</p></div>
 <li><code><b><a title="exchangelib.items.calendar_item.BaseMeetingItem" href="#exchangelib.items.calendar_item.BaseMeetingItem">BaseMeetingItem</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.ID_ELEMENT_CLS" href="base.html#exchangelib.items.base.BaseItem.ID_ELEMENT_CLS">ID_ELEMENT_CLS</a></code></li>
-<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.account" href="base.html#exchangelib.items.base.BaseItem.account">account</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.add_field" href="../properties.html#exchangelib.properties.EWSElement.add_field">add_field</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.attach" href="item.html#exchangelib.items.item.Item.attach">attach</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.deregister" href="base.html#exchangelib.items.base.RegisterMixIn.deregister">deregister</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.detach" href="item.html#exchangelib.items.item.Item.detach">detach</a></code></li>
-<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.folder" href="base.html#exchangelib.items.base.BaseItem.folder">folder</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.register" href="base.html#exchangelib.items.base.RegisterMixIn.register">register</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.remove_field" href="../properties.html#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.supported_fields" href="../properties.html#exchangelib.properties.EWSElement.supported_fields">supported_fields</a></code></li>
@@ -2174,12 +1669,6 @@ we use folder.account.</p></div>
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/meetingresponse">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/meetingresponse</a></p>
-<p>Pick out optional 'account' and 'folder' kwargs, and pass the rest to the parent class.</p>
-<p>:param kwargs:
-'account' is optional but allows calling 'send()' and 'delete()'
-'folder' is optional but allows calling 'save()'. If 'folder' has an account, and 'account' is not set,
-we use folder.account.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2192,6 +1681,12 @@ we use folder.account.</p></div>
     proposed_start = DateTimeField(field_uri=&#34;meeting:ProposedStart&#34;, supported_from=EXCHANGE_2013)
     proposed_end = DateTimeField(field_uri=&#34;meeting:ProposedEnd&#34;, supported_from=EXCHANGE_2013)</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/meetingresponse">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/meetingresponse</a></p>
+<p>Pick out optional 'account' and 'folder' kwargs, and pass the rest to the parent class.</p>
+<p>:param kwargs:
+'account' is optional but allows calling 'send()' and 'delete()'
+'folder' is optional but allows calling 'save()'. If 'folder' has an account, and 'account' is not set,
+we use folder.account.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.items.calendar_item.BaseMeetingItem" href="#exchangelib.items.calendar_item.BaseMeetingItem">BaseMeetingItem</a></li>
@@ -2228,12 +1723,10 @@ we use folder.account.</p></div>
 <li><code><b><a title="exchangelib.items.calendar_item.BaseMeetingItem" href="#exchangelib.items.calendar_item.BaseMeetingItem">BaseMeetingItem</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.ID_ELEMENT_CLS" href="base.html#exchangelib.items.base.BaseItem.ID_ELEMENT_CLS">ID_ELEMENT_CLS</a></code></li>
-<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.account" href="base.html#exchangelib.items.base.BaseItem.account">account</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.add_field" href="../properties.html#exchangelib.properties.EWSElement.add_field">add_field</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.attach" href="item.html#exchangelib.items.item.Item.attach">attach</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.deregister" href="base.html#exchangelib.items.base.RegisterMixIn.deregister">deregister</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.detach" href="item.html#exchangelib.items.item.Item.detach">detach</a></code></li>
-<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.folder" href="base.html#exchangelib.items.base.BaseItem.folder">folder</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.register" href="base.html#exchangelib.items.base.RegisterMixIn.register">register</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.remove_field" href="../properties.html#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.supported_fields" href="../properties.html#exchangelib.properties.EWSElement.supported_fields">supported_fields</a></code></li>
@@ -2247,12 +1740,6 @@ we use folder.account.</p></div>
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/tentativelyacceptitem">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/tentativelyacceptitem</a></p>
-<p>Pick out optional 'account' and 'folder' kwargs, and pass the rest to the parent class.</p>
-<p>:param kwargs:
-'account' is optional but allows calling 'send()' and 'delete()'
-'folder' is optional but allows calling 'save()'. If 'folder' has an account, and 'account' is not set,
-we use folder.account.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2262,6 +1749,12 @@ we use folder.account.</p></div>
 
     ELEMENT_NAME = &#34;TentativelyAcceptItem&#34;</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/tentativelyacceptitem">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/tentativelyacceptitem</a></p>
+<p>Pick out optional 'account' and 'folder' kwargs, and pass the rest to the parent class.</p>
+<p>:param kwargs:
+'account' is optional but allows calling 'send()' and 'delete()'
+'folder' is optional but allows calling 'save()'. If 'folder' has an account, and 'account' is not set,
+we use folder.account.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem">BaseMeetingReplyItem</a></li>
@@ -2282,10 +1775,8 @@ we use folder.account.</p></div>
 <li><code><b><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem">BaseMeetingReplyItem</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.ID_ELEMENT_CLS" href="base.html#exchangelib.items.base.BaseItem.ID_ELEMENT_CLS">ID_ELEMENT_CLS</a></code></li>
-<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.account" href="base.html#exchangelib.items.base.BaseItem.account">account</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.add_field" href="../properties.html#exchangelib.properties.EWSElement.add_field">add_field</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.deregister" href="base.html#exchangelib.items.base.RegisterMixIn.deregister">deregister</a></code></li>
-<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.folder" href="base.html#exchangelib.items.base.BaseItem.folder">folder</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.register" href="base.html#exchangelib.items.base.RegisterMixIn.register">register</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.remove_field" href="../properties.html#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.supported_fields" href="../properties.html#exchangelib.properties.EWSElement.supported_fields">supported_fields</a></code></li>
@@ -2298,7 +1789,6 @@ we use folder.account.</p></div>
 </section>
 </article>
 <nav id="sidebar">
-<h1>Index</h1>
 <div class="toc">
 <ul></ul>
 </div>
@@ -2525,7 +2015,7 @@ we use folder.account.</p></div>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
 </footer>
 </body>
 </html>

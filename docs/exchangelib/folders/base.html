@@ -2,18 +2,32 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.10.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.5">
 <title>exchangelib.folders.base API documentation</title>
-<meta name="description" content="" />
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
-<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
-<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
-<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
 </head>
 <body>
 <main>
@@ -22,965 +36,6 @@
 <h1 class="title">Module <code>exchangelib.folders.base</code></h1>
 </header>
 <section id="section-intro">
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">import abc
-import logging
-from contextlib import suppress
-from fnmatch import fnmatch
-from operator import attrgetter
-
-from ..errors import (
-    ErrorAccessDenied,
-    ErrorCannotDeleteObject,
-    ErrorCannotEmptyFolder,
-    ErrorDeleteDistinguishedFolder,
-    ErrorFolderNotFound,
-    ErrorItemNotFound,
-    ErrorRecoverableItemsAccessDenied,
-    InvalidTypeError,
-)
-from ..fields import (
-    CharField,
-    EffectiveRightsField,
-    EWSElementField,
-    Field,
-    FieldPath,
-    IdElementField,
-    IntegerField,
-    InvalidField,
-    PermissionSetField,
-)
-from ..items import HARD_DELETE, ITEM_CLASSES
-from ..items import SHALLOW as SHALLOW_ITEMS
-from ..items import CalendarItem, RegisterMixIn
-from ..properties import (
-    DistinguishedFolderId,
-    EWSMeta,
-    FolderId,
-    Mailbox,
-    ParentFolderId,
-    UserConfiguration,
-    UserConfigurationName,
-    UserConfigurationNameMNS,
-)
-from ..queryset import DoesNotExist, SearchableMixIn
-from ..util import TNS, is_iterable, require_id
-from ..version import EXCHANGE_2007_SP1, EXCHANGE_2010, EXCHANGE_2016, SupportedVersionClassMixIn
-from .collections import FolderCollection, PullSubscription, PushSubscription, StreamingSubscription, SyncCompleted
-from .queryset import DEEP as DEEP_FOLDERS
-from .queryset import MISSING_FOLDER_ERRORS
-from .queryset import SHALLOW as SHALLOW_FOLDERS
-from .queryset import SingleFolderQuerySet
-
-log = logging.getLogger(__name__)
-
-DELETE_FOLDER_ERRORS = (
-    ErrorAccessDenied,
-    ErrorCannotDeleteObject,
-    ErrorCannotEmptyFolder,
-    ErrorItemNotFound,
-)
-
-
-class BaseFolder(RegisterMixIn, SearchableMixIn, SupportedVersionClassMixIn, metaclass=EWSMeta):
-    &#34;&#34;&#34;Base class for all classes that implement a folder.&#34;&#34;&#34;
-
-    ELEMENT_NAME = &#34;Folder&#34;
-    NAMESPACE = TNS
-    # See https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/distinguishedfolderid
-    DISTINGUISHED_FOLDER_ID = None
-    # Default item type for this folder. See
-    # https://docs.microsoft.com/en-us/openspecs/exchange_server_protocols/ms-oxosfld/68a85898-84fe-43c4-b166-4711c13cdd61
-    CONTAINER_CLASS = None
-    supported_item_models = ITEM_CLASSES  # The Item types that this folder can contain. Default is all
-    # Whether this folder type is allowed with the GetFolder service
-    get_folder_allowed = True
-    DEFAULT_FOLDER_TRAVERSAL_DEPTH = DEEP_FOLDERS
-    DEFAULT_ITEM_TRAVERSAL_DEPTH = SHALLOW_ITEMS
-    LOCALIZED_NAMES = {}  # A map of (str)locale: (tuple)localized_folder_names
-    ITEM_MODEL_MAP = {cls.response_tag(): cls for cls in ITEM_CLASSES}
-    ID_ELEMENT_CLS = FolderId
-
-    _id = IdElementField(field_uri=&#34;folder:FolderId&#34;, value_cls=ID_ELEMENT_CLS)
-    _distinguished_id = IdElementField(
-        field_uri=&#34;folder:DistinguishedFolderId&#34;, value_cls=DistinguishedFolderId, supported_from=EXCHANGE_2016
-    )
-    parent_folder_id = EWSElementField(field_uri=&#34;folder:ParentFolderId&#34;, value_cls=ParentFolderId, is_read_only=True)
-    folder_class = CharField(field_uri=&#34;folder:FolderClass&#34;, is_required_after_save=True)
-    name = CharField(field_uri=&#34;folder:DisplayName&#34;)
-    total_count = IntegerField(field_uri=&#34;folder:TotalCount&#34;, is_read_only=True)
-    child_folder_count = IntegerField(field_uri=&#34;folder:ChildFolderCount&#34;, is_read_only=True)
-    unread_count = IntegerField(field_uri=&#34;folder:UnreadCount&#34;, is_read_only=True)
-
-    __slots__ = &#34;item_sync_state&#34;, &#34;folder_sync_state&#34;
-
-    # Used to register extended properties
-    INSERT_AFTER_FIELD = &#34;child_folder_count&#34;
-
-    def __init__(self, **kwargs):
-        self.item_sync_state = kwargs.pop(&#34;item_sync_state&#34;, None)
-        self.folder_sync_state = kwargs.pop(&#34;folder_sync_state&#34;, None)
-        super().__init__(**kwargs)
-        if self._distinguished_id and not self._distinguished_id.mailbox and self.account:
-            # Ensure that distinguished IDs have a mailbox, but don&#39;t override a custom mailbox (e.g. shared folders)
-            self._distinguished_id.mailbox = Mailbox(email_address=self.account.primary_smtp_address)
-
-    @property
-    @abc.abstractmethod
-    def account(self):
-        &#34;&#34;&#34;Return the account this folder belongs to&#34;&#34;&#34;
-
-    @property
-    @abc.abstractmethod
-    def root(self):
-        &#34;&#34;&#34;Return the root folder this folder belongs to&#34;&#34;&#34;
-
-    @property
-    @abc.abstractmethod
-    def parent(self):
-        &#34;&#34;&#34;Return the parent folder of this folder&#34;&#34;&#34;
-
-    @property
-    def is_distinguished(self):
-        return self._distinguished_id or (self.DISTINGUISHED_FOLDER_ID and not self._id)
-
-    @property
-    def is_deletable(self):
-        return not self.is_distinguished
-
-    def clean(self, version=None):
-        super().clean(version=version)
-        # Set a default folder class for new folders. A folder class cannot be changed after saving.
-        if self.id is None and self.folder_class is None:
-            self.folder_class = self.CONTAINER_CLASS
-
-    @property
-    def children(self):
-        # It&#39;s dangerous to return a generator here because we may then call methods on a child that result in the
-        # cache being updated while it&#39;s iterated.
-        return FolderCollection(account=self.account, folders=self.root.get_children(self))
-
-    @property
-    def parts(self):
-        parts = [self]
-        f = self.parent
-        while f:
-            parts.insert(0, f)
-            f = f.parent
-        return parts
-
-    @property
-    def absolute(self):
-        return &#34;&#34;.join(f&#34;/{p.name}&#34; for p in self.parts)
-
-    def _walk(self):
-        for c in self.children:
-            yield c
-            yield from c.walk()
-
-    def walk(self):
-        return FolderCollection(account=self.account, folders=self._walk())
-
-    def _glob(self, pattern):
-        split_pattern = pattern.split(&#34;/&#34;, maxsplit=1)
-        head, tail = (split_pattern[0], None) if len(split_pattern) == 1 else split_pattern
-        if head == &#34;&#34;:
-            # We got an absolute path. Restart globbing at root
-            yield from self.root.glob(tail or &#34;*&#34;)
-        elif head == &#34;..&#34;:
-            # Relative path with reference to parent. Restart globbing at parent
-            if not self.parent:
-                raise ValueError(&#34;Already at top&#34;)
-            yield from self.parent.glob(tail or &#34;*&#34;)
-        elif head == &#34;**&#34;:
-            # Match anything here or in any sub-folder at arbitrary depth
-            for c in self.walk():
-                # fnmatch() may be case-sensitive depending on operating system:
-                # force a case-insensitive match since case appears not to
-                # matter for folders in Exchange
-                if fnmatch(c.name.lower(), (tail or &#34;*&#34;).lower()):
-                    yield c
-        else:
-            # Regular pattern
-            for c in self.children:
-                # See note above on fnmatch() case-sensitivity
-                if not fnmatch(c.name.lower(), head.lower()):
-                    continue
-                if tail is None:
-                    yield c
-                    continue
-                yield from c.glob(tail)
-
-    def glob(self, pattern):
-        return FolderCollection(account=self.account, folders=self._glob(pattern))
-
-    def tree(self):
-        &#34;&#34;&#34;Return a string representation of the folder structure of this folder. Example:
-
-        root
-        ├── inbox
-        │   └── todos
-        └── archive
-            ├── Last Job
-            ├── exchangelib issues
-            └── Mom
-        &#34;&#34;&#34;
-        tree = f&#34;{self.name}\n&#34;
-        children = list(self.children)
-        for i, c in enumerate(sorted(children, key=attrgetter(&#34;name&#34;)), start=1):
-            nodes = c.tree().split(&#34;\n&#34;)
-            for j, node in enumerate(nodes, start=1):
-                if i != len(children) and j == 1:
-                    # Not the last child, but the first node, which is the name of the child
-                    tree += f&#34;├── {node}\n&#34;
-                elif i != len(children) and j &gt; 1:
-                    # Not the last child, and not name of child
-                    tree += f&#34;│   {node}\n&#34;
-                elif i == len(children) and j == 1:
-                    # Not the last child, but the first node, which is the name of the child
-                    tree += f&#34;└── {node}\n&#34;
-                else:  # Last child and not name of child
-                    tree += f&#34;    {node}\n&#34;
-        return tree.strip()
-
-    @classmethod
-    def _get_distinguished(cls, folder):
-        if not cls.DISTINGUISHED_FOLDER_ID:
-            raise ValueError(f&#34;Class {cls} must have a DISTINGUISHED_FOLDER_ID value&#34;)
-        try:
-            return cls.resolve(account=folder.account, folder=folder)
-        except MISSING_FOLDER_ERRORS as e:
-            raise ErrorFolderNotFound(f&#34;Could not find distinguished folder {cls.DISTINGUISHED_FOLDER_ID!r} ({e})&#34;)
-
-    @property
-    def has_distinguished_name(self):
-        return self.name and self.DISTINGUISHED_FOLDER_ID and self.name.lower() == self.DISTINGUISHED_FOLDER_ID.lower()
-
-    @classmethod
-    def localized_names(cls, locale):
-        # Return localized names for a specific locale. If no locale-specific names exist, return the default names,
-        # if any.
-        return tuple(s.lower() for s in cls.LOCALIZED_NAMES.get(locale, cls.LOCALIZED_NAMES.get(None, [cls.__name__])))
-
-    @staticmethod
-    def folder_cls_from_container_class(container_class):
-        &#34;&#34;&#34;Return a reasonable folder class given a container class, e.g. &#39;IPF.Note&#39;. Don&#39;t iterate WELLKNOWN_FOLDERS
-        because many folder classes have the same CONTAINER_CLASS.
-
-        :param container_class:
-        :return:
-        &#34;&#34;&#34;
-        from .known_folders import (
-            ApplicationData,
-            Calendar,
-            CompanyContacts,
-            Contacts,
-            ConversationSettings,
-            CrawlerData,
-            DlpPolicyEvaluation,
-            EventCheckPoints,
-            FreeBusyCache,
-            GALContacts,
-            Messages,
-            OrganizationalContacts,
-            PeopleCentricConversationBuddies,
-            RecipientCache,
-            RecoveryPoints,
-            Reminders,
-            RSSFeeds,
-            Signal,
-            SwssItems,
-            Tasks,
-        )
-
-        for folder_cls in (
-            ApplicationData,
-            Calendar,
-            CompanyContacts,
-            Contacts,
-            ConversationSettings,
-            CrawlerData,
-            DlpPolicyEvaluation,
-            EventCheckPoints,
-            FreeBusyCache,
-            GALContacts,
-            Messages,
-            OrganizationalContacts,
-            PeopleCentricConversationBuddies,
-            RSSFeeds,
-            RecipientCache,
-            RecoveryPoints,
-            Reminders,
-            Signal,
-            SwssItems,
-            Tasks,
-        ):
-            if folder_cls.CONTAINER_CLASS == container_class:
-                return folder_cls
-        raise KeyError()
-
-    @classmethod
-    def item_model_from_tag(cls, tag):
-        try:
-            return cls.ITEM_MODEL_MAP[tag]
-        except KeyError:
-            raise ValueError(f&#34;Item type {tag} was unexpected in a {cls.__name__} folder&#34;)
-
-    @classmethod
-    def allowed_item_fields(cls, version):
-        # Return non-ID fields of all item classes allowed in this folder type
-        fields = set()
-        for item_model in cls.supported_item_models:
-            fields.update(set(item_model.supported_fields(version=version)))
-        return fields
-
-    def validate_item_field(self, field, version):
-        FolderCollection(account=self.account, folders=[self]).validate_item_field(field=field, version=version)
-
-    def normalize_fields(self, fields):
-        # Takes a list of fieldnames, Field or FieldPath objects pointing to item fields. Turns them into FieldPath
-        # objects and adds internal timezone fields if necessary. Assume fields are already validated.
-        fields = list(fields)
-        has_start, has_end = False, False
-        for i, field_path in enumerate(fields):
-            # Allow both Field and FieldPath instances and string field paths as input
-            if isinstance(field_path, str):
-                field_path = FieldPath.from_string(field_path=field_path, folder=self)
-                fields[i] = field_path
-            elif isinstance(field_path, Field):
-                field_path = FieldPath(field=field_path)
-                fields[i] = field_path
-            if field_path.field.name == &#34;start&#34;:
-                has_start = True
-            elif field_path.field.name == &#34;end&#34;:
-                has_end = True
-
-        # For CalendarItem items, we want to inject internal timezone fields. See also CalendarItem.clean()
-        if CalendarItem in self.supported_item_models:
-            meeting_tz_field, start_tz_field, end_tz_field = CalendarItem.timezone_fields()
-            if self.account.version.build &lt; EXCHANGE_2010:
-                if has_start or has_end:
-                    fields.append(FieldPath(field=meeting_tz_field))
-            else:
-                if has_start:
-                    fields.append(FieldPath(field=start_tz_field))
-                if has_end:
-                    fields.append(FieldPath(field=end_tz_field))
-        return fields
-
-    @classmethod
-    def get_item_field_by_fieldname(cls, fieldname):
-        for item_model in cls.supported_item_models:
-            with suppress(InvalidField):
-                return item_model.get_field_by_fieldname(fieldname)
-        raise InvalidField(f&#34;{fieldname!r} is not a valid field name on {cls.supported_item_models}&#34;)
-
-    def get(self, *args, **kwargs):
-        return FolderCollection(account=self.account, folders=[self]).get(*args, **kwargs)
-
-    def all(self):
-        return FolderCollection(account=self.account, folders=[self]).all()
-
-    def none(self):
-        return FolderCollection(account=self.account, folders=[self]).none()
-
-    def filter(self, *args, **kwargs):
-        return FolderCollection(account=self.account, folders=[self]).filter(*args, **kwargs)
-
-    def exclude(self, *args, **kwargs):
-        return FolderCollection(account=self.account, folders=[self]).exclude(*args, **kwargs)
-
-    def people(self):
-        # No point in using a FolderCollection because FindPeople only supports one folder
-        return FolderCollection(account=self.account, folders=[self]).people()
-
-    def bulk_create(self, items, *args, **kwargs):
-        return self.account.bulk_create(folder=self, items=items, *args, **kwargs)
-
-    def save(self, update_fields=None):
-        from ..services import CreateFolder, UpdateFolder
-
-        if self.id is None:
-            # New folder
-            if update_fields:
-                raise ValueError(&#34;&#39;update_fields&#39; is only valid for updates&#34;)
-            res = CreateFolder(account=self.account).get(parent_folder=self.parent, folders=[self])
-            self._id = self.ID_ELEMENT_CLS(res.id, res.changekey)
-            self.root.add_folder(self)  # Add this folder to the cache
-            return self
-
-        # Update folder
-        if not update_fields:
-            # The fields to update was not specified explicitly. Update all fields where update is possible
-            update_fields = []
-            for f in self.supported_fields(version=self.account.version):
-                if f.is_read_only:
-                    # These cannot be changed
-                    continue
-                if (f.is_required or f.is_required_after_save) and (
-                    getattr(self, f.name) is None or (f.is_list and not getattr(self, f.name))
-                ):
-                    # These are required and cannot be deleted
-                    continue
-                update_fields.append(f.name)
-        res = UpdateFolder(account=self.account).get(folders=[(self, update_fields)])
-        folder_id, changekey = res.id, res.changekey
-        if self.id != folder_id:
-            raise ValueError(&#34;ID mismatch&#34;)
-        # Don&#39;t check changekey value. It may not change on no-op updates
-        self.changekey = changekey
-        self.root.update_folder(self)  # Update the folder in the cache
-        return self
-
-    def move(self, to_folder):
-        from ..services import MoveFolder
-
-        res = MoveFolder(account=self.account).get(folders=[self], to_folder=to_folder)
-        folder_id, changekey = res.id, res.changekey
-        if self.id != folder_id:
-            raise ValueError(&#34;ID mismatch&#34;)
-        # Don&#39;t check changekey value. It may not change on no-op moves
-        self.changekey = changekey
-        self.parent_folder_id = ParentFolderId(id=to_folder.id, changekey=to_folder.changekey)
-        self.root.update_folder(self)  # Update the folder in the cache
-
-    def delete(self, delete_type=HARD_DELETE):
-        from ..services import DeleteFolder
-
-        DeleteFolder(account=self.account).get(folders=[self], delete_type=delete_type)
-        self.root.remove_folder(self)  # Remove the updated folder from the cache
-        self._id = None
-
-    def empty(self, delete_type=HARD_DELETE, delete_sub_folders=False):
-        from ..services import EmptyFolder
-
-        EmptyFolder(account=self.account).get(
-            folders=[self], delete_type=delete_type, delete_sub_folders=delete_sub_folders
-        )
-        if delete_sub_folders:
-            # We don&#39;t know exactly what was deleted, so invalidate the entire folder cache to be safe
-            self.root.clear_cache()
-
-    def wipe(self, page_size=None, chunk_size=None, _seen=None, _level=0):
-        # Recursively deletes all items in this folder, and all sub-folders and their content. Attempts to protect
-        # distinguished folders from being deleted. Use with caution!
-        from .known_folders import Audits
-
-        _seen = _seen or set()
-        if self.id in _seen:
-            raise RecursionError(f&#34;We already tried to wipe {self}&#34;)
-        if _level &gt; 16:
-            raise RecursionError(f&#34;Max recursion level reached: {_level}&#34;)
-        _seen.add(self.id)
-        if isinstance(self, Audits):
-            # Shortcircuit because this folder can have many items that are all non-deletable
-            log.warning(&#34;Cannot wipe audits folder %s&#34;, self)
-            return
-        if self.is_distinguished and &#34;recoverableitems&#34; in self.DISTINGUISHED_FOLDER_ID:
-            log.warning(&#34;Cannot wipe recoverable items folder %s&#34;, self)
-            return
-        log.warning(&#34;Wiping %s&#34;, self)
-        has_non_deletable_subfolders = any(not f.is_deletable for f in self.children)
-        try:
-            if has_non_deletable_subfolders:
-                self.empty()
-            else:
-                self.empty(delete_sub_folders=True)
-        except ErrorRecoverableItemsAccessDenied:
-            log.warning(&#34;Access denied to %s. Skipping&#34;, self)
-            return
-        except DELETE_FOLDER_ERRORS:
-            try:
-                if has_non_deletable_subfolders:
-                    raise  # We already tried this
-                self.empty()
-            except DELETE_FOLDER_ERRORS:
-                log.warning(&#34;Not allowed to empty %s. Trying to delete items instead&#34;, self)
-                kwargs = {}
-                if page_size is not None:
-                    kwargs[&#34;page_size&#34;] = page_size
-                if chunk_size is not None:
-                    kwargs[&#34;chunk_size&#34;] = chunk_size
-                try:
-                    self.all().delete(**kwargs)
-                except DELETE_FOLDER_ERRORS:
-                    log.warning(&#34;Not allowed to delete items in %s&#34;, self)
-        _level += 1
-        for f in self.children:
-            f.wipe(page_size=page_size, chunk_size=chunk_size, _seen=_seen, _level=_level)
-            # Remove non-distinguished children that are empty and have no sub-folders
-            if f.is_deletable and not f.children:
-                log.warning(&#34;Deleting folder %s&#34;, f)
-                try:
-                    f.delete()
-                except ErrorDeleteDistinguishedFolder:
-                    log.warning(&#34;Tried to delete a distinguished folder (%s)&#34;, f)
-
-    def test_access(self):
-        &#34;&#34;&#34;Does a simple FindItem to test (read) access to the folder. Maybe the account doesn&#39;t exist, maybe the
-        service user doesn&#39;t have access to the calendar. This will throw the most common errors.
-        &#34;&#34;&#34;
-        self.all().exists()
-        return True
-
-    @classmethod
-    def _kwargs_from_elem(cls, elem, account):
-        # Check for &#39;DisplayName&#39; element before collecting kwargs because that clears the elements
-        has_name_elem = elem.find(cls.get_field_by_fieldname(&#34;name&#34;).response_tag()) is not None
-        kwargs = {f.name: f.from_xml(elem=elem, account=account) for f in cls.FIELDS}
-        if has_name_elem and not kwargs[&#34;name&#34;]:
-            # When we request the &#39;DisplayName&#39; property, some folders may still be returned with an empty value.
-            # Assign a default name to these folders.
-            kwargs[&#34;name&#34;] = cls.DISTINGUISHED_FOLDER_ID
-        return kwargs
-
-    def to_id(self):
-        # Use self._distinguished_id as-is if we have it. This could be a DistinguishedFolderId with a mailbox pointing
-        # to a shared mailbox.
-        if self._distinguished_id:
-            return self._distinguished_id
-        if self._id:
-            return self._id
-        if not self.DISTINGUISHED_FOLDER_ID:
-            raise ValueError(f&#34;{self} must be a distinguished folder or have an ID&#34;)
-        self._distinguished_id = DistinguishedFolderId(
-            id=self.DISTINGUISHED_FOLDER_ID,
-            mailbox=Mailbox(email_address=self.account.primary_smtp_address),
-        )
-        return self._distinguished_id
-
-    @classmethod
-    def resolve(cls, account, folder):
-        # Resolve a single folder
-        folders = list(FolderCollection(account=account, folders=[folder]).resolve())
-        if not folders:
-            raise ErrorFolderNotFound(f&#34;Could not find folder {folder!r}&#34;)
-        if len(folders) != 1:
-            raise ValueError(f&#34;Expected result length 1, but got {folders}&#34;)
-        f = folders[0]
-        if isinstance(f, Exception):
-            raise f
-        if f.__class__ != cls:
-            raise ValueError(f&#34;Expected folder {f!r} to be a {cls} instance&#34;)
-        return f
-
-    @require_id
-    def refresh(self):
-        fresh_folder = self.resolve(account=self.account, folder=self)
-        if self.id != fresh_folder.id:
-            raise ValueError(&#34;ID mismatch&#34;)
-        # Apparently, the changekey may get updated
-        for f in self.FIELDS:
-            setattr(self, f.name, getattr(fresh_folder, f.name))
-        return self
-
-    @require_id
-    def get_user_configuration(self, name, properties=None):
-        from ..services import GetUserConfiguration
-        from ..services.get_user_configuration import ALL
-
-        if properties is None:
-            properties = ALL
-        return GetUserConfiguration(account=self.account).get(
-            user_configuration_name=UserConfigurationNameMNS(name=name, folder=self),
-            properties=properties,
-        )
-
-    @require_id
-    def create_user_configuration(self, name, dictionary=None, xml_data=None, binary_data=None):
-        from ..services import CreateUserConfiguration
-
-        user_configuration = UserConfiguration(
-            user_configuration_name=UserConfigurationName(name=name, folder=self),
-            dictionary=dictionary,
-            xml_data=xml_data,
-            binary_data=binary_data,
-        )
-        return CreateUserConfiguration(account=self.account).get(user_configuration=user_configuration)
-
-    @require_id
-    def update_user_configuration(self, name, dictionary=None, xml_data=None, binary_data=None):
-        from ..services import UpdateUserConfiguration
-
-        user_configuration = UserConfiguration(
-            user_configuration_name=UserConfigurationName(name=name, folder=self),
-            dictionary=dictionary,
-            xml_data=xml_data,
-            binary_data=binary_data,
-        )
-        return UpdateUserConfiguration(account=self.account).get(user_configuration=user_configuration)
-
-    @require_id
-    def delete_user_configuration(self, name):
-        from ..services import DeleteUserConfiguration
-
-        return DeleteUserConfiguration(account=self.account).get(
-            user_configuration_name=UserConfigurationNameMNS(name=name, folder=self)
-        )
-
-    @require_id
-    def subscribe_to_pull(self, event_types=None, watermark=None, timeout=60):
-        &#34;&#34;&#34;Create a pull subscription.
-
-        :param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPull.EVENT_TYPES
-        :param watermark: An event bookmark as returned by some sync services
-        :param timeout: Timeout of the subscription, in minutes. Timeout is reset when the server receives a
-        GetEvents request for this subscription.
-        :return: The subscription ID and a watermark
-        &#34;&#34;&#34;
-        from ..services import SubscribeToPull
-
-        if event_types is None:
-            event_types = SubscribeToPull.EVENT_TYPES
-        return FolderCollection(account=self.account, folders=[self]).subscribe_to_pull(
-            event_types=event_types,
-            watermark=watermark,
-            timeout=timeout,
-        )
-
-    @require_id
-    def subscribe_to_push(self, callback_url, event_types=None, watermark=None, status_frequency=1):
-        &#34;&#34;&#34;Create a push subscription.
-
-        :param callback_url: A client-defined URL that the server will call
-        :param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPush.EVENT_TYPES
-        :param watermark: An event bookmark as returned by some sync services
-        :param status_frequency: The frequency, in minutes, that the callback URL will be called with.
-        :return: The subscription ID and a watermark
-        &#34;&#34;&#34;
-        from ..services import SubscribeToPush
-
-        if event_types is None:
-            event_types = SubscribeToPush.EVENT_TYPES
-        return FolderCollection(account=self.account, folders=[self]).subscribe_to_push(
-            event_types=event_types,
-            watermark=watermark,
-            status_frequency=status_frequency,
-            callback_url=callback_url,
-        )
-
-    @require_id
-    def subscribe_to_streaming(self, event_types=None):
-        &#34;&#34;&#34;Create a streaming subscription.
-
-        :param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPush.EVENT_TYPES
-        :return: The subscription ID
-        &#34;&#34;&#34;
-        from ..services import SubscribeToStreaming
-
-        if event_types is None:
-            event_types = SubscribeToStreaming.EVENT_TYPES
-        return FolderCollection(account=self.account, folders=[self]).subscribe_to_streaming(event_types=event_types)
-
-    @require_id
-    def pull_subscription(self, **kwargs):
-        return PullSubscription(target=self, **kwargs)
-
-    @require_id
-    def push_subscription(self, **kwargs):
-        return PushSubscription(target=self, **kwargs)
-
-    @require_id
-    def streaming_subscription(self, **kwargs):
-        return StreamingSubscription(target=self, **kwargs)
-
-    def unsubscribe(self, subscription_id):
-        &#34;&#34;&#34;Unsubscribe. Only applies to pull and streaming notifications.
-
-        :param subscription_id: A subscription ID as acquired by .subscribe_to_[pull|streaming]()
-        :return: True
-
-        This method doesn&#39;t need the current folder instance, but it makes sense to keep the method along the other
-        sync methods.
-        &#34;&#34;&#34;
-        from ..services import Unsubscribe
-
-        return Unsubscribe(account=self.account).get(subscription_id=subscription_id)
-
-    def sync_items(self, sync_state=None, only_fields=None, ignore=None, max_changes_returned=None, sync_scope=None):
-        &#34;&#34;&#34;Return all item changes to a folder, as a generator. If sync_state is specified, get all item changes after
-        this sync state. After fully consuming the generator, self.item_sync_state will hold the new sync state.
-
-        :param sync_state: The state of the sync. Returned by a successful call to the SyncFolderItems service.
-        :param only_fields: A list of string or FieldPath items specifying the fields to fetch. Default to all fields
-        :param ignore: A list of Item IDs to ignore in the sync
-        :param max_changes_returned: The max number of change
-        :param sync_scope: Specify whether to return just items, or items and folder associated information. Possible
-           values are specified in SyncFolderItems.SYNC_SCOPES
-        :return: A generator of (change_type, item) tuples
-        &#34;&#34;&#34;
-        if not sync_state:
-            sync_state = self.item_sync_state
-        try:
-            yield from FolderCollection(account=self.account, folders=[self]).sync_items(
-                sync_state=sync_state,
-                only_fields=only_fields,
-                ignore=ignore,
-                max_changes_returned=max_changes_returned,
-                sync_scope=sync_scope,
-            )
-        except SyncCompleted as e:
-            # Set the new sync state on the folder instance
-            self.item_sync_state = e.sync_state
-
-    def sync_hierarchy(self, sync_state=None, only_fields=None):
-        &#34;&#34;&#34;Return all folder changes to a folder hierarchy, as a generator. If sync_state is specified, get all folder
-        changes after this sync state. After fully consuming the generator, self.folder_sync_state will hold the new
-        sync state.
-
-        :param sync_state: The state of the sync. Returned by a successful call to the SyncFolderItems service.
-        :param only_fields: A list of string or FieldPath items specifying the fields to fetch. Default to all fields
-        :return:
-        &#34;&#34;&#34;
-        if not sync_state:
-            sync_state = self.folder_sync_state
-        try:
-            yield from FolderCollection(account=self.account, folders=[self]).sync_hierarchy(
-                sync_state=sync_state,
-                only_fields=only_fields,
-            )
-        except SyncCompleted as e:
-            # Set the new sync state on the folder instance
-            self.folder_sync_state = e.sync_state
-
-    def get_events(self, subscription_id, watermark):
-        &#34;&#34;&#34;Get events since the given watermark. Non-blocking.
-
-        :param subscription_id: A subscription ID as acquired by .subscribe_to_[pull|push]()
-        :param watermark: Either the watermark from the subscription, or as returned by the last .get_events() call.
-        :return: A Notification object containing a list of events
-
-        This method doesn&#39;t need the current folder instance, but it makes sense to keep the method along the other
-        sync methods.
-        &#34;&#34;&#34;
-        from ..services import GetEvents
-
-        svc = GetEvents(account=self.account)
-        while True:
-            notification = svc.get(subscription_id=subscription_id, watermark=watermark)
-            yield notification
-            if not notification.more_events:
-                break
-
-    def get_streaming_events(self, subscription_id_or_ids, connection_timeout=1, max_notifications_returned=None):
-        &#34;&#34;&#34;Get events since the subscription was created, in streaming mode. This method will block as many minutes
-        as specified by &#39;connection_timeout&#39;.
-
-        :param subscription_id_or_ids: A subscription ID, or list of IDs, as acquired by .subscribe_to_streaming()
-        :param connection_timeout: Timeout of the connection, in minutes. The connection is closed after this timeout
-        is reached.
-        :param max_notifications_returned: If specified, will exit after receiving this number of notifications
-        :return: A generator of Notification objects, each containing a list of events
-
-        This method doesn&#39;t need the current folder instance, but it makes sense to keep the method along the other
-        sync methods.
-        &#34;&#34;&#34;
-        from ..services import GetStreamingEvents
-
-        svc = GetStreamingEvents(account=self.account)
-        subscription_ids = (
-            subscription_id_or_ids
-            if is_iterable(subscription_id_or_ids, generators_allowed=True)
-            else [subscription_id_or_ids]
-        )
-        for i, notification in enumerate(
-            svc.call(subscription_ids=subscription_ids, connection_timeout=connection_timeout), start=1
-        ):
-            yield notification
-            if max_notifications_returned and i &gt;= max_notifications_returned:
-                svc.stop_streaming()
-                break
-
-    def __floordiv__(self, other):
-        &#34;&#34;&#34;Support the some_folder // &#39;child_folder&#39; // &#39;child_of_child_folder&#39; navigation syntax.
-
-        Works like as __truediv__ but does not touch the folder cache.
-
-        This is useful if the folder hierarchy contains a huge number of folders, and you don&#39;t want to fetch them all
-
-        :param other:
-        :return:
-        &#34;&#34;&#34;
-        if other == &#34;..&#34;:
-            raise ValueError(&#34;Cannot get parent without a folder cache&#34;)
-
-        if other == &#34;.&#34;:
-            return self
-
-        # Assume an exact match on the folder name in a shallow search will only return at most one folder
-        try:
-            return SingleFolderQuerySet(account=self.account, folder=self).depth(SHALLOW_FOLDERS).get(name=other)
-        except DoesNotExist:
-            raise ErrorFolderNotFound(f&#34;No subfolder with name {other!r}&#34;)
-
-    def __truediv__(self, other):
-        &#34;&#34;&#34;Support the some_folder / &#39;child_folder&#39; / &#39;child_of_child_folder&#39; navigation syntax.&#34;&#34;&#34;
-        if other == &#34;..&#34;:
-            if not self.parent:
-                raise ValueError(&#34;Already at top&#34;)
-            return self.parent
-        if other == &#34;.&#34;:
-            return self
-        for c in self.children:
-            # Folders are case-insensitive server-side. Let&#39;s do that here as well.
-            if c.name.lower() == other.lower():
-                return c
-        raise ErrorFolderNotFound(f&#34;No subfolder with name {other!r}&#34;)
-
-    def __repr__(self):
-        return self.__class__.__name__ + repr(
-            (
-                self.root,
-                self.name,
-                self.total_count,
-                self.unread_count,
-                self.child_folder_count,
-                self.folder_class,
-                self.id,
-                self.changekey,
-            )
-        )
-
-    def __str__(self):
-        return f&#34;{self.__class__.__name__} ({self.name})&#34;
-
-
-class Folder(BaseFolder):
-    &#34;&#34;&#34;MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/folder&#34;&#34;&#34;
-
-    permission_set = PermissionSetField(field_uri=&#34;folder:PermissionSet&#34;, supported_from=EXCHANGE_2007_SP1)
-    effective_rights = EffectiveRightsField(
-        field_uri=&#34;folder:EffectiveRights&#34;, is_read_only=True, supported_from=EXCHANGE_2007_SP1
-    )
-
-    __slots__ = (&#34;_root&#34;,)
-
-    def __init__(self, **kwargs):
-        self._root = kwargs.pop(&#34;root&#34;, None)  # This is a pointer to the root of the folder hierarchy
-        parent = kwargs.pop(&#34;parent&#34;, None)
-        if parent:
-            if self.root:
-                if parent.root != self.root:
-                    raise ValueError(&#34;&#39;parent.root&#39; must match &#39;root&#39;&#34;)
-            else:
-                self._root = parent.root
-            if &#34;parent_folder_id&#34; in kwargs and parent.id != kwargs[&#34;parent_folder_id&#34;]:
-                raise ValueError(&#34;&#39;parent_folder_id&#39; must match &#39;parent&#39; ID&#34;)
-            kwargs[&#34;parent_folder_id&#34;] = ParentFolderId(id=parent.id, changekey=parent.changekey)
-        super().__init__(**kwargs)
-
-    @property
-    def account(self):
-        if self.root is None:
-            return None
-        return self.root.account
-
-    @property
-    def root(self):
-        return self._root
-
-    @classmethod
-    def register(cls, *args, **kwargs):
-        if cls is not Folder:
-            raise TypeError(&#34;For folders, custom fields must be registered on the Folder class&#34;)
-        return super().register(*args, **kwargs)
-
-    @classmethod
-    def deregister(cls, *args, **kwargs):
-        if cls is not Folder:
-            raise TypeError(&#34;For folders, custom fields must be registered on the Folder class&#34;)
-        return super().deregister(*args, **kwargs)
-
-    @property
-    def parent(self):
-        if not self.parent_folder_id:
-            return None
-        if self.parent_folder_id.id == self.id:
-            # Some folders have a parent that references itself. Avoid circular references here
-            return None
-        return self.root.get_folder(self.parent_folder_id)
-
-    @parent.setter
-    def parent(self, value):
-        if value is None:
-            self.parent_folder_id = None
-        else:
-            if not isinstance(value, BaseFolder):
-                raise InvalidTypeError(&#34;value&#34;, value, BaseFolder)
-            self._root = value.root
-            self.parent_folder_id = ParentFolderId(id=value.id, changekey=value.changekey)
-
-    def clean(self, version=None):
-        from .roots import RootOfHierarchy
-
-        super().clean(version=version)
-        if self.root and not isinstance(self.root, RootOfHierarchy):
-            raise InvalidTypeError(&#34;root&#34;, self.root, RootOfHierarchy)
-
-    @classmethod
-    def get_distinguished(cls, root):
-        &#34;&#34;&#34;Get the distinguished folder for this folder class.
-
-        :param root:
-        :return:
-        &#34;&#34;&#34;
-        return cls._get_distinguished(
-            folder=cls(
-                _distinguished_id=DistinguishedFolderId(
-                    id=cls.DISTINGUISHED_FOLDER_ID,
-                    mailbox=Mailbox(email_address=root.account.primary_smtp_address),
-                ),
-                root=root,
-            )
-        )
-
-    @classmethod
-    def from_xml_with_root(cls, elem, root):
-        folder = cls.from_xml(elem=elem, account=root.account)
-        folder_cls = cls
-        if cls == Folder:
-            # We were called on the generic Folder class. Try to find a more specific class to return objects as.
-            #
-            # The &#34;FolderClass&#34; element value is the only indication we have in the FindFolder response of which
-            # folder class we should create the folder with. And many folders share the same &#39;FolderClass&#39; value, e.g.
-            # Inbox and DeletedItems. We want to distinguish between these because otherwise we can&#39;t locate the right
-            # folders types for e.g. Account.inbox and Account.trash.
-            #
-            # We should be able to just use the name, but apparently default folder names can be renamed to a set of
-            # localized names using a PowerShell command:
-            # https://docs.microsoft.com/en-us/powershell/module/exchange/client-access/Set-MailboxRegionalConfiguration
-            #
-            # Instead, search for a folder class using the localized name. If none are found, fall back to getting the
-            # folder class by the &#34;FolderClass&#34; value.
-            #
-            # The returned XML may contain neither folder class nor name. In that case, we default to the generic
-            # Folder class.
-            if folder.name:
-                with suppress(KeyError):
-                    # TODO: fld_class.LOCALIZED_NAMES is most definitely neither complete nor authoritative
-                    folder_cls = root.folder_cls_from_folder_name(
-                        folder_name=folder.name,
-                        folder_class=folder.folder_class,
-                        locale=root.account.locale,
-                    )
-                    log.debug(&#34;Folder class %s matches localized folder name %s&#34;, folder_cls, folder.name)
-            if folder.folder_class and folder_cls == Folder:
-                with suppress(KeyError):
-                    folder_cls = cls.folder_cls_from_container_class(container_class=folder.folder_class)
-                    log.debug(
-                        &#34;Folder class %s matches container class %s (%s)&#34;, folder_cls, folder.folder_class, folder.name
-                    )
-            if folder_cls == Folder:
-                log.debug(&#34;Fallback to class Folder (folder_class %s, name %s)&#34;, folder.folder_class, folder.name)
-        # Some servers return folders in a FindFolder result that have a DistinguishedFolderId element that the same
-        # server cannot handle in a GetFolder request. Only set the DistinguishedFolderId field if we recognize the ID.
-        if folder._distinguished_id and not folder_cls.DISTINGUISHED_FOLDER_ID:
-            folder._distinguished_id = None
-        return folder_cls(root=root, **{f.name: getattr(folder, f.name) for f in folder.FIELDS})</code></pre>
-</details>
 </section>
 <section>
 </section>
@@ -996,7 +51,6 @@ class Folder(BaseFolder):
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Base class for all classes that implement a folder.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1763,6 +817,7 @@ class Folder(BaseFolder):
     def __str__(self):
         return f&#34;{self.__class__.__name__} ({self.name})&#34;</code></pre>
 </details>
+<div class="desc"><p>Base class for all classes that implement a folder.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.items.base.RegisterMixIn" href="../items/base.html#exchangelib.items.base.RegisterMixIn">RegisterMixIn</a></li>
@@ -1838,27 +893,11 @@ class Folder(BaseFolder):
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def allowed_item_fields(cls, version):
-    # Return non-ID fields of all item classes allowed in this folder type
-    fields = set()
-    for item_model in cls.supported_item_models:
-        fields.update(set(item_model.supported_fields(version=version)))
-    return fields</code></pre>
-</details>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.folder_cls_from_container_class"><code class="name flex">
 <span>def <span class="ident">folder_cls_from_container_class</span></span>(<span>container_class)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Return a reasonable folder class given a container class, e.g. 'IPF.Note'. Don't iterate WELLKNOWN_FOLDERS
-because many folder classes have the same CONTAINER_CLASS.</p>
-<p>:param container_class:
-:return:</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1920,88 +959,40 @@ def folder_cls_from_container_class(container_class):
             return folder_cls
     raise KeyError()</code></pre>
 </details>
+<div class="desc"><p>Return a reasonable folder class given a container class, e.g. 'IPF.Note'. Don't iterate WELLKNOWN_FOLDERS
+because many folder classes have the same CONTAINER_CLASS.</p>
+<p>:param container_class:
+:return:</p></div>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.get_item_field_by_fieldname"><code class="name flex">
 <span>def <span class="ident">get_item_field_by_fieldname</span></span>(<span>fieldname)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def get_item_field_by_fieldname(cls, fieldname):
-    for item_model in cls.supported_item_models:
-        with suppress(InvalidField):
-            return item_model.get_field_by_fieldname(fieldname)
-    raise InvalidField(f&#34;{fieldname!r} is not a valid field name on {cls.supported_item_models}&#34;)</code></pre>
-</details>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.item_model_from_tag"><code class="name flex">
 <span>def <span class="ident">item_model_from_tag</span></span>(<span>tag)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def item_model_from_tag(cls, tag):
-    try:
-        return cls.ITEM_MODEL_MAP[tag]
-    except KeyError:
-        raise ValueError(f&#34;Item type {tag} was unexpected in a {cls.__name__} folder&#34;)</code></pre>
-</details>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.localized_names"><code class="name flex">
 <span>def <span class="ident">localized_names</span></span>(<span>locale)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def localized_names(cls, locale):
-    # Return localized names for a specific locale. If no locale-specific names exist, return the default names,
-    # if any.
-    return tuple(s.lower() for s in cls.LOCALIZED_NAMES.get(locale, cls.LOCALIZED_NAMES.get(None, [cls.__name__])))</code></pre>
-</details>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.resolve"><code class="name flex">
 <span>def <span class="ident">resolve</span></span>(<span>account, folder)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def resolve(cls, account, folder):
-    # Resolve a single folder
-    folders = list(FolderCollection(account=account, folders=[folder]).resolve())
-    if not folders:
-        raise ErrorFolderNotFound(f&#34;Could not find folder {folder!r}&#34;)
-    if len(folders) != 1:
-        raise ValueError(f&#34;Expected result length 1, but got {folders}&#34;)
-    f = folders[0]
-    if isinstance(f, Exception):
-        raise f
-    if f.__class__ != cls:
-        raise ValueError(f&#34;Expected folder {f!r} to be a {cls} instance&#34;)
-    return f</code></pre>
-</details>
 </dd>
 </dl>
 <h3>Instance variables</h3>
 <dl>
-<dt id="exchangelib.folders.base.BaseFolder.absolute"><code class="name">var <span class="ident">absolute</span></code></dt>
+<dt id="exchangelib.folders.base.BaseFolder.absolute"><code class="name">prop <span class="ident">absolute</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2010,10 +1001,10 @@ def resolve(cls, account, folder):
 def absolute(self):
     return &#34;&#34;.join(f&#34;/{p.name}&#34; for p in self.parts)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
-<dt id="exchangelib.folders.base.BaseFolder.account"><code class="name">var <span class="ident">account</span></code></dt>
+<dt id="exchangelib.folders.base.BaseFolder.account"><code class="name">prop <span class="ident">account</span></code></dt>
 <dd>
-<div class="desc"><p>Return the account this folder belongs to</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2023,14 +1014,14 @@ def absolute(self):
 def account(self):
     &#34;&#34;&#34;Return the account this folder belongs to&#34;&#34;&#34;</code></pre>
 </details>
+<div class="desc"><p>Return the account this folder belongs to</p></div>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.child_folder_count"><code class="name">var <span class="ident">child_folder_count</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="exchangelib.folders.base.BaseFolder.children"><code class="name">var <span class="ident">children</span></code></dt>
+<dt id="exchangelib.folders.base.BaseFolder.children"><code class="name">prop <span class="ident">children</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2041,6 +1032,7 @@ def children(self):
     # cache being updated while it&#39;s iterated.
     return FolderCollection(account=self.account, folders=self.root.get_children(self))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.folder_class"><code class="name">var <span class="ident">folder_class</span></code></dt>
 <dd>
@@ -2048,11 +1040,776 @@ def children(self):
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.folder_sync_state"><code class="name">var <span class="ident">folder_sync_state</span></code></dt>
 <dd>
-<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
-</dd>
-<dt id="exchangelib.folders.base.BaseFolder.has_distinguished_name"><code class="name">var <span class="ident">has_distinguished_name</span></code></dt>
-<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class BaseFolder(RegisterMixIn, SearchableMixIn, SupportedVersionClassMixIn, metaclass=EWSMeta):
+    &#34;&#34;&#34;Base class for all classes that implement a folder.&#34;&#34;&#34;
+
+    ELEMENT_NAME = &#34;Folder&#34;
+    NAMESPACE = TNS
+    # See https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/distinguishedfolderid
+    DISTINGUISHED_FOLDER_ID = None
+    # Default item type for this folder. See
+    # https://docs.microsoft.com/en-us/openspecs/exchange_server_protocols/ms-oxosfld/68a85898-84fe-43c4-b166-4711c13cdd61
+    CONTAINER_CLASS = None
+    supported_item_models = ITEM_CLASSES  # The Item types that this folder can contain. Default is all
+    # Whether this folder type is allowed with the GetFolder service
+    get_folder_allowed = True
+    DEFAULT_FOLDER_TRAVERSAL_DEPTH = DEEP_FOLDERS
+    DEFAULT_ITEM_TRAVERSAL_DEPTH = SHALLOW_ITEMS
+    LOCALIZED_NAMES = {}  # A map of (str)locale: (tuple)localized_folder_names
+    ITEM_MODEL_MAP = {cls.response_tag(): cls for cls in ITEM_CLASSES}
+    ID_ELEMENT_CLS = FolderId
+
+    _id = IdElementField(field_uri=&#34;folder:FolderId&#34;, value_cls=ID_ELEMENT_CLS)
+    _distinguished_id = IdElementField(
+        field_uri=&#34;folder:DistinguishedFolderId&#34;, value_cls=DistinguishedFolderId, supported_from=EXCHANGE_2016
+    )
+    parent_folder_id = EWSElementField(field_uri=&#34;folder:ParentFolderId&#34;, value_cls=ParentFolderId, is_read_only=True)
+    folder_class = CharField(field_uri=&#34;folder:FolderClass&#34;, is_required_after_save=True)
+    name = CharField(field_uri=&#34;folder:DisplayName&#34;)
+    total_count = IntegerField(field_uri=&#34;folder:TotalCount&#34;, is_read_only=True)
+    child_folder_count = IntegerField(field_uri=&#34;folder:ChildFolderCount&#34;, is_read_only=True)
+    unread_count = IntegerField(field_uri=&#34;folder:UnreadCount&#34;, is_read_only=True)
+
+    __slots__ = &#34;item_sync_state&#34;, &#34;folder_sync_state&#34;
+
+    # Used to register extended properties
+    INSERT_AFTER_FIELD = &#34;child_folder_count&#34;
+
+    def __init__(self, **kwargs):
+        self.item_sync_state = kwargs.pop(&#34;item_sync_state&#34;, None)
+        self.folder_sync_state = kwargs.pop(&#34;folder_sync_state&#34;, None)
+        super().__init__(**kwargs)
+        if self._distinguished_id and not self._distinguished_id.mailbox and self.account:
+            # Ensure that distinguished IDs have a mailbox, but don&#39;t override a custom mailbox (e.g. shared folders)
+            self._distinguished_id.mailbox = Mailbox(email_address=self.account.primary_smtp_address)
+
+    @property
+    @abc.abstractmethod
+    def account(self):
+        &#34;&#34;&#34;Return the account this folder belongs to&#34;&#34;&#34;
+
+    @property
+    @abc.abstractmethod
+    def root(self):
+        &#34;&#34;&#34;Return the root folder this folder belongs to&#34;&#34;&#34;
+
+    @property
+    @abc.abstractmethod
+    def parent(self):
+        &#34;&#34;&#34;Return the parent folder of this folder&#34;&#34;&#34;
+
+    @property
+    def is_distinguished(self):
+        return self._distinguished_id or (self.DISTINGUISHED_FOLDER_ID and not self._id)
+
+    @property
+    def is_deletable(self):
+        return not self.is_distinguished
+
+    def clean(self, version=None):
+        super().clean(version=version)
+        # Set a default folder class for new folders. A folder class cannot be changed after saving.
+        if self.id is None and self.folder_class is None:
+            self.folder_class = self.CONTAINER_CLASS
+
+    @property
+    def children(self):
+        # It&#39;s dangerous to return a generator here because we may then call methods on a child that result in the
+        # cache being updated while it&#39;s iterated.
+        return FolderCollection(account=self.account, folders=self.root.get_children(self))
+
+    @property
+    def parts(self):
+        parts = [self]
+        f = self.parent
+        while f:
+            parts.insert(0, f)
+            f = f.parent
+        return parts
+
+    @property
+    def absolute(self):
+        return &#34;&#34;.join(f&#34;/{p.name}&#34; for p in self.parts)
+
+    def _walk(self):
+        for c in self.children:
+            yield c
+            yield from c.walk()
+
+    def walk(self):
+        return FolderCollection(account=self.account, folders=self._walk())
+
+    def _glob(self, pattern):
+        split_pattern = pattern.split(&#34;/&#34;, maxsplit=1)
+        head, tail = (split_pattern[0], None) if len(split_pattern) == 1 else split_pattern
+        if head == &#34;&#34;:
+            # We got an absolute path. Restart globbing at root
+            yield from self.root.glob(tail or &#34;*&#34;)
+        elif head == &#34;..&#34;:
+            # Relative path with reference to parent. Restart globbing at parent
+            if not self.parent:
+                raise ValueError(&#34;Already at top&#34;)
+            yield from self.parent.glob(tail or &#34;*&#34;)
+        elif head == &#34;**&#34;:
+            # Match anything here or in any sub-folder at arbitrary depth
+            for c in self.walk():
+                # fnmatch() may be case-sensitive depending on operating system:
+                # force a case-insensitive match since case appears not to
+                # matter for folders in Exchange
+                if fnmatch(c.name.lower(), (tail or &#34;*&#34;).lower()):
+                    yield c
+        else:
+            # Regular pattern
+            for c in self.children:
+                # See note above on fnmatch() case-sensitivity
+                if not fnmatch(c.name.lower(), head.lower()):
+                    continue
+                if tail is None:
+                    yield c
+                    continue
+                yield from c.glob(tail)
+
+    def glob(self, pattern):
+        return FolderCollection(account=self.account, folders=self._glob(pattern))
+
+    def tree(self):
+        &#34;&#34;&#34;Return a string representation of the folder structure of this folder. Example:
+
+        root
+        ├── inbox
+        │   └── todos
+        └── archive
+            ├── Last Job
+            ├── exchangelib issues
+            └── Mom
+        &#34;&#34;&#34;
+        tree = f&#34;{self.name}\n&#34;
+        children = list(self.children)
+        for i, c in enumerate(sorted(children, key=attrgetter(&#34;name&#34;)), start=1):
+            nodes = c.tree().split(&#34;\n&#34;)
+            for j, node in enumerate(nodes, start=1):
+                if i != len(children) and j == 1:
+                    # Not the last child, but the first node, which is the name of the child
+                    tree += f&#34;├── {node}\n&#34;
+                elif i != len(children) and j &gt; 1:
+                    # Not the last child, and not name of child
+                    tree += f&#34;│   {node}\n&#34;
+                elif i == len(children) and j == 1:
+                    # Not the last child, but the first node, which is the name of the child
+                    tree += f&#34;└── {node}\n&#34;
+                else:  # Last child and not name of child
+                    tree += f&#34;    {node}\n&#34;
+        return tree.strip()
+
+    @classmethod
+    def _get_distinguished(cls, folder):
+        if not cls.DISTINGUISHED_FOLDER_ID:
+            raise ValueError(f&#34;Class {cls} must have a DISTINGUISHED_FOLDER_ID value&#34;)
+        try:
+            return cls.resolve(account=folder.account, folder=folder)
+        except MISSING_FOLDER_ERRORS as e:
+            raise ErrorFolderNotFound(f&#34;Could not find distinguished folder {cls.DISTINGUISHED_FOLDER_ID!r} ({e})&#34;)
+
+    @property
+    def has_distinguished_name(self):
+        return self.name and self.DISTINGUISHED_FOLDER_ID and self.name.lower() == self.DISTINGUISHED_FOLDER_ID.lower()
+
+    @classmethod
+    def localized_names(cls, locale):
+        # Return localized names for a specific locale. If no locale-specific names exist, return the default names,
+        # if any.
+        return tuple(s.lower() for s in cls.LOCALIZED_NAMES.get(locale, cls.LOCALIZED_NAMES.get(None, [cls.__name__])))
+
+    @staticmethod
+    def folder_cls_from_container_class(container_class):
+        &#34;&#34;&#34;Return a reasonable folder class given a container class, e.g. &#39;IPF.Note&#39;. Don&#39;t iterate WELLKNOWN_FOLDERS
+        because many folder classes have the same CONTAINER_CLASS.
+
+        :param container_class:
+        :return:
+        &#34;&#34;&#34;
+        from .known_folders import (
+            ApplicationData,
+            Calendar,
+            CompanyContacts,
+            Contacts,
+            ConversationSettings,
+            CrawlerData,
+            DlpPolicyEvaluation,
+            EventCheckPoints,
+            FreeBusyCache,
+            GALContacts,
+            Messages,
+            OrganizationalContacts,
+            PeopleCentricConversationBuddies,
+            RecipientCache,
+            RecoveryPoints,
+            Reminders,
+            RSSFeeds,
+            Signal,
+            SwssItems,
+            Tasks,
+        )
+
+        for folder_cls in (
+            ApplicationData,
+            Calendar,
+            CompanyContacts,
+            Contacts,
+            ConversationSettings,
+            CrawlerData,
+            DlpPolicyEvaluation,
+            EventCheckPoints,
+            FreeBusyCache,
+            GALContacts,
+            Messages,
+            OrganizationalContacts,
+            PeopleCentricConversationBuddies,
+            RSSFeeds,
+            RecipientCache,
+            RecoveryPoints,
+            Reminders,
+            Signal,
+            SwssItems,
+            Tasks,
+        ):
+            if folder_cls.CONTAINER_CLASS == container_class:
+                return folder_cls
+        raise KeyError()
+
+    @classmethod
+    def item_model_from_tag(cls, tag):
+        try:
+            return cls.ITEM_MODEL_MAP[tag]
+        except KeyError:
+            raise ValueError(f&#34;Item type {tag} was unexpected in a {cls.__name__} folder&#34;)
+
+    @classmethod
+    def allowed_item_fields(cls, version):
+        # Return non-ID fields of all item classes allowed in this folder type
+        fields = set()
+        for item_model in cls.supported_item_models:
+            fields.update(set(item_model.supported_fields(version=version)))
+        return fields
+
+    def validate_item_field(self, field, version):
+        FolderCollection(account=self.account, folders=[self]).validate_item_field(field=field, version=version)
+
+    def normalize_fields(self, fields):
+        # Takes a list of fieldnames, Field or FieldPath objects pointing to item fields. Turns them into FieldPath
+        # objects and adds internal timezone fields if necessary. Assume fields are already validated.
+        fields = list(fields)
+        has_start, has_end = False, False
+        for i, field_path in enumerate(fields):
+            # Allow both Field and FieldPath instances and string field paths as input
+            if isinstance(field_path, str):
+                field_path = FieldPath.from_string(field_path=field_path, folder=self)
+                fields[i] = field_path
+            elif isinstance(field_path, Field):
+                field_path = FieldPath(field=field_path)
+                fields[i] = field_path
+            if field_path.field.name == &#34;start&#34;:
+                has_start = True
+            elif field_path.field.name == &#34;end&#34;:
+                has_end = True
+
+        # For CalendarItem items, we want to inject internal timezone fields. See also CalendarItem.clean()
+        if CalendarItem in self.supported_item_models:
+            meeting_tz_field, start_tz_field, end_tz_field = CalendarItem.timezone_fields()
+            if self.account.version.build &lt; EXCHANGE_2010:
+                if has_start or has_end:
+                    fields.append(FieldPath(field=meeting_tz_field))
+            else:
+                if has_start:
+                    fields.append(FieldPath(field=start_tz_field))
+                if has_end:
+                    fields.append(FieldPath(field=end_tz_field))
+        return fields
+
+    @classmethod
+    def get_item_field_by_fieldname(cls, fieldname):
+        for item_model in cls.supported_item_models:
+            with suppress(InvalidField):
+                return item_model.get_field_by_fieldname(fieldname)
+        raise InvalidField(f&#34;{fieldname!r} is not a valid field name on {cls.supported_item_models}&#34;)
+
+    def get(self, *args, **kwargs):
+        return FolderCollection(account=self.account, folders=[self]).get(*args, **kwargs)
+
+    def all(self):
+        return FolderCollection(account=self.account, folders=[self]).all()
+
+    def none(self):
+        return FolderCollection(account=self.account, folders=[self]).none()
+
+    def filter(self, *args, **kwargs):
+        return FolderCollection(account=self.account, folders=[self]).filter(*args, **kwargs)
+
+    def exclude(self, *args, **kwargs):
+        return FolderCollection(account=self.account, folders=[self]).exclude(*args, **kwargs)
+
+    def people(self):
+        # No point in using a FolderCollection because FindPeople only supports one folder
+        return FolderCollection(account=self.account, folders=[self]).people()
+
+    def bulk_create(self, items, *args, **kwargs):
+        return self.account.bulk_create(folder=self, items=items, *args, **kwargs)
+
+    def save(self, update_fields=None):
+        from ..services import CreateFolder, UpdateFolder
+
+        if self.id is None:
+            # New folder
+            if update_fields:
+                raise ValueError(&#34;&#39;update_fields&#39; is only valid for updates&#34;)
+            res = CreateFolder(account=self.account).get(parent_folder=self.parent, folders=[self])
+            self._id = self.ID_ELEMENT_CLS(res.id, res.changekey)
+            self.root.add_folder(self)  # Add this folder to the cache
+            return self
+
+        # Update folder
+        if not update_fields:
+            # The fields to update was not specified explicitly. Update all fields where update is possible
+            update_fields = []
+            for f in self.supported_fields(version=self.account.version):
+                if f.is_read_only:
+                    # These cannot be changed
+                    continue
+                if (f.is_required or f.is_required_after_save) and (
+                    getattr(self, f.name) is None or (f.is_list and not getattr(self, f.name))
+                ):
+                    # These are required and cannot be deleted
+                    continue
+                update_fields.append(f.name)
+        res = UpdateFolder(account=self.account).get(folders=[(self, update_fields)])
+        folder_id, changekey = res.id, res.changekey
+        if self.id != folder_id:
+            raise ValueError(&#34;ID mismatch&#34;)
+        # Don&#39;t check changekey value. It may not change on no-op updates
+        self.changekey = changekey
+        self.root.update_folder(self)  # Update the folder in the cache
+        return self
+
+    def move(self, to_folder):
+        from ..services import MoveFolder
+
+        res = MoveFolder(account=self.account).get(folders=[self], to_folder=to_folder)
+        folder_id, changekey = res.id, res.changekey
+        if self.id != folder_id:
+            raise ValueError(&#34;ID mismatch&#34;)
+        # Don&#39;t check changekey value. It may not change on no-op moves
+        self.changekey = changekey
+        self.parent_folder_id = ParentFolderId(id=to_folder.id, changekey=to_folder.changekey)
+        self.root.update_folder(self)  # Update the folder in the cache
+
+    def delete(self, delete_type=HARD_DELETE):
+        from ..services import DeleteFolder
+
+        DeleteFolder(account=self.account).get(folders=[self], delete_type=delete_type)
+        self.root.remove_folder(self)  # Remove the updated folder from the cache
+        self._id = None
+
+    def empty(self, delete_type=HARD_DELETE, delete_sub_folders=False):
+        from ..services import EmptyFolder
+
+        EmptyFolder(account=self.account).get(
+            folders=[self], delete_type=delete_type, delete_sub_folders=delete_sub_folders
+        )
+        if delete_sub_folders:
+            # We don&#39;t know exactly what was deleted, so invalidate the entire folder cache to be safe
+            self.root.clear_cache()
+
+    def wipe(self, page_size=None, chunk_size=None, _seen=None, _level=0):
+        # Recursively deletes all items in this folder, and all sub-folders and their content. Attempts to protect
+        # distinguished folders from being deleted. Use with caution!
+        from .known_folders import Audits
+
+        _seen = _seen or set()
+        if self.id in _seen:
+            raise RecursionError(f&#34;We already tried to wipe {self}&#34;)
+        if _level &gt; 16:
+            raise RecursionError(f&#34;Max recursion level reached: {_level}&#34;)
+        _seen.add(self.id)
+        if isinstance(self, Audits):
+            # Shortcircuit because this folder can have many items that are all non-deletable
+            log.warning(&#34;Cannot wipe audits folder %s&#34;, self)
+            return
+        if self.is_distinguished and &#34;recoverableitems&#34; in self.DISTINGUISHED_FOLDER_ID:
+            log.warning(&#34;Cannot wipe recoverable items folder %s&#34;, self)
+            return
+        log.warning(&#34;Wiping %s&#34;, self)
+        has_non_deletable_subfolders = any(not f.is_deletable for f in self.children)
+        try:
+            if has_non_deletable_subfolders:
+                self.empty()
+            else:
+                self.empty(delete_sub_folders=True)
+        except ErrorRecoverableItemsAccessDenied:
+            log.warning(&#34;Access denied to %s. Skipping&#34;, self)
+            return
+        except DELETE_FOLDER_ERRORS:
+            try:
+                if has_non_deletable_subfolders:
+                    raise  # We already tried this
+                self.empty()
+            except DELETE_FOLDER_ERRORS:
+                log.warning(&#34;Not allowed to empty %s. Trying to delete items instead&#34;, self)
+                kwargs = {}
+                if page_size is not None:
+                    kwargs[&#34;page_size&#34;] = page_size
+                if chunk_size is not None:
+                    kwargs[&#34;chunk_size&#34;] = chunk_size
+                try:
+                    self.all().delete(**kwargs)
+                except DELETE_FOLDER_ERRORS:
+                    log.warning(&#34;Not allowed to delete items in %s&#34;, self)
+        _level += 1
+        for f in self.children:
+            f.wipe(page_size=page_size, chunk_size=chunk_size, _seen=_seen, _level=_level)
+            # Remove non-distinguished children that are empty and have no sub-folders
+            if f.is_deletable and not f.children:
+                log.warning(&#34;Deleting folder %s&#34;, f)
+                try:
+                    f.delete()
+                except ErrorDeleteDistinguishedFolder:
+                    log.warning(&#34;Tried to delete a distinguished folder (%s)&#34;, f)
+
+    def test_access(self):
+        &#34;&#34;&#34;Does a simple FindItem to test (read) access to the folder. Maybe the account doesn&#39;t exist, maybe the
+        service user doesn&#39;t have access to the calendar. This will throw the most common errors.
+        &#34;&#34;&#34;
+        self.all().exists()
+        return True
+
+    @classmethod
+    def _kwargs_from_elem(cls, elem, account):
+        # Check for &#39;DisplayName&#39; element before collecting kwargs because that clears the elements
+        has_name_elem = elem.find(cls.get_field_by_fieldname(&#34;name&#34;).response_tag()) is not None
+        kwargs = {f.name: f.from_xml(elem=elem, account=account) for f in cls.FIELDS}
+        if has_name_elem and not kwargs[&#34;name&#34;]:
+            # When we request the &#39;DisplayName&#39; property, some folders may still be returned with an empty value.
+            # Assign a default name to these folders.
+            kwargs[&#34;name&#34;] = cls.DISTINGUISHED_FOLDER_ID
+        return kwargs
+
+    def to_id(self):
+        # Use self._distinguished_id as-is if we have it. This could be a DistinguishedFolderId with a mailbox pointing
+        # to a shared mailbox.
+        if self._distinguished_id:
+            return self._distinguished_id
+        if self._id:
+            return self._id
+        if not self.DISTINGUISHED_FOLDER_ID:
+            raise ValueError(f&#34;{self} must be a distinguished folder or have an ID&#34;)
+        self._distinguished_id = DistinguishedFolderId(
+            id=self.DISTINGUISHED_FOLDER_ID,
+            mailbox=Mailbox(email_address=self.account.primary_smtp_address),
+        )
+        return self._distinguished_id
+
+    @classmethod
+    def resolve(cls, account, folder):
+        # Resolve a single folder
+        folders = list(FolderCollection(account=account, folders=[folder]).resolve())
+        if not folders:
+            raise ErrorFolderNotFound(f&#34;Could not find folder {folder!r}&#34;)
+        if len(folders) != 1:
+            raise ValueError(f&#34;Expected result length 1, but got {folders}&#34;)
+        f = folders[0]
+        if isinstance(f, Exception):
+            raise f
+        if f.__class__ != cls:
+            raise ValueError(f&#34;Expected folder {f!r} to be a {cls} instance&#34;)
+        return f
+
+    @require_id
+    def refresh(self):
+        fresh_folder = self.resolve(account=self.account, folder=self)
+        if self.id != fresh_folder.id:
+            raise ValueError(&#34;ID mismatch&#34;)
+        # Apparently, the changekey may get updated
+        for f in self.FIELDS:
+            setattr(self, f.name, getattr(fresh_folder, f.name))
+        return self
+
+    @require_id
+    def get_user_configuration(self, name, properties=None):
+        from ..services import GetUserConfiguration
+        from ..services.get_user_configuration import ALL
+
+        if properties is None:
+            properties = ALL
+        return GetUserConfiguration(account=self.account).get(
+            user_configuration_name=UserConfigurationNameMNS(name=name, folder=self),
+            properties=properties,
+        )
+
+    @require_id
+    def create_user_configuration(self, name, dictionary=None, xml_data=None, binary_data=None):
+        from ..services import CreateUserConfiguration
+
+        user_configuration = UserConfiguration(
+            user_configuration_name=UserConfigurationName(name=name, folder=self),
+            dictionary=dictionary,
+            xml_data=xml_data,
+            binary_data=binary_data,
+        )
+        return CreateUserConfiguration(account=self.account).get(user_configuration=user_configuration)
+
+    @require_id
+    def update_user_configuration(self, name, dictionary=None, xml_data=None, binary_data=None):
+        from ..services import UpdateUserConfiguration
+
+        user_configuration = UserConfiguration(
+            user_configuration_name=UserConfigurationName(name=name, folder=self),
+            dictionary=dictionary,
+            xml_data=xml_data,
+            binary_data=binary_data,
+        )
+        return UpdateUserConfiguration(account=self.account).get(user_configuration=user_configuration)
+
+    @require_id
+    def delete_user_configuration(self, name):
+        from ..services import DeleteUserConfiguration
+
+        return DeleteUserConfiguration(account=self.account).get(
+            user_configuration_name=UserConfigurationNameMNS(name=name, folder=self)
+        )
+
+    @require_id
+    def subscribe_to_pull(self, event_types=None, watermark=None, timeout=60):
+        &#34;&#34;&#34;Create a pull subscription.
+
+        :param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPull.EVENT_TYPES
+        :param watermark: An event bookmark as returned by some sync services
+        :param timeout: Timeout of the subscription, in minutes. Timeout is reset when the server receives a
+        GetEvents request for this subscription.
+        :return: The subscription ID and a watermark
+        &#34;&#34;&#34;
+        from ..services import SubscribeToPull
+
+        if event_types is None:
+            event_types = SubscribeToPull.EVENT_TYPES
+        return FolderCollection(account=self.account, folders=[self]).subscribe_to_pull(
+            event_types=event_types,
+            watermark=watermark,
+            timeout=timeout,
+        )
+
+    @require_id
+    def subscribe_to_push(self, callback_url, event_types=None, watermark=None, status_frequency=1):
+        &#34;&#34;&#34;Create a push subscription.
+
+        :param callback_url: A client-defined URL that the server will call
+        :param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPush.EVENT_TYPES
+        :param watermark: An event bookmark as returned by some sync services
+        :param status_frequency: The frequency, in minutes, that the callback URL will be called with.
+        :return: The subscription ID and a watermark
+        &#34;&#34;&#34;
+        from ..services import SubscribeToPush
+
+        if event_types is None:
+            event_types = SubscribeToPush.EVENT_TYPES
+        return FolderCollection(account=self.account, folders=[self]).subscribe_to_push(
+            event_types=event_types,
+            watermark=watermark,
+            status_frequency=status_frequency,
+            callback_url=callback_url,
+        )
+
+    @require_id
+    def subscribe_to_streaming(self, event_types=None):
+        &#34;&#34;&#34;Create a streaming subscription.
+
+        :param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPush.EVENT_TYPES
+        :return: The subscription ID
+        &#34;&#34;&#34;
+        from ..services import SubscribeToStreaming
+
+        if event_types is None:
+            event_types = SubscribeToStreaming.EVENT_TYPES
+        return FolderCollection(account=self.account, folders=[self]).subscribe_to_streaming(event_types=event_types)
+
+    @require_id
+    def pull_subscription(self, **kwargs):
+        return PullSubscription(target=self, **kwargs)
+
+    @require_id
+    def push_subscription(self, **kwargs):
+        return PushSubscription(target=self, **kwargs)
+
+    @require_id
+    def streaming_subscription(self, **kwargs):
+        return StreamingSubscription(target=self, **kwargs)
+
+    def unsubscribe(self, subscription_id):
+        &#34;&#34;&#34;Unsubscribe. Only applies to pull and streaming notifications.
+
+        :param subscription_id: A subscription ID as acquired by .subscribe_to_[pull|streaming]()
+        :return: True
+
+        This method doesn&#39;t need the current folder instance, but it makes sense to keep the method along the other
+        sync methods.
+        &#34;&#34;&#34;
+        from ..services import Unsubscribe
+
+        return Unsubscribe(account=self.account).get(subscription_id=subscription_id)
+
+    def sync_items(self, sync_state=None, only_fields=None, ignore=None, max_changes_returned=None, sync_scope=None):
+        &#34;&#34;&#34;Return all item changes to a folder, as a generator. If sync_state is specified, get all item changes after
+        this sync state. After fully consuming the generator, self.item_sync_state will hold the new sync state.
+
+        :param sync_state: The state of the sync. Returned by a successful call to the SyncFolderItems service.
+        :param only_fields: A list of string or FieldPath items specifying the fields to fetch. Default to all fields
+        :param ignore: A list of Item IDs to ignore in the sync
+        :param max_changes_returned: The max number of change
+        :param sync_scope: Specify whether to return just items, or items and folder associated information. Possible
+           values are specified in SyncFolderItems.SYNC_SCOPES
+        :return: A generator of (change_type, item) tuples
+        &#34;&#34;&#34;
+        if not sync_state:
+            sync_state = self.item_sync_state
+        try:
+            yield from FolderCollection(account=self.account, folders=[self]).sync_items(
+                sync_state=sync_state,
+                only_fields=only_fields,
+                ignore=ignore,
+                max_changes_returned=max_changes_returned,
+                sync_scope=sync_scope,
+            )
+        except SyncCompleted as e:
+            # Set the new sync state on the folder instance
+            self.item_sync_state = e.sync_state
+
+    def sync_hierarchy(self, sync_state=None, only_fields=None):
+        &#34;&#34;&#34;Return all folder changes to a folder hierarchy, as a generator. If sync_state is specified, get all folder
+        changes after this sync state. After fully consuming the generator, self.folder_sync_state will hold the new
+        sync state.
+
+        :param sync_state: The state of the sync. Returned by a successful call to the SyncFolderItems service.
+        :param only_fields: A list of string or FieldPath items specifying the fields to fetch. Default to all fields
+        :return:
+        &#34;&#34;&#34;
+        if not sync_state:
+            sync_state = self.folder_sync_state
+        try:
+            yield from FolderCollection(account=self.account, folders=[self]).sync_hierarchy(
+                sync_state=sync_state,
+                only_fields=only_fields,
+            )
+        except SyncCompleted as e:
+            # Set the new sync state on the folder instance
+            self.folder_sync_state = e.sync_state
+
+    def get_events(self, subscription_id, watermark):
+        &#34;&#34;&#34;Get events since the given watermark. Non-blocking.
+
+        :param subscription_id: A subscription ID as acquired by .subscribe_to_[pull|push]()
+        :param watermark: Either the watermark from the subscription, or as returned by the last .get_events() call.
+        :return: A Notification object containing a list of events
+
+        This method doesn&#39;t need the current folder instance, but it makes sense to keep the method along the other
+        sync methods.
+        &#34;&#34;&#34;
+        from ..services import GetEvents
+
+        svc = GetEvents(account=self.account)
+        while True:
+            notification = svc.get(subscription_id=subscription_id, watermark=watermark)
+            yield notification
+            if not notification.more_events:
+                break
+
+    def get_streaming_events(self, subscription_id_or_ids, connection_timeout=1, max_notifications_returned=None):
+        &#34;&#34;&#34;Get events since the subscription was created, in streaming mode. This method will block as many minutes
+        as specified by &#39;connection_timeout&#39;.
+
+        :param subscription_id_or_ids: A subscription ID, or list of IDs, as acquired by .subscribe_to_streaming()
+        :param connection_timeout: Timeout of the connection, in minutes. The connection is closed after this timeout
+        is reached.
+        :param max_notifications_returned: If specified, will exit after receiving this number of notifications
+        :return: A generator of Notification objects, each containing a list of events
+
+        This method doesn&#39;t need the current folder instance, but it makes sense to keep the method along the other
+        sync methods.
+        &#34;&#34;&#34;
+        from ..services import GetStreamingEvents
+
+        svc = GetStreamingEvents(account=self.account)
+        subscription_ids = (
+            subscription_id_or_ids
+            if is_iterable(subscription_id_or_ids, generators_allowed=True)
+            else [subscription_id_or_ids]
+        )
+        for i, notification in enumerate(
+            svc.call(subscription_ids=subscription_ids, connection_timeout=connection_timeout), start=1
+        ):
+            yield notification
+            if max_notifications_returned and i &gt;= max_notifications_returned:
+                svc.stop_streaming()
+                break
+
+    def __floordiv__(self, other):
+        &#34;&#34;&#34;Support the some_folder // &#39;child_folder&#39; // &#39;child_of_child_folder&#39; navigation syntax.
+
+        Works like as __truediv__ but does not touch the folder cache.
+
+        This is useful if the folder hierarchy contains a huge number of folders, and you don&#39;t want to fetch them all
+
+        :param other:
+        :return:
+        &#34;&#34;&#34;
+        if other == &#34;..&#34;:
+            raise ValueError(&#34;Cannot get parent without a folder cache&#34;)
+
+        if other == &#34;.&#34;:
+            return self
+
+        # Assume an exact match on the folder name in a shallow search will only return at most one folder
+        try:
+            return SingleFolderQuerySet(account=self.account, folder=self).depth(SHALLOW_FOLDERS).get(name=other)
+        except DoesNotExist:
+            raise ErrorFolderNotFound(f&#34;No subfolder with name {other!r}&#34;)
+
+    def __truediv__(self, other):
+        &#34;&#34;&#34;Support the some_folder / &#39;child_folder&#39; / &#39;child_of_child_folder&#39; navigation syntax.&#34;&#34;&#34;
+        if other == &#34;..&#34;:
+            if not self.parent:
+                raise ValueError(&#34;Already at top&#34;)
+            return self.parent
+        if other == &#34;.&#34;:
+            return self
+        for c in self.children:
+            # Folders are case-insensitive server-side. Let&#39;s do that here as well.
+            if c.name.lower() == other.lower():
+                return c
+        raise ErrorFolderNotFound(f&#34;No subfolder with name {other!r}&#34;)
+
+    def __repr__(self):
+        return self.__class__.__name__ + repr(
+            (
+                self.root,
+                self.name,
+                self.total_count,
+                self.unread_count,
+                self.child_folder_count,
+                self.folder_class,
+                self.id,
+                self.changekey,
+            )
+        )
+
+    def __str__(self):
+        return f&#34;{self.__class__.__name__} ({self.name})&#34;</code></pre>
+</details>
 <div class="desc"></div>
+</dd>
+<dt id="exchangelib.folders.base.BaseFolder.has_distinguished_name"><code class="name">prop <span class="ident">has_distinguished_name</span></code></dt>
+<dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2061,10 +1818,10 @@ def children(self):
 def has_distinguished_name(self):
     return self.name and self.DISTINGUISHED_FOLDER_ID and self.name.lower() == self.DISTINGUISHED_FOLDER_ID.lower()</code></pre>
 </details>
-</dd>
-<dt id="exchangelib.folders.base.BaseFolder.is_deletable"><code class="name">var <span class="ident">is_deletable</span></code></dt>
-<dd>
 <div class="desc"></div>
+</dd>
+<dt id="exchangelib.folders.base.BaseFolder.is_deletable"><code class="name">prop <span class="ident">is_deletable</span></code></dt>
+<dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2073,10 +1830,10 @@ def has_distinguished_name(self):
 def is_deletable(self):
     return not self.is_distinguished</code></pre>
 </details>
-</dd>
-<dt id="exchangelib.folders.base.BaseFolder.is_distinguished"><code class="name">var <span class="ident">is_distinguished</span></code></dt>
-<dd>
 <div class="desc"></div>
+</dd>
+<dt id="exchangelib.folders.base.BaseFolder.is_distinguished"><code class="name">prop <span class="ident">is_distinguished</span></code></dt>
+<dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2085,18 +1842,784 @@ def is_deletable(self):
 def is_distinguished(self):
     return self._distinguished_id or (self.DISTINGUISHED_FOLDER_ID and not self._id)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.item_sync_state"><code class="name">var <span class="ident">item_sync_state</span></code></dt>
 <dd>
-<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class BaseFolder(RegisterMixIn, SearchableMixIn, SupportedVersionClassMixIn, metaclass=EWSMeta):
+    &#34;&#34;&#34;Base class for all classes that implement a folder.&#34;&#34;&#34;
+
+    ELEMENT_NAME = &#34;Folder&#34;
+    NAMESPACE = TNS
+    # See https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/distinguishedfolderid
+    DISTINGUISHED_FOLDER_ID = None
+    # Default item type for this folder. See
+    # https://docs.microsoft.com/en-us/openspecs/exchange_server_protocols/ms-oxosfld/68a85898-84fe-43c4-b166-4711c13cdd61
+    CONTAINER_CLASS = None
+    supported_item_models = ITEM_CLASSES  # The Item types that this folder can contain. Default is all
+    # Whether this folder type is allowed with the GetFolder service
+    get_folder_allowed = True
+    DEFAULT_FOLDER_TRAVERSAL_DEPTH = DEEP_FOLDERS
+    DEFAULT_ITEM_TRAVERSAL_DEPTH = SHALLOW_ITEMS
+    LOCALIZED_NAMES = {}  # A map of (str)locale: (tuple)localized_folder_names
+    ITEM_MODEL_MAP = {cls.response_tag(): cls for cls in ITEM_CLASSES}
+    ID_ELEMENT_CLS = FolderId
+
+    _id = IdElementField(field_uri=&#34;folder:FolderId&#34;, value_cls=ID_ELEMENT_CLS)
+    _distinguished_id = IdElementField(
+        field_uri=&#34;folder:DistinguishedFolderId&#34;, value_cls=DistinguishedFolderId, supported_from=EXCHANGE_2016
+    )
+    parent_folder_id = EWSElementField(field_uri=&#34;folder:ParentFolderId&#34;, value_cls=ParentFolderId, is_read_only=True)
+    folder_class = CharField(field_uri=&#34;folder:FolderClass&#34;, is_required_after_save=True)
+    name = CharField(field_uri=&#34;folder:DisplayName&#34;)
+    total_count = IntegerField(field_uri=&#34;folder:TotalCount&#34;, is_read_only=True)
+    child_folder_count = IntegerField(field_uri=&#34;folder:ChildFolderCount&#34;, is_read_only=True)
+    unread_count = IntegerField(field_uri=&#34;folder:UnreadCount&#34;, is_read_only=True)
+
+    __slots__ = &#34;item_sync_state&#34;, &#34;folder_sync_state&#34;
+
+    # Used to register extended properties
+    INSERT_AFTER_FIELD = &#34;child_folder_count&#34;
+
+    def __init__(self, **kwargs):
+        self.item_sync_state = kwargs.pop(&#34;item_sync_state&#34;, None)
+        self.folder_sync_state = kwargs.pop(&#34;folder_sync_state&#34;, None)
+        super().__init__(**kwargs)
+        if self._distinguished_id and not self._distinguished_id.mailbox and self.account:
+            # Ensure that distinguished IDs have a mailbox, but don&#39;t override a custom mailbox (e.g. shared folders)
+            self._distinguished_id.mailbox = Mailbox(email_address=self.account.primary_smtp_address)
+
+    @property
+    @abc.abstractmethod
+    def account(self):
+        &#34;&#34;&#34;Return the account this folder belongs to&#34;&#34;&#34;
+
+    @property
+    @abc.abstractmethod
+    def root(self):
+        &#34;&#34;&#34;Return the root folder this folder belongs to&#34;&#34;&#34;
+
+    @property
+    @abc.abstractmethod
+    def parent(self):
+        &#34;&#34;&#34;Return the parent folder of this folder&#34;&#34;&#34;
+
+    @property
+    def is_distinguished(self):
+        return self._distinguished_id or (self.DISTINGUISHED_FOLDER_ID and not self._id)
+
+    @property
+    def is_deletable(self):
+        return not self.is_distinguished
+
+    def clean(self, version=None):
+        super().clean(version=version)
+        # Set a default folder class for new folders. A folder class cannot be changed after saving.
+        if self.id is None and self.folder_class is None:
+            self.folder_class = self.CONTAINER_CLASS
+
+    @property
+    def children(self):
+        # It&#39;s dangerous to return a generator here because we may then call methods on a child that result in the
+        # cache being updated while it&#39;s iterated.
+        return FolderCollection(account=self.account, folders=self.root.get_children(self))
+
+    @property
+    def parts(self):
+        parts = [self]
+        f = self.parent
+        while f:
+            parts.insert(0, f)
+            f = f.parent
+        return parts
+
+    @property
+    def absolute(self):
+        return &#34;&#34;.join(f&#34;/{p.name}&#34; for p in self.parts)
+
+    def _walk(self):
+        for c in self.children:
+            yield c
+            yield from c.walk()
+
+    def walk(self):
+        return FolderCollection(account=self.account, folders=self._walk())
+
+    def _glob(self, pattern):
+        split_pattern = pattern.split(&#34;/&#34;, maxsplit=1)
+        head, tail = (split_pattern[0], None) if len(split_pattern) == 1 else split_pattern
+        if head == &#34;&#34;:
+            # We got an absolute path. Restart globbing at root
+            yield from self.root.glob(tail or &#34;*&#34;)
+        elif head == &#34;..&#34;:
+            # Relative path with reference to parent. Restart globbing at parent
+            if not self.parent:
+                raise ValueError(&#34;Already at top&#34;)
+            yield from self.parent.glob(tail or &#34;*&#34;)
+        elif head == &#34;**&#34;:
+            # Match anything here or in any sub-folder at arbitrary depth
+            for c in self.walk():
+                # fnmatch() may be case-sensitive depending on operating system:
+                # force a case-insensitive match since case appears not to
+                # matter for folders in Exchange
+                if fnmatch(c.name.lower(), (tail or &#34;*&#34;).lower()):
+                    yield c
+        else:
+            # Regular pattern
+            for c in self.children:
+                # See note above on fnmatch() case-sensitivity
+                if not fnmatch(c.name.lower(), head.lower()):
+                    continue
+                if tail is None:
+                    yield c
+                    continue
+                yield from c.glob(tail)
+
+    def glob(self, pattern):
+        return FolderCollection(account=self.account, folders=self._glob(pattern))
+
+    def tree(self):
+        &#34;&#34;&#34;Return a string representation of the folder structure of this folder. Example:
+
+        root
+        ├── inbox
+        │   └── todos
+        └── archive
+            ├── Last Job
+            ├── exchangelib issues
+            └── Mom
+        &#34;&#34;&#34;
+        tree = f&#34;{self.name}\n&#34;
+        children = list(self.children)
+        for i, c in enumerate(sorted(children, key=attrgetter(&#34;name&#34;)), start=1):
+            nodes = c.tree().split(&#34;\n&#34;)
+            for j, node in enumerate(nodes, start=1):
+                if i != len(children) and j == 1:
+                    # Not the last child, but the first node, which is the name of the child
+                    tree += f&#34;├── {node}\n&#34;
+                elif i != len(children) and j &gt; 1:
+                    # Not the last child, and not name of child
+                    tree += f&#34;│   {node}\n&#34;
+                elif i == len(children) and j == 1:
+                    # Not the last child, but the first node, which is the name of the child
+                    tree += f&#34;└── {node}\n&#34;
+                else:  # Last child and not name of child
+                    tree += f&#34;    {node}\n&#34;
+        return tree.strip()
+
+    @classmethod
+    def _get_distinguished(cls, folder):
+        if not cls.DISTINGUISHED_FOLDER_ID:
+            raise ValueError(f&#34;Class {cls} must have a DISTINGUISHED_FOLDER_ID value&#34;)
+        try:
+            return cls.resolve(account=folder.account, folder=folder)
+        except MISSING_FOLDER_ERRORS as e:
+            raise ErrorFolderNotFound(f&#34;Could not find distinguished folder {cls.DISTINGUISHED_FOLDER_ID!r} ({e})&#34;)
+
+    @property
+    def has_distinguished_name(self):
+        return self.name and self.DISTINGUISHED_FOLDER_ID and self.name.lower() == self.DISTINGUISHED_FOLDER_ID.lower()
+
+    @classmethod
+    def localized_names(cls, locale):
+        # Return localized names for a specific locale. If no locale-specific names exist, return the default names,
+        # if any.
+        return tuple(s.lower() for s in cls.LOCALIZED_NAMES.get(locale, cls.LOCALIZED_NAMES.get(None, [cls.__name__])))
+
+    @staticmethod
+    def folder_cls_from_container_class(container_class):
+        &#34;&#34;&#34;Return a reasonable folder class given a container class, e.g. &#39;IPF.Note&#39;. Don&#39;t iterate WELLKNOWN_FOLDERS
+        because many folder classes have the same CONTAINER_CLASS.
+
+        :param container_class:
+        :return:
+        &#34;&#34;&#34;
+        from .known_folders import (
+            ApplicationData,
+            Calendar,
+            CompanyContacts,
+            Contacts,
+            ConversationSettings,
+            CrawlerData,
+            DlpPolicyEvaluation,
+            EventCheckPoints,
+            FreeBusyCache,
+            GALContacts,
+            Messages,
+            OrganizationalContacts,
+            PeopleCentricConversationBuddies,
+            RecipientCache,
+            RecoveryPoints,
+            Reminders,
+            RSSFeeds,
+            Signal,
+            SwssItems,
+            Tasks,
+        )
+
+        for folder_cls in (
+            ApplicationData,
+            Calendar,
+            CompanyContacts,
+            Contacts,
+            ConversationSettings,
+            CrawlerData,
+            DlpPolicyEvaluation,
+            EventCheckPoints,
+            FreeBusyCache,
+            GALContacts,
+            Messages,
+            OrganizationalContacts,
+            PeopleCentricConversationBuddies,
+            RSSFeeds,
+            RecipientCache,
+            RecoveryPoints,
+            Reminders,
+            Signal,
+            SwssItems,
+            Tasks,
+        ):
+            if folder_cls.CONTAINER_CLASS == container_class:
+                return folder_cls
+        raise KeyError()
+
+    @classmethod
+    def item_model_from_tag(cls, tag):
+        try:
+            return cls.ITEM_MODEL_MAP[tag]
+        except KeyError:
+            raise ValueError(f&#34;Item type {tag} was unexpected in a {cls.__name__} folder&#34;)
+
+    @classmethod
+    def allowed_item_fields(cls, version):
+        # Return non-ID fields of all item classes allowed in this folder type
+        fields = set()
+        for item_model in cls.supported_item_models:
+            fields.update(set(item_model.supported_fields(version=version)))
+        return fields
+
+    def validate_item_field(self, field, version):
+        FolderCollection(account=self.account, folders=[self]).validate_item_field(field=field, version=version)
+
+    def normalize_fields(self, fields):
+        # Takes a list of fieldnames, Field or FieldPath objects pointing to item fields. Turns them into FieldPath
+        # objects and adds internal timezone fields if necessary. Assume fields are already validated.
+        fields = list(fields)
+        has_start, has_end = False, False
+        for i, field_path in enumerate(fields):
+            # Allow both Field and FieldPath instances and string field paths as input
+            if isinstance(field_path, str):
+                field_path = FieldPath.from_string(field_path=field_path, folder=self)
+                fields[i] = field_path
+            elif isinstance(field_path, Field):
+                field_path = FieldPath(field=field_path)
+                fields[i] = field_path
+            if field_path.field.name == &#34;start&#34;:
+                has_start = True
+            elif field_path.field.name == &#34;end&#34;:
+                has_end = True
+
+        # For CalendarItem items, we want to inject internal timezone fields. See also CalendarItem.clean()
+        if CalendarItem in self.supported_item_models:
+            meeting_tz_field, start_tz_field, end_tz_field = CalendarItem.timezone_fields()
+            if self.account.version.build &lt; EXCHANGE_2010:
+                if has_start or has_end:
+                    fields.append(FieldPath(field=meeting_tz_field))
+            else:
+                if has_start:
+                    fields.append(FieldPath(field=start_tz_field))
+                if has_end:
+                    fields.append(FieldPath(field=end_tz_field))
+        return fields
+
+    @classmethod
+    def get_item_field_by_fieldname(cls, fieldname):
+        for item_model in cls.supported_item_models:
+            with suppress(InvalidField):
+                return item_model.get_field_by_fieldname(fieldname)
+        raise InvalidField(f&#34;{fieldname!r} is not a valid field name on {cls.supported_item_models}&#34;)
+
+    def get(self, *args, **kwargs):
+        return FolderCollection(account=self.account, folders=[self]).get(*args, **kwargs)
+
+    def all(self):
+        return FolderCollection(account=self.account, folders=[self]).all()
+
+    def none(self):
+        return FolderCollection(account=self.account, folders=[self]).none()
+
+    def filter(self, *args, **kwargs):
+        return FolderCollection(account=self.account, folders=[self]).filter(*args, **kwargs)
+
+    def exclude(self, *args, **kwargs):
+        return FolderCollection(account=self.account, folders=[self]).exclude(*args, **kwargs)
+
+    def people(self):
+        # No point in using a FolderCollection because FindPeople only supports one folder
+        return FolderCollection(account=self.account, folders=[self]).people()
+
+    def bulk_create(self, items, *args, **kwargs):
+        return self.account.bulk_create(folder=self, items=items, *args, **kwargs)
+
+    def save(self, update_fields=None):
+        from ..services import CreateFolder, UpdateFolder
+
+        if self.id is None:
+            # New folder
+            if update_fields:
+                raise ValueError(&#34;&#39;update_fields&#39; is only valid for updates&#34;)
+            res = CreateFolder(account=self.account).get(parent_folder=self.parent, folders=[self])
+            self._id = self.ID_ELEMENT_CLS(res.id, res.changekey)
+            self.root.add_folder(self)  # Add this folder to the cache
+            return self
+
+        # Update folder
+        if not update_fields:
+            # The fields to update was not specified explicitly. Update all fields where update is possible
+            update_fields = []
+            for f in self.supported_fields(version=self.account.version):
+                if f.is_read_only:
+                    # These cannot be changed
+                    continue
+                if (f.is_required or f.is_required_after_save) and (
+                    getattr(self, f.name) is None or (f.is_list and not getattr(self, f.name))
+                ):
+                    # These are required and cannot be deleted
+                    continue
+                update_fields.append(f.name)
+        res = UpdateFolder(account=self.account).get(folders=[(self, update_fields)])
+        folder_id, changekey = res.id, res.changekey
+        if self.id != folder_id:
+            raise ValueError(&#34;ID mismatch&#34;)
+        # Don&#39;t check changekey value. It may not change on no-op updates
+        self.changekey = changekey
+        self.root.update_folder(self)  # Update the folder in the cache
+        return self
+
+    def move(self, to_folder):
+        from ..services import MoveFolder
+
+        res = MoveFolder(account=self.account).get(folders=[self], to_folder=to_folder)
+        folder_id, changekey = res.id, res.changekey
+        if self.id != folder_id:
+            raise ValueError(&#34;ID mismatch&#34;)
+        # Don&#39;t check changekey value. It may not change on no-op moves
+        self.changekey = changekey
+        self.parent_folder_id = ParentFolderId(id=to_folder.id, changekey=to_folder.changekey)
+        self.root.update_folder(self)  # Update the folder in the cache
+
+    def delete(self, delete_type=HARD_DELETE):
+        from ..services import DeleteFolder
+
+        DeleteFolder(account=self.account).get(folders=[self], delete_type=delete_type)
+        self.root.remove_folder(self)  # Remove the updated folder from the cache
+        self._id = None
+
+    def empty(self, delete_type=HARD_DELETE, delete_sub_folders=False):
+        from ..services import EmptyFolder
+
+        EmptyFolder(account=self.account).get(
+            folders=[self], delete_type=delete_type, delete_sub_folders=delete_sub_folders
+        )
+        if delete_sub_folders:
+            # We don&#39;t know exactly what was deleted, so invalidate the entire folder cache to be safe
+            self.root.clear_cache()
+
+    def wipe(self, page_size=None, chunk_size=None, _seen=None, _level=0):
+        # Recursively deletes all items in this folder, and all sub-folders and their content. Attempts to protect
+        # distinguished folders from being deleted. Use with caution!
+        from .known_folders import Audits
+
+        _seen = _seen or set()
+        if self.id in _seen:
+            raise RecursionError(f&#34;We already tried to wipe {self}&#34;)
+        if _level &gt; 16:
+            raise RecursionError(f&#34;Max recursion level reached: {_level}&#34;)
+        _seen.add(self.id)
+        if isinstance(self, Audits):
+            # Shortcircuit because this folder can have many items that are all non-deletable
+            log.warning(&#34;Cannot wipe audits folder %s&#34;, self)
+            return
+        if self.is_distinguished and &#34;recoverableitems&#34; in self.DISTINGUISHED_FOLDER_ID:
+            log.warning(&#34;Cannot wipe recoverable items folder %s&#34;, self)
+            return
+        log.warning(&#34;Wiping %s&#34;, self)
+        has_non_deletable_subfolders = any(not f.is_deletable for f in self.children)
+        try:
+            if has_non_deletable_subfolders:
+                self.empty()
+            else:
+                self.empty(delete_sub_folders=True)
+        except ErrorRecoverableItemsAccessDenied:
+            log.warning(&#34;Access denied to %s. Skipping&#34;, self)
+            return
+        except DELETE_FOLDER_ERRORS:
+            try:
+                if has_non_deletable_subfolders:
+                    raise  # We already tried this
+                self.empty()
+            except DELETE_FOLDER_ERRORS:
+                log.warning(&#34;Not allowed to empty %s. Trying to delete items instead&#34;, self)
+                kwargs = {}
+                if page_size is not None:
+                    kwargs[&#34;page_size&#34;] = page_size
+                if chunk_size is not None:
+                    kwargs[&#34;chunk_size&#34;] = chunk_size
+                try:
+                    self.all().delete(**kwargs)
+                except DELETE_FOLDER_ERRORS:
+                    log.warning(&#34;Not allowed to delete items in %s&#34;, self)
+        _level += 1
+        for f in self.children:
+            f.wipe(page_size=page_size, chunk_size=chunk_size, _seen=_seen, _level=_level)
+            # Remove non-distinguished children that are empty and have no sub-folders
+            if f.is_deletable and not f.children:
+                log.warning(&#34;Deleting folder %s&#34;, f)
+                try:
+                    f.delete()
+                except ErrorDeleteDistinguishedFolder:
+                    log.warning(&#34;Tried to delete a distinguished folder (%s)&#34;, f)
+
+    def test_access(self):
+        &#34;&#34;&#34;Does a simple FindItem to test (read) access to the folder. Maybe the account doesn&#39;t exist, maybe the
+        service user doesn&#39;t have access to the calendar. This will throw the most common errors.
+        &#34;&#34;&#34;
+        self.all().exists()
+        return True
+
+    @classmethod
+    def _kwargs_from_elem(cls, elem, account):
+        # Check for &#39;DisplayName&#39; element before collecting kwargs because that clears the elements
+        has_name_elem = elem.find(cls.get_field_by_fieldname(&#34;name&#34;).response_tag()) is not None
+        kwargs = {f.name: f.from_xml(elem=elem, account=account) for f in cls.FIELDS}
+        if has_name_elem and not kwargs[&#34;name&#34;]:
+            # When we request the &#39;DisplayName&#39; property, some folders may still be returned with an empty value.
+            # Assign a default name to these folders.
+            kwargs[&#34;name&#34;] = cls.DISTINGUISHED_FOLDER_ID
+        return kwargs
+
+    def to_id(self):
+        # Use self._distinguished_id as-is if we have it. This could be a DistinguishedFolderId with a mailbox pointing
+        # to a shared mailbox.
+        if self._distinguished_id:
+            return self._distinguished_id
+        if self._id:
+            return self._id
+        if not self.DISTINGUISHED_FOLDER_ID:
+            raise ValueError(f&#34;{self} must be a distinguished folder or have an ID&#34;)
+        self._distinguished_id = DistinguishedFolderId(
+            id=self.DISTINGUISHED_FOLDER_ID,
+            mailbox=Mailbox(email_address=self.account.primary_smtp_address),
+        )
+        return self._distinguished_id
+
+    @classmethod
+    def resolve(cls, account, folder):
+        # Resolve a single folder
+        folders = list(FolderCollection(account=account, folders=[folder]).resolve())
+        if not folders:
+            raise ErrorFolderNotFound(f&#34;Could not find folder {folder!r}&#34;)
+        if len(folders) != 1:
+            raise ValueError(f&#34;Expected result length 1, but got {folders}&#34;)
+        f = folders[0]
+        if isinstance(f, Exception):
+            raise f
+        if f.__class__ != cls:
+            raise ValueError(f&#34;Expected folder {f!r} to be a {cls} instance&#34;)
+        return f
+
+    @require_id
+    def refresh(self):
+        fresh_folder = self.resolve(account=self.account, folder=self)
+        if self.id != fresh_folder.id:
+            raise ValueError(&#34;ID mismatch&#34;)
+        # Apparently, the changekey may get updated
+        for f in self.FIELDS:
+            setattr(self, f.name, getattr(fresh_folder, f.name))
+        return self
+
+    @require_id
+    def get_user_configuration(self, name, properties=None):
+        from ..services import GetUserConfiguration
+        from ..services.get_user_configuration import ALL
+
+        if properties is None:
+            properties = ALL
+        return GetUserConfiguration(account=self.account).get(
+            user_configuration_name=UserConfigurationNameMNS(name=name, folder=self),
+            properties=properties,
+        )
+
+    @require_id
+    def create_user_configuration(self, name, dictionary=None, xml_data=None, binary_data=None):
+        from ..services import CreateUserConfiguration
+
+        user_configuration = UserConfiguration(
+            user_configuration_name=UserConfigurationName(name=name, folder=self),
+            dictionary=dictionary,
+            xml_data=xml_data,
+            binary_data=binary_data,
+        )
+        return CreateUserConfiguration(account=self.account).get(user_configuration=user_configuration)
+
+    @require_id
+    def update_user_configuration(self, name, dictionary=None, xml_data=None, binary_data=None):
+        from ..services import UpdateUserConfiguration
+
+        user_configuration = UserConfiguration(
+            user_configuration_name=UserConfigurationName(name=name, folder=self),
+            dictionary=dictionary,
+            xml_data=xml_data,
+            binary_data=binary_data,
+        )
+        return UpdateUserConfiguration(account=self.account).get(user_configuration=user_configuration)
+
+    @require_id
+    def delete_user_configuration(self, name):
+        from ..services import DeleteUserConfiguration
+
+        return DeleteUserConfiguration(account=self.account).get(
+            user_configuration_name=UserConfigurationNameMNS(name=name, folder=self)
+        )
+
+    @require_id
+    def subscribe_to_pull(self, event_types=None, watermark=None, timeout=60):
+        &#34;&#34;&#34;Create a pull subscription.
+
+        :param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPull.EVENT_TYPES
+        :param watermark: An event bookmark as returned by some sync services
+        :param timeout: Timeout of the subscription, in minutes. Timeout is reset when the server receives a
+        GetEvents request for this subscription.
+        :return: The subscription ID and a watermark
+        &#34;&#34;&#34;
+        from ..services import SubscribeToPull
+
+        if event_types is None:
+            event_types = SubscribeToPull.EVENT_TYPES
+        return FolderCollection(account=self.account, folders=[self]).subscribe_to_pull(
+            event_types=event_types,
+            watermark=watermark,
+            timeout=timeout,
+        )
+
+    @require_id
+    def subscribe_to_push(self, callback_url, event_types=None, watermark=None, status_frequency=1):
+        &#34;&#34;&#34;Create a push subscription.
+
+        :param callback_url: A client-defined URL that the server will call
+        :param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPush.EVENT_TYPES
+        :param watermark: An event bookmark as returned by some sync services
+        :param status_frequency: The frequency, in minutes, that the callback URL will be called with.
+        :return: The subscription ID and a watermark
+        &#34;&#34;&#34;
+        from ..services import SubscribeToPush
+
+        if event_types is None:
+            event_types = SubscribeToPush.EVENT_TYPES
+        return FolderCollection(account=self.account, folders=[self]).subscribe_to_push(
+            event_types=event_types,
+            watermark=watermark,
+            status_frequency=status_frequency,
+            callback_url=callback_url,
+        )
+
+    @require_id
+    def subscribe_to_streaming(self, event_types=None):
+        &#34;&#34;&#34;Create a streaming subscription.
+
+        :param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPush.EVENT_TYPES
+        :return: The subscription ID
+        &#34;&#34;&#34;
+        from ..services import SubscribeToStreaming
+
+        if event_types is None:
+            event_types = SubscribeToStreaming.EVENT_TYPES
+        return FolderCollection(account=self.account, folders=[self]).subscribe_to_streaming(event_types=event_types)
+
+    @require_id
+    def pull_subscription(self, **kwargs):
+        return PullSubscription(target=self, **kwargs)
+
+    @require_id
+    def push_subscription(self, **kwargs):
+        return PushSubscription(target=self, **kwargs)
+
+    @require_id
+    def streaming_subscription(self, **kwargs):
+        return StreamingSubscription(target=self, **kwargs)
+
+    def unsubscribe(self, subscription_id):
+        &#34;&#34;&#34;Unsubscribe. Only applies to pull and streaming notifications.
+
+        :param subscription_id: A subscription ID as acquired by .subscribe_to_[pull|streaming]()
+        :return: True
+
+        This method doesn&#39;t need the current folder instance, but it makes sense to keep the method along the other
+        sync methods.
+        &#34;&#34;&#34;
+        from ..services import Unsubscribe
+
+        return Unsubscribe(account=self.account).get(subscription_id=subscription_id)
+
+    def sync_items(self, sync_state=None, only_fields=None, ignore=None, max_changes_returned=None, sync_scope=None):
+        &#34;&#34;&#34;Return all item changes to a folder, as a generator. If sync_state is specified, get all item changes after
+        this sync state. After fully consuming the generator, self.item_sync_state will hold the new sync state.
+
+        :param sync_state: The state of the sync. Returned by a successful call to the SyncFolderItems service.
+        :param only_fields: A list of string or FieldPath items specifying the fields to fetch. Default to all fields
+        :param ignore: A list of Item IDs to ignore in the sync
+        :param max_changes_returned: The max number of change
+        :param sync_scope: Specify whether to return just items, or items and folder associated information. Possible
+           values are specified in SyncFolderItems.SYNC_SCOPES
+        :return: A generator of (change_type, item) tuples
+        &#34;&#34;&#34;
+        if not sync_state:
+            sync_state = self.item_sync_state
+        try:
+            yield from FolderCollection(account=self.account, folders=[self]).sync_items(
+                sync_state=sync_state,
+                only_fields=only_fields,
+                ignore=ignore,
+                max_changes_returned=max_changes_returned,
+                sync_scope=sync_scope,
+            )
+        except SyncCompleted as e:
+            # Set the new sync state on the folder instance
+            self.item_sync_state = e.sync_state
+
+    def sync_hierarchy(self, sync_state=None, only_fields=None):
+        &#34;&#34;&#34;Return all folder changes to a folder hierarchy, as a generator. If sync_state is specified, get all folder
+        changes after this sync state. After fully consuming the generator, self.folder_sync_state will hold the new
+        sync state.
+
+        :param sync_state: The state of the sync. Returned by a successful call to the SyncFolderItems service.
+        :param only_fields: A list of string or FieldPath items specifying the fields to fetch. Default to all fields
+        :return:
+        &#34;&#34;&#34;
+        if not sync_state:
+            sync_state = self.folder_sync_state
+        try:
+            yield from FolderCollection(account=self.account, folders=[self]).sync_hierarchy(
+                sync_state=sync_state,
+                only_fields=only_fields,
+            )
+        except SyncCompleted as e:
+            # Set the new sync state on the folder instance
+            self.folder_sync_state = e.sync_state
+
+    def get_events(self, subscription_id, watermark):
+        &#34;&#34;&#34;Get events since the given watermark. Non-blocking.
+
+        :param subscription_id: A subscription ID as acquired by .subscribe_to_[pull|push]()
+        :param watermark: Either the watermark from the subscription, or as returned by the last .get_events() call.
+        :return: A Notification object containing a list of events
+
+        This method doesn&#39;t need the current folder instance, but it makes sense to keep the method along the other
+        sync methods.
+        &#34;&#34;&#34;
+        from ..services import GetEvents
+
+        svc = GetEvents(account=self.account)
+        while True:
+            notification = svc.get(subscription_id=subscription_id, watermark=watermark)
+            yield notification
+            if not notification.more_events:
+                break
+
+    def get_streaming_events(self, subscription_id_or_ids, connection_timeout=1, max_notifications_returned=None):
+        &#34;&#34;&#34;Get events since the subscription was created, in streaming mode. This method will block as many minutes
+        as specified by &#39;connection_timeout&#39;.
+
+        :param subscription_id_or_ids: A subscription ID, or list of IDs, as acquired by .subscribe_to_streaming()
+        :param connection_timeout: Timeout of the connection, in minutes. The connection is closed after this timeout
+        is reached.
+        :param max_notifications_returned: If specified, will exit after receiving this number of notifications
+        :return: A generator of Notification objects, each containing a list of events
+
+        This method doesn&#39;t need the current folder instance, but it makes sense to keep the method along the other
+        sync methods.
+        &#34;&#34;&#34;
+        from ..services import GetStreamingEvents
+
+        svc = GetStreamingEvents(account=self.account)
+        subscription_ids = (
+            subscription_id_or_ids
+            if is_iterable(subscription_id_or_ids, generators_allowed=True)
+            else [subscription_id_or_ids]
+        )
+        for i, notification in enumerate(
+            svc.call(subscription_ids=subscription_ids, connection_timeout=connection_timeout), start=1
+        ):
+            yield notification
+            if max_notifications_returned and i &gt;= max_notifications_returned:
+                svc.stop_streaming()
+                break
+
+    def __floordiv__(self, other):
+        &#34;&#34;&#34;Support the some_folder // &#39;child_folder&#39; // &#39;child_of_child_folder&#39; navigation syntax.
+
+        Works like as __truediv__ but does not touch the folder cache.
+
+        This is useful if the folder hierarchy contains a huge number of folders, and you don&#39;t want to fetch them all
+
+        :param other:
+        :return:
+        &#34;&#34;&#34;
+        if other == &#34;..&#34;:
+            raise ValueError(&#34;Cannot get parent without a folder cache&#34;)
+
+        if other == &#34;.&#34;:
+            return self
+
+        # Assume an exact match on the folder name in a shallow search will only return at most one folder
+        try:
+            return SingleFolderQuerySet(account=self.account, folder=self).depth(SHALLOW_FOLDERS).get(name=other)
+        except DoesNotExist:
+            raise ErrorFolderNotFound(f&#34;No subfolder with name {other!r}&#34;)
+
+    def __truediv__(self, other):
+        &#34;&#34;&#34;Support the some_folder / &#39;child_folder&#39; / &#39;child_of_child_folder&#39; navigation syntax.&#34;&#34;&#34;
+        if other == &#34;..&#34;:
+            if not self.parent:
+                raise ValueError(&#34;Already at top&#34;)
+            return self.parent
+        if other == &#34;.&#34;:
+            return self
+        for c in self.children:
+            # Folders are case-insensitive server-side. Let&#39;s do that here as well.
+            if c.name.lower() == other.lower():
+                return c
+        raise ErrorFolderNotFound(f&#34;No subfolder with name {other!r}&#34;)
+
+    def __repr__(self):
+        return self.__class__.__name__ + repr(
+            (
+                self.root,
+                self.name,
+                self.total_count,
+                self.unread_count,
+                self.child_folder_count,
+                self.folder_class,
+                self.id,
+                self.changekey,
+            )
+        )
+
+    def __str__(self):
+        return f&#34;{self.__class__.__name__} ({self.name})&#34;</code></pre>
+</details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.name"><code class="name">var <span class="ident">name</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="exchangelib.folders.base.BaseFolder.parent"><code class="name">var <span class="ident">parent</span></code></dt>
+<dt id="exchangelib.folders.base.BaseFolder.parent"><code class="name">prop <span class="ident">parent</span></code></dt>
 <dd>
-<div class="desc"><p>Return the parent folder of this folder</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2106,14 +2629,14 @@ def is_distinguished(self):
 def parent(self):
     &#34;&#34;&#34;Return the parent folder of this folder&#34;&#34;&#34;</code></pre>
 </details>
+<div class="desc"><p>Return the parent folder of this folder</p></div>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.parent_folder_id"><code class="name">var <span class="ident">parent_folder_id</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="exchangelib.folders.base.BaseFolder.parts"><code class="name">var <span class="ident">parts</span></code></dt>
+<dt id="exchangelib.folders.base.BaseFolder.parts"><code class="name">prop <span class="ident">parts</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2127,10 +2650,10 @@ def parts(self):
         f = f.parent
     return parts</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
-<dt id="exchangelib.folders.base.BaseFolder.root"><code class="name">var <span class="ident">root</span></code></dt>
+<dt id="exchangelib.folders.base.BaseFolder.root"><code class="name">prop <span class="ident">root</span></code></dt>
 <dd>
-<div class="desc"><p>Return the root folder this folder belongs to</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2140,6 +2663,7 @@ def parts(self):
 def root(self):
     &#34;&#34;&#34;Return the root folder this folder belongs to&#34;&#34;&#34;</code></pre>
 </details>
+<div class="desc"><p>Return the root folder this folder belongs to</p></div>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.total_count"><code class="name">var <span class="ident">total_count</span></code></dt>
 <dd>
@@ -2156,7 +2680,6 @@ def root(self):
 <span>def <span class="ident">bulk_create</span></span>(<span>self, items, *args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2164,12 +2687,12 @@ def root(self):
 <pre><code class="python">def bulk_create(self, items, *args, **kwargs):
     return self.account.bulk_create(folder=self, items=items, *args, **kwargs)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.clean"><code class="name flex">
 <span>def <span class="ident">clean</span></span>(<span>self, version=None)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2180,12 +2703,12 @@ def root(self):
     if self.id is None and self.folder_class is None:
         self.folder_class = self.CONTAINER_CLASS</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.create_user_configuration"><code class="name flex">
 <span>def <span class="ident">create_user_configuration</span></span>(<span>self, name, dictionary=None, xml_data=None, binary_data=None)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2202,12 +2725,12 @@ def create_user_configuration(self, name, dictionary=None, xml_data=None, binary
     )
     return CreateUserConfiguration(account=self.account).get(user_configuration=user_configuration)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.delete"><code class="name flex">
 <span>def <span class="ident">delete</span></span>(<span>self, delete_type='HardDelete')</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2219,12 +2742,12 @@ def create_user_configuration(self, name, dictionary=None, xml_data=None, binary
     self.root.remove_folder(self)  # Remove the updated folder from the cache
     self._id = None</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.delete_user_configuration"><code class="name flex">
 <span>def <span class="ident">delete_user_configuration</span></span>(<span>self, name)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2237,12 +2760,12 @@ def delete_user_configuration(self, name):
         user_configuration_name=UserConfigurationNameMNS(name=name, folder=self)
     )</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.empty"><code class="name flex">
 <span>def <span class="ident">empty</span></span>(<span>self, delete_type='HardDelete', delete_sub_folders=False)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2257,17 +2780,12 @@ def delete_user_configuration(self, name):
         # We don&#39;t know exactly what was deleted, so invalidate the entire folder cache to be safe
         self.root.clear_cache()</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.get_events"><code class="name flex">
 <span>def <span class="ident">get_events</span></span>(<span>self, subscription_id, watermark)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Get events since the given watermark. Non-blocking.</p>
-<p>:param subscription_id: A subscription ID as acquired by .subscribe_to_<a href="">pull|push</a>
-:param watermark: Either the watermark from the subscription, or as returned by the last .get_events() call.
-:return: A Notification object containing a list of events</p>
-<p>This method doesn't need the current folder instance, but it makes sense to keep the method along the other
-sync methods.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2291,20 +2809,17 @@ sync methods.</p></div>
         if not notification.more_events:
             break</code></pre>
 </details>
-</dd>
-<dt id="exchangelib.folders.base.BaseFolder.get_streaming_events"><code class="name flex">
-<span>def <span class="ident">get_streaming_events</span></span>(<span>self, subscription_id_or_ids, connection_timeout=1, max_notifications_returned=None)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Get events since the subscription was created, in streaming mode. This method will block as many minutes
-as specified by 'connection_timeout'.</p>
-<p>:param subscription_id_or_ids: A subscription ID, or list of IDs, as acquired by .subscribe_to_streaming()
-:param connection_timeout: Timeout of the connection, in minutes. The connection is closed after this timeout
-is reached.
-:param max_notifications_returned: If specified, will exit after receiving this number of notifications
-:return: A generator of Notification objects, each containing a list of events</p>
+<div class="desc"><p>Get events since the given watermark. Non-blocking.</p>
+<p>:param subscription_id: A subscription ID as acquired by .subscribe_to_<a href="">pull|push</a>
+:param watermark: Either the watermark from the subscription, or as returned by the last .get_events() call.
+:return: A Notification object containing a list of events</p>
 <p>This method doesn't need the current folder instance, but it makes sense to keep the method along the other
 sync methods.</p></div>
+</dd>
+<dt id="exchangelib.folders.base.BaseFolder.get_streaming_events"><code class="name flex">
+<span>def <span class="ident">get_streaming_events</span></span>(<span>self,<br>subscription_id_or_ids,<br>connection_timeout=1,<br>max_notifications_returned=None)</span>
+</code></dt>
+<dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2338,12 +2853,20 @@ sync methods.</p></div>
             svc.stop_streaming()
             break</code></pre>
 </details>
+<div class="desc"><p>Get events since the subscription was created, in streaming mode. This method will block as many minutes
+as specified by 'connection_timeout'.</p>
+<p>:param subscription_id_or_ids: A subscription ID, or list of IDs, as acquired by .subscribe_to_streaming()
+:param connection_timeout: Timeout of the connection, in minutes. The connection is closed after this timeout
+is reached.
+:param max_notifications_returned: If specified, will exit after receiving this number of notifications
+:return: A generator of Notification objects, each containing a list of events</p>
+<p>This method doesn't need the current folder instance, but it makes sense to keep the method along the other
+sync methods.</p></div>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.get_user_configuration"><code class="name flex">
 <span>def <span class="ident">get_user_configuration</span></span>(<span>self, name, properties=None)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2360,12 +2883,12 @@ def get_user_configuration(self, name, properties=None):
         properties=properties,
     )</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.glob"><code class="name flex">
 <span>def <span class="ident">glob</span></span>(<span>self, pattern)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2373,12 +2896,12 @@ def get_user_configuration(self, name, properties=None):
 <pre><code class="python">def glob(self, pattern):
     return FolderCollection(account=self.account, folders=self._glob(pattern))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.move"><code class="name flex">
 <span>def <span class="ident">move</span></span>(<span>self, to_folder)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2395,12 +2918,12 @@ def get_user_configuration(self, name, properties=None):
     self.parent_folder_id = ParentFolderId(id=to_folder.id, changekey=to_folder.changekey)
     self.root.update_folder(self)  # Update the folder in the cache</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.normalize_fields"><code class="name flex">
 <span>def <span class="ident">normalize_fields</span></span>(<span>self, fields)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2436,12 +2959,12 @@ def get_user_configuration(self, name, properties=None):
                 fields.append(FieldPath(field=end_tz_field))
     return fields</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.pull_subscription"><code class="name flex">
 <span>def <span class="ident">pull_subscription</span></span>(<span>self, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2450,12 +2973,12 @@ def get_user_configuration(self, name, properties=None):
 def pull_subscription(self, **kwargs):
     return PullSubscription(target=self, **kwargs)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.push_subscription"><code class="name flex">
 <span>def <span class="ident">push_subscription</span></span>(<span>self, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2464,12 +2987,12 @@ def pull_subscription(self, **kwargs):
 def push_subscription(self, **kwargs):
     return PushSubscription(target=self, **kwargs)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.refresh"><code class="name flex">
 <span>def <span class="ident">refresh</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2484,12 +3007,12 @@ def refresh(self):
         setattr(self, f.name, getattr(fresh_folder, f.name))
     return self</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.save"><code class="name flex">
 <span>def <span class="ident">save</span></span>(<span>self, update_fields=None)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2529,12 +3052,12 @@ def refresh(self):
     self.root.update_folder(self)  # Update the folder in the cache
     return self</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.streaming_subscription"><code class="name flex">
 <span>def <span class="ident">streaming_subscription</span></span>(<span>self, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2543,17 +3066,12 @@ def refresh(self):
 def streaming_subscription(self, **kwargs):
     return StreamingSubscription(target=self, **kwargs)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.subscribe_to_pull"><code class="name flex">
 <span>def <span class="ident">subscribe_to_pull</span></span>(<span>self, event_types=None, watermark=None, timeout=60)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Create a pull subscription.</p>
-<p>:param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPull.EVENT_TYPES
-:param watermark: An event bookmark as returned by some sync services
-:param timeout: Timeout of the subscription, in minutes. Timeout is reset when the server receives a
-GetEvents request for this subscription.
-:return: The subscription ID and a watermark</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2578,17 +3096,17 @@ def subscribe_to_pull(self, event_types=None, watermark=None, timeout=60):
         timeout=timeout,
     )</code></pre>
 </details>
+<div class="desc"><p>Create a pull subscription.</p>
+<p>:param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPull.EVENT_TYPES
+:param watermark: An event bookmark as returned by some sync services
+:param timeout: Timeout of the subscription, in minutes. Timeout is reset when the server receives a
+GetEvents request for this subscription.
+:return: The subscription ID and a watermark</p></div>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.subscribe_to_push"><code class="name flex">
 <span>def <span class="ident">subscribe_to_push</span></span>(<span>self, callback_url, event_types=None, watermark=None, status_frequency=1)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Create a push subscription.</p>
-<p>:param callback_url: A client-defined URL that the server will call
-:param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPush.EVENT_TYPES
-:param watermark: An event bookmark as returned by some sync services
-:param status_frequency: The frequency, in minutes, that the callback URL will be called with.
-:return: The subscription ID and a watermark</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2614,14 +3132,17 @@ def subscribe_to_push(self, callback_url, event_types=None, watermark=None, stat
         callback_url=callback_url,
     )</code></pre>
 </details>
+<div class="desc"><p>Create a push subscription.</p>
+<p>:param callback_url: A client-defined URL that the server will call
+:param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPush.EVENT_TYPES
+:param watermark: An event bookmark as returned by some sync services
+:param status_frequency: The frequency, in minutes, that the callback URL will be called with.
+:return: The subscription ID and a watermark</p></div>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.subscribe_to_streaming"><code class="name flex">
 <span>def <span class="ident">subscribe_to_streaming</span></span>(<span>self, event_types=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Create a streaming subscription.</p>
-<p>:param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPush.EVENT_TYPES
-:return: The subscription ID</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2639,17 +3160,14 @@ def subscribe_to_streaming(self, event_types=None):
         event_types = SubscribeToStreaming.EVENT_TYPES
     return FolderCollection(account=self.account, folders=[self]).subscribe_to_streaming(event_types=event_types)</code></pre>
 </details>
+<div class="desc"><p>Create a streaming subscription.</p>
+<p>:param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPush.EVENT_TYPES
+:return: The subscription ID</p></div>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.sync_hierarchy"><code class="name flex">
 <span>def <span class="ident">sync_hierarchy</span></span>(<span>self, sync_state=None, only_fields=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Return all folder changes to a folder hierarchy, as a generator. If sync_state is specified, get all folder
-changes after this sync state. After fully consuming the generator, self.folder_sync_state will hold the new
-sync state.</p>
-<p>:param sync_state: The state of the sync. Returned by a successful call to the SyncFolderItems service.
-:param only_fields: A list of string or FieldPath items specifying the fields to fetch. Default to all fields
-:return:</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2674,20 +3192,17 @@ sync state.</p>
         # Set the new sync state on the folder instance
         self.folder_sync_state = e.sync_state</code></pre>
 </details>
-</dd>
-<dt id="exchangelib.folders.base.BaseFolder.sync_items"><code class="name flex">
-<span>def <span class="ident">sync_items</span></span>(<span>self, sync_state=None, only_fields=None, ignore=None, max_changes_returned=None, sync_scope=None)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Return all item changes to a folder, as a generator. If sync_state is specified, get all item changes after
-this sync state. After fully consuming the generator, self.item_sync_state will hold the new sync state.</p>
+<div class="desc"><p>Return all folder changes to a folder hierarchy, as a generator. If sync_state is specified, get all folder
+changes after this sync state. After fully consuming the generator, self.folder_sync_state will hold the new
+sync state.</p>
 <p>:param sync_state: The state of the sync. Returned by a successful call to the SyncFolderItems service.
 :param only_fields: A list of string or FieldPath items specifying the fields to fetch. Default to all fields
-:param ignore: A list of Item IDs to ignore in the sync
-:param max_changes_returned: The max number of change
-:param sync_scope: Specify whether to return just items, or items and folder associated information. Possible
-values are specified in SyncFolderItems.SYNC_SCOPES
-:return: A generator of (change_type, item) tuples</p></div>
+:return:</p></div>
+</dd>
+<dt id="exchangelib.folders.base.BaseFolder.sync_items"><code class="name flex">
+<span>def <span class="ident">sync_items</span></span>(<span>self,<br>sync_state=None,<br>only_fields=None,<br>ignore=None,<br>max_changes_returned=None,<br>sync_scope=None)</span>
+</code></dt>
+<dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2718,13 +3233,20 @@ values are specified in SyncFolderItems.SYNC_SCOPES
         # Set the new sync state on the folder instance
         self.item_sync_state = e.sync_state</code></pre>
 </details>
+<div class="desc"><p>Return all item changes to a folder, as a generator. If sync_state is specified, get all item changes after
+this sync state. After fully consuming the generator, self.item_sync_state will hold the new sync state.</p>
+<p>:param sync_state: The state of the sync. Returned by a successful call to the SyncFolderItems service.
+:param only_fields: A list of string or FieldPath items specifying the fields to fetch. Default to all fields
+:param ignore: A list of Item IDs to ignore in the sync
+:param max_changes_returned: The max number of change
+:param sync_scope: Specify whether to return just items, or items and folder associated information. Possible
+values are specified in SyncFolderItems.SYNC_SCOPES
+:return: A generator of (change_type, item) tuples</p></div>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.test_access"><code class="name flex">
 <span>def <span class="ident">test_access</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Does a simple FindItem to test (read) access to the folder. Maybe the account doesn't exist, maybe the
-service user doesn't have access to the calendar. This will throw the most common errors.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2736,12 +3258,13 @@ service user doesn't have access to the calendar. This will throw the most commo
     self.all().exists()
     return True</code></pre>
 </details>
+<div class="desc"><p>Does a simple FindItem to test (read) access to the folder. Maybe the account doesn't exist, maybe the
+service user doesn't have access to the calendar. This will throw the most common errors.</p></div>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.to_id"><code class="name flex">
 <span>def <span class="ident">to_id</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2761,20 +3284,12 @@ service user doesn't have access to the calendar. This will throw the most commo
     )
     return self._distinguished_id</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.tree"><code class="name flex">
 <span>def <span class="ident">tree</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Return a string representation of the folder structure of this folder. Example:</p>
-<p>root
-├── inbox
-│
-└── todos
-└── archive
-├── Last Job
-├── exchangelib issues
-└── Mom</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2808,16 +3323,20 @@ service user doesn't have access to the calendar. This will throw the most commo
                 tree += f&#34;    {node}\n&#34;
     return tree.strip()</code></pre>
 </details>
+<div class="desc"><p>Return a string representation of the folder structure of this folder. Example:</p>
+<p>root
+├── inbox
+│
+└── todos
+└── archive
+├── Last Job
+├── exchangelib issues
+└── Mom</p></div>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.unsubscribe"><code class="name flex">
 <span>def <span class="ident">unsubscribe</span></span>(<span>self, subscription_id)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Unsubscribe. Only applies to pull and streaming notifications.</p>
-<p>:param subscription_id: A subscription ID as acquired by .subscribe_to_<a href="">pull|streaming</a>
-:return: True</p>
-<p>This method doesn't need the current folder instance, but it makes sense to keep the method along the other
-sync methods.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2835,12 +3354,16 @@ sync methods.</p></div>
 
     return Unsubscribe(account=self.account).get(subscription_id=subscription_id)</code></pre>
 </details>
+<div class="desc"><p>Unsubscribe. Only applies to pull and streaming notifications.</p>
+<p>:param subscription_id: A subscription ID as acquired by .subscribe_to_<a href="">pull|streaming</a>
+:return: True</p>
+<p>This method doesn't need the current folder instance, but it makes sense to keep the method along the other
+sync methods.</p></div>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.update_user_configuration"><code class="name flex">
 <span>def <span class="ident">update_user_configuration</span></span>(<span>self, name, dictionary=None, xml_data=None, binary_data=None)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2857,12 +3380,12 @@ def update_user_configuration(self, name, dictionary=None, xml_data=None, binary
     )
     return UpdateUserConfiguration(account=self.account).get(user_configuration=user_configuration)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.validate_item_field"><code class="name flex">
 <span>def <span class="ident">validate_item_field</span></span>(<span>self, field, version)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2870,12 +3393,12 @@ def update_user_configuration(self, name, dictionary=None, xml_data=None, binary
 <pre><code class="python">def validate_item_field(self, field, version):
     FolderCollection(account=self.account, folders=[self]).validate_item_field(field=field, version=version)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.walk"><code class="name flex">
 <span>def <span class="ident">walk</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2883,12 +3406,12 @@ def update_user_configuration(self, name, dictionary=None, xml_data=None, binary
 <pre><code class="python">def walk(self):
     return FolderCollection(account=self.account, folders=self._walk())</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.folders.base.BaseFolder.wipe"><code class="name flex">
 <span>def <span class="ident">wipe</span></span>(<span>self, page_size=None, chunk_size=None)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2948,6 +3471,7 @@ def update_user_configuration(self, name, dictionary=None, xml_data=None, binary
             except ErrorDeleteDistinguishedFolder:
                 log.warning(&#34;Tried to delete a distinguished folder (%s)&#34;, f)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -2979,7 +3503,6 @@ def update_user_configuration(self, name, dictionary=None, xml_data=None, binary
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/folder">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/folder</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3117,6 +3640,7 @@ def update_user_configuration(self, name, dictionary=None, xml_data=None, binary
             folder._distinguished_id = None
         return folder_cls(root=root, **{f.name: getattr(folder, f.name) for f in folder.FIELDS})</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/folder">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/folder</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.folders.base.BaseFolder" href="#exchangelib.folders.base.BaseFolder">BaseFolder</a></li>
@@ -3153,54 +3677,6 @@ def update_user_configuration(self, name, dictionary=None, xml_data=None, binary
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def from_xml_with_root(cls, elem, root):
-    folder = cls.from_xml(elem=elem, account=root.account)
-    folder_cls = cls
-    if cls == Folder:
-        # We were called on the generic Folder class. Try to find a more specific class to return objects as.
-        #
-        # The &#34;FolderClass&#34; element value is the only indication we have in the FindFolder response of which
-        # folder class we should create the folder with. And many folders share the same &#39;FolderClass&#39; value, e.g.
-        # Inbox and DeletedItems. We want to distinguish between these because otherwise we can&#39;t locate the right
-        # folders types for e.g. Account.inbox and Account.trash.
-        #
-        # We should be able to just use the name, but apparently default folder names can be renamed to a set of
-        # localized names using a PowerShell command:
-        # https://docs.microsoft.com/en-us/powershell/module/exchange/client-access/Set-MailboxRegionalConfiguration
-        #
-        # Instead, search for a folder class using the localized name. If none are found, fall back to getting the
-        # folder class by the &#34;FolderClass&#34; value.
-        #
-        # The returned XML may contain neither folder class nor name. In that case, we default to the generic
-        # Folder class.
-        if folder.name:
-            with suppress(KeyError):
-                # TODO: fld_class.LOCALIZED_NAMES is most definitely neither complete nor authoritative
-                folder_cls = root.folder_cls_from_folder_name(
-                    folder_name=folder.name,
-                    folder_class=folder.folder_class,
-                    locale=root.account.locale,
-                )
-                log.debug(&#34;Folder class %s matches localized folder name %s&#34;, folder_cls, folder.name)
-        if folder.folder_class and folder_cls == Folder:
-            with suppress(KeyError):
-                folder_cls = cls.folder_cls_from_container_class(container_class=folder.folder_class)
-                log.debug(
-                    &#34;Folder class %s matches container class %s (%s)&#34;, folder_cls, folder.folder_class, folder.name
-                )
-        if folder_cls == Folder:
-            log.debug(&#34;Fallback to class Folder (folder_class %s, name %s)&#34;, folder.folder_class, folder.name)
-    # Some servers return folders in a FindFolder result that have a DistinguishedFolderId element that the same
-    # server cannot handle in a GetFolder request. Only set the DistinguishedFolderId field if we recognize the ID.
-    if folder._distinguished_id and not folder_cls.DISTINGUISHED_FOLDER_ID:
-        folder._distinguished_id = None
-    return folder_cls(root=root, **{f.name: getattr(folder, f.name) for f in folder.FIELDS})</code></pre>
-</details>
 </dd>
 <dt id="exchangelib.folders.base.Folder.get_distinguished"><code class="name flex">
 <span>def <span class="ident">get_distinguished</span></span>(<span>root)</span>
@@ -3209,27 +3685,6 @@ def from_xml_with_root(cls, elem, root):
 <div class="desc"><p>Get the distinguished folder for this folder class.</p>
 <p>:param root:
 :return:</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def get_distinguished(cls, root):
-    &#34;&#34;&#34;Get the distinguished folder for this folder class.
-
-    :param root:
-    :return:
-    &#34;&#34;&#34;
-    return cls._get_distinguished(
-        folder=cls(
-            _distinguished_id=DistinguishedFolderId(
-                id=cls.DISTINGUISHED_FOLDER_ID,
-                mailbox=Mailbox(email_address=root.account.primary_smtp_address),
-            ),
-            root=root,
-        )
-    )</code></pre>
-</details>
 </dd>
 </dl>
 <h3>Instance variables</h3>
@@ -3249,7 +3704,6 @@ def get_distinguished(cls, root):
 <span>def <span class="ident">clean</span></span>(<span>self, version=None)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3261,6 +3715,7 @@ def get_distinguished(cls, root):
     if self.root and not isinstance(self.root, RootOfHierarchy):
         raise InvalidTypeError(&#34;root&#34;, self.root, RootOfHierarchy)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -3275,11 +3730,9 @@ def get_distinguished(cls, root):
 <li><code><a title="exchangelib.folders.base.BaseFolder.exclude" href="../queryset.html#exchangelib.queryset.SearchableMixIn.exclude">exclude</a></code></li>
 <li><code><a title="exchangelib.folders.base.BaseFolder.filter" href="../queryset.html#exchangelib.queryset.SearchableMixIn.filter">filter</a></code></li>
 <li><code><a title="exchangelib.folders.base.BaseFolder.folder_cls_from_container_class" href="#exchangelib.folders.base.BaseFolder.folder_cls_from_container_class">folder_cls_from_container_class</a></code></li>
-<li><code><a title="exchangelib.folders.base.BaseFolder.folder_sync_state" href="#exchangelib.folders.base.BaseFolder.folder_sync_state">folder_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.BaseFolder.get" href="../queryset.html#exchangelib.queryset.SearchableMixIn.get">get</a></code></li>
 <li><code><a title="exchangelib.folders.base.BaseFolder.get_events" href="#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.BaseFolder.get_streaming_events" href="#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.BaseFolder.item_sync_state" href="#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.BaseFolder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.BaseFolder.parent" href="#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
 <li><code><a title="exchangelib.folders.base.BaseFolder.people" href="../queryset.html#exchangelib.queryset.SearchableMixIn.people">people</a></code></li>
@@ -3304,7 +3757,6 @@ def get_distinguished(cls, root):
 </section>
 </article>
 <nav id="sidebar">
-<h1>Index</h1>
 <div class="toc">
 <ul></ul>
 </div>
@@ -3404,7 +3856,7 @@ def get_distinguished(cls, root):
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
 </footer>
 </body>
 </html>

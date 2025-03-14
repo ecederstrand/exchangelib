@@ -2,18 +2,32 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.10.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.5">
 <title>exchangelib.util API documentation</title>
-<meta name="description" content="" />
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
-<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
-<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
-<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
 </head>
 <body>
 <main>
@@ -22,905 +36,6 @@
 <h1 class="title">Module <code>exchangelib.util</code></h1>
 </header>
 <section id="section-intro">
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">import datetime
-import io
-import itertools
-import logging
-import re
-import socket
-import time
-import xml.sax.handler  # nosec
-from base64 import b64decode, b64encode
-from codecs import BOM_UTF8
-from contextlib import suppress
-from decimal import Decimal
-from functools import wraps
-from threading import get_ident
-from urllib.parse import urlparse
-
-import isodate
-import lxml.etree  # nosec
-import requests.exceptions
-from defusedxml.expatreader import DefusedExpatParser
-from defusedxml.sax import _InputSource
-from oauthlib.oauth2 import TokenExpiredError
-from pygments import highlight
-from pygments.formatters.terminal import TerminalFormatter
-from pygments.lexers.html import XmlLexer
-from requests_oauthlib import OAuth2Session
-
-from .errors import ErrorInternalServerTransientError, ErrorTimeoutExpired, RelativeRedirect, TransportError
-
-log = logging.getLogger(__name__)
-xml_log = logging.getLogger(f&#34;{__name__}.xml&#34;)
-
-
-def require_account(f):
-    @wraps(f)
-    def wrapper(self, *args, **kwargs):
-        if not self.account:
-            raise ValueError(f&#34;{self.__class__.__name__} must have an account&#34;)
-        return f(self, *args, **kwargs)
-
-    return wrapper
-
-
-def require_id(f):
-    @wraps(f)
-    def wrapper(self, *args, **kwargs):
-        if not self.account:
-            raise ValueError(f&#34;{self.__class__.__name__} must have an account&#34;)
-        if not self.id:
-            raise ValueError(f&#34;{self.__class__.__name__} must have an ID&#34;)
-        return f(self, *args, **kwargs)
-
-    return wrapper
-
-
-class ParseError(lxml.etree.ParseError):
-    &#34;&#34;&#34;Used to wrap lxml ParseError in our own class.&#34;&#34;&#34;
-
-
-class ElementNotFound(Exception):
-    &#34;&#34;&#34;Raised when the expected element was not found in a response stream.&#34;&#34;&#34;
-
-    def __init__(self, msg, data):
-        super().__init__(msg)
-        self.data = data
-
-
-# Regex of UTF-8 control characters that are illegal in XML 1.0 (and XML 1.1).
-# See https://stackoverflow.com/a/22273639/219640
-_ILLEGAL_XML_CHARS_RE = re.compile(&#34;[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F-\x84\x86-\x9F\uFDD0-\uFDDF\uFFFE\uFFFF]&#34;)
-_ILLEGAL_XML_ESCAPE_CHARS_RE = re.compile(rb&#34;&amp;(#[0-9]+;?|#[xX][0-9a-fA-F]+;?)&#34;)  # Could match the above better
-
-# XML namespaces
-SOAPNS = &#34;http://schemas.xmlsoap.org/soap/envelope/&#34;
-MNS = &#34;http://schemas.microsoft.com/exchange/services/2006/messages&#34;
-TNS = &#34;http://schemas.microsoft.com/exchange/services/2006/types&#34;
-ENS = &#34;http://schemas.microsoft.com/exchange/services/2006/errors&#34;
-ANS = &#34;http://schemas.microsoft.com/exchange/2010/Autodiscover&#34;
-INS = &#34;http://www.w3.org/2001/XMLSchema-instance&#34;
-WSA = &#34;http://www.w3.org/2005/08/addressing&#34;
-AUTODISCOVER_BASE_NS = &#34;http://schemas.microsoft.com/exchange/autodiscover/responseschema/2006&#34;
-AUTODISCOVER_REQUEST_NS = &#34;http://schemas.microsoft.com/exchange/autodiscover/outlook/requestschema/2006&#34;
-AUTODISCOVER_RESPONSE_NS = &#34;http://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a&#34;
-
-ns_translation = {
-    &#34;s&#34;: SOAPNS,
-    &#34;m&#34;: MNS,
-    &#34;t&#34;: TNS,
-    &#34;a&#34;: ANS,
-    &#34;wsa&#34;: WSA,
-    &#34;xsi&#34;: INS,
-}
-for item in ns_translation.items():
-    lxml.etree.register_namespace(*item)
-
-
-def is_iterable(value, generators_allowed=False):
-    &#34;&#34;&#34;Check if value is a list-like object. Don&#39;t match generators and generator-like objects here by default, because
-    callers don&#39;t necessarily guarantee that they only iterate the value once. Take care to not match string types and
-    bytes.
-
-    :param value: any type of object
-    :param generators_allowed: if True, generators will be treated as iterable (Default value = False)
-
-    :return: True or False
-    &#34;&#34;&#34;
-    if generators_allowed:
-        if not isinstance(value, (bytes, str)) and hasattr(value, &#34;__iter__&#34;):
-            return True
-    else:
-        if isinstance(value, (tuple, list, set)):
-            return True
-    return False
-
-
-def chunkify(iterable, chunksize):
-    &#34;&#34;&#34;Split an iterable into chunks of size ``chunksize``. The last chunk may be smaller than ``chunksize``.
-
-    :param iterable:
-    :param chunksize:
-    :return:
-    &#34;&#34;&#34;
-    from .queryset import QuerySet
-
-    if hasattr(iterable, &#34;__getitem__&#34;) and not isinstance(iterable, QuerySet):
-        # tuple, list. QuerySet has __getitem__ but that evaluates the entire query greedily. We don&#39;t want that here.
-        for i in range(0, len(iterable), chunksize):
-            yield iterable[i : i + chunksize]
-    else:
-        # generator, set, map, QuerySet
-        chunk = []
-        for i in iterable:
-            chunk.append(i)
-            if len(chunk) == chunksize:
-                yield chunk
-                chunk = []
-        if chunk:
-            yield chunk
-
-
-def peek(iterable):
-    &#34;&#34;&#34;Check if an iterable is empty and return status and the rewinded iterable.
-
-    :param iterable:
-    :return:
-    &#34;&#34;&#34;
-    if hasattr(iterable, &#34;__len__&#34;):
-        # tuple, list, set
-        return not iterable, iterable
-    # generator
-    try:
-        first = next(iterable)
-    except StopIteration:
-        return True, iterable
-    # We can&#39;t rewind a generator. Instead, chain the first element and the rest of the generator
-    return False, itertools.chain([first], iterable)
-
-
-def xml_to_str(tree, encoding=None, xml_declaration=False):
-    &#34;&#34;&#34;Serialize an XML tree. Returns unicode if &#39;encoding&#39; is None. Otherwise, we return encoded &#39;bytes&#39;.
-
-    :param tree:
-    :param encoding:  (Default value = None)
-    :param xml_declaration:  (Default value = False)
-    :return:
-    &#34;&#34;&#34;
-    if xml_declaration and not encoding:
-        raise AttributeError(&#34;&#39;xml_declaration&#39; is not supported when &#39;encoding&#39; is None&#34;)
-    if encoding:
-        return lxml.etree.tostring(tree, encoding=encoding, xml_declaration=True)
-    return lxml.etree.tostring(tree, encoding=str, xml_declaration=False)
-
-
-def get_xml_attr(tree, name):
-    elem = tree.find(name)
-    if elem is None:  # Must compare with None, see XML docs
-        return None
-    return elem.text or None
-
-
-def get_xml_attrs(tree, name):
-    return [elem.text for elem in tree.findall(name) if elem.text is not None]
-
-
-def value_to_xml_text(value):
-    from .ewsdatetime import EWSDate, EWSDateTime, EWSTimeZone
-    from .indexed_properties import SingleFieldIndexedElement
-    from .properties import AssociatedCalendarItemId, Attendee, ConversationId, Mailbox
-
-    # We can&#39;t just create a map and look up with type(value) because we want to support subtypes
-    if isinstance(value, str):
-        return safe_xml_value(value)
-    if isinstance(value, bool):
-        return &#34;1&#34; if value else &#34;0&#34;
-    if isinstance(value, bytes):
-        return b64encode(value).decode(&#34;ascii&#34;)
-    if isinstance(value, (int, Decimal)):
-        return str(value)
-    if isinstance(value, datetime.time):
-        return value.isoformat()
-    if isinstance(value, EWSTimeZone):
-        return value.ms_id
-    if isinstance(value, (EWSDate, EWSDateTime)):
-        return value.ewsformat()
-    if isinstance(value, SingleFieldIndexedElement):
-        return getattr(value, value.value_field(version=None).name)
-    if isinstance(value, Mailbox):
-        return value.email_address
-    if isinstance(value, Attendee):
-        return value.mailbox.email_address
-    if isinstance(value, (ConversationId, AssociatedCalendarItemId)):
-        return value.id
-    raise TypeError(f&#34;Unsupported type: {type(value)} ({value})&#34;)
-
-
-def xml_text_to_value(value, value_type):
-    from .ewsdatetime import EWSDate, EWSDateTime
-
-    if value_type == str:
-        return value
-    if value_type == bool:
-        try:
-            return {
-                &#34;true&#34;: True,
-                &#34;on&#34;: True,
-                &#34;false&#34;: False,
-                &#34;off&#34;: False,
-            }[value.lower()]
-        except KeyError:
-            return None
-    return {
-        bytes: safe_b64decode,
-        int: int,
-        Decimal: Decimal,
-        datetime.timedelta: isodate.parse_duration,
-        EWSDate: EWSDate.from_string,
-        EWSDateTime: EWSDateTime.from_string,
-    }[value_type](value)
-
-
-def set_xml_value(elem, value, version=None):
-    from .ewsdatetime import EWSDate, EWSDateTime
-    from .fields import FieldOrder, FieldPath
-    from .properties import EWSElement
-
-    if isinstance(value, (str, bool, bytes, int, Decimal, datetime.time, EWSDate, EWSDateTime)):
-        elem.text = value_to_xml_text(value)
-    elif isinstance(value, _element_class):
-        elem.append(value)
-    elif isinstance(value, (FieldPath, FieldOrder)):
-        elem.append(value.to_xml())
-    elif isinstance(value, EWSElement):
-        elem.append(value.to_xml(version=version))
-    elif is_iterable(value, generators_allowed=True):
-        for v in value:
-            set_xml_value(elem, v, version=version)
-    else:
-        raise ValueError(f&#34;Unsupported type {type(value)} for value {value} on elem {elem}&#34;)
-    return elem
-
-
-def safe_xml_value(value, replacement=&#34;?&#34;):
-    return _ILLEGAL_XML_CHARS_RE.sub(replacement, value)
-
-
-def sanitize_xml(data, replacement=b&#34;?&#34;):
-    if not isinstance(data, bytes):
-        # We may get data=&#34;&#34; from some expatreader versions
-        return data
-    return _ILLEGAL_XML_ESCAPE_CHARS_RE.sub(replacement, data)
-
-
-def create_element(name, attrs=None, nsmap=None):
-    if &#34;:&#34; in name:
-        ns, name = name.split(&#34;:&#34;)
-        name = f&#34;{{{ns_translation[ns]}}}{name}&#34;
-    elem = _forgiving_parser.makeelement(name, nsmap=nsmap)
-    if attrs:
-        # Try hard to keep attribute order, to ensure deterministic output. This simplifies testing.
-        # Dicts in Python 3.6+ have stable ordering.
-        for k, v in attrs.items():
-            if isinstance(v, bool):
-                v = &#34;true&#34; if v else &#34;false&#34;
-            elif isinstance(v, int):
-                v = str(v)
-            elem.set(k, v)
-    return elem
-
-
-def add_xml_child(tree, name, value):
-    # We&#39;re calling add_xml_child many places where we don&#39;t have the version handy. Don&#39;t pass EWSElement or list of
-    # EWSElement to this function!
-    tree.append(set_xml_value(elem=create_element(name), value=value))
-
-
-class StreamingContentHandler(xml.sax.handler.ContentHandler):
-    &#34;&#34;&#34;A SAX content handler that returns a character data for a single element back to the parser. The parser must have
-    a &#39;buffer&#39; attribute we can append data to.
-    &#34;&#34;&#34;
-
-    def __init__(self, parser, ns, element_name):
-        xml.sax.handler.ContentHandler.__init__(self)
-        self._parser = parser
-        self._ns = ns
-        self._element_name = element_name
-        self._parsing = False
-
-    def startElementNS(self, name, qname, attrs):
-        if name == (self._ns, self._element_name):
-            # we can expect element data next
-            self._parsing = True
-            self._parser.element_found = True
-
-    def endElementNS(self, name, qname):
-        if name == (self._ns, self._element_name):
-            # all element data received
-            self._parsing = False
-
-    def characters(self, content):
-        if not self._parsing:
-            return
-        self._parser.buffer.append(content)
-
-
-def prepare_input_source(source):
-    # Extracted from xml.sax.expatreader.saxutils.prepare_input_source
-    f = source
-    source = _InputSource()
-    source.setByteStream(f)
-    return source
-
-
-def safe_b64decode(data):
-    # Incoming base64-encoded data is not always padded to a multiple of 4. Python&#39;s parser is stricter and requires
-    # padding. Add padding if it&#39;s needed.
-    overflow = len(data) % 4
-    if overflow:
-        if isinstance(data, str):
-            padding = &#34;=&#34; * (4 - overflow)
-        else:
-            padding = b&#34;=&#34; * (4 - overflow)
-        data += padding
-    return b64decode(data)
-
-
-class StreamingBase64Parser(DefusedExpatParser):
-    &#34;&#34;&#34;A SAX parser that returns a generator of base64-decoded character content.&#34;&#34;&#34;
-
-    def __init__(self, *args, **kwargs):
-        DefusedExpatParser.__init__(self, *args, **kwargs)
-        self._namespaces = True
-        self.buffer = None
-        self.element_found = None
-
-    def parse(self, r):
-        raw_source = r.raw
-        # Like upstream but yields the return value of self.feed()
-        raw_source = prepare_input_source(raw_source)
-        self.prepareParser(raw_source)
-        file = raw_source.getByteStream()
-        self.buffer = []
-        self.element_found = False
-        buffer = file.read(self._bufsize)
-        collected_data = []
-        while buffer:
-            if not self.element_found:
-                collected_data.extend(buffer)
-            yield from self.feed(buffer)
-            buffer = file.read(self._bufsize)
-        # Any remaining data in self.buffer should be padding chars now
-        self.buffer = None
-        self.close()
-        if not self.element_found:
-            raise ElementNotFound(&#34;The element to be streamed from was not found&#34;, data=bytes(collected_data))
-
-    def feed(self, data, isFinal=0):
-        &#34;&#34;&#34;Yield the current content of the character buffer. The input XML may contain illegal characters. The lxml
-        parser handles this gracefully with the &#39;recover&#39; option, but ExpatParser doesn&#39;t have this option. Remove
-        illegal characters before parsing.&#34;&#34;&#34;
-        DefusedExpatParser.feed(self, data=sanitize_xml(data), isFinal=isFinal)
-        return self._decode_buffer()
-
-    def _decode_buffer(self):
-        remainder = &#34;&#34;
-        for data in self.buffer:
-            available = len(remainder) + len(data)
-            overflow = available % 4  # Make sure we always decode a multiple of 4
-            if remainder:
-                data = remainder + data
-                remainder = &#34;&#34;
-            if overflow:
-                remainder, data = data[-overflow:], data[:-overflow]
-            if data:
-                yield b64decode(data)
-        self.buffer = [remainder] if remainder else []
-
-
-_forgiving_parser = lxml.etree.XMLParser(
-    resolve_entities=False,  # This setting is recommended by lxml for safety
-    recover=True,  # This setting is non-default
-    huge_tree=True,  # This setting enables parsing huge attachments, mime_content and other large data
-)
-_element_class = _forgiving_parser.makeelement(&#34;x&#34;).__class__
-
-
-class BytesGeneratorIO(io.RawIOBase):
-    &#34;&#34;&#34;A BytesIO that can produce bytes from a streaming HTTP request. Expects r.iter_content() as input
-    lxml tries to be smart by calling `getvalue` when present, assuming that the entire string is in memory.
-    Omitting `getvalue` forces lxml to stream the request through `read` avoiding the memory duplication.
-    &#34;&#34;&#34;
-
-    def __init__(self, bytes_generator):
-        self._bytes_generator = bytes_generator
-        self._next = bytearray()
-        self._tell = 0
-        super().__init__()
-
-    def readable(self):
-        return not self.closed
-
-    def tell(self):
-        return self._tell
-
-    def read(self, size=-1):
-        # requests `iter_content()` auto-adjusts the number of bytes based on bandwidth.
-        # We can&#39;t assume how many bytes next returns so stash any extra in `self._next`.
-        if self._next is None:
-            return b&#34;&#34;
-        if size is None:
-            size = -1
-
-        res = self._next
-        while size &lt; 0 or len(res) &lt; size:
-            try:
-                res.extend(next(self._bytes_generator))
-            except StopIteration:
-                self._next = None
-                break
-
-        if size &gt; 0 and self._next is not None:
-            self._next = res[size:]
-            res = res[:size]
-
-        self._tell += len(res)
-        return bytes(res)
-
-    def close(self):
-        if not self.closed:
-            self._bytes_generator.close()
-        super().close()
-
-
-class DocumentYielder:
-    &#34;&#34;&#34;Look for XML documents in a streaming HTTP response and yield them as they become available from the stream.&#34;&#34;&#34;
-
-    def __init__(self, content_iterator, document_tag=&#34;Envelope&#34;):
-        self._iterator = content_iterator
-        self._document_tag = document_tag.encode()
-
-    def _get_tag(self):
-        &#34;&#34;&#34;Iterate over the bytes until we have a full tag in the buffer. If there&#39;s a &#39;&gt;&#39; in an attr value, then we&#39;ll
-        exit on that, but it&#39;s OK because we just need the plain tag name later.
-        &#34;&#34;&#34;
-        tag_buffer = [b&#34;&lt;&#34;]
-        while True:
-            try:
-                c = next(self._iterator)
-            except StopIteration:
-                break
-            tag_buffer.append(c)
-            if c == b&#34;&gt;&#34;:
-                break
-        return b&#34;&#34;.join(tag_buffer)
-
-    @staticmethod
-    def _normalize_tag(tag):
-        &#34;&#34;&#34;Returns the plain tag name given a range of tag formats:
-        * &lt;tag&gt;
-        * &lt;ns:tag&gt;
-        * &lt;ns:tag foo=&#39;bar&#39;&gt;
-        * &lt;/ns:tag foo=&#39;bar&#39;&gt;
-        &#34;&#34;&#34;
-        return tag.strip(b&#34;&lt;&gt;/&#34;).split(b&#34; &#34;)[0].split(b&#34;:&#34;)[-1]
-
-    def __iter__(self):
-        &#34;&#34;&#34;Consumes the content iterator, looking for start and end tags. Returns each document when we have fully
-        collected it.
-        &#34;&#34;&#34;
-        doc_started = False
-        buffer = []
-        try:
-            while True:
-                c = next(self._iterator)
-                if not doc_started and c == b&#34;&lt;&#34;:
-                    tag = self._get_tag()
-                    if self._normalize_tag(tag) == self._document_tag:
-                        # Start of document. Collect bytes from this point
-                        buffer.append(tag)
-                        doc_started = True
-                elif doc_started and c == b&#34;&lt;&#34;:
-                    tag = self._get_tag()
-                    buffer.append(tag)
-                    if self._normalize_tag(tag) == self._document_tag:
-                        # End of document. Yield a valid document and reset the buffer
-                        yield b&#34;&lt;?xml version=&#39;1.0&#39; encoding=&#39;utf-8&#39;?&gt;\n&#34; + b&#34;&#34;.join(buffer)
-                        doc_started = False
-                        buffer = []
-                elif doc_started:
-                    buffer.append(c)
-        except StopIteration:
-            return
-
-
-def to_xml(bytes_content):
-    &#34;&#34;&#34;Convert bytes or a generator of bytes to an XML tree.&#34;&#34;&#34;
-    # Exchange servers may spit out the weirdest XML. lxml is pretty good at recovering from errors
-    if isinstance(bytes_content, bytes):
-        stream = io.BytesIO(bytes_content)
-    else:
-        stream = BytesGeneratorIO(bytes_content)
-    try:
-        res = lxml.etree.parse(stream, parser=_forgiving_parser)  # nosec
-    except AssertionError as e:
-        raise ParseError(e.args[0], &#34;&lt;not from file&gt;&#34;, -1, 0)
-    except lxml.etree.ParseError as e:
-        if hasattr(e, &#34;position&#34;):
-            e.lineno, e.offset = e.position
-        if not e.lineno:
-            raise ParseError(str(e), &#34;&lt;not from file&gt;&#34;, e.lineno, e.offset)
-        try:
-            stream.seek(0)
-            offending_line = stream.read().splitlines()[e.lineno - 1]
-        except (IndexError, io.UnsupportedOperation):
-            raise ParseError(str(e), &#34;&lt;not from file&gt;&#34;, e.lineno, e.offset)
-        offending_excerpt = offending_line[max(0, e.offset - 20) : e.offset + 20]
-        msg = f&#39;{e}\nOffending text: [...]{offending_excerpt.decode(&#34;utf-8&#34;, errors=&#34;ignore&#34;)}[...]&#39;
-        raise ParseError(msg, &#34;&lt;not from file&gt;&#34;, e.lineno, e.offset)
-    except TypeError:
-        with suppress(IndexError, io.UnsupportedOperation):
-            stream.seek(0)
-        raise ParseError(f&#34;This is not XML: {stream.read()!r}&#34;, &#34;&lt;not from file&gt;&#34;, -1, 0)
-
-    if res.getroot() is None:
-        try:
-            stream.seek(0)
-            msg = f&#34;No root element found: {stream.read()!r}&#34;
-        except (IndexError, io.UnsupportedOperation):
-            msg = &#34;No root element found&#34;
-        raise ParseError(msg, &#34;&lt;not from file&gt;&#34;, -1, 0)
-    return res
-
-
-def is_xml(text):
-    &#34;&#34;&#34;Lightweight test if response is an XML doc. It&#39;s better to be fast than correct here.
-
-    :param text: The string to check
-    :return:
-    &#34;&#34;&#34;
-    # BOM_UTF8 is a UTF-8 byte order mark which may precede the XML from an Exchange server
-    bom_len = len(BOM_UTF8)
-    expected_prefixes = (b&#34;&lt;?xml&#34;, b&#34;&lt;s:Envelope&#34;)
-    max_prefix_len = len(expected_prefixes[1])
-    if text[:bom_len] == BOM_UTF8:
-        prefix = text[bom_len : bom_len + max_prefix_len]
-    else:
-        prefix = text[:max_prefix_len]
-    for expected_prefix in expected_prefixes:
-        if prefix[: len(expected_prefix)] == expected_prefix:
-            return True
-    return False
-
-
-class PrettyXmlHandler(logging.StreamHandler):
-    &#34;&#34;&#34;A steaming log handler that prettifies log statements containing XML when output is a terminal.&#34;&#34;&#34;
-
-    @staticmethod
-    def parse_bytes(xml_bytes):
-        return to_xml(xml_bytes)
-
-    def prettify_xml(self, xml_bytes):
-        &#34;&#34;&#34;Re-format an XML document to a consistent style.&#34;&#34;&#34;
-        return (
-            lxml.etree.tostring(self.parse_bytes(xml_bytes), xml_declaration=True, encoding=&#34;utf-8&#34;, pretty_print=True)
-            .replace(b&#34; xmlns:&#34;, b&#34;\n    xmlns:&#34;)
-            .expandtabs()
-        )
-
-    @staticmethod
-    def highlight_xml(xml_str):
-        &#34;&#34;&#34;Highlight a string containing XML, using terminal color codes.&#34;&#34;&#34;
-        return highlight(xml_str, XmlLexer(), TerminalFormatter()).rstrip()
-
-    def emit(self, record):
-        &#34;&#34;&#34;Pretty-print and syntax highlight a log statement if all these conditions are met:
-           * This is a DEBUG message
-           * We&#39;re outputting to a terminal
-           * The log message args is a dict containing keys starting with &#39;xml_&#39; and values as bytes
-
-        :param record:
-        &#34;&#34;&#34;
-        if record.levelno == logging.DEBUG and self.is_tty() and isinstance(record.args, dict):
-            for key, value in record.args.items():
-                if not key.startswith(&#34;xml_&#34;):
-                    continue
-                if not isinstance(value, bytes):
-                    continue
-                if not is_xml(value):
-                    continue
-                try:
-                    record.args[key] = self.highlight_xml(self.prettify_xml(value))
-                except Exception as e:
-                    # Something bad happened, but we don&#39;t want to crash the program just because logging failed
-                    print(f&#34;XML highlighting failed: {e}&#34;)
-        return super().emit(record)
-
-    def is_tty(self):
-        &#34;&#34;&#34;Check if we&#39;re outputting to a terminal.&#34;&#34;&#34;
-        try:
-            return self.stream.isatty()
-        except AttributeError:
-            return False
-
-
-class AnonymizingXmlHandler(PrettyXmlHandler):
-    &#34;&#34;&#34;A steaming log handler that prettifies and anonymizes log statements containing XML when output is a terminal.&#34;&#34;&#34;
-
-    PRIVATE_TAGS = {&#34;RootItemId&#34;, &#34;ItemId&#34;, &#34;Id&#34;, &#34;RootItemChangeKey&#34;, &#34;ChangeKey&#34;}
-
-    def __init__(self, forbidden_strings, *args, **kwargs):
-        self.forbidden_strings = forbidden_strings
-        super().__init__(*args, **kwargs)
-
-    def parse_bytes(self, xml_bytes):
-        root = to_xml(xml_bytes)
-        for elem in root.iter():
-            # Anonymize element attribute values known to contain private data
-            for attr in set(elem.keys()) &amp; self.PRIVATE_TAGS:
-                elem.set(attr, &#34;DEADBEEF=&#34;)
-            # Anonymize anything requested by the caller
-            for s in self.forbidden_strings:
-                if elem.text is not None:
-                    elem.text = elem.text.replace(s, &#34;[REMOVED]&#34;)
-        return root
-
-
-class DummyRequest:
-    &#34;&#34;&#34;A class to fake a requests Request object for functions that expect this.&#34;&#34;&#34;
-
-    def __init__(self, headers=None):
-        self.headers = headers or {}
-
-
-class DummyResponse:
-    &#34;&#34;&#34;A class to fake a requests Response object for functions that expect this.&#34;&#34;&#34;
-
-    def __init__(
-        self, url=None, headers=None, request_headers=None, content=b&#34;&#34;, status_code=503, streaming=False, history=None
-    ):
-        self.status_code = status_code
-        self.url = url
-        self.headers = headers or {}
-        self.content = iter((bytes([b]) for b in content)) if streaming else content
-        self.text = content.decode(&#34;utf-8&#34;, errors=&#34;ignore&#34;)
-        self.request = DummyRequest(headers=request_headers)
-        self.reason = &#34;&#34;
-        self.history = history
-
-    def iter_content(self):
-        return self.content
-
-    def close(self):
-        &#34;&#34;&#34;We don&#39;t have an actual socket to close&#34;&#34;&#34;
-
-
-def get_domain(email):
-    try:
-        return email.split(&#34;@&#34;)[1].lower()
-    except (IndexError, AttributeError):
-        raise ValueError(f&#34;{email!r} is not a valid email&#34;)
-
-
-def split_url(url):
-    parsed_url = urlparse(url)
-    # Use netloc instead of hostname since hostname is None if URL is relative
-    return parsed_url.scheme == &#34;https&#34;, parsed_url.netloc.lower(), parsed_url.path
-
-
-def get_redirect_url(response, allow_relative=True, require_relative=False):
-    # allow_relative=False throws RelativeRedirect error if scheme and hostname are equal to the request
-    # require_relative=True throws RelativeRedirect error if scheme and hostname are not equal to the request
-    redirect_url = response.headers.get(&#34;location&#34;)
-    if not redirect_url:
-        raise TransportError(&#34;HTTP redirect but no location header&#34;)
-    # At least some servers are kind enough to supply a new location. It may be relative
-    redirect_has_ssl, redirect_server, redirect_path = split_url(redirect_url)
-    # The response may have been redirected already. Get the original URL
-    request_url = response.history[0] if response.history else response.url
-    request_has_ssl, request_server, _ = split_url(request_url)
-    response_has_ssl, response_server, response_path = split_url(response.url)
-
-    if not redirect_server:
-        # Redirect URL is relative. Inherit server and scheme from response URL
-        redirect_server = response_server
-        redirect_has_ssl = response_has_ssl
-    if not redirect_path.startswith(&#34;/&#34;):
-        # The path is not top-level. Add response path
-        redirect_path = (response_path or &#34;/&#34;) + redirect_path
-    redirect_url = f&#34;{&#39;https&#39; if redirect_has_ssl else &#39;http&#39;}://{redirect_server}{redirect_path}&#34;
-    if redirect_url == request_url:
-        # And some are mean enough to redirect to the same location
-        raise TransportError(f&#34;Redirect to same location: {redirect_url}&#34;)
-    if not allow_relative and (request_has_ssl == response_has_ssl and request_server == redirect_server):
-        raise RelativeRedirect(redirect_url)
-    if require_relative and (request_has_ssl != response_has_ssl or request_server != redirect_server):
-        raise RelativeRedirect(redirect_url)
-    return redirect_url
-
-
-# A collection of error classes we want to handle as general connection errors
-CONNECTION_ERRORS = (
-    requests.exceptions.ChunkedEncodingError,
-    requests.exceptions.ConnectionError,
-    requests.exceptions.Timeout,
-    socket.timeout,
-    ConnectionResetError,
-)
-
-# A collection of error classes we want to handle as TLS verification errors
-TLS_ERRORS = (requests.exceptions.SSLError,)
-with suppress(ImportError):
-    # If pyOpenSSL is installed, requests will use it and throw this class on TLS errors
-    import OpenSSL.SSL
-
-    TLS_ERRORS += (OpenSSL.SSL.Error,)
-
-
-def post_ratelimited(protocol, session, url, headers, data, stream=False, timeout=None):
-    &#34;&#34;&#34;There are two error-handling policies implemented here: a fail-fast policy intended for stand-alone scripts which
-    fails on all responses except HTTP 200. The other policy is intended for long-running tasks that need to respect
-    rate-limiting errors from the server and paper over outages of up to 1 hour.
-
-    Wrap POST requests in a try-catch loop with a lot of error handling logic and some basic rate-limiting. If a request
-    fails, and some conditions are met, the loop waits in increasing intervals, up to 1 hour, before trying again. The
-    reason for this is that servers often malfunction for short periods of time, either because of ongoing data
-    migrations or other maintenance tasks, misconfigurations or heavy load, or because the connecting user has hit a
-    throttling policy limit.
-
-    If the loop exited early, consumers of this package that don&#39;t implement their own rate-limiting code could quickly
-    swamp such a server with new requests. That would only make things worse. Instead, it&#39;s better if the request loop
-    waits patiently until the server is functioning again.
-
-    If the connecting user has hit a throttling policy, then the server will start to malfunction in many interesting
-    ways, but never actually tell the user what is happening. There is no way to distinguish this situation from other
-    malfunctions. The only cure is to stop making requests.
-
-    The contract on sessions here is to return the session that ends up being used, or retiring the session if we
-    intend to raise an exception. We give up on max_wait timeout, not number of retries.
-
-    An additional resource on handling throttling policies and client back off strategies:
-        https://docs.microsoft.com/en-us/exchange/client-developer/exchange-web-services/ews-throttling-in-exchange
-
-    :param protocol:
-    :param session:
-    :param url:
-    :param headers:
-    :param data:
-    :param stream:  (Default value = False)
-    :param timeout:
-
-    :return:
-    &#34;&#34;&#34;
-    if not timeout:
-        timeout = protocol.TIMEOUT
-    thread_id = get_ident()
-    log_msg = &#34;&#34;&#34;\
-Timeout: %(timeout)s
-Session: %(session_id)s
-Thread: %(thread_id)s
-Auth type: %(auth)s
-URL: %(url)s
-HTTP adapter: %(adapter)s
-Streaming: %(stream)s
-Response time: %(response_time)s
-Status code: %(status_code)s
-Request headers: %(request_headers)s
-Response headers: %(response_headers)s&#34;&#34;&#34;
-    xml_log_msg = &#34;&#34;&#34;\
-Request XML: %(xml_request)s
-Response XML: %(xml_response)s&#34;&#34;&#34;
-    log_vals = dict(
-        timeout=timeout,
-        session_id=session.session_id,
-        thread_id=thread_id,
-        auth=session.auth,
-        url=url,
-        adapter=session.get_adapter(url),
-        stream=stream,
-        response_time=None,
-        status_code=None,
-        request_headers=headers,
-        response_headers=None,
-    )
-    xml_log_vals = dict(
-        xml_request=data,
-        xml_response=None,
-    )
-    sleep_secs = _back_off_if_needed(protocol.retry_policy.back_off_until)
-    if sleep_secs:
-        # We may have slept for a long time. Renew the session.
-        session = protocol.renew_session(session)
-    log.debug(
-        &#34;Session %s thread %s timeout %s: POST&#39;ing to %s after %ss sleep&#34;,
-        session.session_id,
-        thread_id,
-        timeout,
-        url,
-        sleep_secs,
-    )
-    kwargs = dict(url=url, headers=headers, data=data, allow_redirects=False, timeout=timeout, stream=stream)
-    if isinstance(session, OAuth2Session):
-        # Fix token refreshing bug. Reported as https://github.com/requests/requests-oauthlib/issues/498
-        kwargs.update(session.auto_refresh_kwargs)
-    d_start = time.monotonic()
-    try:
-        r = session.post(**kwargs)
-    except TLS_ERRORS as e:
-        protocol.retire_session(session)
-        # Don&#39;t retry on TLS errors. They will most likely be persistent.
-        raise TransportError(str(e))
-    except CONNECTION_ERRORS as e:
-        protocol.retire_session(session)
-        log.debug(&#34;Session %s thread %s: connection error POST&#39;ing to %s&#34;, session.session_id, thread_id, url)
-        raise ErrorTimeoutExpired(f&#34;Reraised from {e.__class__.__name__}({e})&#34;)
-    except TokenExpiredError:
-        log.debug(&#34;Session %s thread %s: OAuth token expired; refreshing&#34;, session.session_id, thread_id)
-        protocol.release_session(protocol.refresh_credentials(session))
-        raise
-    except KeyError as e:
-        protocol.retire_session(session)
-        if e.args[0] != &#34;www-authenticate&#34;:
-            raise
-        # Server returned an HTTP error code during the NTLM handshake. Re-raise as internal server error
-        log.debug(&#34;Session %s thread %s: auth headers missing from %s&#34;, session.session_id, thread_id, url)
-        raise ErrorInternalServerTransientError(f&#34;Reraised from {e.__class__.__name__}({e})&#34;)
-    except Exception as e:
-        # Let higher layers handle this. Add full context for better debugging.
-        log.error(&#34;%s: %s\n%s\n%s&#34;, e.__class__.__name__, str(e), log_msg % log_vals, xml_log_msg % xml_log_vals)
-        protocol.retire_session(session)
-        raise
-    log_vals.update(
-        session_id=session.session_id,
-        url=r.url,
-        response_time=time.monotonic() - d_start,
-        status_code=r.status_code,
-        request_headers=r.request.headers,
-        response_headers=r.headers,
-    )
-    xml_log_vals.update(
-        xml_request=data,
-        xml_response=&#34;[STREAMING]&#34; if stream else r.content,
-    )
-    log.debug(log_msg, log_vals)
-    xml_log.debug(xml_log_msg, xml_log_vals)
-
-    try:
-        protocol.retry_policy.raise_response_errors(r)
-    except Exception:
-        r.close()  # Release memory
-        protocol.retire_session(session)
-        raise
-
-    log.debug(&#34;Session %s thread %s: Useful response from %s&#34;, session.session_id, thread_id, url)
-    return r, session
-
-
-def _back_off_if_needed(back_off_until):
-    # Returns the number of seconds we slept
-    if back_off_until:
-        sleep_secs = (back_off_until - datetime.datetime.now()).total_seconds()
-        # The back off value may have expired within the last few milliseconds
-        if sleep_secs &gt; 0:
-            log.warning(&#34;Server requested back off until %s. Sleeping %s seconds&#34;, back_off_until, sleep_secs)
-            time.sleep(sleep_secs)
-            return sleep_secs
-    return 0
-
-
-def _get_retry_after(r):
-    &#34;&#34;&#34;Get Retry-After header, if it exists. We interpret the value as seconds to wait before sending next request.&#34;&#34;&#34;
-    try:
-        val = int(r.headers.get(&#34;Retry-After&#34;, &#34;0&#34;))
-    except ValueError:
-        return None
-    return val if val &gt; 0 else None</code></pre>
-</details>
 </section>
 <section>
 </section>
@@ -933,7 +48,6 @@ def _get_retry_after(r):
 <span>def <span class="ident">add_xml_child</span></span>(<span>tree, name, value)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -943,15 +57,12 @@ def _get_retry_after(r):
     # EWSElement to this function!
     tree.append(set_xml_value(elem=create_element(name), value=value))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.util.chunkify"><code class="name flex">
 <span>def <span class="ident">chunkify</span></span>(<span>iterable, chunksize)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Split an iterable into chunks of size <code>chunksize</code>. The last chunk may be smaller than <code>chunksize</code>.</p>
-<p>:param iterable:
-:param chunksize:
-:return:</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -980,12 +91,15 @@ def _get_retry_after(r):
         if chunk:
             yield chunk</code></pre>
 </details>
+<div class="desc"><p>Split an iterable into chunks of size <code>chunksize</code>. The last chunk may be smaller than <code>chunksize</code>.</p>
+<p>:param iterable:
+:param chunksize:
+:return:</p></div>
 </dd>
 <dt id="exchangelib.util.create_element"><code class="name flex">
 <span>def <span class="ident">create_element</span></span>(<span>name, attrs=None, nsmap=None)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1006,12 +120,12 @@ def _get_retry_after(r):
             elem.set(k, v)
     return elem</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.util.get_domain"><code class="name flex">
 <span>def <span class="ident">get_domain</span></span>(<span>email)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1022,12 +136,12 @@ def _get_retry_after(r):
     except (IndexError, AttributeError):
         raise ValueError(f&#34;{email!r} is not a valid email&#34;)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.util.get_redirect_url"><code class="name flex">
 <span>def <span class="ident">get_redirect_url</span></span>(<span>response, allow_relative=True, require_relative=False)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1062,12 +176,12 @@ def _get_retry_after(r):
         raise RelativeRedirect(redirect_url)
     return redirect_url</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.util.get_xml_attr"><code class="name flex">
 <span>def <span class="ident">get_xml_attr</span></span>(<span>tree, name)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1078,12 +192,12 @@ def _get_retry_after(r):
         return None
     return elem.text or None</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.util.get_xml_attrs"><code class="name flex">
 <span>def <span class="ident">get_xml_attrs</span></span>(<span>tree, name)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1091,17 +205,12 @@ def _get_retry_after(r):
 <pre><code class="python">def get_xml_attrs(tree, name):
     return [elem.text for elem in tree.findall(name) if elem.text is not None]</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.util.is_iterable"><code class="name flex">
 <span>def <span class="ident">is_iterable</span></span>(<span>value, generators_allowed=False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Check if value is a list-like object. Don't match generators and generator-like objects here by default, because
-callers don't necessarily guarantee that they only iterate the value once. Take care to not match string types and
-bytes.</p>
-<p>:param value: any type of object
-:param generators_allowed: if True, generators will be treated as iterable (Default value = False)</p>
-<p>:return: True or False</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1124,14 +233,17 @@ bytes.</p>
             return True
     return False</code></pre>
 </details>
+<div class="desc"><p>Check if value is a list-like object. Don't match generators and generator-like objects here by default, because
+callers don't necessarily guarantee that they only iterate the value once. Take care to not match string types and
+bytes.</p>
+<p>:param value: any type of object
+:param generators_allowed: if True, generators will be treated as iterable (Default value = False)</p>
+<p>:return: True or False</p></div>
 </dd>
 <dt id="exchangelib.util.is_xml"><code class="name flex">
 <span>def <span class="ident">is_xml</span></span>(<span>text)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Lightweight test if response is an XML doc. It's better to be fast than correct here.</p>
-<p>:param text: The string to check
-:return:</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1155,14 +267,14 @@ bytes.</p>
             return True
     return False</code></pre>
 </details>
+<div class="desc"><p>Lightweight test if response is an XML doc. It's better to be fast than correct here.</p>
+<p>:param text: The string to check
+:return:</p></div>
 </dd>
 <dt id="exchangelib.util.peek"><code class="name flex">
 <span>def <span class="ident">peek</span></span>(<span>iterable)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Check if an iterable is empty and return status and the rewinded iterable.</p>
-<p>:param iterable:
-:return:</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1184,38 +296,14 @@ bytes.</p>
     # We can&#39;t rewind a generator. Instead, chain the first element and the rest of the generator
     return False, itertools.chain([first], iterable)</code></pre>
 </details>
+<div class="desc"><p>Check if an iterable is empty and return status and the rewinded iterable.</p>
+<p>:param iterable:
+:return:</p></div>
 </dd>
 <dt id="exchangelib.util.post_ratelimited"><code class="name flex">
 <span>def <span class="ident">post_ratelimited</span></span>(<span>protocol, session, url, headers, data, stream=False, timeout=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>There are two error-handling policies implemented here: a fail-fast policy intended for stand-alone scripts which
-fails on all responses except HTTP 200. The other policy is intended for long-running tasks that need to respect
-rate-limiting errors from the server and paper over outages of up to 1 hour.</p>
-<p>Wrap POST requests in a try-catch loop with a lot of error handling logic and some basic rate-limiting. If a request
-fails, and some conditions are met, the loop waits in increasing intervals, up to 1 hour, before trying again. The
-reason for this is that servers often malfunction for short periods of time, either because of ongoing data
-migrations or other maintenance tasks, misconfigurations or heavy load, or because the connecting user has hit a
-throttling policy limit.</p>
-<p>If the loop exited early, consumers of this package that don't implement their own rate-limiting code could quickly
-swamp such a server with new requests. That would only make things worse. Instead, it's better if the request loop
-waits patiently until the server is functioning again.</p>
-<p>If the connecting user has hit a throttling policy, then the server will start to malfunction in many interesting
-ways, but never actually tell the user what is happening. There is no way to distinguish this situation from other
-malfunctions. The only cure is to stop making requests.</p>
-<p>The contract on sessions here is to return the session that ends up being used, or retiring the session if we
-intend to raise an exception. We give up on max_wait timeout, not number of retries.</p>
-<p>An additional resource on handling throttling policies and client back off strategies:
-<a href="https://docs.microsoft.com/en-us/exchange/client-developer/exchange-web-services/ews-throttling-in-exchange">https://docs.microsoft.com/en-us/exchange/client-developer/exchange-web-services/ews-throttling-in-exchange</a></p>
-<p>:param protocol:
-:param session:
-:param url:
-:param headers:
-:param data:
-:param stream:
-(Default value = False)
-:param timeout:</p>
-<p>:return:</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1317,7 +405,7 @@ Response XML: %(xml_response)s&#34;&#34;&#34;
         protocol.retire_session(session)
         log.debug(&#34;Session %s thread %s: connection error POST&#39;ing to %s&#34;, session.session_id, thread_id, url)
         raise ErrorTimeoutExpired(f&#34;Reraised from {e.__class__.__name__}({e})&#34;)
-    except TokenExpiredError:
+    except (InvalidClientIdError, TokenExpiredError):
         log.debug(&#34;Session %s thread %s: OAuth token expired; refreshing&#34;, session.session_id, thread_id)
         protocol.release_session(protocol.refresh_credentials(session))
         raise
@@ -1358,12 +446,38 @@ Response XML: %(xml_response)s&#34;&#34;&#34;
     log.debug(&#34;Session %s thread %s: Useful response from %s&#34;, session.session_id, thread_id, url)
     return r, session</code></pre>
 </details>
+<div class="desc"><p>There are two error-handling policies implemented here: a fail-fast policy intended for stand-alone scripts which
+fails on all responses except HTTP 200. The other policy is intended for long-running tasks that need to respect
+rate-limiting errors from the server and paper over outages of up to 1 hour.</p>
+<p>Wrap POST requests in a try-catch loop with a lot of error handling logic and some basic rate-limiting. If a request
+fails, and some conditions are met, the loop waits in increasing intervals, up to 1 hour, before trying again. The
+reason for this is that servers often malfunction for short periods of time, either because of ongoing data
+migrations or other maintenance tasks, misconfigurations or heavy load, or because the connecting user has hit a
+throttling policy limit.</p>
+<p>If the loop exited early, consumers of this package that don't implement their own rate-limiting code could quickly
+swamp such a server with new requests. That would only make things worse. Instead, it's better if the request loop
+waits patiently until the server is functioning again.</p>
+<p>If the connecting user has hit a throttling policy, then the server will start to malfunction in many interesting
+ways, but never actually tell the user what is happening. There is no way to distinguish this situation from other
+malfunctions. The only cure is to stop making requests.</p>
+<p>The contract on sessions here is to return the session that ends up being used, or retiring the session if we
+intend to raise an exception. We give up on max_wait timeout, not number of retries.</p>
+<p>An additional resource on handling throttling policies and client back off strategies:
+<a href="https://docs.microsoft.com/en-us/exchange/client-developer/exchange-web-services/ews-throttling-in-exchange">https://docs.microsoft.com/en-us/exchange/client-developer/exchange-web-services/ews-throttling-in-exchange</a></p>
+<p>:param protocol:
+:param session:
+:param url:
+:param headers:
+:param data:
+:param stream:
+(Default value = False)
+:param timeout:</p>
+<p>:return:</p></div>
 </dd>
 <dt id="exchangelib.util.prepare_input_source"><code class="name flex">
 <span>def <span class="ident">prepare_input_source</span></span>(<span>source)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1375,12 +489,12 @@ Response XML: %(xml_response)s&#34;&#34;&#34;
     source.setByteStream(f)
     return source</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.util.require_account"><code class="name flex">
 <span>def <span class="ident">require_account</span></span>(<span>f)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1394,12 +508,12 @@ Response XML: %(xml_response)s&#34;&#34;&#34;
 
     return wrapper</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.util.require_id"><code class="name flex">
 <span>def <span class="ident">require_id</span></span>(<span>f)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1415,12 +529,12 @@ Response XML: %(xml_response)s&#34;&#34;&#34;
 
     return wrapper</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.util.safe_b64decode"><code class="name flex">
 <span>def <span class="ident">safe_b64decode</span></span>(<span>data)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1437,12 +551,12 @@ Response XML: %(xml_response)s&#34;&#34;&#34;
         data += padding
     return b64decode(data)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.util.safe_xml_value"><code class="name flex">
 <span>def <span class="ident">safe_xml_value</span></span>(<span>value, replacement='?')</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1450,12 +564,12 @@ Response XML: %(xml_response)s&#34;&#34;&#34;
 <pre><code class="python">def safe_xml_value(value, replacement=&#34;?&#34;):
     return _ILLEGAL_XML_CHARS_RE.sub(replacement, value)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.util.sanitize_xml"><code class="name flex">
 <span>def <span class="ident">sanitize_xml</span></span>(<span>data, replacement=b'?')</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1466,12 +580,12 @@ Response XML: %(xml_response)s&#34;&#34;&#34;
         return data
     return _ILLEGAL_XML_ESCAPE_CHARS_RE.sub(replacement, data)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.util.set_xml_value"><code class="name flex">
 <span>def <span class="ident">set_xml_value</span></span>(<span>elem, value, version=None)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1496,12 +610,12 @@ Response XML: %(xml_response)s&#34;&#34;&#34;
         raise ValueError(f&#34;Unsupported type {type(value)} for value {value} on elem {elem}&#34;)
     return elem</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.util.split_url"><code class="name flex">
 <span>def <span class="ident">split_url</span></span>(<span>url)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1511,12 +625,12 @@ Response XML: %(xml_response)s&#34;&#34;&#34;
     # Use netloc instead of hostname since hostname is None if URL is relative
     return parsed_url.scheme == &#34;https&#34;, parsed_url.netloc.lower(), parsed_url.path</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.util.to_xml"><code class="name flex">
 <span>def <span class="ident">to_xml</span></span>(<span>bytes_content)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Convert bytes or a generator of bytes to an XML tree.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1559,12 +673,12 @@ Response XML: %(xml_response)s&#34;&#34;&#34;
         raise ParseError(msg, &#34;&lt;not from file&gt;&#34;, -1, 0)
     return res</code></pre>
 </details>
+<div class="desc"><p>Convert bytes or a generator of bytes to an XML tree.</p></div>
 </dd>
 <dt id="exchangelib.util.value_to_xml_text"><code class="name flex">
 <span>def <span class="ident">value_to_xml_text</span></span>(<span>value)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1599,12 +713,12 @@ Response XML: %(xml_response)s&#34;&#34;&#34;
         return value.id
     raise TypeError(f&#34;Unsupported type: {type(value)} ({value})&#34;)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.util.xml_text_to_value"><code class="name flex">
 <span>def <span class="ident">xml_text_to_value</span></span>(<span>value, value_type)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1633,18 +747,12 @@ Response XML: %(xml_response)s&#34;&#34;&#34;
         EWSDateTime: EWSDateTime.from_string,
     }[value_type](value)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.util.xml_to_str"><code class="name flex">
 <span>def <span class="ident">xml_to_str</span></span>(<span>tree, encoding=None, xml_declaration=False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Serialize an XML tree. Returns unicode if 'encoding' is None. Otherwise, we return encoded 'bytes'.</p>
-<p>:param tree:
-:param encoding:
-(Default value = None)
-:param xml_declaration:
-(Default value = False)
-:return:</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1663,6 +771,13 @@ Response XML: %(xml_response)s&#34;&#34;&#34;
         return lxml.etree.tostring(tree, encoding=encoding, xml_declaration=True)
     return lxml.etree.tostring(tree, encoding=str, xml_declaration=False)</code></pre>
 </details>
+<div class="desc"><p>Serialize an XML tree. Returns unicode if 'encoding' is None. Otherwise, we return encoded 'bytes'.</p>
+<p>:param tree:
+:param encoding:
+(Default value = None)
+:param xml_declaration:
+(Default value = False)
+:return:</p></div>
 </dd>
 </dl>
 </section>
@@ -1674,9 +789,6 @@ Response XML: %(xml_response)s&#34;&#34;&#34;
 <span>(</span><span>forbidden_strings, *args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>A steaming log handler that prettifies and anonymizes log statements containing XML when output is a terminal.</p>
-<p>Initialize the handler.</p>
-<p>If stream is not specified, sys.stderr is used.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1702,6 +814,9 @@ Response XML: %(xml_response)s&#34;&#34;&#34;
                     elem.text = elem.text.replace(s, &#34;[REMOVED]&#34;)
         return root</code></pre>
 </details>
+<div class="desc"><p>A steaming log handler that prettifies and anonymizes log statements containing XML when output is a terminal.</p>
+<p>Initialize the handler.</p>
+<p>If stream is not specified, sys.stderr is used.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.util.PrettyXmlHandler" href="#exchangelib.util.PrettyXmlHandler">PrettyXmlHandler</a></li>
@@ -1722,7 +837,6 @@ Response XML: %(xml_response)s&#34;&#34;&#34;
 <span>def <span class="ident">parse_bytes</span></span>(<span>self, xml_bytes)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1739,6 +853,7 @@ Response XML: %(xml_response)s&#34;&#34;&#34;
                 elem.text = elem.text.replace(s, &#34;[REMOVED]&#34;)
     return root</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -1758,9 +873,6 @@ Response XML: %(xml_response)s&#34;&#34;&#34;
 <span>(</span><span>bytes_generator)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>A BytesIO that can produce bytes from a streaming HTTP request. Expects r.iter_content() as input
-lxml tries to be smart by calling <code>getvalue</code> when present, assuming that the entire string is in memory.
-Omitting <code>getvalue</code> forces lxml to stream the request through <code>read</code> avoiding the memory duplication.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1811,6 +923,9 @@ Omitting <code>getvalue</code> forces lxml to stream the request through <code>r
             self._bytes_generator.close()
         super().close()</code></pre>
 </details>
+<div class="desc"><p>A BytesIO that can produce bytes from a streaming HTTP request. Expects r.iter_content() as input
+lxml tries to be smart by calling <code>getvalue</code> when present, assuming that the entire string is in memory.
+Omitting <code>getvalue</code> forces lxml to stream the request through <code>read</code> avoiding the memory duplication.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>io.RawIOBase</li>
@@ -1824,8 +939,6 @@ Omitting <code>getvalue</code> forces lxml to stream the request through <code>r
 <span>def <span class="ident">close</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Flush and close the IO object.</p>
-<p>This method has no effect if the file is already closed.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1835,12 +948,13 @@ Omitting <code>getvalue</code> forces lxml to stream the request through <code>r
         self._bytes_generator.close()
     super().close()</code></pre>
 </details>
+<div class="desc"><p>Flush and close the IO object.</p>
+<p>This method has no effect if the file is already closed.</p></div>
 </dd>
 <dt id="exchangelib.util.BytesGeneratorIO.read"><code class="name flex">
 <span>def <span class="ident">read</span></span>(<span>self, size=-1)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1868,13 +982,12 @@ Omitting <code>getvalue</code> forces lxml to stream the request through <code>r
     self._tell += len(res)
     return bytes(res)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.util.BytesGeneratorIO.readable"><code class="name flex">
 <span>def <span class="ident">readable</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Return whether object was opened for reading.</p>
-<p>If False, read() will raise OSError.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1882,12 +995,13 @@ Omitting <code>getvalue</code> forces lxml to stream the request through <code>r
 <pre><code class="python">def readable(self):
     return not self.closed</code></pre>
 </details>
+<div class="desc"><p>Return whether object was opened for reading.</p>
+<p>If False, read() will raise OSError.</p></div>
 </dd>
 <dt id="exchangelib.util.BytesGeneratorIO.tell"><code class="name flex">
 <span>def <span class="ident">tell</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Return current stream position.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1895,6 +1009,7 @@ Omitting <code>getvalue</code> forces lxml to stream the request through <code>r
 <pre><code class="python">def tell(self):
     return self._tell</code></pre>
 </details>
+<div class="desc"><p>Return current stream position.</p></div>
 </dd>
 </dl>
 </dd>
@@ -1903,7 +1018,6 @@ Omitting <code>getvalue</code> forces lxml to stream the request through <code>r
 <span>(</span><span>content_iterator, document_tag='Envelope')</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Look for XML documents in a streaming HTTP response and yield them as they become available from the stream.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1968,13 +1082,13 @@ Omitting <code>getvalue</code> forces lxml to stream the request through <code>r
         except StopIteration:
             return</code></pre>
 </details>
+<div class="desc"><p>Look for XML documents in a streaming HTTP response and yield them as they become available from the stream.</p></div>
 </dd>
 <dt id="exchangelib.util.DummyRequest"><code class="flex name class">
 <span>class <span class="ident">DummyRequest</span></span>
 <span>(</span><span>headers=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>A class to fake a requests Request object for functions that expect this.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1985,13 +1099,13 @@ Omitting <code>getvalue</code> forces lxml to stream the request through <code>r
     def __init__(self, headers=None):
         self.headers = headers or {}</code></pre>
 </details>
+<div class="desc"><p>A class to fake a requests Request object for functions that expect this.</p></div>
 </dd>
 <dt id="exchangelib.util.DummyResponse"><code class="flex name class">
 <span>class <span class="ident">DummyResponse</span></span>
-<span>(</span><span>url=None, headers=None, request_headers=None, content=b'', status_code=503, streaming=False, history=None)</span>
+<span>(</span><span>url=None,<br>headers=None,<br>request_headers=None,<br>content=b'',<br>status_code=503,<br>streaming=False,<br>history=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>A class to fake a requests Response object for functions that expect this.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2017,13 +1131,13 @@ Omitting <code>getvalue</code> forces lxml to stream the request through <code>r
     def close(self):
         &#34;&#34;&#34;We don&#39;t have an actual socket to close&#34;&#34;&#34;</code></pre>
 </details>
+<div class="desc"><p>A class to fake a requests Response object for functions that expect this.</p></div>
 <h3>Methods</h3>
 <dl>
 <dt id="exchangelib.util.DummyResponse.close"><code class="name flex">
 <span>def <span class="ident">close</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>We don't have an actual socket to close</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2031,12 +1145,12 @@ Omitting <code>getvalue</code> forces lxml to stream the request through <code>r
 <pre><code class="python">def close(self):
     &#34;&#34;&#34;We don&#39;t have an actual socket to close&#34;&#34;&#34;</code></pre>
 </details>
+<div class="desc"><p>We don't have an actual socket to close</p></div>
 </dd>
 <dt id="exchangelib.util.DummyResponse.iter_content"><code class="name flex">
 <span>def <span class="ident">iter_content</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2044,6 +1158,7 @@ Omitting <code>getvalue</code> forces lxml to stream the request through <code>r
 <pre><code class="python">def iter_content(self):
     return self.content</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 </dd>
@@ -2052,7 +1167,6 @@ Omitting <code>getvalue</code> forces lxml to stream the request through <code>r
 <span>(</span><span>msg, data)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Raised when the expected element was not found in a response stream.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2064,6 +1178,7 @@ Omitting <code>getvalue</code> forces lxml to stream the request through <code>r
         super().__init__(msg)
         self.data = data</code></pre>
 </details>
+<div class="desc"><p>Raised when the expected element was not found in a response stream.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>builtins.Exception</li>
@@ -2075,7 +1190,6 @@ Omitting <code>getvalue</code> forces lxml to stream the request through <code>r
 <span>(</span><span>message, code, line, column, filename=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Used to wrap lxml ParseError in our own class.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2083,6 +1197,7 @@ Omitting <code>getvalue</code> forces lxml to stream the request through <code>r
 <pre><code class="python">class ParseError(lxml.etree.ParseError):
     &#34;&#34;&#34;Used to wrap lxml ParseError in our own class.&#34;&#34;&#34;</code></pre>
 </details>
+<div class="desc"><p>Used to wrap lxml ParseError in our own class.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>lxml.etree.ParseError</li>
@@ -2099,9 +1214,6 @@ Omitting <code>getvalue</code> forces lxml to stream the request through <code>r
 <span>(</span><span>stream=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>A steaming log handler that prettifies log statements containing XML when output is a terminal.</p>
-<p>Initialize the handler.</p>
-<p>If stream is not specified, sys.stderr is used.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2156,6 +1268,9 @@ Omitting <code>getvalue</code> forces lxml to stream the request through <code>r
         except AttributeError:
             return False</code></pre>
 </details>
+<div class="desc"><p>A steaming log handler that prettifies log statements containing XML when output is a terminal.</p>
+<p>Initialize the handler.</p>
+<p>If stream is not specified, sys.stderr is used.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>logging.StreamHandler</li>
@@ -2172,7 +1287,6 @@ Omitting <code>getvalue</code> forces lxml to stream the request through <code>r
 <span>def <span class="ident">highlight_xml</span></span>(<span>xml_str)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Highlight a string containing XML, using terminal color codes.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2182,12 +1296,12 @@ def highlight_xml(xml_str):
     &#34;&#34;&#34;Highlight a string containing XML, using terminal color codes.&#34;&#34;&#34;
     return highlight(xml_str, XmlLexer(), TerminalFormatter()).rstrip()</code></pre>
 </details>
+<div class="desc"><p>Highlight a string containing XML, using terminal color codes.</p></div>
 </dd>
 <dt id="exchangelib.util.PrettyXmlHandler.parse_bytes"><code class="name flex">
 <span>def <span class="ident">parse_bytes</span></span>(<span>xml_bytes)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2196,6 +1310,7 @@ def highlight_xml(xml_str):
 def parse_bytes(xml_bytes):
     return to_xml(xml_bytes)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -2204,11 +1319,6 @@ def parse_bytes(xml_bytes):
 <span>def <span class="ident">emit</span></span>(<span>self, record)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Pretty-print and syntax highlight a log statement if all these conditions are met:
-* This is a DEBUG message
-* We're outputting to a terminal
-* The log message args is a dict containing keys starting with 'xml_' and values as bytes</p>
-<p>:param record:</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2236,12 +1346,16 @@ def parse_bytes(xml_bytes):
                 print(f&#34;XML highlighting failed: {e}&#34;)
     return super().emit(record)</code></pre>
 </details>
+<div class="desc"><p>Pretty-print and syntax highlight a log statement if all these conditions are met:
+* This is a DEBUG message
+* We're outputting to a terminal
+* The log message args is a dict containing keys starting with 'xml_' and values as bytes</p>
+<p>:param record:</p></div>
 </dd>
 <dt id="exchangelib.util.PrettyXmlHandler.is_tty"><code class="name flex">
 <span>def <span class="ident">is_tty</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Check if we're outputting to a terminal.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2253,12 +1367,12 @@ def parse_bytes(xml_bytes):
     except AttributeError:
         return False</code></pre>
 </details>
+<div class="desc"><p>Check if we're outputting to a terminal.</p></div>
 </dd>
 <dt id="exchangelib.util.PrettyXmlHandler.prettify_xml"><code class="name flex">
 <span>def <span class="ident">prettify_xml</span></span>(<span>self, xml_bytes)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Re-format an XML document to a consistent style.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2271,6 +1385,7 @@ def parse_bytes(xml_bytes):
         .expandtabs()
     )</code></pre>
 </details>
+<div class="desc"><p>Re-format an XML document to a consistent style.</p></div>
 </dd>
 </dl>
 </dd>
@@ -2279,7 +1394,6 @@ def parse_bytes(xml_bytes):
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>A SAX parser that returns a generator of base64-decoded character content.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2335,6 +1449,7 @@ def parse_bytes(xml_bytes):
                 yield b64decode(data)
         self.buffer = [remainder] if remainder else []</code></pre>
 </details>
+<div class="desc"><p>A SAX parser that returns a generator of base64-decoded character content.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>defusedxml.expatreader.DefusedExpatParser</li>
@@ -2349,9 +1464,6 @@ def parse_bytes(xml_bytes):
 <span>def <span class="ident">feed</span></span>(<span>self, data, isFinal=0)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Yield the current content of the character buffer. The input XML may contain illegal characters. The lxml
-parser handles this gracefully with the 'recover' option, but ExpatParser doesn't have this option. Remove
-illegal characters before parsing.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2363,12 +1475,14 @@ illegal characters before parsing.</p></div>
     DefusedExpatParser.feed(self, data=sanitize_xml(data), isFinal=isFinal)
     return self._decode_buffer()</code></pre>
 </details>
+<div class="desc"><p>Yield the current content of the character buffer. The input XML may contain illegal characters. The lxml
+parser handles this gracefully with the 'recover' option, but ExpatParser doesn't have this option. Remove
+illegal characters before parsing.</p></div>
 </dd>
 <dt id="exchangelib.util.StreamingBase64Parser.parse"><code class="name flex">
 <span>def <span class="ident">parse</span></span>(<span>self, r)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Parse an XML document from a URL or an InputSource.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2394,6 +1508,7 @@ illegal characters before parsing.</p></div>
     if not self.element_found:
         raise ElementNotFound(&#34;The element to be streamed from was not found&#34;, data=bytes(collected_data))</code></pre>
 </details>
+<div class="desc"><p>Parse an XML document from a URL or an InputSource.</p></div>
 </dd>
 </dl>
 </dd>
@@ -2402,8 +1517,6 @@ illegal characters before parsing.</p></div>
 <span>(</span><span>parser, ns, element_name)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>A SAX content handler that returns a character data for a single element back to the parser. The parser must have
-a 'buffer' attribute we can append data to.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2436,6 +1549,8 @@ a 'buffer' attribute we can append data to.</p></div>
             return
         self._parser.buffer.append(content)</code></pre>
 </details>
+<div class="desc"><p>A SAX content handler that returns a character data for a single element back to the parser. The parser must have
+a 'buffer' attribute we can append data to.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>xml.sax.handler.ContentHandler</li>
@@ -2446,13 +1561,6 @@ a 'buffer' attribute we can append data to.</p></div>
 <span>def <span class="ident">characters</span></span>(<span>self, content)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Receive notification of character data.</p>
-<p>The Parser will call this method to report each chunk of
-character data. SAX parsers may return all contiguous
-character data in a single chunk, or they may split it into
-several chunks; however, all of the characters in any single
-event must come from the same external entity so that the
-Locator provides useful information.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2462,14 +1570,18 @@ Locator provides useful information.</p></div>
         return
     self._parser.buffer.append(content)</code></pre>
 </details>
+<div class="desc"><p>Receive notification of character data.</p>
+<p>The Parser will call this method to report each chunk of
+character data. SAX parsers may return all contiguous
+character data in a single chunk, or they may split it into
+several chunks; however, all of the characters in any single
+event must come from the same external entity so that the
+Locator provides useful information.</p></div>
 </dd>
 <dt id="exchangelib.util.StreamingContentHandler.endElementNS"><code class="name flex">
 <span>def <span class="ident">endElementNS</span></span>(<span>self, name, qname)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Signals the end of an element in namespace mode.</p>
-<p>The name parameter contains the name of the element type, just
-as with the startElementNS event.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2479,19 +1591,14 @@ as with the startElementNS event.</p></div>
         # all element data received
         self._parsing = False</code></pre>
 </details>
+<div class="desc"><p>Signals the end of an element in namespace mode.</p>
+<p>The name parameter contains the name of the element type, just
+as with the startElementNS event.</p></div>
 </dd>
 <dt id="exchangelib.util.StreamingContentHandler.startElementNS"><code class="name flex">
 <span>def <span class="ident">startElementNS</span></span>(<span>self, name, qname, attrs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Signals the start of an element in namespace mode.</p>
-<p>The name parameter contains the name of the element type as a
-(uri, localname) tuple, the qname parameter the raw XML 1.0
-name used in the source document, and the attrs parameter
-holds an instance of the Attributes class containing the
-attributes of the element.</p>
-<p>The uri part of the name tuple is None for elements which have
-no namespace.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2502,6 +1609,14 @@ no namespace.</p></div>
         self._parsing = True
         self._parser.element_found = True</code></pre>
 </details>
+<div class="desc"><p>Signals the start of an element in namespace mode.</p>
+<p>The name parameter contains the name of the element type as a
+(uri, localname) tuple, the qname parameter the raw XML 1.0
+name used in the source document, and the attrs parameter
+holds an instance of the Attributes class containing the
+attributes of the element.</p>
+<p>The uri part of the name tuple is None for elements which have
+no namespace.</p></div>
 </dd>
 </dl>
 </dd>
@@ -2509,7 +1624,6 @@ no namespace.</p></div>
 </section>
 </article>
 <nav id="sidebar">
-<h1>Index</h1>
 <div class="toc">
 <ul></ul>
 </div>
@@ -2614,7 +1728,7 @@ no namespace.</p></div>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
 </footer>
 </body>
 </html>

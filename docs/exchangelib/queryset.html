@@ -2,18 +2,32 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.10.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.5">
 <title>exchangelib.queryset API documentation</title>
-<meta name="description" content="" />
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
-<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
-<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
-<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
 </head>
 <body>
 <main>
@@ -22,702 +36,6 @@
 <h1 class="title">Module <code>exchangelib.queryset</code></h1>
 </header>
 <section id="section-intro">
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">import abc
-import logging
-from contextlib import suppress
-from copy import deepcopy
-from itertools import islice
-
-from .errors import DoesNotExist, ErrorItemNotFound, InvalidEnumValue, InvalidTypeError, MultipleObjectsReturned
-from .fields import FieldOrder, FieldPath
-from .items import ID_ONLY, CalendarItem
-from .properties import InvalidField
-from .restriction import Q
-from .version import EXCHANGE_2010
-
-log = logging.getLogger(__name__)
-
-MISSING_ITEM_ERRORS = (ErrorItemNotFound,)
-
-
-class SearchableMixIn:
-    &#34;&#34;&#34;Implement a search API for inheritance.&#34;&#34;&#34;
-
-    @abc.abstractmethod
-    def get(self, *args, **kwargs):
-        &#34;&#34;&#34;Return a single object&#34;&#34;&#34;
-
-    @abc.abstractmethod
-    def all(self):
-        &#34;&#34;&#34;Return all objects, unfiltered&#34;&#34;&#34;
-
-    @abc.abstractmethod
-    def none(self):
-        &#34;&#34;&#34;Return an empty result&#34;&#34;&#34;
-
-    @abc.abstractmethod
-    def filter(self, *args, **kwargs):
-        &#34;&#34;&#34;Apply filters to a query&#34;&#34;&#34;
-
-    @abc.abstractmethod
-    def exclude(self, *args, **kwargs):
-        &#34;&#34;&#34;Apply filters to a query&#34;&#34;&#34;
-
-    @abc.abstractmethod
-    def people(self):
-        &#34;&#34;&#34;Search for personas&#34;&#34;&#34;
-
-
-class QuerySet(SearchableMixIn):
-    &#34;&#34;&#34;A Django QuerySet-like class for querying items. Defers query until the QuerySet is consumed. Supports
-    chaining to build up complex queries.
-
-    Django QuerySet documentation: https://docs.djangoproject.com/en/dev/ref/models/querysets/
-    &#34;&#34;&#34;
-
-    VALUES = &#34;values&#34;
-    VALUES_LIST = &#34;values_list&#34;
-    FLAT = &#34;flat&#34;
-    NONE = &#34;none&#34;
-    RETURN_TYPES = (VALUES, VALUES_LIST, FLAT, NONE)
-
-    ITEM = &#34;item&#34;
-    PERSONA = &#34;persona&#34;
-    REQUEST_TYPES = (ITEM, PERSONA)
-
-    def __init__(self, folder_collection, request_type=ITEM):
-        from .folders import FolderCollection
-
-        if not isinstance(folder_collection, FolderCollection):
-            raise InvalidTypeError(&#34;folder_collection&#34;, folder_collection, FolderCollection)
-        self.folder_collection = folder_collection  # A FolderCollection instance
-        if request_type not in self.REQUEST_TYPES:
-            raise InvalidEnumValue(&#34;request_type&#34;, request_type, self.REQUEST_TYPES)
-        self.request_type = request_type
-        self.q = Q()  # Default to no restrictions
-        self.only_fields = None
-        self.order_fields = None
-        self.return_format = self.NONE
-        self.calendar_view = None
-        self.page_size = None
-        self.chunk_size = None
-        self.max_items = None
-        self.offset = 0
-        self._depth = None
-
-    def _copy_self(self):
-        # When we copy a queryset where the cache has already been filled, we don&#39;t copy the cache. Thus, a copied
-        # queryset will fetch results from the server again.
-        #
-        # All other behaviour would be awkward:
-        #
-        # qs = QuerySet(f).filter(foo=&#39;bar&#39;)
-        # items = list(qs)
-        # new_qs = qs.exclude(bar=&#39;baz&#39;)  # This should work, and should fetch from the server
-        #
-        # Only mutable objects need to be deepcopied. Folder should be the same object
-        new_qs = self.__class__(self.folder_collection, request_type=self.request_type)
-        new_qs.q = deepcopy(self.q)
-        new_qs.only_fields = self.only_fields
-        new_qs.order_fields = None if self.order_fields is None else deepcopy(self.order_fields)
-        new_qs.return_format = self.return_format
-        new_qs.calendar_view = self.calendar_view
-        new_qs.page_size = self.page_size
-        new_qs.chunk_size = self.chunk_size
-        new_qs.max_items = self.max_items
-        new_qs.offset = self.offset
-        new_qs._depth = self._depth
-        return new_qs
-
-    def _get_field_path(self, field_path):
-        from .items import Persona
-
-        if self.request_type == self.PERSONA:
-            return FieldPath(field=Persona.get_field_by_fieldname(field_path))
-        for folder in self.folder_collection:
-            with suppress(InvalidField):
-                return FieldPath.from_string(field_path=field_path, folder=folder)
-        raise InvalidField(f&#34;Unknown field path {field_path!r} on folders {self.folder_collection.folders}&#34;)
-
-    def _get_field_order(self, field_path):
-        from .items import Persona
-
-        if self.request_type == self.PERSONA:
-            return FieldOrder(
-                field_path=FieldPath(field=Persona.get_field_by_fieldname(field_path.lstrip(&#34;-&#34;))),
-                reverse=field_path.startswith(&#34;-&#34;),
-            )
-        for folder in self.folder_collection:
-            with suppress(InvalidField):
-                return FieldOrder.from_string(field_path=field_path, folder=folder)
-        raise InvalidField(f&#34;Unknown field path {field_path!r} on folders {self.folder_collection.folders}&#34;)
-
-    @property
-    def _id_field(self):
-        return self._get_field_path(&#34;id&#34;)
-
-    @property
-    def _changekey_field(self):
-        return self._get_field_path(&#34;changekey&#34;)
-
-    def _additional_fields(self):
-        if not isinstance(self.only_fields, tuple):
-            raise InvalidTypeError(&#34;only_fields&#34;, self.only_fields, tuple)
-        # Remove ItemId and ChangeKey. We get them unconditionally
-        additional_fields = {f for f in self.only_fields if not f.field.is_attribute}
-        if self.request_type != self.ITEM:
-            return additional_fields
-
-        # For CalendarItem items, we want to inject internal timezone fields into the requested fields.
-        has_start = &#34;start&#34; in {f.field.name for f in additional_fields}
-        has_end = &#34;end&#34; in {f.field.name for f in additional_fields}
-        meeting_tz_field, start_tz_field, end_tz_field = CalendarItem.timezone_fields()
-        if self.folder_collection.account.version.build &lt; EXCHANGE_2010:
-            if has_start or has_end:
-                additional_fields.add(FieldPath(field=meeting_tz_field))
-        else:
-            if has_start:
-                additional_fields.add(FieldPath(field=start_tz_field))
-            if has_end:
-                additional_fields.add(FieldPath(field=end_tz_field))
-        return additional_fields
-
-    def _format_items(self, items, return_format):
-        return {
-            self.VALUES: self._as_values,
-            self.VALUES_LIST: self._as_values_list,
-            self.FLAT: self._as_flat_values_list,
-            self.NONE: self._as_items,
-        }[return_format](items)
-
-    def _query(self):
-        if self.only_fields is None:
-            # We didn&#39;t restrict list of field paths. Get all fields from the server, including extended properties.
-            if self.request_type == self.PERSONA:
-                additional_fields = {}  # GetPersona doesn&#39;t take explicit fields. Don&#39;t bother calculating the list
-                complex_fields_requested = True
-            else:
-                additional_fields = {FieldPath(field=f) for f in self.folder_collection.allowed_item_fields()}
-                complex_fields_requested = True
-        else:
-            additional_fields = self._additional_fields()
-            complex_fields_requested = any(f.field.is_complex for f in additional_fields)
-
-        # EWS can do server-side sorting on multiple fields. A caveat is that server-side sorting is not supported
-        # for calendar views. In this case, we do all the sorting client-side.
-        if self.calendar_view:
-            must_sort_clientside = bool(self.order_fields)
-            order_fields = None
-        else:
-            must_sort_clientside = False
-            order_fields = self.order_fields
-
-        if must_sort_clientside:
-            # Also fetch order_by fields that we only need for client-side sorting.
-            extra_order_fields = {f.field_path for f in self.order_fields} - additional_fields
-            if extra_order_fields:
-                additional_fields.update(extra_order_fields)
-        else:
-            extra_order_fields = set()
-
-        find_kwargs = dict(
-            shape=ID_ONLY,  # Always use IdOnly here, because AllProperties doesn&#39;t actually get *all* properties
-            depth=self._depth,
-            additional_fields=additional_fields,
-            order_fields=order_fields,
-            page_size=self.page_size,
-            max_items=self.max_items,
-            offset=self.offset,
-        )
-        if self.request_type == self.PERSONA:
-            if complex_fields_requested:
-                find_kwargs[&#34;additional_fields&#34;] = None
-                items = self.folder_collection.account.fetch_personas(
-                    ids=self.folder_collection.find_people(self.q, **find_kwargs)
-                )
-            else:
-                if not additional_fields:
-                    find_kwargs[&#34;additional_fields&#34;] = None
-                items = self.folder_collection.find_people(self.q, **find_kwargs)
-        else:
-            find_kwargs[&#34;calendar_view&#34;] = self.calendar_view
-            if complex_fields_requested:
-                # The FindItem service does not support complex field types. Tell find_items() to return
-                # (id, changekey) tuples, and pass that to fetch().
-                find_kwargs[&#34;additional_fields&#34;] = None
-                unfiltered_items = self.folder_collection.account.fetch(
-                    ids=self.folder_collection.find_items(self.q, **find_kwargs),
-                    only_fields=additional_fields,
-                    chunk_size=self.chunk_size,
-                )
-                # We may be unlucky that the item disappeared between the FindItem and the GetItem calls
-                items = filter(lambda i: not isinstance(i, MISSING_ITEM_ERRORS), unfiltered_items)
-            else:
-                if not additional_fields:
-                    # If additional_fields is the empty set, we only requested ID and changekey fields. We can then
-                    # take a shortcut by using (shape=ID_ONLY, additional_fields=None) to tell find_items() to return
-                    # (id, changekey) tuples. We&#39;ll post-process those later.
-                    find_kwargs[&#34;additional_fields&#34;] = None
-                items = self.folder_collection.find_items(self.q, **find_kwargs)
-
-        if not must_sort_clientside:
-            return items
-
-        # Resort to client-side sorting of the order_by fields. This is greedy. Sorting in Python is stable, so when
-        # sorting on multiple fields, we can just do a sort on each of the requested fields in reverse order. Reverse
-        # each sort operation if the field was marked as such.
-        for f in reversed(self.order_fields):
-            try:
-                items = sorted(items, key=lambda i: _get_sort_value_or_default(i, f), reverse=f.reverse)
-            except TypeError as e:
-                if &#34;unorderable types&#34; not in e.args[0]:
-                    raise
-                raise ValueError(
-                    f&#34;Cannot sort on field {f.field_path!r}. The field has no default value defined, and there are &#34;
-                    f&#34;either items with None values for this field, or the query contains exception instances &#34;
-                    f&#34;(original error: {e}).&#34;
-                )
-        if not extra_order_fields:
-            return items
-
-        # Nullify the fields we only needed for sorting before returning
-        return (_rinse_item(i, extra_order_fields) for i in items)
-
-    def __iter__(self):
-        # Fill cache if this is the first iteration. Return an iterator over the results. Make this non-greedy by
-        # filling the cache while we are iterating.
-        #
-        if self.q.is_never():
-            return
-
-        log.debug(&#34;Initializing cache&#34;)
-        yield from self._format_items(items=self._query(), return_format=self.return_format)
-
-    # Do not implement __len__. The implementation of list() tries to preallocate memory by calling __len__ on the
-    # given sequence, before calling __iter__. If we implemented __len__, we would end up calling FindItems twice, once
-    # to get the result of self.count(), and once to return the actual result.
-    #
-    # Also, according to https://stackoverflow.com/questions/37189968/how-to-have-list-consume-iter-without-calling-len,
-    # a __len__ implementation should be cheap. That does not hold for self.count().
-    #
-    # def __len__(self):
-    #     return self.count()
-
-    def __getitem__(self, idx_or_slice):
-        # Support indexing and slicing. This is non-greedy when possible (slicing start, stop and step are not negative,
-        # and we&#39;re ordering on at most one field), and will only fill the cache if the entire query is iterated.
-        if isinstance(idx_or_slice, int):
-            return self._getitem_idx(idx_or_slice)
-        return self._getitem_slice(idx_or_slice)
-
-    def _getitem_idx(self, idx):
-        if idx &lt; 0:
-            # Support negative indexes by reversing the queryset and negating the index value
-            reverse_idx = -(idx + 1)
-            return self.reverse()[reverse_idx]
-        # Optimize by setting an exact offset and fetching only 1 item
-        new_qs = self._copy_self()
-        new_qs.max_items = 1
-        new_qs.page_size = 1
-        new_qs.offset = idx
-        # The iterator will return at most 1 item
-        for item in new_qs.__iter__():
-            return item
-        raise IndexError()
-
-    def _getitem_slice(self, s):
-        from .services import FindItem
-
-        if ((s.start or 0) &lt; 0) or ((s.stop or 0) &lt; 0) or ((s.step or 0) &lt; 0):
-            # islice() does not support negative start, stop and step. Make sure cache is full by iterating the full
-            # query result, and then slice on the cache.
-            return list(self.__iter__())[s]
-        # Optimize by setting an exact offset and max_items value
-        new_qs = self._copy_self()
-        if s.start is not None and s.stop is not None:
-            new_qs.offset = s.start
-            new_qs.max_items = s.stop - s.start
-        elif s.start is not None:
-            new_qs.offset = s.start
-        elif s.stop is not None:
-            new_qs.max_items = s.stop
-        if new_qs.page_size is None and new_qs.max_items is not None and new_qs.max_items &lt; FindItem.PAGE_SIZE:
-            new_qs.page_size = new_qs.max_items
-        return islice(new_qs.__iter__(), None, None, s.step)
-
-    def _item_yielder(self, iterable, item_func, id_only_func, changekey_only_func, id_and_changekey_func):
-        # Transforms results from the server according to the given transform functions. Makes sure to pass on
-        # Exception instances unaltered.
-        if self.only_fields:
-            has_non_attribute_fields = bool({f for f in self.only_fields if not f.field.is_attribute})
-        else:
-            has_non_attribute_fields = True
-        if not has_non_attribute_fields:
-            # _query() will return an iterator of (id, changekey) tuples
-            if self._changekey_field not in self.only_fields:
-                transform_func = id_only_func
-            elif self._id_field not in self.only_fields:
-                transform_func = changekey_only_func
-            else:
-                transform_func = id_and_changekey_func
-            for i in iterable:
-                if isinstance(i, Exception):
-                    yield i
-                    continue
-                yield transform_func(*i)
-            return
-        for i in iterable:
-            if isinstance(i, Exception):
-                yield i
-                continue
-            yield item_func(i)
-
-    def _as_items(self, iterable):
-        from .items import Item
-
-        return self._item_yielder(
-            iterable=iterable,
-            item_func=lambda i: i,
-            id_only_func=lambda item_id, changekey: Item(id=item_id),
-            changekey_only_func=lambda item_id, changekey: Item(changekey=changekey),
-            id_and_changekey_func=lambda item_id, changekey: Item(id=item_id, changekey=changekey),
-        )
-
-    def _as_values(self, iterable):
-        if not self.only_fields:
-            raise ValueError(&#34;values() requires at least one field name&#34;)
-        return self._item_yielder(
-            iterable=iterable,
-            item_func=lambda i: {f.path: _get_value_or_default(f, i) for f in self.only_fields},
-            id_only_func=lambda item_id, changekey: {&#34;id&#34;: item_id},
-            changekey_only_func=lambda item_id, changekey: {&#34;changekey&#34;: changekey},
-            id_and_changekey_func=lambda item_id, changekey: {&#34;id&#34;: item_id, &#34;changekey&#34;: changekey},
-        )
-
-    def _as_values_list(self, iterable):
-        if not self.only_fields:
-            raise ValueError(&#34;values_list() requires at least one field name&#34;)
-        return self._item_yielder(
-            iterable=iterable,
-            item_func=lambda i: tuple(_get_value_or_default(f, i) for f in self.only_fields),
-            id_only_func=lambda item_id, changekey: (item_id,),
-            changekey_only_func=lambda item_id, changekey: (changekey,),
-            id_and_changekey_func=lambda item_id, changekey: (item_id, changekey),
-        )
-
-    def _as_flat_values_list(self, iterable):
-        if not self.only_fields or len(self.only_fields) != 1:
-            raise ValueError(&#34;flat=True requires exactly one field name&#34;)
-        return self._item_yielder(
-            iterable=iterable,
-            item_func=lambda i: _get_value_or_default(self.only_fields[0], i),
-            id_only_func=lambda item_id, changekey: item_id,
-            changekey_only_func=lambda item_id, changekey: changekey,
-            id_and_changekey_func=None,  # Can never be called
-        )
-
-    ###############################
-    #
-    # Methods that support chaining
-    #
-    ###############################
-    # Return copies of self, so this works as expected:
-    #
-    # foo_qs = my_folder.filter(...)
-    # foo_qs.filter(foo=&#39;bar&#39;)
-    # foo_qs.filter(foo=&#39;baz&#39;)  # Should not be affected by the previous statement
-    #
-    def all(self):
-        &#34;&#34;&#34; &#34;&#34;&#34;
-        new_qs = self._copy_self()
-        return new_qs
-
-    def none(self):
-        &#34;&#34;&#34; &#34;&#34;&#34;
-        new_qs = self._copy_self()
-        new_qs.q = Q(conn_type=Q.NEVER)
-        return new_qs
-
-    def filter(self, *args, **kwargs):
-        new_qs = self._copy_self()
-        q = Q(*args, **kwargs)
-        new_qs.q = new_qs.q &amp; q
-        return new_qs
-
-    def exclude(self, *args, **kwargs):
-        new_qs = self._copy_self()
-        q = ~Q(*args, **kwargs)
-        new_qs.q = new_qs.q &amp; q
-        return new_qs
-
-    def people(self):
-        &#34;&#34;&#34;Change the queryset to search the folder for Personas instead of Items.&#34;&#34;&#34;
-        new_qs = self._copy_self()
-        new_qs.request_type = self.PERSONA
-        return new_qs
-
-    def only(self, *args):
-        &#34;&#34;&#34;Fetch only the specified field names. All other item fields will be &#39;None&#39;.&#34;&#34;&#34;
-        try:
-            only_fields = tuple(self._get_field_path(arg) for arg in args)
-        except ValueError as e:
-            raise ValueError(f&#34;{e.args[0]} in only()&#34;)
-        new_qs = self._copy_self()
-        new_qs.only_fields = only_fields
-        return new_qs
-
-    def order_by(self, *args):
-        &#34;&#34;&#34;
-
-        :return: The QuerySet in reverse order. EWS only supports server-side sorting on a single field. Sorting on
-          multiple fields is implemented client-side and will therefore make the query greedy.
-        &#34;&#34;&#34;
-        try:
-            order_fields = tuple(self._get_field_order(arg) for arg in args)
-        except ValueError as e:
-            raise ValueError(f&#34;{e.args[0]} in order_by()&#34;)
-        new_qs = self._copy_self()
-        new_qs.order_fields = order_fields
-        return new_qs
-
-    def reverse(self):
-        &#34;&#34;&#34;Reverses the ordering of the queryset.&#34;&#34;&#34;
-        if not self.order_fields:
-            raise ValueError(&#34;Reversing only makes sense if there are order_by fields&#34;)
-        new_qs = self._copy_self()
-        for f in new_qs.order_fields:
-            f.reverse = not f.reverse
-        return new_qs
-
-    def values(self, *args):
-        try:
-            only_fields = tuple(self._get_field_path(arg) for arg in args)
-        except ValueError as e:
-            raise ValueError(f&#34;{e.args[0]} in values()&#34;)
-        new_qs = self._copy_self()
-        new_qs.only_fields = only_fields
-        new_qs.return_format = self.VALUES
-        return new_qs
-
-    def values_list(self, *args, **kwargs):
-        &#34;&#34;&#34;Return the values of the specified field names as a list of lists. If called with flat=True and only one
-        field name, returns a list of values.
-        &#34;&#34;&#34;
-        flat = kwargs.pop(&#34;flat&#34;, False)
-        if kwargs:
-            raise AttributeError(f&#34;Unknown kwargs: {kwargs}&#34;)
-        if flat and len(args) != 1:
-            raise ValueError(&#34;flat=True requires exactly one field name&#34;)
-        try:
-            only_fields = tuple(self._get_field_path(arg) for arg in args)
-        except ValueError as e:
-            raise ValueError(f&#34;{e.args[0]} in values_list()&#34;)
-        new_qs = self._copy_self()
-        new_qs.only_fields = only_fields
-        new_qs.return_format = self.FLAT if flat else self.VALUES_LIST
-        return new_qs
-
-    def depth(self, depth):
-        &#34;&#34;&#34;Specify the search depth. Possible values are: SHALLOW, ASSOCIATED or DEEP.
-
-        :param depth:
-        &#34;&#34;&#34;
-        new_qs = self._copy_self()
-        new_qs._depth = depth
-        return new_qs
-
-    ###########################
-    #
-    # Methods that end chaining
-    #
-    ###########################
-
-    def get(self, *args, **kwargs):
-        &#34;&#34;&#34;Assume the query will return exactly one item. Return that item.&#34;&#34;&#34;
-        if not args and set(kwargs) in ({&#34;id&#34;}, {&#34;id&#34;, &#34;changekey&#34;}):
-            # We allow calling get(id=..., changekey=...) to get a single item, but only if exactly these two
-            # kwargs are present.
-            account = self.folder_collection.account
-            item_id = self._id_field.field.clean(kwargs[&#34;id&#34;], version=account.version)
-            changekey = self._changekey_field.field.clean(kwargs.get(&#34;changekey&#34;), version=account.version)
-            # The folders we&#39;re querying may not support all fields
-            if self.only_fields is None:
-                only_fields = {FieldPath(field=f) for f in self.folder_collection.allowed_item_fields()}
-            else:
-                only_fields = self.only_fields
-            items = list(account.fetch(ids=[(item_id, changekey)], only_fields=only_fields))
-        else:
-            new_qs = self.filter(*args, **kwargs)
-            items = list(new_qs.__iter__())
-        if not items:
-            raise DoesNotExist()
-        if len(items) != 1:
-            raise MultipleObjectsReturned()
-        item = items[0]
-        if isinstance(item, Exception):
-            raise item
-        return item
-
-    def count(self, page_size=1000):
-        &#34;&#34;&#34;Get the query count, with as little effort as possible
-
-        :param page_size: The number of items to fetch per request. We&#39;re only fetching the IDs, so keep it high.
-        (Default value = 1000)
-        &#34;&#34;&#34;
-        new_qs = self._copy_self()
-        new_qs.only_fields = ()
-        new_qs.order_fields = None
-        new_qs.return_format = self.NONE
-        new_qs.page_size = page_size
-        # &#39;chunk_size&#39; not needed since we never need to call GetItem
-        return len(list(new_qs.__iter__()))
-
-    def exists(self):
-        &#34;&#34;&#34;Find out if the query contains any hits, with as little effort as possible.&#34;&#34;&#34;
-        new_qs = self._copy_self()
-        new_qs.max_items = 1
-        return new_qs.count(page_size=1) &gt; 0
-
-    def _id_only_copy_self(self):
-        new_qs = self._copy_self()
-        new_qs.only_fields = ()
-        new_qs.order_fields = None
-        new_qs.return_format = self.NONE
-        return new_qs
-
-    def delete(self, page_size=1000, chunk_size=100, **delete_kwargs):
-        &#34;&#34;&#34;Delete the items matching the query, with as little effort as possible
-
-        :param page_size: The number of items to fetch per request. We&#39;re only fetching the IDs, so keep it high.
-        (Default value = 1000)
-        :param chunk_size: The number of items to delete per request. (Default value = 100)
-        :param delete_kwargs:
-        &#34;&#34;&#34;
-        ids = self._id_only_copy_self()
-        ids.page_size = page_size
-        return self.folder_collection.account.bulk_delete(ids=ids, chunk_size=chunk_size, **delete_kwargs)
-
-    def send(self, page_size=1000, chunk_size=100, **send_kwargs):
-        &#34;&#34;&#34;Send the items matching the query, with as little effort as possible
-
-        :param page_size: The number of items to fetch per request. We&#39;re only fetching the IDs, so keep it high.
-        (Default value = 1000)
-        :param chunk_size: The number of items to send per request. (Default value = 100)
-        :param send_kwargs:
-        &#34;&#34;&#34;
-        ids = self._id_only_copy_self()
-        ids.page_size = page_size
-        return self.folder_collection.account.bulk_send(ids=ids, chunk_size=chunk_size, **send_kwargs)
-
-    def copy(self, to_folder, page_size=1000, chunk_size=100, **copy_kwargs):
-        &#34;&#34;&#34;Copy the items matching the query, with as little effort as possible
-
-        :param to_folder:
-        :param page_size: The number of items to fetch per request. We&#39;re only fetching the IDs, so keep it high.
-        (Default value = 1000)
-        :param chunk_size: The number of items to copy per request. (Default value = 100)
-        :param copy_kwargs:
-        &#34;&#34;&#34;
-        ids = self._id_only_copy_self()
-        ids.page_size = page_size
-        return self.folder_collection.account.bulk_copy(
-            ids=ids, to_folder=to_folder, chunk_size=chunk_size, **copy_kwargs
-        )
-
-    def move(self, to_folder, page_size=1000, chunk_size=100):
-        &#34;&#34;&#34;Move the items matching the query, with as little effort as possible. &#39;page_size&#39; is the number of items
-        to fetch and move per request. We&#39;re only fetching the IDs, so keep it high.
-
-        :param to_folder:
-        :param page_size: The number of items to fetch per request. We&#39;re only fetching the IDs, so keep it high.
-        (Default value = 1000)
-        :param chunk_size: The number of items to move per request. (Default value = 100)
-        &#34;&#34;&#34;
-        ids = self._id_only_copy_self()
-        ids.page_size = page_size
-        return self.folder_collection.account.bulk_move(
-            ids=ids,
-            to_folder=to_folder,
-            chunk_size=chunk_size,
-        )
-
-    def archive(self, to_folder, page_size=1000, chunk_size=100):
-        &#34;&#34;&#34;Archive the items matching the query, with as little effort as possible. &#39;page_size&#39; is the number of items
-        to fetch and move per request. We&#39;re only fetching the IDs, so keep it high.
-
-        :param to_folder:
-        :param page_size: The number of items to fetch per request. We&#39;re only fetching the IDs, so keep it high.
-        (Default value = 1000)
-        :param chunk_size: The number of items to archive per request. (Default value = 100)
-        &#34;&#34;&#34;
-        ids = self._id_only_copy_self()
-        ids.page_size = page_size
-        return self.folder_collection.account.bulk_archive(
-            ids=ids,
-            to_folder=to_folder,
-            chunk_size=chunk_size,
-        )
-
-    def mark_as_junk(self, page_size=1000, chunk_size=1000, **mark_as_junk_kwargs):
-        &#34;&#34;&#34;Mark the items matching the query as junk, with as little effort as possible. &#39;page_size&#39; is the number of
-        items to fetch and mark per request. We&#39;re only fetching the IDs, so keep it high.
-
-        :param page_size: The number of items to fetch per request. We&#39;re only fetching the IDs, so keep it high.
-        (Default value = 1000)
-        :param chunk_size: The number of items to mark as junk per request. (Default value = 100)
-        :param mark_as_junk_kwargs:
-        &#34;&#34;&#34;
-        ids = self._id_only_copy_self()
-        ids.page_size = page_size
-        return self.folder_collection.account.bulk_mark_as_junk(ids=ids, chunk_size=chunk_size, **mark_as_junk_kwargs)
-
-    def __str__(self):
-        fmt_args = [(&#34;q&#34;, str(self.q)), (&#34;folders&#34;, f&#34;[{&#39;, &#39;.join(str(f) for f in self.folder_collection.folders)}]&#34;)]
-        args_str = &#34;, &#34;.join(f&#34;{k}={v}&#34; for k, v in fmt_args)
-        return f&#34;{self.__class__.__name__}({args_str})&#34;
-
-
-def _get_value_or_default(field, item):
-    # When we request specific fields using .values() or .values_list(), the incoming item type may not have the field
-    # we are requesting. Return None when this happens instead of raising an AttributeError.
-    try:
-        return field.get_value(item)
-    except AttributeError:
-        return None
-
-
-def _get_sort_value_or_default(item, field_order):
-    # Python can only sort values when &lt;, &gt; and = are implemented for the two types. Try as best we can to sort
-    # items, even when the item may have a None value for the field in question, or when the item is an
-    # Exception. In that case, we calculate a default value and sort all None values and exceptions as the default
-    # value.
-    if isinstance(item, Exception):
-        return _default_field_value(field_order.field_path.field)
-    val = field_order.field_path.get_sort_value(item)
-    if val is None:
-        return _default_field_value(field_order.field_path.field)
-    return val
-
-
-def _default_field_value(field):
-    &#34;&#34;&#34;Return the default value of a field. If the field does not have a default value, try creating an empty instance
-    of the field value class. If that doesn&#39;t work, there&#39;s really nothing we can do about it; we&#39;ll raise an error.
-    &#34;&#34;&#34;
-    return field.default or ([field.value_cls()] if field.is_list else field.value_cls())
-
-
-def _rinse_item(i, fields_to_nullify):
-    &#34;&#34;&#34;Set fields in fields_to_nullify to None. Make sure to accept exceptions.&#34;&#34;&#34;
-    if isinstance(i, Exception):
-        return i
-    for f in fields_to_nullify:
-        setattr(i, f.field.name, None)
-    return i</code></pre>
-</details>
 </section>
 <section>
 </section>
@@ -733,9 +51,6 @@ def _rinse_item(i, fields_to_nullify):
 <span>(</span><span>folder_collection, request_type='item')</span>
 </code></dt>
 <dd>
-<div class="desc"><p>A Django QuerySet-like class for querying items. Defers query until the QuerySet is consumed. Supports
-chaining to build up complex queries.</p>
-<p>Django QuerySet documentation: <a href="https://docs.djangoproject.com/en/dev/ref/models/querysets/">https://docs.djangoproject.com/en/dev/ref/models/querysets/</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1348,6 +663,9 @@ chaining to build up complex queries.</p>
         args_str = &#34;, &#34;.join(f&#34;{k}={v}&#34; for k, v in fmt_args)
         return f&#34;{self.__class__.__name__}({args_str})&#34;</code></pre>
 </details>
+<div class="desc"><p>A Django QuerySet-like class for querying items. Defers query until the QuerySet is consumed. Supports
+chaining to build up complex queries.</p>
+<p>Django QuerySet documentation: <a href="https://docs.djangoproject.com/en/dev/ref/models/querysets/">https://docs.djangoproject.com/en/dev/ref/models/querysets/</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.queryset.SearchableMixIn" href="#exchangelib.queryset.SearchableMixIn">SearchableMixIn</a></li>
@@ -1393,12 +711,6 @@ chaining to build up complex queries.</p>
 <span>def <span class="ident">archive</span></span>(<span>self, to_folder, page_size=1000, chunk_size=100)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Archive the items matching the query, with as little effort as possible. 'page_size' is the number of items
-to fetch and move per request. We're only fetching the IDs, so keep it high.</p>
-<p>:param to_folder:
-:param page_size: The number of items to fetch per request. We're only fetching the IDs, so keep it high.
-(Default value = 1000)
-:param chunk_size: The number of items to archive per request. (Default value = 100)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1420,17 +732,17 @@ to fetch and move per request. We're only fetching the IDs, so keep it high.</p>
         chunk_size=chunk_size,
     )</code></pre>
 </details>
+<div class="desc"><p>Archive the items matching the query, with as little effort as possible. 'page_size' is the number of items
+to fetch and move per request. We're only fetching the IDs, so keep it high.</p>
+<p>:param to_folder:
+:param page_size: The number of items to fetch per request. We're only fetching the IDs, so keep it high.
+(Default value = 1000)
+:param chunk_size: The number of items to archive per request. (Default value = 100)</p></div>
 </dd>
 <dt id="exchangelib.queryset.QuerySet.copy"><code class="name flex">
 <span>def <span class="ident">copy</span></span>(<span>self, to_folder, page_size=1000, chunk_size=100, **copy_kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Copy the items matching the query, with as little effort as possible</p>
-<p>:param to_folder:
-:param page_size: The number of items to fetch per request. We're only fetching the IDs, so keep it high.
-(Default value = 1000)
-:param chunk_size: The number of items to copy per request. (Default value = 100)
-:param copy_kwargs:</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1450,14 +762,17 @@ to fetch and move per request. We're only fetching the IDs, so keep it high.</p>
         ids=ids, to_folder=to_folder, chunk_size=chunk_size, **copy_kwargs
     )</code></pre>
 </details>
+<div class="desc"><p>Copy the items matching the query, with as little effort as possible</p>
+<p>:param to_folder:
+:param page_size: The number of items to fetch per request. We're only fetching the IDs, so keep it high.
+(Default value = 1000)
+:param chunk_size: The number of items to copy per request. (Default value = 100)
+:param copy_kwargs:</p></div>
 </dd>
 <dt id="exchangelib.queryset.QuerySet.count"><code class="name flex">
 <span>def <span class="ident">count</span></span>(<span>self, page_size=1000)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Get the query count, with as little effort as possible</p>
-<p>:param page_size: The number of items to fetch per request. We're only fetching the IDs, so keep it high.
-(Default value = 1000)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1476,16 +791,14 @@ to fetch and move per request. We're only fetching the IDs, so keep it high.</p>
     # &#39;chunk_size&#39; not needed since we never need to call GetItem
     return len(list(new_qs.__iter__()))</code></pre>
 </details>
+<div class="desc"><p>Get the query count, with as little effort as possible</p>
+<p>:param page_size: The number of items to fetch per request. We're only fetching the IDs, so keep it high.
+(Default value = 1000)</p></div>
 </dd>
 <dt id="exchangelib.queryset.QuerySet.delete"><code class="name flex">
 <span>def <span class="ident">delete</span></span>(<span>self, page_size=1000, chunk_size=100, **delete_kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Delete the items matching the query, with as little effort as possible</p>
-<p>:param page_size: The number of items to fetch per request. We're only fetching the IDs, so keep it high.
-(Default value = 1000)
-:param chunk_size: The number of items to delete per request. (Default value = 100)
-:param delete_kwargs:</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1502,13 +815,16 @@ to fetch and move per request. We're only fetching the IDs, so keep it high.</p>
     ids.page_size = page_size
     return self.folder_collection.account.bulk_delete(ids=ids, chunk_size=chunk_size, **delete_kwargs)</code></pre>
 </details>
+<div class="desc"><p>Delete the items matching the query, with as little effort as possible</p>
+<p>:param page_size: The number of items to fetch per request. We're only fetching the IDs, so keep it high.
+(Default value = 1000)
+:param chunk_size: The number of items to delete per request. (Default value = 100)
+:param delete_kwargs:</p></div>
 </dd>
 <dt id="exchangelib.queryset.QuerySet.depth"><code class="name flex">
 <span>def <span class="ident">depth</span></span>(<span>self, depth)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Specify the search depth. Possible values are: SHALLOW, ASSOCIATED or DEEP.</p>
-<p>:param depth:</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1522,12 +838,13 @@ to fetch and move per request. We're only fetching the IDs, so keep it high.</p>
     new_qs._depth = depth
     return new_qs</code></pre>
 </details>
+<div class="desc"><p>Specify the search depth. Possible values are: SHALLOW, ASSOCIATED or DEEP.</p>
+<p>:param depth:</p></div>
 </dd>
 <dt id="exchangelib.queryset.QuerySet.exists"><code class="name flex">
 <span>def <span class="ident">exists</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Find out if the query contains any hits, with as little effort as possible.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1538,12 +855,12 @@ to fetch and move per request. We're only fetching the IDs, so keep it high.</p>
     new_qs.max_items = 1
     return new_qs.count(page_size=1) &gt; 0</code></pre>
 </details>
+<div class="desc"><p>Find out if the query contains any hits, with as little effort as possible.</p></div>
 </dd>
 <dt id="exchangelib.queryset.QuerySet.get"><code class="name flex">
 <span>def <span class="ident">get</span></span>(<span>self, *args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Assume the query will return exactly one item. Return that item.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1574,17 +891,12 @@ to fetch and move per request. We're only fetching the IDs, so keep it high.</p>
         raise item
     return item</code></pre>
 </details>
+<div class="desc"><p>Assume the query will return exactly one item. Return that item.</p></div>
 </dd>
 <dt id="exchangelib.queryset.QuerySet.mark_as_junk"><code class="name flex">
 <span>def <span class="ident">mark_as_junk</span></span>(<span>self, page_size=1000, chunk_size=1000, **mark_as_junk_kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Mark the items matching the query as junk, with as little effort as possible. 'page_size' is the number of
-items to fetch and mark per request. We're only fetching the IDs, so keep it high.</p>
-<p>:param page_size: The number of items to fetch per request. We're only fetching the IDs, so keep it high.
-(Default value = 1000)
-:param chunk_size: The number of items to mark as junk per request. (Default value = 100)
-:param mark_as_junk_kwargs:</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1602,17 +914,17 @@ items to fetch and mark per request. We're only fetching the IDs, so keep it hig
     ids.page_size = page_size
     return self.folder_collection.account.bulk_mark_as_junk(ids=ids, chunk_size=chunk_size, **mark_as_junk_kwargs)</code></pre>
 </details>
+<div class="desc"><p>Mark the items matching the query as junk, with as little effort as possible. 'page_size' is the number of
+items to fetch and mark per request. We're only fetching the IDs, so keep it high.</p>
+<p>:param page_size: The number of items to fetch per request. We're only fetching the IDs, so keep it high.
+(Default value = 1000)
+:param chunk_size: The number of items to mark as junk per request. (Default value = 100)
+:param mark_as_junk_kwargs:</p></div>
 </dd>
 <dt id="exchangelib.queryset.QuerySet.move"><code class="name flex">
 <span>def <span class="ident">move</span></span>(<span>self, to_folder, page_size=1000, chunk_size=100)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Move the items matching the query, with as little effort as possible. 'page_size' is the number of items
-to fetch and move per request. We're only fetching the IDs, so keep it high.</p>
-<p>:param to_folder:
-:param page_size: The number of items to fetch per request. We're only fetching the IDs, so keep it high.
-(Default value = 1000)
-:param chunk_size: The number of items to move per request. (Default value = 100)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1634,12 +946,17 @@ to fetch and move per request. We're only fetching the IDs, so keep it high.</p>
         chunk_size=chunk_size,
     )</code></pre>
 </details>
+<div class="desc"><p>Move the items matching the query, with as little effort as possible. 'page_size' is the number of items
+to fetch and move per request. We're only fetching the IDs, so keep it high.</p>
+<p>:param to_folder:
+:param page_size: The number of items to fetch per request. We're only fetching the IDs, so keep it high.
+(Default value = 1000)
+:param chunk_size: The number of items to move per request. (Default value = 100)</p></div>
 </dd>
 <dt id="exchangelib.queryset.QuerySet.only"><code class="name flex">
 <span>def <span class="ident">only</span></span>(<span>self, *args)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Fetch only the specified field names. All other item fields will be 'None'.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1654,13 +971,12 @@ to fetch and move per request. We're only fetching the IDs, so keep it high.</p>
     new_qs.only_fields = only_fields
     return new_qs</code></pre>
 </details>
+<div class="desc"><p>Fetch only the specified field names. All other item fields will be 'None'.</p></div>
 </dd>
 <dt id="exchangelib.queryset.QuerySet.order_by"><code class="name flex">
 <span>def <span class="ident">order_by</span></span>(<span>self, *args)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>:return: The QuerySet in reverse order. EWS only supports server-side sorting on a single field. Sorting on
-multiple fields is implemented client-side and will therefore make the query greedy.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1679,12 +995,13 @@ multiple fields is implemented client-side and will therefore make the query gre
     new_qs.order_fields = order_fields
     return new_qs</code></pre>
 </details>
+<div class="desc"><p>:return: The QuerySet in reverse order. EWS only supports server-side sorting on a single field. Sorting on
+multiple fields is implemented client-side and will therefore make the query greedy.</p></div>
 </dd>
 <dt id="exchangelib.queryset.QuerySet.people"><code class="name flex">
 <span>def <span class="ident">people</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Change the queryset to search the folder for Personas instead of Items.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1695,12 +1012,12 @@ multiple fields is implemented client-side and will therefore make the query gre
     new_qs.request_type = self.PERSONA
     return new_qs</code></pre>
 </details>
+<div class="desc"><p>Change the queryset to search the folder for Personas instead of Items.</p></div>
 </dd>
 <dt id="exchangelib.queryset.QuerySet.reverse"><code class="name flex">
 <span>def <span class="ident">reverse</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Reverses the ordering of the queryset.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1714,16 +1031,12 @@ multiple fields is implemented client-side and will therefore make the query gre
         f.reverse = not f.reverse
     return new_qs</code></pre>
 </details>
+<div class="desc"><p>Reverses the ordering of the queryset.</p></div>
 </dd>
 <dt id="exchangelib.queryset.QuerySet.send"><code class="name flex">
 <span>def <span class="ident">send</span></span>(<span>self, page_size=1000, chunk_size=100, **send_kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Send the items matching the query, with as little effort as possible</p>
-<p>:param page_size: The number of items to fetch per request. We're only fetching the IDs, so keep it high.
-(Default value = 1000)
-:param chunk_size: The number of items to send per request. (Default value = 100)
-:param send_kwargs:</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1740,12 +1053,16 @@ multiple fields is implemented client-side and will therefore make the query gre
     ids.page_size = page_size
     return self.folder_collection.account.bulk_send(ids=ids, chunk_size=chunk_size, **send_kwargs)</code></pre>
 </details>
+<div class="desc"><p>Send the items matching the query, with as little effort as possible</p>
+<p>:param page_size: The number of items to fetch per request. We're only fetching the IDs, so keep it high.
+(Default value = 1000)
+:param chunk_size: The number of items to send per request. (Default value = 100)
+:param send_kwargs:</p></div>
 </dd>
 <dt id="exchangelib.queryset.QuerySet.values"><code class="name flex">
 <span>def <span class="ident">values</span></span>(<span>self, *args)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1760,13 +1077,12 @@ multiple fields is implemented client-side and will therefore make the query gre
     new_qs.return_format = self.VALUES
     return new_qs</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.queryset.QuerySet.values_list"><code class="name flex">
 <span>def <span class="ident">values_list</span></span>(<span>self, *args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Return the values of the specified field names as a list of lists. If called with flat=True and only one
-field name, returns a list of values.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1789,6 +1105,8 @@ field name, returns a list of values.</p></div>
     new_qs.return_format = self.FLAT if flat else self.VALUES_LIST
     return new_qs</code></pre>
 </details>
+<div class="desc"><p>Return the values of the specified field names as a list of lists. If called with flat=True and only one
+field name, returns a list of values.</p></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -1807,7 +1125,6 @@ field name, returns a list of values.</p></div>
 <span>class <span class="ident">SearchableMixIn</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Implement a search API for inheritance.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1839,6 +1156,7 @@ field name, returns a list of values.</p></div>
     def people(self):
         &#34;&#34;&#34;Search for personas&#34;&#34;&#34;</code></pre>
 </details>
+<div class="desc"><p>Implement a search API for inheritance.</p></div>
 <h3>Subclasses</h3>
 <ul class="hlist">
 <li><a title="exchangelib.folders.base.BaseFolder" href="folders/base.html#exchangelib.folders.base.BaseFolder">BaseFolder</a></li>
@@ -1851,7 +1169,6 @@ field name, returns a list of values.</p></div>
 <span>def <span class="ident">all</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Return all objects, unfiltered</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1860,12 +1177,12 @@ field name, returns a list of values.</p></div>
 def all(self):
     &#34;&#34;&#34;Return all objects, unfiltered&#34;&#34;&#34;</code></pre>
 </details>
+<div class="desc"><p>Return all objects, unfiltered</p></div>
 </dd>
 <dt id="exchangelib.queryset.SearchableMixIn.exclude"><code class="name flex">
 <span>def <span class="ident">exclude</span></span>(<span>self, *args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Apply filters to a query</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1874,12 +1191,12 @@ def all(self):
 def exclude(self, *args, **kwargs):
     &#34;&#34;&#34;Apply filters to a query&#34;&#34;&#34;</code></pre>
 </details>
+<div class="desc"><p>Apply filters to a query</p></div>
 </dd>
 <dt id="exchangelib.queryset.SearchableMixIn.filter"><code class="name flex">
 <span>def <span class="ident">filter</span></span>(<span>self, *args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Apply filters to a query</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1888,12 +1205,12 @@ def exclude(self, *args, **kwargs):
 def filter(self, *args, **kwargs):
     &#34;&#34;&#34;Apply filters to a query&#34;&#34;&#34;</code></pre>
 </details>
+<div class="desc"><p>Apply filters to a query</p></div>
 </dd>
 <dt id="exchangelib.queryset.SearchableMixIn.get"><code class="name flex">
 <span>def <span class="ident">get</span></span>(<span>self, *args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Return a single object</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1902,12 +1219,12 @@ def filter(self, *args, **kwargs):
 def get(self, *args, **kwargs):
     &#34;&#34;&#34;Return a single object&#34;&#34;&#34;</code></pre>
 </details>
+<div class="desc"><p>Return a single object</p></div>
 </dd>
 <dt id="exchangelib.queryset.SearchableMixIn.none"><code class="name flex">
 <span>def <span class="ident">none</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Return an empty result</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1916,12 +1233,12 @@ def get(self, *args, **kwargs):
 def none(self):
     &#34;&#34;&#34;Return an empty result&#34;&#34;&#34;</code></pre>
 </details>
+<div class="desc"><p>Return an empty result</p></div>
 </dd>
 <dt id="exchangelib.queryset.SearchableMixIn.people"><code class="name flex">
 <span>def <span class="ident">people</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Search for personas</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1930,6 +1247,7 @@ def none(self):
 def people(self):
     &#34;&#34;&#34;Search for personas&#34;&#34;&#34;</code></pre>
 </details>
+<div class="desc"><p>Search for personas</p></div>
 </dd>
 </dl>
 </dd>
@@ -1937,7 +1255,6 @@ def people(self):
 </section>
 </article>
 <nav id="sidebar">
-<h1>Index</h1>
 <div class="toc">
 <ul></ul>
 </div>
@@ -1995,7 +1312,7 @@ def people(self):
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
 </footer>
 </body>
 </html>

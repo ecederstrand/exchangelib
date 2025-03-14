@@ -2,18 +2,32 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.10.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.5">
 <title>exchangelib.folders.roots API documentation</title>
-<meta name="description" content="" />
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
-<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
-<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
-<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
 </head>
 <body>
 <main>
@@ -22,401 +36,6 @@
 <h1 class="title">Module <code>exchangelib.folders.roots</code></h1>
 </header>
 <section id="section-intro">
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">import logging
-from contextlib import suppress
-from threading import Lock
-
-from ..errors import ErrorAccessDenied, ErrorFolderNotFound, ErrorInvalidOperation
-from ..fields import EffectiveRightsField
-from ..properties import DistinguishedFolderId, EWSMeta, Mailbox
-from ..version import EXCHANGE_2007_SP1, EXCHANGE_2010_SP1
-from .base import BaseFolder
-from .collections import FolderCollection
-from .known_folders import (
-    MISC_FOLDERS,
-    NON_DELETABLE_FOLDERS,
-    WELLKNOWN_FOLDERS_IN_ARCHIVE_ROOT,
-    WELLKNOWN_FOLDERS_IN_ROOT,
-    MsgFolderRoot,
-)
-from .queryset import MISSING_FOLDER_ERRORS, SHALLOW, SingleFolderQuerySet
-
-log = logging.getLogger(__name__)
-
-
-class RootOfHierarchy(BaseFolder, metaclass=EWSMeta):
-    &#34;&#34;&#34;Base class for folders that implement the root of a folder hierarchy.&#34;&#34;&#34;
-
-    # A list of wellknown, or &#34;distinguished&#34;, folders that are belong in this folder hierarchy. See
-    # https://docs.microsoft.com/en-us/dotnet/api/microsoft.exchange.webservices.data.wellknownfoldername
-    # and https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/distinguishedfolderid
-    # &#39;RootOfHierarchy&#39; subclasses must not be in this list.
-    WELLKNOWN_FOLDERS = []
-
-    # This folder type also has &#39;folder:PermissionSet&#39; on some server versions, but requesting it sometimes causes
-    # &#39;ErrorAccessDenied&#39;, as reported by some users. Ignore it entirely for root folders - it&#39;s usefulness is
-    # deemed minimal at best.
-    effective_rights = EffectiveRightsField(
-        field_uri=&#34;folder:EffectiveRights&#34;, is_read_only=True, supported_from=EXCHANGE_2007_SP1
-    )
-
-    __slots__ = &#34;_account&#34;, &#34;_subfolders&#34;, &#34;_subfolders_lock&#34;
-
-    # A special folder that acts as the top of a folder hierarchy. Finds and caches sub-folders at arbitrary depth.
-    def __init__(self, **kwargs):
-        self._account = kwargs.pop(&#34;account&#34;, None)  # A pointer back to the account holding the folder hierarchy
-        super().__init__(**kwargs)
-        self._subfolders = None  # See self._folders_map()
-        self._subfolders_lock = Lock()
-
-    @property
-    def account(self):
-        return self._account
-
-    @property
-    def root(self):
-        return self
-
-    @property
-    def parent(self):
-        return None
-
-    @classmethod
-    def register(cls, *args, **kwargs):
-        if cls is not RootOfHierarchy:
-            raise TypeError(&#34;For folder roots, custom fields must be registered on the RootOfHierarchy class&#34;)
-        return super().register(*args, **kwargs)
-
-    @classmethod
-    def deregister(cls, *args, **kwargs):
-        if cls is not RootOfHierarchy:
-            raise TypeError(&#34;For folder roots, custom fields must be registered on the RootOfHierarchy class&#34;)
-        return super().deregister(*args, **kwargs)
-
-    def get_folder(self, folder):
-        if not folder.id:
-            raise ValueError(&#34;&#39;folder&#39; must have an ID&#34;)
-        return self._folders_map.get(folder.id)
-
-    def add_folder(self, folder):
-        if not folder.id:
-            raise ValueError(&#34;&#39;folder&#39; must have an ID&#34;)
-        self._folders_map[folder.id] = folder
-
-    def update_folder(self, folder):
-        if not folder.id:
-            raise ValueError(&#34;&#39;folder&#39; must have an ID&#34;)
-        self._folders_map[folder.id] = folder
-
-    def remove_folder(self, folder):
-        if not folder.id:
-            raise ValueError(&#34;&#39;folder&#39; must have an ID&#34;)
-        with suppress(KeyError):
-            del self._folders_map[folder.id]
-
-    def clear_cache(self):
-        with self._subfolders_lock:
-            self._subfolders = None
-
-    def get_children(self, folder):
-        for f in self._folders_map.values():
-            if not f.parent:
-                continue
-            if f.parent.id == folder.id:
-                yield f
-
-    def get_default_folder(self, folder_cls):
-        &#34;&#34;&#34;Return the distinguished folder instance of type folder_cls belonging to this account. If no distinguished
-        folder was found, try as best we can to return the default folder of type &#39;folder_cls&#39;
-        &#34;&#34;&#34;
-        if not folder_cls.DISTINGUISHED_FOLDER_ID:
-            raise ValueError(f&#34;&#39;folder_cls&#39; {folder_cls} must have a DISTINGUISHED_FOLDER_ID value&#34;)
-        # Use cached distinguished folder instance, but only if cache has already been prepped. This is an optimization
-        # for accessing e.g. &#39;account.contacts&#39; without fetching all folders of the account.
-        if self._subfolders is not None:
-            for f in self._folders_map.values():
-                # Require exact class, to not match subclasses, e.g. RecipientCache instead of Contacts
-                if f.__class__ == folder_cls and f.is_distinguished:
-                    log.debug(&#34;Found cached distinguished %s folder&#34;, folder_cls)
-                    return f
-        try:
-            log.debug(&#34;Requesting distinguished %s folder explicitly&#34;, folder_cls)
-            return folder_cls.get_distinguished(root=self)
-        except ErrorAccessDenied:
-            # Maybe we just don&#39;t have GetFolder access? Try FindItem instead
-            log.debug(&#34;Testing default %s folder with FindItem&#34;, folder_cls)
-            fld = folder_cls(
-                _distinguished_id=DistinguishedFolderId(
-                    id=folder_cls.DISTINGUISHED_FOLDER_ID,
-                    mailbox=Mailbox(email_address=self.account.primary_smtp_address),
-                ),
-                root=self,
-            )
-            fld.test_access()
-            return self._folders_map.get(fld.id, fld)  # Use cached instance if available
-        except MISSING_FOLDER_ERRORS:
-            # The Exchange server does not return a distinguished folder of this type
-            pass
-        raise ErrorFolderNotFound(f&#34;No usable default {folder_cls} folders&#34;)
-
-    @classmethod
-    def get_distinguished(cls, account):
-        &#34;&#34;&#34;Get the distinguished folder for this folder class.
-
-        :param account:
-        :return:
-        &#34;&#34;&#34;
-        return cls._get_distinguished(
-            folder=cls(
-                _distinguished_id=DistinguishedFolderId(
-                    id=cls.DISTINGUISHED_FOLDER_ID,
-                    mailbox=Mailbox(email_address=account.primary_smtp_address),
-                ),
-                account=account,
-            )
-        )
-
-    @property
-    def _folders_map(self):
-        if self._subfolders is not None:
-            return self._subfolders
-
-        with self._subfolders_lock:
-            # Map root, and all sub-folders of root, at arbitrary depth by folder ID. First get distinguished folders,
-            # so we are sure to apply the correct Folder class, then fetch all sub-folders of this root.
-            folders_map = {self.id: self}
-            distinguished_folders = [
-                cls(
-                    _distinguished_id=DistinguishedFolderId(
-                        id=cls.DISTINGUISHED_FOLDER_ID,
-                        mailbox=Mailbox(email_address=self.account.primary_smtp_address),
-                    ),
-                    root=self,
-                )
-                for cls in self.WELLKNOWN_FOLDERS
-                if cls.get_folder_allowed and cls.supports_version(self.account.version)
-            ]
-            for f in FolderCollection(account=self.account, folders=distinguished_folders).resolve():
-                if isinstance(f, MISSING_FOLDER_ERRORS):
-                    # This is just a distinguished folder the server does not have
-                    continue
-                if isinstance(f, ErrorInvalidOperation):
-                    # This is probably a distinguished folder the server does not have. We previously tested the exact
-                    # error message (f.value), but some Exchange servers return localized error messages, so that&#39;s not
-                    # possible to do reliably.
-                    continue
-                if isinstance(f, ErrorAccessDenied):
-                    # We may not have GetFolder access, either to this folder or at all
-                    continue
-                if isinstance(f, Exception):
-                    raise f
-                folders_map[f.id] = f
-            for f in (
-                SingleFolderQuerySet(account=self.account, folder=self).depth(self.DEFAULT_FOLDER_TRAVERSAL_DEPTH).all()
-            ):
-                if isinstance(f, ErrorAccessDenied):
-                    # We may not have FindFolder access, or GetFolder access, either to this folder or at all
-                    continue
-                if isinstance(f, MISSING_FOLDER_ERRORS):
-                    # We were unlucky. The folder disappeared between the FindFolder and the GetFolder calls
-                    continue
-                if isinstance(f, Exception):
-                    raise f
-                if f.id in folders_map:
-                    # Already exists. Probably a distinguished folder
-                    continue
-                folders_map[f.id] = f
-            self._subfolders = folders_map
-            return folders_map
-
-    @classmethod
-    def from_xml(cls, elem, account):
-        kwargs = cls._kwargs_from_elem(elem=elem, account=account)
-        cls._clear(elem)
-        return cls(account=account, **kwargs)
-
-    @classmethod
-    def folder_cls_from_folder_name(cls, folder_name, folder_class, locale):
-        &#34;&#34;&#34;Return the folder class that matches a localized folder name. Take into account the &#39;folder_class&#39; of the
-        folder, to not identify an &#39;IPF.Note&#39; folder as a &#39;Calendar&#39; class just because it&#39;s called e.g. &#39;Kalender&#39; and
-        the locale is &#39;da_DK&#39;.
-
-        Some folders, e.g. `System`, don&#39;t define a `folder_class`. For these folders, we match on localized folder name
-        if the folder class does not have its &#39;CONTAINER_CLASS&#39; set.
-
-        :param folder_name:
-        :param folder_class:
-        :param locale: a string, e.g. &#39;da_DK&#39;
-        &#34;&#34;&#34;
-        for folder_cls in cls.WELLKNOWN_FOLDERS + NON_DELETABLE_FOLDERS + MISC_FOLDERS:
-            if folder_cls.CONTAINER_CLASS != folder_class:
-                continue
-            if folder_name.lower() not in folder_cls.localized_names(locale):
-                continue
-            return folder_cls
-        raise KeyError()
-
-    def __getstate__(self):
-        # The lock cannot be pickled
-        state = {k: getattr(self, k) for k in self._slots_keys}
-        del state[&#34;_subfolders_lock&#34;]
-        return state
-
-    def __setstate__(self, state):
-        # Restore the lock
-        for k in self._slots_keys:
-            setattr(self, k, state.get(k))
-        self._subfolders_lock = Lock()
-
-    def __repr__(self):
-        # Let&#39;s not create an infinite loop when printing self.root
-        return self.__class__.__name__ + repr(
-            (
-                self.account,
-                &#34;[self]&#34;,
-                self.name,
-                self.total_count,
-                self.unread_count,
-                self.child_folder_count,
-                self.folder_class,
-                self.id,
-                self.changekey,
-            )
-        )
-
-
-class Root(RootOfHierarchy):
-    &#34;&#34;&#34;The root of the standard folder hierarchy.&#34;&#34;&#34;
-
-    DISTINGUISHED_FOLDER_ID = &#34;root&#34;
-    WELLKNOWN_FOLDERS = WELLKNOWN_FOLDERS_IN_ROOT
-
-    @property
-    def tois(self):
-        # &#39;Top of Information Store&#39; is a folder available in some Exchange accounts. It usually contains the
-        # distinguished folders belonging to the account (inbox, calendar, trash etc.).
-        return self.get_default_folder(MsgFolderRoot)
-
-    def get_default_folder(self, folder_cls):
-        with suppress(MISSING_FOLDER_ERRORS):
-            return super().get_default_folder(folder_cls)
-
-        # Try to pick a suitable default folder. we do this by:
-        #  1. Searching the full folder list for a folder with the distinguished folder name
-        #  2. Searching TOIS for a direct child folder of the same type that is marked as distinguished
-        #  3. Searching TOIS for a direct child folder of the same type that has a localized name
-        #  4. Searching root for a direct child folder of the same type that is marked as distinguished
-        #  5. Searching root for a direct child folder of the same type that has a localized name
-        log.debug(&#34;Searching default %s folder in full folder list&#34;, folder_cls)
-
-        for f in self._folders_map.values():
-            # Require exact type, to avoid matching with subclasses (e.g. RecipientCache and Contacts)
-            if f.__class__ == folder_cls and f.has_distinguished_name:
-                log.debug(&#34;Found cached %s folder with default distinguished name&#34;, folder_cls)
-                return f
-
-        # Try direct children of TOIS first, unless we&#39;re trying to get the TOIS folder
-        if folder_cls != MsgFolderRoot:
-            with suppress(MISSING_FOLDER_ERRORS):
-                return self._get_candidate(folder_cls=folder_cls, folder_coll=self.tois.children)
-            # No candidates, or TOIS does not exist, or we don&#39;t have access to TOIS
-
-        # Finally, try direct children of root
-        return self._get_candidate(folder_cls=folder_cls, folder_coll=self.children)
-
-    def _get_candidate(self, folder_cls, folder_coll):
-        # Look for a single useful folder of type folder_cls in folder_coll
-        same_type = [f for f in folder_coll if f.__class__ == folder_cls]
-        are_distinguished = [f for f in same_type if f.is_distinguished]
-        if are_distinguished:
-            candidates = are_distinguished
-        else:
-            candidates = [f for f in same_type if f.name.lower() in folder_cls.localized_names(self.account.locale)]
-        if not candidates:
-            raise ErrorFolderNotFound(f&#34;No usable default {folder_cls} folders&#34;)
-        if len(candidates) &gt; 1:
-            raise ValueError(f&#34;Multiple possible default {folder_cls} folders: {[f.name for f in candidates]}&#34;)
-        candidate = candidates[0]
-        if candidate.is_distinguished:
-            log.debug(&#34;Found distinguished %s folder&#34;, folder_cls)
-        else:
-            log.debug(&#34;Found %s folder with localized name %s&#34;, folder_cls, candidate.name)
-        return candidate
-
-
-class PublicFoldersRoot(RootOfHierarchy):
-    &#34;&#34;&#34;The root of the public folder hierarchy. Not available on all mailboxes.&#34;&#34;&#34;
-
-    DISTINGUISHED_FOLDER_ID = &#34;publicfoldersroot&#34;
-    DEFAULT_FOLDER_TRAVERSAL_DEPTH = SHALLOW
-    supported_from = EXCHANGE_2007_SP1
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        if self._distinguished_id:
-            self._distinguished_id.mailbox = None  # See DistinguishedFolderId.clean()
-
-    @property
-    def _folders_map(self):
-        # Top-level public folders may point to the root folder of the owning account and not the public folders root
-        # of this account. This breaks the assumption of get_children(). Fix it by overwriting the parent folder.
-        fix_parents = self._subfolders is None
-        res = super()._folders_map
-        if fix_parents:
-            with self._subfolders_lock:
-                for f in res.values():
-                    if f.id != self.id:
-                        f.parent = self
-        return res
-
-    def get_children(self, folder):
-        # EWS does not allow deep traversal of public folders, so self._folders_map will only populate the top-level
-        # subfolders. To traverse public folders at arbitrary depth, we need to get child folders on demand.
-
-        # Let&#39;s check if this folder already has any cached children. If so, assume we can just return those.
-        children = list(super().get_children(folder=folder))
-        if children:
-            # Return a generator like our parent does
-            yield from children
-            return
-
-        # Also return early if the server told us that there are no child folders.
-        if folder.child_folder_count == 0:
-            return
-
-        children_map = {}
-        with suppress(ErrorAccessDenied):
-            for f in (
-                SingleFolderQuerySet(account=self.account, folder=folder)
-                .depth(self.DEFAULT_FOLDER_TRAVERSAL_DEPTH)
-                .all()
-            ):
-                if isinstance(f, MISSING_FOLDER_ERRORS):
-                    # We were unlucky. The folder disappeared between the FindFolder and the GetFolder calls
-                    continue
-                if isinstance(f, Exception):
-                    raise f
-                children_map[f.id] = f
-
-        # Let&#39;s update the cache atomically, to avoid partial reads of the cache.
-        with self._subfolders_lock:
-            self._subfolders.update(children_map)
-
-        # Child folders have been cached now. Try super().get_children() again.
-        yield from super().get_children(folder=folder)
-
-
-class ArchiveRoot(RootOfHierarchy):
-    &#34;&#34;&#34;The root of the archive folders hierarchy. Not available on all mailboxes.&#34;&#34;&#34;
-
-    DISTINGUISHED_FOLDER_ID = &#34;archiveroot&#34;
-    supported_from = EXCHANGE_2010_SP1
-    WELLKNOWN_FOLDERS = WELLKNOWN_FOLDERS_IN_ARCHIVE_ROOT</code></pre>
-</details>
 </section>
 <section>
 </section>
@@ -432,7 +51,6 @@ class ArchiveRoot(RootOfHierarchy):
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>The root of the archive folders hierarchy. Not available on all mailboxes.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -444,6 +62,7 @@ class ArchiveRoot(RootOfHierarchy):
     supported_from = EXCHANGE_2010_SP1
     WELLKNOWN_FOLDERS = WELLKNOWN_FOLDERS_IN_ARCHIVE_ROOT</code></pre>
 </details>
+<div class="desc"><p>The root of the archive folders hierarchy. Not available on all mailboxes.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.folders.roots.RootOfHierarchy" href="#exchangelib.folders.roots.RootOfHierarchy">RootOfHierarchy</a></li>
@@ -482,13 +101,11 @@ class ArchiveRoot(RootOfHierarchy):
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.filter" href="../queryset.html#exchangelib.queryset.SearchableMixIn.filter">filter</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.folder_cls_from_container_class" href="base.html#exchangelib.folders.base.BaseFolder.folder_cls_from_container_class">folder_cls_from_container_class</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.folder_cls_from_folder_name" href="#exchangelib.folders.roots.RootOfHierarchy.folder_cls_from_folder_name">folder_cls_from_folder_name</a></code></li>
-<li><code><a title="exchangelib.folders.roots.RootOfHierarchy.folder_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.folder_sync_state">folder_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.get" href="../queryset.html#exchangelib.queryset.SearchableMixIn.get">get</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.get_default_folder" href="#exchangelib.folders.roots.RootOfHierarchy.get_default_folder">get_default_folder</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.get_distinguished" href="#exchangelib.folders.roots.RootOfHierarchy.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.roots.RootOfHierarchy.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.people" href="../queryset.html#exchangelib.queryset.SearchableMixIn.people">people</a></code></li>
@@ -514,7 +131,6 @@ class ArchiveRoot(RootOfHierarchy):
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>The root of the public folder hierarchy. Not available on all mailboxes.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -580,6 +196,7 @@ class ArchiveRoot(RootOfHierarchy):
         # Child folders have been cached now. Try super().get_children() again.
         yield from super().get_children(folder=folder)</code></pre>
 </details>
+<div class="desc"><p>The root of the public folder hierarchy. Not available on all mailboxes.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.folders.roots.RootOfHierarchy" href="#exchangelib.folders.roots.RootOfHierarchy">RootOfHierarchy</a></li>
@@ -611,7 +228,6 @@ class ArchiveRoot(RootOfHierarchy):
 <span>def <span class="ident">get_children</span></span>(<span>self, folder)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -652,6 +268,7 @@ class ArchiveRoot(RootOfHierarchy):
     # Child folders have been cached now. Try super().get_children() again.
     yield from super().get_children(folder=folder)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -667,13 +284,11 @@ class ArchiveRoot(RootOfHierarchy):
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.filter" href="../queryset.html#exchangelib.queryset.SearchableMixIn.filter">filter</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.folder_cls_from_container_class" href="base.html#exchangelib.folders.base.BaseFolder.folder_cls_from_container_class">folder_cls_from_container_class</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.folder_cls_from_folder_name" href="#exchangelib.folders.roots.RootOfHierarchy.folder_cls_from_folder_name">folder_cls_from_folder_name</a></code></li>
-<li><code><a title="exchangelib.folders.roots.RootOfHierarchy.folder_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.folder_sync_state">folder_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.get" href="../queryset.html#exchangelib.queryset.SearchableMixIn.get">get</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.get_default_folder" href="#exchangelib.folders.roots.RootOfHierarchy.get_default_folder">get_default_folder</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.get_distinguished" href="#exchangelib.folders.roots.RootOfHierarchy.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.roots.RootOfHierarchy.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.people" href="../queryset.html#exchangelib.queryset.SearchableMixIn.people">people</a></code></li>
@@ -699,7 +314,6 @@ class ArchiveRoot(RootOfHierarchy):
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>The root of the standard folder hierarchy.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -762,6 +376,7 @@ class ArchiveRoot(RootOfHierarchy):
             log.debug(&#34;Found %s folder with localized name %s&#34;, folder_cls, candidate.name)
         return candidate</code></pre>
 </details>
+<div class="desc"><p>The root of the standard folder hierarchy.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.folders.roots.RootOfHierarchy" href="#exchangelib.folders.roots.RootOfHierarchy">RootOfHierarchy</a></li>
@@ -785,9 +400,8 @@ class ArchiveRoot(RootOfHierarchy):
 </dl>
 <h3>Instance variables</h3>
 <dl>
-<dt id="exchangelib.folders.roots.Root.tois"><code class="name">var <span class="ident">tois</span></code></dt>
+<dt id="exchangelib.folders.roots.Root.tois"><code class="name">prop <span class="ident">tois</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -798,6 +412,7 @@ def tois(self):
     # distinguished folders belonging to the account (inbox, calendar, trash etc.).
     return self.get_default_folder(MsgFolderRoot)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -813,13 +428,11 @@ def tois(self):
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.filter" href="../queryset.html#exchangelib.queryset.SearchableMixIn.filter">filter</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.folder_cls_from_container_class" href="base.html#exchangelib.folders.base.BaseFolder.folder_cls_from_container_class">folder_cls_from_container_class</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.folder_cls_from_folder_name" href="#exchangelib.folders.roots.RootOfHierarchy.folder_cls_from_folder_name">folder_cls_from_folder_name</a></code></li>
-<li><code><a title="exchangelib.folders.roots.RootOfHierarchy.folder_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.folder_sync_state">folder_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.get" href="../queryset.html#exchangelib.queryset.SearchableMixIn.get">get</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.get_default_folder" href="#exchangelib.folders.roots.RootOfHierarchy.get_default_folder">get_default_folder</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.get_distinguished" href="#exchangelib.folders.roots.RootOfHierarchy.get_distinguished">get_distinguished</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.roots.RootOfHierarchy.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
 <li><code><a title="exchangelib.folders.roots.RootOfHierarchy.people" href="../queryset.html#exchangelib.queryset.SearchableMixIn.people">people</a></code></li>
@@ -845,7 +458,6 @@ def tois(self):
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Base class for folders that implement the root of a folder hierarchy.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1090,6 +702,7 @@ def tois(self):
             )
         )</code></pre>
 </details>
+<div class="desc"><p>Base class for folders that implement the root of a folder hierarchy.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.folders.base.BaseFolder" href="base.html#exchangelib.folders.base.BaseFolder">BaseFolder</a></li>
@@ -1130,47 +743,12 @@ if the folder class does not have its 'CONTAINER_CLASS' set.</p>
 <p>:param folder_name:
 :param folder_class:
 :param locale: a string, e.g. 'da_DK'</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def folder_cls_from_folder_name(cls, folder_name, folder_class, locale):
-    &#34;&#34;&#34;Return the folder class that matches a localized folder name. Take into account the &#39;folder_class&#39; of the
-    folder, to not identify an &#39;IPF.Note&#39; folder as a &#39;Calendar&#39; class just because it&#39;s called e.g. &#39;Kalender&#39; and
-    the locale is &#39;da_DK&#39;.
-
-    Some folders, e.g. `System`, don&#39;t define a `folder_class`. For these folders, we match on localized folder name
-    if the folder class does not have its &#39;CONTAINER_CLASS&#39; set.
-
-    :param folder_name:
-    :param folder_class:
-    :param locale: a string, e.g. &#39;da_DK&#39;
-    &#34;&#34;&#34;
-    for folder_cls in cls.WELLKNOWN_FOLDERS + NON_DELETABLE_FOLDERS + MISC_FOLDERS:
-        if folder_cls.CONTAINER_CLASS != folder_class:
-            continue
-        if folder_name.lower() not in folder_cls.localized_names(locale):
-            continue
-        return folder_cls
-    raise KeyError()</code></pre>
-</details>
 </dd>
 <dt id="exchangelib.folders.roots.RootOfHierarchy.from_xml"><code class="name flex">
 <span>def <span class="ident">from_xml</span></span>(<span>elem, account)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def from_xml(cls, elem, account):
-    kwargs = cls._kwargs_from_elem(elem=elem, account=account)
-    cls._clear(elem)
-    return cls(account=account, **kwargs)</code></pre>
-</details>
 </dd>
 <dt id="exchangelib.folders.roots.RootOfHierarchy.get_distinguished"><code class="name flex">
 <span>def <span class="ident">get_distinguished</span></span>(<span>account)</span>
@@ -1179,27 +757,6 @@ def from_xml(cls, elem, account):
 <div class="desc"><p>Get the distinguished folder for this folder class.</p>
 <p>:param account:
 :return:</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def get_distinguished(cls, account):
-    &#34;&#34;&#34;Get the distinguished folder for this folder class.
-
-    :param account:
-    :return:
-    &#34;&#34;&#34;
-    return cls._get_distinguished(
-        folder=cls(
-            _distinguished_id=DistinguishedFolderId(
-                id=cls.DISTINGUISHED_FOLDER_ID,
-                mailbox=Mailbox(email_address=account.primary_smtp_address),
-            ),
-            account=account,
-        )
-    )</code></pre>
-</details>
 </dd>
 </dl>
 <h3>Instance variables</h3>
@@ -1215,7 +772,6 @@ def get_distinguished(cls, account):
 <span>def <span class="ident">add_folder</span></span>(<span>self, folder)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1225,12 +781,12 @@ def get_distinguished(cls, account):
         raise ValueError(&#34;&#39;folder&#39; must have an ID&#34;)
     self._folders_map[folder.id] = folder</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.folders.roots.RootOfHierarchy.clear_cache"><code class="name flex">
 <span>def <span class="ident">clear_cache</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1239,12 +795,12 @@ def get_distinguished(cls, account):
     with self._subfolders_lock:
         self._subfolders = None</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.folders.roots.RootOfHierarchy.get_children"><code class="name flex">
 <span>def <span class="ident">get_children</span></span>(<span>self, folder)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1256,13 +812,12 @@ def get_distinguished(cls, account):
         if f.parent.id == folder.id:
             yield f</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.folders.roots.RootOfHierarchy.get_default_folder"><code class="name flex">
 <span>def <span class="ident">get_default_folder</span></span>(<span>self, folder_cls)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Return the distinguished folder instance of type folder_cls belonging to this account. If no distinguished
-folder was found, try as best we can to return the default folder of type 'folder_cls'</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1301,12 +856,13 @@ folder was found, try as best we can to return the default folder of type 'folde
         pass
     raise ErrorFolderNotFound(f&#34;No usable default {folder_cls} folders&#34;)</code></pre>
 </details>
+<div class="desc"><p>Return the distinguished folder instance of type folder_cls belonging to this account. If no distinguished
+folder was found, try as best we can to return the default folder of type 'folder_cls'</p></div>
 </dd>
 <dt id="exchangelib.folders.roots.RootOfHierarchy.get_folder"><code class="name flex">
 <span>def <span class="ident">get_folder</span></span>(<span>self, folder)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1316,12 +872,12 @@ folder was found, try as best we can to return the default folder of type 'folde
         raise ValueError(&#34;&#39;folder&#39; must have an ID&#34;)
     return self._folders_map.get(folder.id)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.folders.roots.RootOfHierarchy.remove_folder"><code class="name flex">
 <span>def <span class="ident">remove_folder</span></span>(<span>self, folder)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1332,12 +888,12 @@ folder was found, try as best we can to return the default folder of type 'folde
     with suppress(KeyError):
         del self._folders_map[folder.id]</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.folders.roots.RootOfHierarchy.update_folder"><code class="name flex">
 <span>def <span class="ident">update_folder</span></span>(<span>self, folder)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1347,6 +903,7 @@ folder was found, try as best we can to return the default folder of type 'folde
         raise ValueError(&#34;&#39;folder&#39; must have an ID&#34;)
     self._folders_map[folder.id] = folder</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -1361,11 +918,9 @@ folder was found, try as best we can to return the default folder of type 'folde
 <li><code><a title="exchangelib.folders.base.BaseFolder.exclude" href="../queryset.html#exchangelib.queryset.SearchableMixIn.exclude">exclude</a></code></li>
 <li><code><a title="exchangelib.folders.base.BaseFolder.filter" href="../queryset.html#exchangelib.queryset.SearchableMixIn.filter">filter</a></code></li>
 <li><code><a title="exchangelib.folders.base.BaseFolder.folder_cls_from_container_class" href="base.html#exchangelib.folders.base.BaseFolder.folder_cls_from_container_class">folder_cls_from_container_class</a></code></li>
-<li><code><a title="exchangelib.folders.base.BaseFolder.folder_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.folder_sync_state">folder_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.BaseFolder.get" href="../queryset.html#exchangelib.queryset.SearchableMixIn.get">get</a></code></li>
 <li><code><a title="exchangelib.folders.base.BaseFolder.get_events" href="base.html#exchangelib.folders.base.BaseFolder.get_events">get_events</a></code></li>
 <li><code><a title="exchangelib.folders.base.BaseFolder.get_streaming_events" href="base.html#exchangelib.folders.base.BaseFolder.get_streaming_events">get_streaming_events</a></code></li>
-<li><code><a title="exchangelib.folders.base.BaseFolder.item_sync_state" href="base.html#exchangelib.folders.base.BaseFolder.item_sync_state">item_sync_state</a></code></li>
 <li><code><a title="exchangelib.folders.base.BaseFolder.none" href="../queryset.html#exchangelib.queryset.SearchableMixIn.none">none</a></code></li>
 <li><code><a title="exchangelib.folders.base.BaseFolder.parent" href="base.html#exchangelib.folders.base.BaseFolder.parent">parent</a></code></li>
 <li><code><a title="exchangelib.folders.base.BaseFolder.people" href="../queryset.html#exchangelib.queryset.SearchableMixIn.people">people</a></code></li>
@@ -1390,7 +945,6 @@ folder was found, try as best we can to return the default folder of type 'folde
 </section>
 </article>
 <nav id="sidebar">
-<h1>Index</h1>
 <div class="toc">
 <ul></ul>
 </div>
@@ -1451,7 +1005,7 @@ folder was found, try as best we can to return the default folder of type 'folde
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
 </footer>
 </body>
 </html>

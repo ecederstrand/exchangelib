@@ -2,18 +2,32 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.10.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.5">
 <title>exchangelib.ewsdatetime API documentation</title>
-<meta name="description" content="" />
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
-<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
-<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
-<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
 </head>
 <body>
 <main>
@@ -22,320 +36,6 @@
 <h1 class="title">Module <code>exchangelib.ewsdatetime</code></h1>
 </header>
 <section id="section-intro">
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">import datetime
-import logging
-import zoneinfo
-
-import tzlocal
-
-from .errors import InvalidTypeError, NaiveDateTimeNotAllowed, UnknownTimeZone
-from .winzone import IANA_TO_MS_TIMEZONE_MAP, MS_TIMEZONE_TO_IANA_MAP
-
-log = logging.getLogger(__name__)
-
-
-class EWSDate(datetime.date):
-    &#34;&#34;&#34;Extends the normal date implementation to satisfy EWS.&#34;&#34;&#34;
-
-    __slots__ = &#34;_year&#34;, &#34;_month&#34;, &#34;_day&#34;, &#34;_hashcode&#34;
-
-    def ewsformat(self):
-        &#34;&#34;&#34;ISO 8601 format to satisfy xs:date as interpreted by EWS. Example: 2009-01-15.&#34;&#34;&#34;
-        return self.isoformat()
-
-    def __add__(self, other):
-        dt = super().__add__(other)
-        if isinstance(dt, self.__class__):
-            return dt
-        return self.from_date(dt)  # We want to return EWSDate objects
-
-    def __iadd__(self, other):
-        return self + other
-
-    def __sub__(self, other):
-        dt = super().__sub__(other)
-        if isinstance(dt, datetime.timedelta):
-            return dt
-        if isinstance(dt, self.__class__):
-            return dt
-        return self.from_date(dt)  # We want to return EWSDate objects
-
-    def __isub__(self, other):
-        return self - other
-
-    @classmethod
-    def fromordinal(cls, n):
-        dt = super().fromordinal(n)
-        if isinstance(dt, cls):
-            return dt
-        return cls.from_date(dt)  # We want to return EWSDate objects
-
-    @classmethod
-    def from_date(cls, d):
-        if type(d) is not datetime.date:
-            raise InvalidTypeError(&#34;d&#34;, d, datetime.date)
-        return cls(d.year, d.month, d.day)
-
-    @classmethod
-    def from_string(cls, date_string):
-        # Sometimes, we&#39;ll receive a date string with time zone information. Not very useful.
-        if date_string.endswith(&#34;Z&#34;):
-            date_fmt = &#34;%Y-%m-%dZ&#34;
-        elif &#34;:&#34; in date_string:
-            if &#34;+&#34; in date_string:
-                date_fmt = &#34;%Y-%m-%d+%H:%M&#34;
-            else:
-                date_fmt = &#34;%Y-%m-%d-%H:%M&#34;
-        else:
-            date_fmt = &#34;%Y-%m-%d&#34;
-        d = datetime.datetime.strptime(date_string, date_fmt).date()
-        if isinstance(d, cls):
-            return d
-        return cls.from_date(d)  # We want to return EWSDate objects
-
-
-class EWSDateTime(datetime.datetime):
-    &#34;&#34;&#34;Extends the normal datetime implementation to satisfy EWS.&#34;&#34;&#34;
-
-    __slots__ = &#34;_year&#34;, &#34;_month&#34;, &#34;_day&#34;, &#34;_hour&#34;, &#34;_minute&#34;, &#34;_second&#34;, &#34;_microsecond&#34;, &#34;_tzinfo&#34;, &#34;_hashcode&#34;
-
-    def __new__(cls, *args, **kwargs):
-        # pylint: disable=arguments-differ
-
-        if len(args) == 8:
-            tzinfo = args[7]
-        else:
-            tzinfo = kwargs.get(&#34;tzinfo&#34;)
-        if isinstance(tzinfo, zoneinfo.ZoneInfo):
-            # Don&#39;t allow pytz or dateutil timezones here. They are not safe to use as direct input for datetime()
-            tzinfo = EWSTimeZone.from_timezone(tzinfo)
-        if not isinstance(tzinfo, (EWSTimeZone, type(None))):
-            raise InvalidTypeError(&#34;tzinfo&#34;, tzinfo, EWSTimeZone)
-        if len(args) == 8:
-            args = args[:7] + (tzinfo,)
-        else:
-            kwargs[&#34;tzinfo&#34;] = tzinfo
-        return super().__new__(cls, *args, **kwargs)
-
-    def ewsformat(self):
-        &#34;&#34;&#34;ISO 8601 format to satisfy xs:datetime as interpreted by EWS. Examples:
-        * 2009-01-15T13:45:56Z
-        * 2009-01-15T13:45:56+01:00
-        &#34;&#34;&#34;
-        if not self.tzinfo:
-            raise ValueError(f&#34;{self!r} must be timezone-aware&#34;)
-        if self.tzinfo.key == &#34;UTC&#34;:
-            if self.microsecond:
-                return self.strftime(&#34;%Y-%m-%dT%H:%M:%S.%fZ&#34;)
-            return self.strftime(&#34;%Y-%m-%dT%H:%M:%SZ&#34;)
-        return self.isoformat()
-
-    @classmethod
-    def from_datetime(cls, d):
-        if type(d) is not datetime.datetime:
-            raise InvalidTypeError(&#34;d&#34;, d, datetime.datetime)
-        if d.tzinfo is None:
-            tz = None
-        elif isinstance(d.tzinfo, EWSTimeZone):
-            tz = d.tzinfo
-        else:
-            tz = EWSTimeZone.from_timezone(d.tzinfo)
-        return cls(d.year, d.month, d.day, d.hour, d.minute, d.second, d.microsecond, tzinfo=tz)
-
-    def astimezone(self, tz=None):
-        if tz is None:
-            tz = EWSTimeZone.localzone()
-        t = super().astimezone(tz=tz).replace(tzinfo=tz)
-        if isinstance(t, self.__class__):
-            return t
-        return self.from_datetime(t)  # We want to return EWSDateTime objects
-
-    @classmethod
-    def fromisoformat(cls, date_string):
-        return cls.from_string(date_string)
-
-    def __add__(self, other):
-        t = super().__add__(other)
-        if isinstance(t, self.__class__):
-            return t
-        return self.from_datetime(t)  # We want to return EWSDateTime objects
-
-    def __iadd__(self, other):
-        return self + other
-
-    def __sub__(self, other):
-        t = super().__sub__(other)
-        if isinstance(t, datetime.timedelta):
-            return t
-        if isinstance(t, self.__class__):
-            return t
-        return self.from_datetime(t)  # We want to return EWSDateTime objects
-
-    def __isub__(self, other):
-        return self - other
-
-    @classmethod
-    def from_string(cls, date_string):
-        # Parses several common datetime formats and returns time zone aware EWSDateTime objects
-        if date_string.endswith(&#34;Z&#34;):
-            # UTC datetime
-            return super().strptime(date_string, &#34;%Y-%m-%dT%H:%M:%SZ&#34;).replace(tzinfo=UTC)
-        if len(date_string) == 19:
-            # This is probably a naive datetime. Don&#39;t allow this, but signal caller with an appropriate error
-            local_dt = super().strptime(date_string, &#34;%Y-%m-%dT%H:%M:%S&#34;)
-            raise NaiveDateTimeNotAllowed(local_dt)
-        # This is probably a datetime value with time zone information. This comes in the form &#39;+/-HH:MM&#39;.
-        aware_dt = datetime.datetime.fromisoformat(date_string).astimezone(UTC).replace(tzinfo=UTC)
-        if isinstance(aware_dt, cls):
-            return aware_dt
-        return cls.from_datetime(aware_dt)
-
-    @classmethod
-    def fromtimestamp(cls, t, tz=None):
-        dt = super().fromtimestamp(t, tz=tz)
-        if isinstance(dt, cls):
-            return dt
-        return cls.from_datetime(dt)  # We want to return EWSDateTime objects
-
-    @classmethod
-    def utcfromtimestamp(cls, t):
-        dt = super().utcfromtimestamp(t)
-        if isinstance(dt, cls):
-            return dt
-        return cls.from_datetime(dt)  # We want to return EWSDateTime objects
-
-    @classmethod
-    def now(cls, tz=None):
-        t = super().now(tz=tz)
-        if isinstance(t, cls):
-            return t
-        return cls.from_datetime(t)  # We want to return EWSDateTime objects
-
-    @classmethod
-    def utcnow(cls):
-        t = super().utcnow()
-        if isinstance(t, cls):
-            return t
-        return cls.from_datetime(t)  # We want to return EWSDateTime objects
-
-    def date(self):
-        d = super().date()
-        if isinstance(d, EWSDate):
-            return d
-        return EWSDate.from_date(d)  # We want to return EWSDate objects
-
-
-class EWSTimeZone(zoneinfo.ZoneInfo):
-    &#34;&#34;&#34;Represents a time zone as expected by the EWS TimezoneContext / TimezoneDefinition XML element, and returned by
-    services.GetServerTimeZones.
-    &#34;&#34;&#34;
-
-    IANA_TO_MS_MAP = IANA_TO_MS_TIMEZONE_MAP
-    MS_TO_IANA_MAP = MS_TIMEZONE_TO_IANA_MAP
-
-    def __new__(cls, *args, **kwargs):
-        try:
-            instance = super().__new__(cls, *args, **kwargs)
-        except zoneinfo.ZoneInfoNotFoundError as e:
-            raise UnknownTimeZone(e.args[0])
-        try:
-            instance.ms_id = cls.IANA_TO_MS_MAP[instance.key][0]
-        except KeyError:
-            raise UnknownTimeZone(f&#34;No Windows timezone name found for timezone {instance.key!r}&#34;)
-
-        # We don&#39;t need the Windows long-format time zone name in long format. It&#39;s used in time zone XML elements, but
-        # EWS happily accepts empty strings. For a full list of time zones supported by the target server, including
-        # long-format names, see output of services.GetServerTimeZones(account.protocol).call()
-        instance.ms_name = &#34;&#34;
-        return instance
-
-    def __hash__(self):
-        return hash(self.key)
-
-    def __eq__(self, other):
-        # Microsoft time zones are less granular than IANA, so an EWSTimeZone created from &#39;Europe/Copenhagen&#39; may
-        # return from the server as &#39;Europe/Copenhagen&#39;. We&#39;re catering for Microsoft here, so base equality on the
-        # Microsoft time zone ID.
-        if not isinstance(other, self.__class__):
-            return NotImplemented
-        return self.ms_id == other.ms_id
-
-    @classmethod
-    def from_ms_id(cls, ms_id):
-        # Create a time zone instance from a Microsoft time zone ID. This is lossy because there is not a 1:1
-        # translation from MS time zone ID to IANA time zone.
-        try:
-            return cls(cls.MS_TO_IANA_MAP[ms_id])
-        except KeyError:
-            if &#34;/&#34; in ms_id:
-                # EWS sometimes returns an ID that has a region/location format, e.g. &#39;Europe/Copenhagen&#39;. Try the
-                # string unaltered.
-                return cls(ms_id)
-            raise UnknownTimeZone(f&#34;Windows timezone ID {ms_id!r} is unknown by CLDR&#34;)
-
-    @classmethod
-    def from_pytz(cls, tz):
-        return cls(tz.zone)
-
-    @classmethod
-    def from_datetime(cls, tz):
-        &#34;&#34;&#34;Convert from a standard library `datetime.timezone` instance.&#34;&#34;&#34;
-        return cls(tz.tzname(None))
-
-    @classmethod
-    def from_dateutil(cls, tz):
-        # Objects returned by dateutil.tz.tzlocal() and dateutil.tz.gettz() are not supported. They
-        # don&#39;t contain enough information to reliably match them with a CLDR time zone.
-        if hasattr(tz, &#34;_filename&#34;):
-            key = &#34;/&#34;.join(tz._filename.split(&#34;/&#34;)[-2:])
-            return cls(key)
-        return cls(tz.tzname(datetime.datetime.now()))
-
-    @classmethod
-    def from_zoneinfo(cls, tz):
-        return cls(tz.key)
-
-    @classmethod
-    def from_timezone(cls, tz):
-        # Support multiple tzinfo implementations. We could use isinstance(), but then we&#39;d have to have pytz
-        # and dateutil as dependencies for this package.
-        tz_module = tz.__class__.__module__.split(&#34;.&#34;)[0]
-        try:
-            return {
-                cls.__module__.split(&#34;.&#34;)[0]: lambda z: z,
-                &#34;datetime&#34;: cls.from_datetime,
-                &#34;dateutil&#34;: cls.from_dateutil,
-                &#34;pytz&#34;: cls.from_pytz,
-                &#34;zoneinfo&#34;: cls.from_zoneinfo,
-                &#34;pytz_deprecation_shim&#34;: lambda z: cls.from_timezone(z.unwrap_shim()),
-            }[tz_module](tz)
-        except KeyError:
-            raise TypeError(f&#34;Unsupported tzinfo type: {tz!r}&#34;)
-
-    @classmethod
-    def localzone(cls):
-        try:
-            tz = tzlocal.get_localzone()
-        except zoneinfo.ZoneInfoNotFoundError:
-            # Older versions of tzlocal will raise a pytz exception. Let&#39;s not depend on pytz just for that.
-            raise UnknownTimeZone(&#34;Failed to guess local timezone&#34;)
-        # Handle both old and new versions of tzlocal that may return pytz or zoneinfo objects, respectively
-        return cls.from_timezone(tz)
-
-    def fromutc(self, dt):
-        t = super().fromutc(dt)
-        if isinstance(t, EWSDateTime):
-            return t
-        return EWSDateTime.from_datetime(t)  # We want to return EWSDateTime objects
-
-
-UTC = EWSTimeZone(&#34;UTC&#34;)
-UTC_NOW = lambda: EWSDateTime.now(tz=UTC)  # noqa: E731</code></pre>
-</details>
 </section>
 <section>
 </section>
@@ -348,13 +48,13 @@ UTC_NOW = lambda: EWSDateTime.now(tz=UTC)  # noqa: E731</code></pre>
 <span>def <span class="ident">UTC_NOW</span></span>(<span>)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">UTC_NOW = lambda: EWSDateTime.now(tz=UTC)  # noqa: E731</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 </section>
@@ -366,7 +66,6 @@ UTC_NOW = lambda: EWSDateTime.now(tz=UTC)  # noqa: E731</code></pre>
 <span>(</span><span>...)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Extends the normal date implementation to satisfy EWS.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -430,6 +129,7 @@ UTC_NOW = lambda: EWSDateTime.now(tz=UTC)  # noqa: E731</code></pre>
             return d
         return cls.from_date(d)  # We want to return EWSDate objects</code></pre>
 </details>
+<div class="desc"><p>Extends the normal date implementation to satisfy EWS.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>datetime.date</li>
@@ -441,60 +141,18 @@ UTC_NOW = lambda: EWSDateTime.now(tz=UTC)  # noqa: E731</code></pre>
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def from_date(cls, d):
-    if type(d) is not datetime.date:
-        raise InvalidTypeError(&#34;d&#34;, d, datetime.date)
-    return cls(d.year, d.month, d.day)</code></pre>
-</details>
 </dd>
 <dt id="exchangelib.ewsdatetime.EWSDate.from_string"><code class="name flex">
 <span>def <span class="ident">from_string</span></span>(<span>date_string)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def from_string(cls, date_string):
-    # Sometimes, we&#39;ll receive a date string with time zone information. Not very useful.
-    if date_string.endswith(&#34;Z&#34;):
-        date_fmt = &#34;%Y-%m-%dZ&#34;
-    elif &#34;:&#34; in date_string:
-        if &#34;+&#34; in date_string:
-            date_fmt = &#34;%Y-%m-%d+%H:%M&#34;
-        else:
-            date_fmt = &#34;%Y-%m-%d-%H:%M&#34;
-    else:
-        date_fmt = &#34;%Y-%m-%d&#34;
-    d = datetime.datetime.strptime(date_string, date_fmt).date()
-    if isinstance(d, cls):
-        return d
-    return cls.from_date(d)  # We want to return EWSDate objects</code></pre>
-</details>
 </dd>
 <dt id="exchangelib.ewsdatetime.EWSDate.fromordinal"><code class="name flex">
 <span>def <span class="ident">fromordinal</span></span>(<span>n)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>int -&gt; date corresponding to a proleptic Gregorian ordinal.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def fromordinal(cls, n):
-    dt = super().fromordinal(n)
-    if isinstance(dt, cls):
-        return dt
-    return cls.from_date(dt)  # We want to return EWSDate objects</code></pre>
-</details>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -503,7 +161,6 @@ def fromordinal(cls, n):
 <span>def <span class="ident">ewsformat</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>ISO 8601 format to satisfy xs:date as interpreted by EWS. Example: 2009-01-15.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -512,6 +169,7 @@ def fromordinal(cls, n):
     &#34;&#34;&#34;ISO 8601 format to satisfy xs:date as interpreted by EWS. Example: 2009-01-15.&#34;&#34;&#34;
     return self.isoformat()</code></pre>
 </details>
+<div class="desc"><p>ISO 8601 format to satisfy xs:date as interpreted by EWS. Example: 2009-01-15.</p></div>
 </dd>
 </dl>
 </dd>
@@ -520,7 +178,6 @@ def fromordinal(cls, n):
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Extends the normal datetime implementation to satisfy EWS.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -655,6 +312,7 @@ def fromordinal(cls, n):
             return d
         return EWSDate.from_date(d)  # We want to return EWSDate objects</code></pre>
 </details>
+<div class="desc"><p>Extends the normal datetime implementation to satisfy EWS.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>datetime.datetime</li>
@@ -667,79 +325,24 @@ def fromordinal(cls, n):
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def from_datetime(cls, d):
-    if type(d) is not datetime.datetime:
-        raise InvalidTypeError(&#34;d&#34;, d, datetime.datetime)
-    if d.tzinfo is None:
-        tz = None
-    elif isinstance(d.tzinfo, EWSTimeZone):
-        tz = d.tzinfo
-    else:
-        tz = EWSTimeZone.from_timezone(d.tzinfo)
-    return cls(d.year, d.month, d.day, d.hour, d.minute, d.second, d.microsecond, tzinfo=tz)</code></pre>
-</details>
 </dd>
 <dt id="exchangelib.ewsdatetime.EWSDateTime.from_string"><code class="name flex">
 <span>def <span class="ident">from_string</span></span>(<span>date_string)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def from_string(cls, date_string):
-    # Parses several common datetime formats and returns time zone aware EWSDateTime objects
-    if date_string.endswith(&#34;Z&#34;):
-        # UTC datetime
-        return super().strptime(date_string, &#34;%Y-%m-%dT%H:%M:%SZ&#34;).replace(tzinfo=UTC)
-    if len(date_string) == 19:
-        # This is probably a naive datetime. Don&#39;t allow this, but signal caller with an appropriate error
-        local_dt = super().strptime(date_string, &#34;%Y-%m-%dT%H:%M:%S&#34;)
-        raise NaiveDateTimeNotAllowed(local_dt)
-    # This is probably a datetime value with time zone information. This comes in the form &#39;+/-HH:MM&#39;.
-    aware_dt = datetime.datetime.fromisoformat(date_string).astimezone(UTC).replace(tzinfo=UTC)
-    if isinstance(aware_dt, cls):
-        return aware_dt
-    return cls.from_datetime(aware_dt)</code></pre>
-</details>
 </dd>
 <dt id="exchangelib.ewsdatetime.EWSDateTime.fromisoformat"><code class="name flex">
 <span>def <span class="ident">fromisoformat</span></span>(<span>date_string)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>string -&gt; datetime from a string in most ISO 8601 formats</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def fromisoformat(cls, date_string):
-    return cls.from_string(date_string)</code></pre>
-</details>
 </dd>
 <dt id="exchangelib.ewsdatetime.EWSDateTime.fromtimestamp"><code class="name flex">
 <span>def <span class="ident">fromtimestamp</span></span>(<span>t, tz=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>timestamp[, tz] -&gt; tz's local time from POSIX timestamp.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def fromtimestamp(cls, t, tz=None):
-    dt = super().fromtimestamp(t, tz=tz)
-    if isinstance(dt, cls):
-        return dt
-    return cls.from_datetime(dt)  # We want to return EWSDateTime objects</code></pre>
-</details>
 </dd>
 <dt id="exchangelib.ewsdatetime.EWSDateTime.now"><code class="name flex">
 <span>def <span class="ident">now</span></span>(<span>tz=None)</span>
@@ -749,51 +352,18 @@ def fromtimestamp(cls, t, tz=None):
 <p>tz
 Timezone object.</p>
 <p>If no tz is specified, uses local timezone.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def now(cls, tz=None):
-    t = super().now(tz=tz)
-    if isinstance(t, cls):
-        return t
-    return cls.from_datetime(t)  # We want to return EWSDateTime objects</code></pre>
-</details>
 </dd>
 <dt id="exchangelib.ewsdatetime.EWSDateTime.utcfromtimestamp"><code class="name flex">
 <span>def <span class="ident">utcfromtimestamp</span></span>(<span>t)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Construct a naive UTC datetime from a POSIX timestamp.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def utcfromtimestamp(cls, t):
-    dt = super().utcfromtimestamp(t)
-    if isinstance(dt, cls):
-        return dt
-    return cls.from_datetime(dt)  # We want to return EWSDateTime objects</code></pre>
-</details>
 </dd>
 <dt id="exchangelib.ewsdatetime.EWSDateTime.utcnow"><code class="name flex">
 <span>def <span class="ident">utcnow</span></span>(<span>)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Return a new datetime representing UTC day and time.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def utcnow(cls):
-    t = super().utcnow()
-    if isinstance(t, cls):
-        return t
-    return cls.from_datetime(t)  # We want to return EWSDateTime objects</code></pre>
-</details>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -802,7 +372,6 @@ def utcnow(cls):
 <span>def <span class="ident">astimezone</span></span>(<span>self, tz=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>tz -&gt; convert to local time in new timezone tz</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -815,12 +384,12 @@ def utcnow(cls):
         return t
     return self.from_datetime(t)  # We want to return EWSDateTime objects</code></pre>
 </details>
+<div class="desc"><p>tz -&gt; convert to local time in new timezone tz</p></div>
 </dd>
 <dt id="exchangelib.ewsdatetime.EWSDateTime.date"><code class="name flex">
 <span>def <span class="ident">date</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Return date object with same year, month and day.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -831,14 +400,12 @@ def utcnow(cls):
         return d
     return EWSDate.from_date(d)  # We want to return EWSDate objects</code></pre>
 </details>
+<div class="desc"><p>Return date object with same year, month and day.</p></div>
 </dd>
 <dt id="exchangelib.ewsdatetime.EWSDateTime.ewsformat"><code class="name flex">
 <span>def <span class="ident">ewsformat</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>ISO 8601 format to satisfy xs:datetime as interpreted by EWS. Examples:
-* 2009-01-15T13:45:56Z
-* 2009-01-15T13:45:56+01:00</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -856,6 +423,9 @@ def utcnow(cls):
         return self.strftime(&#34;%Y-%m-%dT%H:%M:%SZ&#34;)
     return self.isoformat()</code></pre>
 </details>
+<div class="desc"><p>ISO 8601 format to satisfy xs:datetime as interpreted by EWS. Examples:
+* 2009-01-15T13:45:56Z
+* 2009-01-15T13:45:56+01:00</p></div>
 </dd>
 </dl>
 </dd>
@@ -864,8 +434,6 @@ def utcnow(cls):
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Represents a time zone as expected by the EWS TimezoneContext / TimezoneDefinition XML element, and returned by
-services.GetServerTimeZones.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -973,6 +541,8 @@ services.GetServerTimeZones.</p></div>
             return t
         return EWSDateTime.from_datetime(t)  # We want to return EWSDateTime objects</code></pre>
 </details>
+<div class="desc"><p>Represents a time zone as expected by the EWS TimezoneContext / TimezoneDefinition XML element, and returned by
+services.GetServerTimeZones.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>zoneinfo.ZoneInfo</li>
@@ -996,132 +566,42 @@ services.GetServerTimeZones.</p></div>
 </code></dt>
 <dd>
 <div class="desc"><p>Convert from a standard library <code>datetime.timezone</code> instance.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def from_datetime(cls, tz):
-    &#34;&#34;&#34;Convert from a standard library `datetime.timezone` instance.&#34;&#34;&#34;
-    return cls(tz.tzname(None))</code></pre>
-</details>
 </dd>
 <dt id="exchangelib.ewsdatetime.EWSTimeZone.from_dateutil"><code class="name flex">
 <span>def <span class="ident">from_dateutil</span></span>(<span>tz)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def from_dateutil(cls, tz):
-    # Objects returned by dateutil.tz.tzlocal() and dateutil.tz.gettz() are not supported. They
-    # don&#39;t contain enough information to reliably match them with a CLDR time zone.
-    if hasattr(tz, &#34;_filename&#34;):
-        key = &#34;/&#34;.join(tz._filename.split(&#34;/&#34;)[-2:])
-        return cls(key)
-    return cls(tz.tzname(datetime.datetime.now()))</code></pre>
-</details>
 </dd>
 <dt id="exchangelib.ewsdatetime.EWSTimeZone.from_ms_id"><code class="name flex">
 <span>def <span class="ident">from_ms_id</span></span>(<span>ms_id)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def from_ms_id(cls, ms_id):
-    # Create a time zone instance from a Microsoft time zone ID. This is lossy because there is not a 1:1
-    # translation from MS time zone ID to IANA time zone.
-    try:
-        return cls(cls.MS_TO_IANA_MAP[ms_id])
-    except KeyError:
-        if &#34;/&#34; in ms_id:
-            # EWS sometimes returns an ID that has a region/location format, e.g. &#39;Europe/Copenhagen&#39;. Try the
-            # string unaltered.
-            return cls(ms_id)
-        raise UnknownTimeZone(f&#34;Windows timezone ID {ms_id!r} is unknown by CLDR&#34;)</code></pre>
-</details>
 </dd>
 <dt id="exchangelib.ewsdatetime.EWSTimeZone.from_pytz"><code class="name flex">
 <span>def <span class="ident">from_pytz</span></span>(<span>tz)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def from_pytz(cls, tz):
-    return cls(tz.zone)</code></pre>
-</details>
 </dd>
 <dt id="exchangelib.ewsdatetime.EWSTimeZone.from_timezone"><code class="name flex">
 <span>def <span class="ident">from_timezone</span></span>(<span>tz)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def from_timezone(cls, tz):
-    # Support multiple tzinfo implementations. We could use isinstance(), but then we&#39;d have to have pytz
-    # and dateutil as dependencies for this package.
-    tz_module = tz.__class__.__module__.split(&#34;.&#34;)[0]
-    try:
-        return {
-            cls.__module__.split(&#34;.&#34;)[0]: lambda z: z,
-            &#34;datetime&#34;: cls.from_datetime,
-            &#34;dateutil&#34;: cls.from_dateutil,
-            &#34;pytz&#34;: cls.from_pytz,
-            &#34;zoneinfo&#34;: cls.from_zoneinfo,
-            &#34;pytz_deprecation_shim&#34;: lambda z: cls.from_timezone(z.unwrap_shim()),
-        }[tz_module](tz)
-    except KeyError:
-        raise TypeError(f&#34;Unsupported tzinfo type: {tz!r}&#34;)</code></pre>
-</details>
 </dd>
 <dt id="exchangelib.ewsdatetime.EWSTimeZone.from_zoneinfo"><code class="name flex">
 <span>def <span class="ident">from_zoneinfo</span></span>(<span>tz)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def from_zoneinfo(cls, tz):
-    return cls(tz.key)</code></pre>
-</details>
 </dd>
 <dt id="exchangelib.ewsdatetime.EWSTimeZone.localzone"><code class="name flex">
 <span>def <span class="ident">localzone</span></span>(<span>)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def localzone(cls):
-    try:
-        tz = tzlocal.get_localzone()
-    except zoneinfo.ZoneInfoNotFoundError:
-        # Older versions of tzlocal will raise a pytz exception. Let&#39;s not depend on pytz just for that.
-        raise UnknownTimeZone(&#34;Failed to guess local timezone&#34;)
-    # Handle both old and new versions of tzlocal that may return pytz or zoneinfo objects, respectively
-    return cls.from_timezone(tz)</code></pre>
-</details>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -1130,7 +610,6 @@ def localzone(cls):
 <span>def <span class="ident">fromutc</span></span>(<span>self, dt)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Given a datetime with local time in UTC, retrieve an adjusted datetime in local time.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1141,6 +620,7 @@ def localzone(cls):
         return t
     return EWSDateTime.from_datetime(t)  # We want to return EWSDateTime objects</code></pre>
 </details>
+<div class="desc"><p>Given a datetime with local time in UTC, retrieve an adjusted datetime in local time.</p></div>
 </dd>
 </dl>
 </dd>
@@ -1148,7 +628,6 @@ def localzone(cls):
 </section>
 </article>
 <nav id="sidebar">
-<h1>Index</h1>
 <div class="toc">
 <ul></ul>
 </div>
@@ -1210,7 +689,7 @@ def localzone(cls):
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
 </footer>
 </body>
 </html>

@@ -2,18 +2,32 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.10.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.5">
 <title>exchangelib.items.item API documentation</title>
-<meta name="description" content="" />
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
-<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
-<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
-<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
 </head>
 <body>
 <main>
@@ -22,424 +36,6 @@
 <h1 class="title">Module <code>exchangelib.items.item</code></h1>
 </header>
 <section id="section-intro">
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">import logging
-
-from ..fields import (
-    AttachmentField,
-    BodyField,
-    BooleanField,
-    CharField,
-    CharListField,
-    Choice,
-    ChoiceField,
-    CultureField,
-    DateTimeField,
-    EffectiveRightsField,
-    EWSElementField,
-    FieldPath,
-    IntegerField,
-    MessageHeaderField,
-    MimeContentField,
-    TextField,
-    URIField,
-)
-from ..properties import (
-    ConversationId,
-    Fields,
-    OccurrenceItemId,
-    ParentFolderId,
-    RecurringMasterItemId,
-    ReferenceItemId,
-    ResponseObjects,
-)
-from ..util import is_iterable, require_account, require_id
-from ..version import EXCHANGE_2010, EXCHANGE_2013
-from .base import (
-    ALL_OCCURRENCES,
-    AUTO_RESOLVE,
-    HARD_DELETE,
-    ID_ONLY,
-    MOVE_TO_DELETED_ITEMS,
-    SAVE_ONLY,
-    SEND_AND_SAVE_COPY,
-    SEND_TO_NONE,
-    SOFT_DELETE,
-    BaseItem,
-)
-
-log = logging.getLogger(__name__)
-
-
-class Item(BaseItem):
-    &#34;&#34;&#34;MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/item&#34;&#34;&#34;
-
-    ELEMENT_NAME = &#34;Item&#34;
-
-    mime_content = MimeContentField(field_uri=&#34;item:MimeContent&#34;, is_read_only_after_send=True)
-    _id = BaseItem.FIELDS[&#34;_id&#34;]
-    parent_folder_id = EWSElementField(field_uri=&#34;item:ParentFolderId&#34;, value_cls=ParentFolderId, is_read_only=True)
-    item_class = CharField(field_uri=&#34;item:ItemClass&#34;, is_read_only=True)
-    subject = CharField(field_uri=&#34;item:Subject&#34;)
-    sensitivity = ChoiceField(
-        field_uri=&#34;item:Sensitivity&#34;,
-        choices={Choice(&#34;Normal&#34;), Choice(&#34;Personal&#34;), Choice(&#34;Private&#34;), Choice(&#34;Confidential&#34;)},
-        is_required=True,
-        default=&#34;Normal&#34;,
-    )
-    text_body = TextField(field_uri=&#34;item:TextBody&#34;, is_read_only=True, supported_from=EXCHANGE_2013)
-    body = BodyField(field_uri=&#34;item:Body&#34;)  # Accepts and returns Body or HTMLBody instances
-    attachments = AttachmentField(field_uri=&#34;item:Attachments&#34;)  # ItemAttachment or FileAttachment
-    datetime_received = DateTimeField(field_uri=&#34;item:DateTimeReceived&#34;, is_read_only=True)
-    size = IntegerField(field_uri=&#34;item:Size&#34;, is_read_only=True)  # Item size in bytes
-    categories = CharListField(field_uri=&#34;item:Categories&#34;)
-    importance = ChoiceField(
-        field_uri=&#34;item:Importance&#34;,
-        choices={Choice(&#34;Low&#34;), Choice(&#34;Normal&#34;), Choice(&#34;High&#34;)},
-        is_required=True,
-        default=&#34;Normal&#34;,
-    )
-    in_reply_to = TextField(field_uri=&#34;item:InReplyTo&#34;)
-    is_submitted = BooleanField(field_uri=&#34;item:IsSubmitted&#34;, is_read_only=True)
-    is_draft = BooleanField(field_uri=&#34;item:IsDraft&#34;, is_read_only=True)
-    is_from_me = BooleanField(field_uri=&#34;item:IsFromMe&#34;, is_read_only=True)
-    is_resend = BooleanField(field_uri=&#34;item:IsResend&#34;, is_read_only=True)
-    is_unmodified = BooleanField(field_uri=&#34;item:IsUnmodified&#34;, is_read_only=True)
-    headers = MessageHeaderField(field_uri=&#34;item:InternetMessageHeaders&#34;, is_read_only=True)
-    datetime_sent = DateTimeField(field_uri=&#34;item:DateTimeSent&#34;, is_read_only=True)
-    datetime_created = DateTimeField(field_uri=&#34;item:DateTimeCreated&#34;, is_read_only=True)
-    response_objects = EWSElementField(
-        field_uri=&#34;item:ResponseObjects&#34;,
-        value_cls=ResponseObjects,
-        is_read_only=True,
-    )
-    # Placeholder for ResponseObjects
-    reminder_due_by = DateTimeField(field_uri=&#34;item:ReminderDueBy&#34;, is_required_after_save=True, is_searchable=False)
-    reminder_is_set = BooleanField(field_uri=&#34;item:ReminderIsSet&#34;, is_required=True, default=False)
-    reminder_minutes_before_start = IntegerField(
-        field_uri=&#34;item:ReminderMinutesBeforeStart&#34;, is_required_after_save=True, min=0, default=0
-    )
-    display_cc = TextField(field_uri=&#34;item:DisplayCc&#34;, is_read_only=True)
-    display_to = TextField(field_uri=&#34;item:DisplayTo&#34;, is_read_only=True)
-    has_attachments = BooleanField(field_uri=&#34;item:HasAttachments&#34;, is_read_only=True)
-    # ExtendedProperty fields go here
-    culture = CultureField(field_uri=&#34;item:Culture&#34;, is_required_after_save=True, is_searchable=False)
-    effective_rights = EffectiveRightsField(field_uri=&#34;item:EffectiveRights&#34;, is_read_only=True)
-    last_modified_name = CharField(field_uri=&#34;item:LastModifiedName&#34;, is_read_only=True)
-    last_modified_time = DateTimeField(field_uri=&#34;item:LastModifiedTime&#34;, is_read_only=True)
-    is_associated = BooleanField(field_uri=&#34;item:IsAssociated&#34;, is_read_only=True, supported_from=EXCHANGE_2010)
-    web_client_read_form_query_string = URIField(
-        field_uri=&#34;item:WebClientReadFormQueryString&#34;, is_read_only=True, supported_from=EXCHANGE_2010
-    )
-    web_client_edit_form_query_string = URIField(
-        field_uri=&#34;item:WebClientEditFormQueryString&#34;, is_read_only=True, supported_from=EXCHANGE_2010
-    )
-    conversation_id = EWSElementField(
-        field_uri=&#34;item:ConversationId&#34;, value_cls=ConversationId, is_read_only=True, supported_from=EXCHANGE_2010
-    )
-    unique_body = BodyField(field_uri=&#34;item:UniqueBody&#34;, is_read_only=True, supported_from=EXCHANGE_2010)
-
-    FIELDS = Fields()
-
-    # Used to register extended properties
-    INSERT_AFTER_FIELD = &#34;has_attachments&#34;
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        if self.attachments:
-            for a in self.attachments:
-                if a.parent_item:
-                    if a.parent_item is not self:
-                        raise ValueError(f&#34;&#39;parent_item&#39; of attachment {a} must point to this item&#34;)
-                else:
-                    a.parent_item = self
-                self.attach(self.attachments)
-        else:
-            self.attachments = []
-
-    def save(self, update_fields=None, conflict_resolution=AUTO_RESOLVE, send_meeting_invitations=SEND_TO_NONE):
-        from .task import Task
-
-        if self.id:
-            item_id, changekey = self._update(
-                update_fieldnames=update_fields,
-                message_disposition=SAVE_ONLY,
-                conflict_resolution=conflict_resolution,
-                send_meeting_invitations=send_meeting_invitations,
-            )
-            if (
-                self.id != item_id
-                and not isinstance(self._id, (OccurrenceItemId, RecurringMasterItemId))
-                and not isinstance(self, Task)
-            ):
-                # When we update an item with an OccurrenceItemId as ID, EWS returns the ID of the occurrence, so
-                # the ID of this item changes.
-                #
-                # When we update certain fields on a task, the ID may change. A full description is available at
-                # https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/updateitem-operation-task
-                raise ValueError(&#34;&#39;id&#39; mismatch in returned update response&#34;)
-            # Don&#39;t check that changekeys are different. No-op saves will sometimes leave the changekey intact
-            self._id = self.ID_ELEMENT_CLS(item_id, changekey)
-        else:
-            if update_fields:
-                raise ValueError(&#34;&#39;update_fields&#39; is only valid for updates&#34;)
-            tmp_attachments = None
-            if self.account and self.account.version.build &lt; EXCHANGE_2013 and self.attachments:
-                # At least some versions prior to Exchange 2013 can&#39;t save attachments immediately. You need to first
-                # save, then attach. Store the attachment of this item temporarily and attach later.
-                tmp_attachments, self.attachments = self.attachments, []
-            item = self._create(message_disposition=SAVE_ONLY, send_meeting_invitations=send_meeting_invitations)
-            self._id = self.ID_ELEMENT_CLS(item.id, item.changekey)
-            for old_att, new_att in zip(self.attachments, item.attachments):
-                if old_att.attachment_id is not None:
-                    raise ValueError(&#34;Old &#39;attachment_id&#39; is not empty&#34;)
-                if new_att.attachment_id is None:
-                    raise ValueError(&#34;New &#39;attachment_id&#39; is empty&#34;)
-                old_att.attachment_id = new_att.attachment_id
-            if tmp_attachments:
-                # Exchange 2007 workaround. See above
-                self.attach(tmp_attachments)
-        return self
-
-    @require_account
-    def _create(self, message_disposition, send_meeting_invitations):
-        # Return a BulkCreateResult because we want to return the ID of both the main item *and* attachments. In send
-        # and send-and-save-copy mode, the server does not return an ID, so we just return True.
-        from ..services import CreateItem
-
-        return CreateItem(account=self.account).get(
-            items=[self],
-            folder=self.folder,
-            message_disposition=message_disposition,
-            send_meeting_invitations=send_meeting_invitations,
-        )
-
-    def _update_fieldnames(self):
-        from .contact import Contact, DistributionList
-
-        # Return the list of fields we are allowed to update
-        update_fieldnames = []
-        for f in self.supported_fields(version=self.account.version):
-            if f.name == &#34;attachments&#34;:
-                # Attachments are handled separately after item creation
-                continue
-            if f.is_read_only:
-                # These cannot be changed
-                continue
-            if (f.is_required or f.is_required_after_save) and (
-                getattr(self, f.name) is None or (f.is_list and not getattr(self, f.name))
-            ):
-                # These are required and cannot be deleted
-                continue
-            if not self.is_draft and f.is_read_only_after_send:
-                # These cannot be changed when the item is no longer a draft
-                continue
-            if f.name == &#34;message_id&#34; and f.is_read_only_after_send:
-                # &#39;message_id&#39; doesn&#39;t support updating, no matter the draft status
-                continue
-            if f.name == &#34;mime_content&#34; and isinstance(self, (Contact, DistributionList)):
-                # Contact and DistributionList don&#39;t support updating mime_content, no matter the draft status
-                continue
-            update_fieldnames.append(f.name)
-        return update_fieldnames
-
-    @require_account
-    def _update(self, update_fieldnames, message_disposition, conflict_resolution, send_meeting_invitations):
-        from ..services import UpdateItem
-
-        if not self.changekey:
-            raise ValueError(f&#34;{self.__class__.__name__} must have changekey&#34;)
-        if not update_fieldnames:
-            # The fields to update was not specified explicitly. Update all fields where update is possible
-            update_fieldnames = self._update_fieldnames()
-        return UpdateItem(account=self.account).get(
-            items=[(self, update_fieldnames)],
-            message_disposition=message_disposition,
-            conflict_resolution=conflict_resolution,
-            send_meeting_invitations_or_cancellations=send_meeting_invitations,
-            suppress_read_receipts=True,
-            expect_result=message_disposition != SEND_AND_SAVE_COPY,
-        )
-
-    @require_id
-    def refresh(self):
-        # Updates the item based on fresh data from EWS
-        from ..services import GetItem
-
-        additional_fields = {FieldPath(field=f) for f in self.supported_fields(version=self.account.version)}
-        res = GetItem(account=self.account).get(items=[self], additional_fields=additional_fields, shape=ID_ONLY)
-        if self.id != res.id and not isinstance(self._id, (OccurrenceItemId, RecurringMasterItemId)):
-            # When we refresh an item with an OccurrenceItemId as ID, EWS returns the ID of the occurrence, so
-            # the ID of this item changes.
-            raise ValueError(&#34;&#39;id&#39; mismatch in returned update response&#34;)
-        for f in self.FIELDS:
-            setattr(self, f.name, getattr(res, f.name))
-        # &#39;parent_item&#39; should point to &#39;self&#39;, not &#39;fresh_item&#39;. That way, &#39;fresh_item&#39; can be garbage collected.
-        for a in self.attachments:
-            a.parent_item = self
-        return self
-
-    @require_id
-    def copy(self, to_folder):
-        from ..services import CopyItem
-
-        # If &#39;to_folder&#39; is a public folder or a folder in a different mailbox then None is returned
-        return CopyItem(account=self.account).get(
-            items=[self],
-            to_folder=to_folder,
-            expect_result=None,
-        )
-
-    @require_id
-    def move(self, to_folder):
-        from ..services import MoveItem
-
-        res = MoveItem(account=self.account).get(
-            items=[self],
-            to_folder=to_folder,
-            expect_result=None,
-        )
-        if res is None:
-            # Assume &#39;to_folder&#39; is a public folder or a folder in a different mailbox
-            self._id = None
-            return
-        self._id = self.ID_ELEMENT_CLS(*res)
-        self.folder = to_folder
-
-    def move_to_trash(
-        self,
-        send_meeting_cancellations=SEND_TO_NONE,
-        affected_task_occurrences=ALL_OCCURRENCES,
-        suppress_read_receipts=True,
-    ):
-        # Delete and move to the trash folder.
-        self._delete(
-            delete_type=MOVE_TO_DELETED_ITEMS,
-            send_meeting_cancellations=send_meeting_cancellations,
-            affected_task_occurrences=affected_task_occurrences,
-            suppress_read_receipts=suppress_read_receipts,
-        )
-        self._id = None
-        self.folder = self.account.trash
-
-    def soft_delete(
-        self,
-        send_meeting_cancellations=SEND_TO_NONE,
-        affected_task_occurrences=ALL_OCCURRENCES,
-        suppress_read_receipts=True,
-    ):
-        # Delete and move to the dumpster, if it is enabled.
-        self._delete(
-            delete_type=SOFT_DELETE,
-            send_meeting_cancellations=send_meeting_cancellations,
-            affected_task_occurrences=affected_task_occurrences,
-            suppress_read_receipts=suppress_read_receipts,
-        )
-        self._id = None
-        self.folder = self.account.recoverable_items_deletions
-
-    def delete(
-        self,
-        send_meeting_cancellations=SEND_TO_NONE,
-        affected_task_occurrences=ALL_OCCURRENCES,
-        suppress_read_receipts=True,
-    ):
-        # Remove the item permanently. No copies are stored anywhere.
-        self._delete(
-            delete_type=HARD_DELETE,
-            send_meeting_cancellations=send_meeting_cancellations,
-            affected_task_occurrences=affected_task_occurrences,
-            suppress_read_receipts=suppress_read_receipts,
-        )
-        self._id, self.folder = None, None
-
-    @require_id
-    def _delete(self, delete_type, send_meeting_cancellations, affected_task_occurrences, suppress_read_receipts):
-        from ..services import DeleteItem
-
-        DeleteItem(account=self.account).get(
-            items=[self],
-            delete_type=delete_type,
-            send_meeting_cancellations=send_meeting_cancellations,
-            affected_task_occurrences=affected_task_occurrences,
-            suppress_read_receipts=suppress_read_receipts,
-        )
-
-    @require_id
-    def archive(self, to_folder):
-        from ..services import ArchiveItem
-
-        return ArchiveItem(account=self.account).get(items=[self], to_folder=to_folder, expect_result=True)
-
-    def attach(self, attachments):
-        &#34;&#34;&#34;Add an attachment, or a list of attachments, to this item. If the item has already been saved, the
-        attachments will be created on the server immediately. If the item has not yet been saved, the attachments will
-        be created on the server when the item is saved.
-
-        Adding attachments to an existing item will update the changekey of the item.
-
-        :param attachments:
-        &#34;&#34;&#34;
-        if not is_iterable(attachments, generators_allowed=True):
-            attachments = [attachments]
-        for a in attachments:
-            if not a.parent_item:
-                a.parent_item = self
-            if self.id and not a.attachment_id:
-                # Already saved object. Attach the attachment server-side now
-                a.attach()
-            if a not in self.attachments:
-                self.attachments.append(a)
-
-    def detach(self, attachments):
-        &#34;&#34;&#34;Remove an attachment, or a list of attachments, from this item. If the item has already been saved, the
-        attachments will be deleted on the server immediately. If the item has not yet been saved, the attachments will
-        simply not be created on the server the item is saved.
-
-        Removing attachments from an existing item will update the changekey of the item.
-
-        :param attachments:
-        &#34;&#34;&#34;
-        if not is_iterable(attachments, generators_allowed=True):
-            attachments = [attachments]
-        if attachments is self.attachments:
-            # Don&#39;t remove from the same list we are iterating
-            attachments = list(attachments)
-        for a in attachments:
-            if a.parent_item is not self:
-                raise ValueError(&#34;Attachment does not belong to this item&#34;)
-            if self.id:
-                # Item is already created. Detach  the attachment server-side now
-                a.detach()
-            if a in self.attachments:
-                self.attachments.remove(a)
-
-    @require_id
-    def create_forward(self, subject, body, to_recipients, cc_recipients=None, bcc_recipients=None):
-        from .message import ForwardItem
-
-        return ForwardItem(
-            account=self.account,
-            reference_item_id=ReferenceItemId(id=self.id, changekey=self.changekey),
-            subject=subject,
-            new_body=body,
-            to_recipients=to_recipients,
-            cc_recipients=cc_recipients,
-            bcc_recipients=bcc_recipients,
-        )
-
-    def forward(self, subject, body, to_recipients, cc_recipients=None, bcc_recipients=None):
-        return self.create_forward(
-            subject,
-            body,
-            to_recipients,
-            cc_recipients,
-            bcc_recipients,
-        ).send()</code></pre>
-</details>
 </section>
 <section>
 </section>
@@ -455,12 +51,6 @@ class Item(BaseItem):
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/item">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/item</a></p>
-<p>Pick out optional 'account' and 'folder' kwargs, and pass the rest to the parent class.</p>
-<p>:param kwargs:
-'account' is optional but allows calling 'send()' and 'delete()'
-'folder' is optional but allows calling 'save()'. If 'folder' has an account, and 'account' is not set,
-we use folder.account.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -831,6 +421,12 @@ we use folder.account.</p></div>
             bcc_recipients,
         ).send()</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/item">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/item</a></p>
+<p>Pick out optional 'account' and 'folder' kwargs, and pass the rest to the parent class.</p>
+<p>:param kwargs:
+'account' is optional but allows calling 'send()' and 'delete()'
+'folder' is optional but allows calling 'save()'. If 'folder' has an account, and 'account' is not set,
+we use folder.account.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.items.base.BaseItem" href="base.html#exchangelib.items.base.BaseItem">BaseItem</a></li>
@@ -1022,7 +618,6 @@ we use folder.account.</p></div>
 <span>def <span class="ident">archive</span></span>(<span>self, to_folder)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1033,16 +628,12 @@ def archive(self, to_folder):
 
     return ArchiveItem(account=self.account).get(items=[self], to_folder=to_folder, expect_result=True)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.items.item.Item.attach"><code class="name flex">
 <span>def <span class="ident">attach</span></span>(<span>self, attachments)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Add an attachment, or a list of attachments, to this item. If the item has already been saved, the
-attachments will be created on the server immediately. If the item has not yet been saved, the attachments will
-be created on the server when the item is saved.</p>
-<p>Adding attachments to an existing item will update the changekey of the item.</p>
-<p>:param attachments:</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1067,12 +658,16 @@ be created on the server when the item is saved.</p>
         if a not in self.attachments:
             self.attachments.append(a)</code></pre>
 </details>
+<div class="desc"><p>Add an attachment, or a list of attachments, to this item. If the item has already been saved, the
+attachments will be created on the server immediately. If the item has not yet been saved, the attachments will
+be created on the server when the item is saved.</p>
+<p>Adding attachments to an existing item will update the changekey of the item.</p>
+<p>:param attachments:</p></div>
 </dd>
 <dt id="exchangelib.items.item.Item.copy"><code class="name flex">
 <span>def <span class="ident">copy</span></span>(<span>self, to_folder)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1088,12 +683,12 @@ def copy(self, to_folder):
         expect_result=None,
     )</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.items.item.Item.create_forward"><code class="name flex">
 <span>def <span class="ident">create_forward</span></span>(<span>self, subject, body, to_recipients, cc_recipients=None, bcc_recipients=None)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1112,12 +707,12 @@ def create_forward(self, subject, body, to_recipients, cc_recipients=None, bcc_r
         bcc_recipients=bcc_recipients,
     )</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.items.item.Item.delete"><code class="name flex">
-<span>def <span class="ident">delete</span></span>(<span>self, send_meeting_cancellations='SendToNone', affected_task_occurrences='AllOccurrences', suppress_read_receipts=True)</span>
+<span>def <span class="ident">delete</span></span>(<span>self,<br>send_meeting_cancellations='SendToNone',<br>affected_task_occurrences='AllOccurrences',<br>suppress_read_receipts=True)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1137,16 +732,12 @@ def create_forward(self, subject, body, to_recipients, cc_recipients=None, bcc_r
     )
     self._id, self.folder = None, None</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.items.item.Item.detach"><code class="name flex">
 <span>def <span class="ident">detach</span></span>(<span>self, attachments)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Remove an attachment, or a list of attachments, from this item. If the item has already been saved, the
-attachments will be deleted on the server immediately. If the item has not yet been saved, the attachments will
-simply not be created on the server the item is saved.</p>
-<p>Removing attachments from an existing item will update the changekey of the item.</p>
-<p>:param attachments:</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1174,12 +765,16 @@ simply not be created on the server the item is saved.</p>
         if a in self.attachments:
             self.attachments.remove(a)</code></pre>
 </details>
+<div class="desc"><p>Remove an attachment, or a list of attachments, from this item. If the item has already been saved, the
+attachments will be deleted on the server immediately. If the item has not yet been saved, the attachments will
+simply not be created on the server the item is saved.</p>
+<p>Removing attachments from an existing item will update the changekey of the item.</p>
+<p>:param attachments:</p></div>
 </dd>
 <dt id="exchangelib.items.item.Item.forward"><code class="name flex">
 <span>def <span class="ident">forward</span></span>(<span>self, subject, body, to_recipients, cc_recipients=None, bcc_recipients=None)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1193,12 +788,12 @@ simply not be created on the server the item is saved.</p>
         bcc_recipients,
     ).send()</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.items.item.Item.move"><code class="name flex">
 <span>def <span class="ident">move</span></span>(<span>self, to_folder)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1219,12 +814,12 @@ def move(self, to_folder):
     self._id = self.ID_ELEMENT_CLS(*res)
     self.folder = to_folder</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.items.item.Item.move_to_trash"><code class="name flex">
-<span>def <span class="ident">move_to_trash</span></span>(<span>self, send_meeting_cancellations='SendToNone', affected_task_occurrences='AllOccurrences', suppress_read_receipts=True)</span>
+<span>def <span class="ident">move_to_trash</span></span>(<span>self,<br>send_meeting_cancellations='SendToNone',<br>affected_task_occurrences='AllOccurrences',<br>suppress_read_receipts=True)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1245,12 +840,12 @@ def move(self, to_folder):
     self._id = None
     self.folder = self.account.trash</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.items.item.Item.refresh"><code class="name flex">
 <span>def <span class="ident">refresh</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1273,12 +868,12 @@ def refresh(self):
         a.parent_item = self
     return self</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.items.item.Item.save"><code class="name flex">
-<span>def <span class="ident">save</span></span>(<span>self, update_fields=None, conflict_resolution='AutoResolve', send_meeting_invitations='SendToNone')</span>
+<span>def <span class="ident">save</span></span>(<span>self,<br>update_fields=None,<br>conflict_resolution='AutoResolve',<br>send_meeting_invitations='SendToNone')</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1327,12 +922,12 @@ def refresh(self):
             self.attach(tmp_attachments)
     return self</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.items.item.Item.soft_delete"><code class="name flex">
-<span>def <span class="ident">soft_delete</span></span>(<span>self, send_meeting_cancellations='SendToNone', affected_task_occurrences='AllOccurrences', suppress_read_receipts=True)</span>
+<span>def <span class="ident">soft_delete</span></span>(<span>self,<br>send_meeting_cancellations='SendToNone',<br>affected_task_occurrences='AllOccurrences',<br>suppress_read_receipts=True)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1353,6 +948,7 @@ def refresh(self):
     self._id = None
     self.folder = self.account.recoverable_items_deletions</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -1360,10 +956,8 @@ def refresh(self):
 <li><code><b><a title="exchangelib.items.base.BaseItem" href="base.html#exchangelib.items.base.BaseItem">BaseItem</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.items.base.BaseItem.ID_ELEMENT_CLS" href="base.html#exchangelib.items.base.BaseItem.ID_ELEMENT_CLS">ID_ELEMENT_CLS</a></code></li>
-<li><code><a title="exchangelib.items.base.BaseItem.account" href="base.html#exchangelib.items.base.BaseItem.account">account</a></code></li>
 <li><code><a title="exchangelib.items.base.BaseItem.add_field" href="../properties.html#exchangelib.properties.EWSElement.add_field">add_field</a></code></li>
 <li><code><a title="exchangelib.items.base.BaseItem.deregister" href="base.html#exchangelib.items.base.RegisterMixIn.deregister">deregister</a></code></li>
-<li><code><a title="exchangelib.items.base.BaseItem.folder" href="base.html#exchangelib.items.base.BaseItem.folder">folder</a></code></li>
 <li><code><a title="exchangelib.items.base.BaseItem.register" href="base.html#exchangelib.items.base.RegisterMixIn.register">register</a></code></li>
 <li><code><a title="exchangelib.items.base.BaseItem.remove_field" href="../properties.html#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
 <li><code><a title="exchangelib.items.base.BaseItem.supported_fields" href="../properties.html#exchangelib.properties.EWSElement.supported_fields">supported_fields</a></code></li>
@@ -1376,7 +970,6 @@ def refresh(self):
 </section>
 </article>
 <nav id="sidebar">
-<h1>Index</h1>
 <div class="toc">
 <ul></ul>
 </div>
@@ -1451,7 +1044,7 @@ def refresh(self):
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
 </footer>
 </body>
 </html>

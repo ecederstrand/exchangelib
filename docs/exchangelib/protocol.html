@@ -2,18 +2,32 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.10.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.5">
 <title>exchangelib.protocol API documentation</title>
-<meta name="description" content="A protocol is an endpoint for EWS service connections. It contains all necessary information to make HTTPS connections …" />
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
-<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
-<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<meta name="description" content="A protocol is an endpoint for EWS service connections. It contains all necessary information to make HTTPS connections …">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
-<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
 </head>
 <body>
 <main>
@@ -25,834 +39,6 @@
 <p>A protocol is an endpoint for EWS service connections. It contains all necessary information to make HTTPS connections.</p>
 <p>Protocols should be accessed through an Account, and are either created from a default Configuration or autodiscovered
 when creating an Account.</p>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">&#34;&#34;&#34;
-A protocol is an endpoint for EWS service connections. It contains all necessary information to make HTTPS connections.
-
-Protocols should be accessed through an Account, and are either created from a default Configuration or autodiscovered
-when creating an Account.
-&#34;&#34;&#34;
-
-import abc
-import datetime
-import logging
-import random
-from contextlib import suppress
-from queue import Empty, LifoQueue
-from threading import Lock
-
-import requests.adapters
-import requests.sessions
-from oauthlib.oauth2 import BackendApplicationClient
-from requests_oauthlib import OAuth2Session
-
-from .credentials import BaseOAuth2Credentials
-from .errors import (
-    CASError,
-    ErrorInternalServerTransientError,
-    ErrorInvalidSchemaVersionForMailboxVersion,
-    ErrorServerBusy,
-    InvalidTypeError,
-    MalformedResponseError,
-    RateLimitError,
-    RedirectError,
-    RelativeRedirect,
-    SessionPoolMaxSizeReached,
-    SessionPoolMinSizeReached,
-    TransportError,
-    UnauthorizedError,
-)
-from .properties import (
-    ENTRY_ID,
-    EWS_ID,
-    AlternateId,
-    DLMailbox,
-    FreeBusyViewOptions,
-    MailboxData,
-    RoomList,
-    TimeWindow,
-    TimeZone,
-)
-from .services import (
-    ConvertId,
-    ExpandDL,
-    GetRoomLists,
-    GetRooms,
-    GetSearchableMailboxes,
-    GetServerTimeZones,
-    GetUserAvailability,
-    ResolveNames,
-)
-from .transport import CREDENTIALS_REQUIRED, DEFAULT_HEADERS, NTLM, OAUTH2, get_auth_instance, get_service_authtype
-from .util import _get_retry_after, get_redirect_url, is_xml
-from .version import Version
-
-log = logging.getLogger(__name__)
-
-
-def close_connections():
-    CachingProtocol.clear_cache()
-
-
-class BaseProtocol:
-    &#34;&#34;&#34;Base class for Protocol which implements the bare essentials.&#34;&#34;&#34;
-
-    # The maximum number of sessions (== TCP connections, see below) we will open to this service endpoint. Keep this
-    # low unless you have an agreement with the Exchange admin on the receiving end to hammer the server and
-    # rate-limiting policies have been disabled for the connecting user. Changing this setting only makes sense if
-    # you are using threads to run multiple concurrent workers in this process.
-    SESSION_POOLSIZE = 1
-    # We want only 1 TCP connection per Session object. We may have lots of different credentials hitting the server and
-    # each credential needs its own session (NTLM auth will only send credentials once and then secure the connection,
-    # so a connection can only handle requests for one credential). Having multiple connections per Session could
-    # quickly exhaust the maximum number of concurrent connections the Exchange server allows from one client.
-    CONNECTIONS_PER_SESSION = 1
-    # The number of times a session may be reused before creating a new session object. &#39;None&#39; means &#34;infinite&#34;.
-    # Discarding sessions after a certain number of usages may limit memory leaks in the Session object.
-    MAX_SESSION_USAGE_COUNT = None
-    # Timeout for HTTP requests
-    TIMEOUT = 120
-    RETRY_WAIT = 10  # Seconds to wait before retry on connection errors
-
-    # The adapter class to use for HTTP requests. Override this if you need e.g. proxy support or specific TLS versions
-    HTTP_ADAPTER_CLS = requests.adapters.HTTPAdapter
-
-    # The User-Agent header to use for HTTP requests. Override this to set an app-specific one
-    USERAGENT = None
-
-    def __init__(self, config):
-        self.config = config
-
-        self._session_pool_size = 0
-        self._session_pool_maxsize = config.max_connections or self.SESSION_POOLSIZE
-
-        # Try to behave nicely with the remote server. We want to keep the connection open between requests.
-        # We also want to re-use sessions, to avoid the NTLM auth handshake on every request. We must know the
-        # authentication method to create sessions.
-        self._session_pool = LifoQueue()
-        self._session_pool_lock = Lock()
-
-    @property
-    def service_endpoint(self):
-        return self.config.service_endpoint
-
-    @abc.abstractmethod
-    def get_auth_type(self):
-        &#34;&#34;&#34;Autodetect authentication type&#34;&#34;&#34;
-
-    @property
-    def auth_type(self):
-        # Autodetect authentication type if necessary
-        if self.config.auth_type is None:
-            self.config.auth_type = self.get_auth_type()
-        return self.config.auth_type
-
-    @property
-    def credentials(self):
-        return self.config.credentials
-
-    @credentials.setter
-    def credentials(self, value):
-        # We are updating credentials, but that doesn&#39;t automatically propagate to the session objects. The simplest
-        # solution is to just kill the sessions in the pool.
-        with self._session_pool_lock:
-            self.config._credentials = value
-            self.close()
-
-    @property
-    def max_connections(self):
-        return self._session_pool_maxsize
-
-    @max_connections.setter
-    def max_connections(self, value):
-        with self._session_pool_lock:
-            self._session_pool_maxsize = value or self.SESSION_POOLSIZE
-
-    @property
-    def retry_policy(self):
-        return self.config.retry_policy
-
-    @property
-    def server(self):
-        return self.config.server
-
-    def __getstate__(self):
-        # The session pool and lock cannot be pickled
-        state = self.__dict__.copy()
-        del state[&#34;_session_pool&#34;]
-        del state[&#34;_session_pool_lock&#34;]
-        return state
-
-    def __setstate__(self, state):
-        # Restore the session pool and lock
-        self.__dict__.update(state)
-        self._session_pool = LifoQueue()
-        self._session_pool_lock = Lock()
-
-    def __del__(self):
-        # pylint: disable=bare-except
-        try:
-            self.close()
-        except Exception:  # nosec
-            # __del__ should never fail
-            pass
-
-    def close(self):
-        log.debug(&#34;Server %s: Closing sessions&#34;, self.server)
-        while True:
-            try:
-                session = self._session_pool.get(block=False)
-                self.close_session(session)
-                self._session_pool_size -= 1
-            except Empty:
-                break
-
-    @classmethod
-    def get_adapter(cls):
-        # We want just one connection per session. No retries, since we wrap all requests in our own retry handler
-        return cls.HTTP_ADAPTER_CLS(
-            pool_block=True,
-            pool_connections=cls.CONNECTIONS_PER_SESSION,
-            pool_maxsize=cls.CONNECTIONS_PER_SESSION,
-            max_retries=0,
-        )
-
-    @property
-    def session_pool_size(self):
-        return self._session_pool_size
-
-    def increase_poolsize(self):
-        &#34;&#34;&#34;Increases the session pool size. We increase by one session per call.&#34;&#34;&#34;
-        # Create a single session and insert it into the pool. We need to protect this with a lock while we are changing
-        # the pool size variable, to avoid race conditions. We must not exceed the pool size limit.
-        if self._session_pool_size &gt;= self._session_pool_maxsize:
-            raise SessionPoolMaxSizeReached(&#34;Session pool size cannot be increased further&#34;)
-        with self._session_pool_lock:
-            if self._session_pool_size &gt;= self._session_pool_maxsize:
-                log.debug(&#34;Session pool size was increased in another thread&#34;)
-                return
-            log.debug(
-                &#34;Server %s: Increasing session pool size from %s to %s&#34;,
-                self.server,
-                self._session_pool_size,
-                self._session_pool_size + 1,
-            )
-            self._session_pool.put(self.create_session(), block=False)
-            self._session_pool_size += 1
-
-    def decrease_poolsize(self):
-        &#34;&#34;&#34;Decreases the session pool size in response to error messages from the server requesting to rate-limit
-        requests. We decrease by one session per call.
-        &#34;&#34;&#34;
-        # Take a single session from the pool and discard it. We need to protect this with a lock while we are changing
-        # the pool size variable, to avoid race conditions. We must keep at least one session in the pool.
-        if self._session_pool_size &lt;= 1:
-            raise SessionPoolMinSizeReached(&#34;Session pool size cannot be decreased further&#34;)
-        with self._session_pool_lock:
-            if self._session_pool_size &lt;= 1:
-                log.debug(&#34;Session pool size was decreased in another thread&#34;)
-                return
-            log.warning(
-                &#34;Server %s: Decreasing session pool size from %s to %s&#34;,
-                self.server,
-                self._session_pool_size,
-                self._session_pool_size - 1,
-            )
-            session = self.get_session()
-            self.close_session(session)
-            self._session_pool_size -= 1
-
-    def get_session(self):
-        # Try to get a session from the queue. If the queue is empty, try to add one more session to the queue. If the
-        # queue is already at its max, wait until a session becomes available.
-        _timeout = 60  # Rate-limit messages about session starvation
-        try:
-            session = self._session_pool.get(block=False)
-            log.debug(&#34;Server %s: Got session immediately&#34;, self.server)
-        except Empty:
-            with suppress(SessionPoolMaxSizeReached):
-                self.increase_poolsize()
-            while True:
-                try:
-                    log.debug(&#34;Server %s: Waiting for session&#34;, self.server)
-                    session = self._session_pool.get(timeout=_timeout)
-                    break
-                except Empty:
-                    # This is normal when we have many worker threads starving for available sessions
-                    log.debug(&#34;Server %s: No sessions available for %s seconds&#34;, self.server, _timeout)
-        log.debug(&#34;Server %s: Got session %s&#34;, self.server, session.session_id)
-        session.usage_count += 1
-        return session
-
-    def release_session(self, session):
-        # This should never fail, as we don&#39;t have more sessions than the queue contains
-        log.debug(&#34;Server %s: Releasing session %s&#34;, self.server, session.session_id)
-        if self.MAX_SESSION_USAGE_COUNT and session.usage_count &gt;= self.MAX_SESSION_USAGE_COUNT:
-            log.debug(&#34;Server %s: session %s usage exceeded limit. Discarding&#34;, self.server, session.session_id)
-            session = self.renew_session(session)
-        self._session_pool.put(session, block=False)
-
-    def close_session(self, session):
-        if isinstance(self.credentials, BaseOAuth2Credentials) and isinstance(
-            self.credentials.client, BackendApplicationClient
-        ):
-            # Reset access token
-            with self.credentials.lock:
-                self.credentials.access_token = None
-        session.close()
-        del session
-
-    def retire_session(self, session):
-        # The session is useless. Close it completely and place a fresh session in the pool
-        log.debug(&#34;Server %s: Retiring session %s&#34;, self.server, session.session_id)
-        self.close_session(session)
-        self.release_session(self.create_session())
-
-    def renew_session(self, session):
-        # The session is useless. Close it completely and place a fresh session in the pool
-        log.debug(&#34;Server %s: Renewing session %s&#34;, self.server, session.session_id)
-        self.close_session(session)
-        return self.create_session()
-
-    def refresh_credentials(self, session):
-        # Credentials need to be refreshed, probably due to an OAuth
-        # access token expiring. If we&#39;ve gotten here, it&#39;s because the
-        # application didn&#39;t provide an OAuth client secret, so we can&#39;t
-        # handle token refreshing for it.
-        with self.credentials.lock:
-            if self.credentials.sig() == session.credentials_sig:
-                # Credentials have not been refreshed by another thread:
-                # they&#39;re the same as the session was created with. If
-                # this isn&#39;t the case, we can just go ahead with a new
-                # session using the already-updated credentials.
-                self.credentials.refresh(session=session)
-        return self.renew_session(session)
-
-    def create_session(self):
-        if self.credentials is None:
-            if self.auth_type in CREDENTIALS_REQUIRED:
-                raise ValueError(f&#34;Auth type {self.auth_type!r} requires credentials&#34;)
-            session = self.raw_session(self.service_endpoint)
-            session.auth = get_auth_instance(auth_type=self.auth_type)
-        else:
-            if isinstance(self.credentials, BaseOAuth2Credentials):
-                with self.credentials.lock:
-                    session = self.create_oauth2_session()
-                    # Keep track of the credentials used to create this session. If and when we need to renew
-                    # credentials (for example, refreshing an OAuth access token), this lets us easily determine whether
-                    # the credentials have already been refreshed in another thread by the time this session tries.
-                    session.credentials_sig = self.credentials.sig()
-            else:
-                if self.auth_type == NTLM and self.credentials.type == self.credentials.EMAIL:
-                    username = &#34;\\&#34; + self.credentials.username
-                else:
-                    username = self.credentials.username
-                session = self.raw_session(self.service_endpoint)
-                session.auth = get_auth_instance(
-                    auth_type=self.auth_type, username=username, password=self.credentials.password
-                )
-
-        # Add some extra info
-        session.session_id = random.randint(10000, 99999)  # Used for debugging messages in services
-        session.usage_count = 0
-        log.debug(&#34;Server %s: Created session %s&#34;, self.server, session.session_id)
-        return session
-
-    def create_oauth2_session(self):
-        session = self.raw_session(
-            self.service_endpoint,
-            oauth2_client=self.credentials.client,
-            oauth2_session_params=self.credentials.session_params(),
-            oauth2_token_endpoint=self.credentials.token_url,
-        )
-        if not session.token:
-            # Fetch the token explicitly -- it doesn&#39;t occur implicitly
-            token = session.fetch_token(
-                token_url=self.credentials.token_url,
-                client_id=self.credentials.client_id,
-                client_secret=self.credentials.client_secret,
-                scope=self.credentials.scope,
-                timeout=self.TIMEOUT,
-                **self.credentials.token_params(),
-            )
-            # Allow the credentials object to update its copy of the new token, and give the application an opportunity
-            # to cache it.
-            self.credentials.on_token_auto_refreshed(token)
-        session.auth = get_auth_instance(auth_type=OAUTH2, client=self.credentials.client)
-
-        return session
-
-    @classmethod
-    def raw_session(cls, prefix, oauth2_client=None, oauth2_session_params=None, oauth2_token_endpoint=None):
-        if oauth2_client:
-            session = OAuth2Session(client=oauth2_client, **(oauth2_session_params or {}))
-        else:
-            session = requests.sessions.Session()
-        session.headers.update(DEFAULT_HEADERS)
-        session.headers[&#34;User-Agent&#34;] = cls.USERAGENT
-        session.mount(prefix, adapter=cls.get_adapter())
-        if oauth2_token_endpoint:
-            session.mount(oauth2_token_endpoint, adapter=cls.get_adapter())
-        return session
-
-    def __repr__(self):
-        return self.__class__.__name__ + repr((self.service_endpoint, self.credentials, self.auth_type))
-
-
-class CachingProtocol(type):
-    &#34;&#34;&#34;A metaclass for Protocol that caches Protocol instances based on a server+username key.&#34;&#34;&#34;
-
-    _protocol_cache = {}
-    _protocol_cache_lock = Lock()
-
-    def __call__(cls, *args, **kwargs):
-        # Cache Protocol instances that point to the same endpoint and use the same credentials. This ensures that we
-        # re-use thread and connection pools etc. instead of flooding the remote server. This is a modified Singleton
-        # pattern.
-        #
-        # We ignore auth_type from kwargs in the cache key. We trust caller to supply the correct auth_type - otherwise
-        # __init__ will guess the correct auth type.
-        config = kwargs[&#34;config&#34;]
-        from .configuration import Configuration
-
-        if not isinstance(config, Configuration):
-            raise InvalidTypeError(&#34;config&#34;, config, Configuration)
-        if not config.service_endpoint:
-            raise AttributeError(&#34;&#39;config.service_endpoint&#39; must be set&#34;)
-        _protocol_cache_key = cls._cache_key(config)
-
-        try:
-            protocol, _ = cls._protocol_cache[_protocol_cache_key]
-        except KeyError:
-            pass
-        else:
-            if isinstance(protocol, Exception):
-                # The input data leads to a TransportError. Re-throw
-                raise protocol
-            return protocol
-
-        # Acquire lock to guard against multiple threads competing to cache information. Having a per-server lock is
-        # probably overkill, although it would reduce lock contention.
-        log.debug(&#34;Waiting for _protocol_cache_lock&#34;)
-        with cls._protocol_cache_lock:
-            try:
-                protocol, _ = cls._protocol_cache[_protocol_cache_key]
-            except KeyError:
-                pass
-            else:
-                if isinstance(protocol, Exception):
-                    # We already tried this combination, possibly in a different competing thread, but the input
-                    # data leads to a TransportError.
-                    raise protocol
-                return protocol
-
-            log.debug(&#34;Protocol __call__ cache miss. Adding key &#39;%s&#39;&#34;, str(_protocol_cache_key))
-            try:
-                protocol = super().__call__(*args, **kwargs)
-            except TransportError as e:
-                # This can happen if, for example, autodiscover supplies us with a bogus EWS endpoint
-                log.warning(&#34;Failed to create cached protocol with key %s: %s&#34;, _protocol_cache_key, e)
-                cls._protocol_cache[_protocol_cache_key] = e, datetime.datetime.now()
-                raise e
-            cls._protocol_cache[_protocol_cache_key] = protocol, datetime.datetime.now()
-        return protocol
-
-    @staticmethod
-    def _cache_key(config):
-        # We may be using multiple different credentials for the same service endpoint. This key combination should be
-        # safe.
-        return config.service_endpoint, config.credentials
-
-    def __getitem__(cls, config):
-        return cls._protocol_cache[cls._cache_key(config)]
-
-    def __delitem__(cls, config):
-        del cls._protocol_cache[cls._cache_key(config)]
-
-    @classmethod
-    def clear_cache(mcs):
-        with mcs._protocol_cache_lock:
-            for key, (protocol, _) in mcs._protocol_cache.items():
-                if isinstance(protocol, Exception):
-                    continue
-                service_endpoint = key[0]
-                log.debug(&#34;Service endpoint &#39;%s&#39;: Closing sessions&#34;, service_endpoint)
-                with protocol._session_pool_lock:
-                    protocol.close()
-            mcs._protocol_cache.clear()
-
-
-class Protocol(BaseProtocol, metaclass=CachingProtocol):
-    &#34;&#34;&#34;A class to handle all the low-level communication with an Exchange server. Contains a session pool, knows how to
-    negotiate the authentication type of the server, refresh credentials, etc. Also contains methods for calling EWS
-    services that are not tied to an account.
-    &#34;&#34;&#34;
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self._version_lock = Lock()
-        self.api_version_hint = None
-
-    def get_auth_type(self):
-        # Autodetect authentication type. We also set &#39;self.api_version_hint&#39; here.
-        return get_service_authtype(protocol=self)
-
-    @property
-    def version(self):
-        # Make sure only one thread does the guessing.
-        if not self.config.version or not self.config.version.build:
-            log.debug(&#34;Waiting for _version_lock&#34;)
-            with self._version_lock:
-                if not self.config.version or not self.config.version.build:
-                    # Version.guess() needs auth objects and a working session pool
-                    self.config.version = Version.guess(self, api_version_hint=self.api_version_hint)
-        return self.config.version
-
-    def get_timezones(self, timezones=None, return_full_timezone_data=False):
-        &#34;&#34;&#34;Get timezone definitions from the server.
-
-        :param timezones: A list of EWSDateTime instances. If None, fetches all timezones from server
-          (Default value = None)
-        :param return_full_timezone_data: If true, also returns periods and transitions (Default value = False)
-
-        :return: A generator of TimeZoneDefinition objects
-        &#34;&#34;&#34;
-        return GetServerTimeZones(protocol=self).call(
-            timezones=timezones, return_full_timezone_data=return_full_timezone_data
-        )
-
-    def get_free_busy_info(self, accounts, start, end, merged_free_busy_interval=30, requested_view=&#34;DetailedMerged&#34;):
-        &#34;&#34;&#34;Return free/busy information for a list of accounts.
-
-        :param accounts: A list of (account, attendee_type, exclude_conflicts) tuples, where account is either an
-          Account object or a string, attendee_type is a MailboxData.attendee_type choice, and exclude_conflicts is a
-          boolean.
-        :param start: The start datetime of the request
-        :param end: The end datetime of the request
-        :param merged_free_busy_interval: The interval, in minutes, of merged free/busy information (Default value = 30)
-        :param requested_view: The type of information returned. Possible values are defined in the
-          FreeBusyViewOptions.requested_view choices. (Default value = &#39;DetailedMerged&#39;)
-
-        :return: A generator of FreeBusyView objects
-        &#34;&#34;&#34;
-        from .account import Account
-
-        tz_definition = list(self.get_timezones(timezones=[start.tzinfo], return_full_timezone_data=True))[0]
-        return GetUserAvailability(self).call(
-            tzinfo=start.tzinfo,
-            mailbox_data=[
-                MailboxData(
-                    email=account.primary_smtp_address if isinstance(account, Account) else account,
-                    attendee_type=attendee_type,
-                    exclude_conflicts=exclude_conflicts,
-                )
-                for account, attendee_type, exclude_conflicts in accounts
-            ],
-            timezone=TimeZone.from_server_timezone(tz_definition=tz_definition, for_year=start.year),
-            free_busy_view_options=FreeBusyViewOptions(
-                time_window=TimeWindow(start=start, end=end),
-                merged_free_busy_interval=merged_free_busy_interval,
-                requested_view=requested_view,
-            ),
-        )
-
-    def get_roomlists(self):
-        return GetRoomLists(protocol=self).call()
-
-    def get_rooms(self, roomlist):
-        return GetRooms(protocol=self).call(room_list=RoomList(email_address=roomlist))
-
-    def resolve_names(self, names, parent_folders=None, return_full_contact_data=False, search_scope=None, shape=None):
-        &#34;&#34;&#34;Resolve accounts on the server using partial account data, e.g. an email address or initials.
-
-        :param names: A list of identifiers to query
-        :param parent_folders: A list of contact folders to search in
-        :param return_full_contact_data: If True, returns full contact data (Default value = False)
-        :param search_scope: The scope to perform the search. Must be one of SEARCH_SCOPE_CHOICES (Default value = None)
-        :param shape: (Default value = None)
-
-        :return: A list of Mailbox items or, if return_full_contact_data is True, tuples of (Mailbox, Contact) items
-        &#34;&#34;&#34;
-        return list(
-            ResolveNames(protocol=self).call(
-                unresolved_entries=names,
-                parent_folders=parent_folders,
-                return_full_contact_data=return_full_contact_data,
-                search_scope=search_scope,
-                contact_data_shape=shape,
-            )
-        )
-
-    def expand_dl(self, distribution_list):
-        &#34;&#34;&#34;Expand distribution list into its members.
-
-        :param distribution_list: SMTP address of the distribution list to expand, or a DLMailbox representing the list
-
-        :return: List of Mailbox items that are members of the distribution list
-        &#34;&#34;&#34;
-        if isinstance(distribution_list, str):
-            distribution_list = DLMailbox(email_address=distribution_list, mailbox_type=&#34;PublicDL&#34;)
-        return list(ExpandDL(protocol=self).call(distribution_list=distribution_list))
-
-    def get_searchable_mailboxes(self, search_filter=None, expand_group_membership=False):
-        &#34;&#34;&#34;Call the GetSearchableMailboxes service to get mailboxes that can be searched.
-
-        This method is only available to users who have been assigned the Discovery Management RBAC role. See
-        https://docs.microsoft.com/en-us/exchange/permissions-exo/permissions-exo
-
-        :param search_filter: If set, must be a single email alias (Default value = None)
-        :param expand_group_membership: If True, returned distribution lists are expanded (Default value = False)
-
-        :return: a list of SearchableMailbox, FailedMailbox or Exception instances
-        &#34;&#34;&#34;
-        return list(
-            GetSearchableMailboxes(protocol=self).call(
-                search_filter=search_filter,
-                expand_group_membership=expand_group_membership,
-            )
-        )
-
-    def convert_ids(self, ids, destination_format):
-        &#34;&#34;&#34;Convert item and folder IDs between multiple formats.
-
-        :param ids: a list of AlternateId, AlternatePublicFolderId or AlternatePublicFolderItemId instances
-        :param destination_format: A string
-
-        :return: a generator of AlternateId, AlternatePublicFolderId or AlternatePublicFolderItemId instances
-        &#34;&#34;&#34;
-        return ConvertId(protocol=self).call(items=ids, destination_format=destination_format)
-
-    def dummy_xml(self):
-        # Generate a minimal, valid EWS request
-        svc = ConvertId(protocol=self)
-        return svc.wrap(
-            content=svc.get_payload(
-                items=[AlternateId(id=&#34;DUMMY&#34;, format=EWS_ID, mailbox=&#34;DUMMY&#34;)],
-                destination_format=ENTRY_ID,
-            ),
-            api_version=self.api_version_hint,
-        )
-
-    def __getstate__(self):
-        # The lock cannot be pickled
-        state = super().__getstate__()
-        del state[&#34;_version_lock&#34;]
-        return state
-
-    def __setstate__(self, state):
-        # Restore the lock
-        super().__setstate__(state)
-        self._version_lock = Lock()
-
-    def __str__(self):
-        # Don&#39;t trigger version guessing here just for the sake of printing
-        if self.config.version:
-            fullname, api_version, build = self.version.fullname, self.version.api_version, self.version.build
-        else:
-            fullname, api_version, build = &#34;[unknown]&#34;, &#34;[unknown]&#34;, &#34;[unknown]&#34;
-
-        return f&#34;&#34;&#34;\
-EWS url: {self.service_endpoint}
-Product name: {fullname}
-EWS API version: {api_version}
-Build number: {build}
-EWS auth: {self.auth_type}&#34;&#34;&#34;
-
-
-class NoVerifyHTTPAdapter(requests.adapters.HTTPAdapter):
-    &#34;&#34;&#34;An HTTP adapter that ignores TLS validation errors. Use at own risk.&#34;&#34;&#34;
-
-    def cert_verify(self, conn, url, verify, cert):
-        # pylint: disable=unused-argument
-        # We&#39;re overriding a method, so we have to keep the signature
-        super().cert_verify(conn=conn, url=url, verify=False, cert=cert)
-
-    def get_connection_with_tls_context(self, request, verify, proxies=None, cert=None):
-        # pylint: disable=unused-argument
-        # Required for requests &gt;= 2.32.3
-        # See: https://github.com/psf/requests/pull/6710
-        return super().get_connection_with_tls_context(request=request, verify=False, proxies=proxies, cert=cert)
-
-
-class TLSClientAuth(requests.adapters.HTTPAdapter):
-    &#34;&#34;&#34;An HTTP adapter that implements Certificate Based Authentication (CBA).&#34;&#34;&#34;
-
-    cert_file = None
-
-    def init_poolmanager(self, *args, **kwargs):
-        kwargs[&#34;cert_file&#34;] = self.cert_file
-        return super().init_poolmanager(*args, **kwargs)
-
-
-class RetryPolicy(metaclass=abc.ABCMeta):
-    &#34;&#34;&#34;Stores retry logic used when faced with errors from the server.&#34;&#34;&#34;
-
-    @property
-    @abc.abstractmethod
-    def fail_fast(self):
-        &#34;&#34;&#34;Used to choose the error handling policy. When True, a fault-tolerant policy is used. False, a fail-fast
-        policy is used.&#34;&#34;&#34;
-
-    @property
-    @abc.abstractmethod
-    def back_off_until(self):
-        &#34;&#34;&#34;Return a datetime to back off until&#34;&#34;&#34;
-
-    @back_off_until.setter
-    @abc.abstractmethod
-    def back_off_until(self, value):
-        &#34;&#34;&#34;Setter for back off values&#34;&#34;&#34;
-
-    @abc.abstractmethod
-    def back_off(self, seconds):
-        &#34;&#34;&#34;Set a new back off until value&#34;&#34;&#34;
-
-    def raise_response_errors(self, response):
-        if response.status_code == 200:
-            # Response is OK
-            return
-        if response.status_code == 500 and response.content and is_xml(response.content):
-            # Some genius at Microsoft thinks it&#39;s OK to send a valid SOAP response as an HTTP 500
-            log.debug(&#34;Got status code %s but trying to parse content anyway&#34;, response.status_code)
-            return
-        cas_error = response.headers.get(&#34;X-CasErrorCode&#34;)
-        if cas_error:
-            if cas_error.startswith(&#34;CAS error:&#34;):
-                # Remove unnecessary text
-                cas_error = cas_error.split(&#34;:&#34;, 1)[1].strip()
-            raise CASError(cas_error=cas_error, response=response)
-        if response.status_code == 500 and (
-            b&#34;The specified server version is invalid&#34; in response.content
-            or b&#34;ErrorInvalidSchemaVersionForMailboxVersion&#34; in response.content
-        ):
-            # Another way of communicating invalid schema versions
-            raise ErrorInvalidSchemaVersionForMailboxVersion(&#34;Invalid server version&#34;)
-        if response.headers.get(&#34;connection&#34;) == &#34;close&#34;:
-            # Connection closed. OK to retry.
-            raise ErrorServerBusy(&#34;Caused by closed connection&#34;)
-        if (
-            response.status_code == 302
-            and response.headers.get(&#34;location&#34;, &#34;&#34;).lower()
-            == &#34;/ews/genericerrorpage.htm?aspxerrorpath=/ews/exchange.asmx&#34;
-        ):
-            # Redirect to genericerrorpage.htm is ridiculous behaviour for random outages. OK to retry.
-            #
-            # Redirect to &#39;/internalsite/internalerror.asp&#39; or &#39;/internalsite/initparams.aspx&#39; is caused by e.g. TLS
-            # certificate f*ckups on the Exchange server. We should not retry those.
-            raise ErrorInternalServerTransientError(f&#34;Caused by HTTP 302 redirect to {response.headers[&#39;location&#39;]}&#34;)
-        if response.status_code in (301, 302):
-            try:
-                redirect_url = get_redirect_url(response=response, allow_relative=False)
-            except RelativeRedirect as e:
-                log.debug(&#34;Redirect not allowed but we were relative redirected (%s -&gt; %s)&#34;, response.url, e.value)
-                raise RedirectError(url=e.value)
-            log.debug(&#34;Redirect not allowed but we were redirected ( (%s -&gt; %s)&#34;, response.url, redirect_url)
-            raise RedirectError(url=redirect_url)
-        if b&#34;The referenced account is currently locked out&#34; in response.content:
-            raise UnauthorizedError(&#34;The referenced account is currently locked out&#34;)
-        if response.status_code == 401 and self.fail_fast:
-            # This is a login failure
-            raise UnauthorizedError(f&#34;Invalid credentials for {response.url}&#34;)
-        if response.status_code == 401:
-            # EWS sometimes throws 401&#39;s when it wants us to throttle connections. OK to retry.
-            raise ErrorServerBusy(&#34;Caused by HTTP 401 response&#34;)
-        if response.status_code == 500 and b&#34;Server Error in &#39;/EWS&#39; Application&#34; in response.content:
-            # &#34;Server Error in &#39;/EWS&#39; Application&#34; has been seen in highly concurrent settings. OK to retry.
-            raise ErrorInternalServerTransientError(&#34;Caused by \&#34;Server Error in &#39;EWS&#39; Application\&#34;&#34;)
-        if response.status_code == 503:
-            # Internal server error. OK to retry.
-            raise ErrorInternalServerTransientError(&#34;Caused by HTTP 503 response&#34;)
-        # This could be anything. Let higher layers handle this
-        raise MalformedResponseError(
-            f&#34;Unknown failure in response. Code: {response.status_code} headers: {response.headers} &#34;
-            f&#34;content: {response.text}&#34;
-        )
-
-
-class FailFast(RetryPolicy):
-    &#34;&#34;&#34;Fail immediately on server errors.&#34;&#34;&#34;
-
-    @property
-    def fail_fast(self):
-        return True
-
-    @property
-    def back_off_until(self):
-        return None
-
-    def back_off(self, seconds):
-        raise ValueError(&#34;Cannot back off with fail-fast policy&#34;)
-
-
-class FaultTolerance(RetryPolicy):
-    &#34;&#34;&#34;Enables fault-tolerant error handling. Tells internal methods to do an exponential back off when requests start
-    failing, and wait up to max_wait seconds before failing.
-    &#34;&#34;&#34;
-
-    # Back off 60 seconds if we didn&#39;t get an explicit suggested value
-    DEFAULT_BACKOFF = 60
-
-    def __init__(self, max_wait=3600):
-        self.max_wait = max_wait
-        self._back_off_until = None
-        self._back_off_lock = Lock()
-
-    def __getstate__(self):
-        # Locks cannot be pickled
-        state = self.__dict__.copy()
-        del state[&#34;_back_off_lock&#34;]
-        return state
-
-    def __setstate__(self, state):
-        # Restore the lock
-        self.__dict__.update(state)
-        self._back_off_lock = Lock()
-
-    @property
-    def fail_fast(self):
-        return False
-
-    @property
-    def back_off_until(self):
-        &#34;&#34;&#34;Return the back off value as a datetime. Reset the current back off value if it has expired.&#34;&#34;&#34;
-        if self._back_off_until is None:
-            return None
-        with self._back_off_lock:
-            if self._back_off_until is None:
-                return None
-            if self._back_off_until &lt; datetime.datetime.now():
-                self._back_off_until = None  # The back off value has expired. Reset
-                return None
-            return self._back_off_until
-
-    @back_off_until.setter
-    def back_off_until(self, value):
-        with self._back_off_lock:
-            self._back_off_until = value
-
-    def back_off(self, seconds):
-        if seconds is None:
-            seconds = self.DEFAULT_BACKOFF
-        if seconds &gt; self.max_wait:
-            # We lost patience. Session is cleaned up in outer loop
-            raise RateLimitError(&#34;Max timeout reached&#34;, wait=seconds)
-        value = datetime.datetime.now() + datetime.timedelta(seconds=seconds)
-        with self._back_off_lock:
-            self._back_off_until = value
-
-    def raise_response_errors(self, response):
-        try:
-            return super().raise_response_errors(response)
-        except (ErrorInternalServerTransientError, ErrorServerBusy) as e:
-            # Pass on the retry header value
-            retry_after = _get_retry_after(response)
-            if retry_after:
-                raise ErrorServerBusy(e.args[0], back_off=retry_after)
-            raise</code></pre>
-</details>
 </section>
 <section>
 </section>
@@ -865,7 +51,6 @@ class FaultTolerance(RetryPolicy):
 <span>def <span class="ident">close_connections</span></span>(<span>)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -873,6 +58,7 @@ class FaultTolerance(RetryPolicy):
 <pre><code class="python">def close_connections():
     CachingProtocol.clear_cache()</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 </section>
@@ -884,7 +70,6 @@ class FaultTolerance(RetryPolicy):
 <span>(</span><span>config)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Base class for Protocol which implements the bare essentials.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1193,6 +378,7 @@ class FaultTolerance(RetryPolicy):
     def __repr__(self):
         return self.__class__.__name__ + repr((self.service_endpoint, self.credentials, self.auth_type))</code></pre>
 </details>
+<div class="desc"><p>Base class for Protocol which implements the bare essentials.</p></div>
 <h3>Subclasses</h3>
 <ul class="hlist">
 <li><a title="exchangelib.autodiscover.protocol.AutodiscoverProtocol" href="autodiscover/protocol.html#exchangelib.autodiscover.protocol.AutodiscoverProtocol">AutodiscoverProtocol</a></li>
@@ -1261,50 +447,18 @@ s.mount('http://', a)</p>
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def get_adapter(cls):
-    # We want just one connection per session. No retries, since we wrap all requests in our own retry handler
-    return cls.HTTP_ADAPTER_CLS(
-        pool_block=True,
-        pool_connections=cls.CONNECTIONS_PER_SESSION,
-        pool_maxsize=cls.CONNECTIONS_PER_SESSION,
-        max_retries=0,
-    )</code></pre>
-</details>
 </dd>
 <dt id="exchangelib.protocol.BaseProtocol.raw_session"><code class="name flex">
-<span>def <span class="ident">raw_session</span></span>(<span>prefix, oauth2_client=None, oauth2_session_params=None, oauth2_token_endpoint=None)</span>
+<span>def <span class="ident">raw_session</span></span>(<span>prefix,<br>oauth2_client=None,<br>oauth2_session_params=None,<br>oauth2_token_endpoint=None)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def raw_session(cls, prefix, oauth2_client=None, oauth2_session_params=None, oauth2_token_endpoint=None):
-    if oauth2_client:
-        session = OAuth2Session(client=oauth2_client, **(oauth2_session_params or {}))
-    else:
-        session = requests.sessions.Session()
-    session.headers.update(DEFAULT_HEADERS)
-    session.headers[&#34;User-Agent&#34;] = cls.USERAGENT
-    session.mount(prefix, adapter=cls.get_adapter())
-    if oauth2_token_endpoint:
-        session.mount(oauth2_token_endpoint, adapter=cls.get_adapter())
-    return session</code></pre>
-</details>
 </dd>
 </dl>
 <h3>Instance variables</h3>
 <dl>
-<dt id="exchangelib.protocol.BaseProtocol.auth_type"><code class="name">var <span class="ident">auth_type</span></code></dt>
+<dt id="exchangelib.protocol.BaseProtocol.auth_type"><code class="name">prop <span class="ident">auth_type</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1316,10 +470,10 @@ def auth_type(self):
         self.config.auth_type = self.get_auth_type()
     return self.config.auth_type</code></pre>
 </details>
-</dd>
-<dt id="exchangelib.protocol.BaseProtocol.credentials"><code class="name">var <span class="ident">credentials</span></code></dt>
-<dd>
 <div class="desc"></div>
+</dd>
+<dt id="exchangelib.protocol.BaseProtocol.credentials"><code class="name">prop <span class="ident">credentials</span></code></dt>
+<dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1328,10 +482,10 @@ def auth_type(self):
 def credentials(self):
     return self.config.credentials</code></pre>
 </details>
-</dd>
-<dt id="exchangelib.protocol.BaseProtocol.max_connections"><code class="name">var <span class="ident">max_connections</span></code></dt>
-<dd>
 <div class="desc"></div>
+</dd>
+<dt id="exchangelib.protocol.BaseProtocol.max_connections"><code class="name">prop <span class="ident">max_connections</span></code></dt>
+<dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1340,10 +494,10 @@ def credentials(self):
 def max_connections(self):
     return self._session_pool_maxsize</code></pre>
 </details>
-</dd>
-<dt id="exchangelib.protocol.BaseProtocol.retry_policy"><code class="name">var <span class="ident">retry_policy</span></code></dt>
-<dd>
 <div class="desc"></div>
+</dd>
+<dt id="exchangelib.protocol.BaseProtocol.retry_policy"><code class="name">prop <span class="ident">retry_policy</span></code></dt>
+<dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1352,10 +506,10 @@ def max_connections(self):
 def retry_policy(self):
     return self.config.retry_policy</code></pre>
 </details>
-</dd>
-<dt id="exchangelib.protocol.BaseProtocol.server"><code class="name">var <span class="ident">server</span></code></dt>
-<dd>
 <div class="desc"></div>
+</dd>
+<dt id="exchangelib.protocol.BaseProtocol.server"><code class="name">prop <span class="ident">server</span></code></dt>
+<dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1364,10 +518,10 @@ def retry_policy(self):
 def server(self):
     return self.config.server</code></pre>
 </details>
-</dd>
-<dt id="exchangelib.protocol.BaseProtocol.service_endpoint"><code class="name">var <span class="ident">service_endpoint</span></code></dt>
-<dd>
 <div class="desc"></div>
+</dd>
+<dt id="exchangelib.protocol.BaseProtocol.service_endpoint"><code class="name">prop <span class="ident">service_endpoint</span></code></dt>
+<dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1376,10 +530,10 @@ def server(self):
 def service_endpoint(self):
     return self.config.service_endpoint</code></pre>
 </details>
-</dd>
-<dt id="exchangelib.protocol.BaseProtocol.session_pool_size"><code class="name">var <span class="ident">session_pool_size</span></code></dt>
-<dd>
 <div class="desc"></div>
+</dd>
+<dt id="exchangelib.protocol.BaseProtocol.session_pool_size"><code class="name">prop <span class="ident">session_pool_size</span></code></dt>
+<dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1388,6 +542,7 @@ def service_endpoint(self):
 def session_pool_size(self):
     return self._session_pool_size</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -1396,7 +551,6 @@ def session_pool_size(self):
 <span>def <span class="ident">close</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1411,12 +565,12 @@ def session_pool_size(self):
         except Empty:
             break</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.protocol.BaseProtocol.close_session"><code class="name flex">
 <span>def <span class="ident">close_session</span></span>(<span>self, session)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1431,12 +585,12 @@ def session_pool_size(self):
     session.close()
     del session</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.protocol.BaseProtocol.create_oauth2_session"><code class="name flex">
 <span>def <span class="ident">create_oauth2_session</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1465,12 +619,12 @@ def session_pool_size(self):
 
     return session</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.protocol.BaseProtocol.create_session"><code class="name flex">
 <span>def <span class="ident">create_session</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1505,13 +659,12 @@ def session_pool_size(self):
     log.debug(&#34;Server %s: Created session %s&#34;, self.server, session.session_id)
     return session</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.protocol.BaseProtocol.decrease_poolsize"><code class="name flex">
 <span>def <span class="ident">decrease_poolsize</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Decreases the session pool size in response to error messages from the server requesting to rate-limit
-requests. We decrease by one session per call.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1538,12 +691,13 @@ requests. We decrease by one session per call.</p></div>
         self.close_session(session)
         self._session_pool_size -= 1</code></pre>
 </details>
+<div class="desc"><p>Decreases the session pool size in response to error messages from the server requesting to rate-limit
+requests. We decrease by one session per call.</p></div>
 </dd>
 <dt id="exchangelib.protocol.BaseProtocol.get_auth_type"><code class="name flex">
 <span>def <span class="ident">get_auth_type</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Autodetect authentication type</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1552,12 +706,12 @@ requests. We decrease by one session per call.</p></div>
 def get_auth_type(self):
     &#34;&#34;&#34;Autodetect authentication type&#34;&#34;&#34;</code></pre>
 </details>
+<div class="desc"><p>Autodetect authentication type</p></div>
 </dd>
 <dt id="exchangelib.protocol.BaseProtocol.get_session"><code class="name flex">
 <span>def <span class="ident">get_session</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1584,12 +738,12 @@ def get_auth_type(self):
     session.usage_count += 1
     return session</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.protocol.BaseProtocol.increase_poolsize"><code class="name flex">
 <span>def <span class="ident">increase_poolsize</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Increases the session pool size. We increase by one session per call.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1613,12 +767,12 @@ def get_auth_type(self):
         self._session_pool.put(self.create_session(), block=False)
         self._session_pool_size += 1</code></pre>
 </details>
+<div class="desc"><p>Increases the session pool size. We increase by one session per call.</p></div>
 </dd>
 <dt id="exchangelib.protocol.BaseProtocol.refresh_credentials"><code class="name flex">
 <span>def <span class="ident">refresh_credentials</span></span>(<span>self, session)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1637,12 +791,12 @@ def get_auth_type(self):
             self.credentials.refresh(session=session)
     return self.renew_session(session)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.protocol.BaseProtocol.release_session"><code class="name flex">
 <span>def <span class="ident">release_session</span></span>(<span>self, session)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1655,12 +809,12 @@ def get_auth_type(self):
         session = self.renew_session(session)
     self._session_pool.put(session, block=False)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.protocol.BaseProtocol.renew_session"><code class="name flex">
 <span>def <span class="ident">renew_session</span></span>(<span>self, session)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1671,12 +825,12 @@ def get_auth_type(self):
     self.close_session(session)
     return self.create_session()</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.protocol.BaseProtocol.retire_session"><code class="name flex">
 <span>def <span class="ident">retire_session</span></span>(<span>self, session)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1687,6 +841,7 @@ def get_auth_type(self):
     self.close_session(session)
     self.release_session(self.create_session())</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 </dd>
@@ -1695,7 +850,6 @@ def get_auth_type(self):
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>A metaclass for Protocol that caches Protocol instances based on a server+username key.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1782,6 +936,7 @@ def get_auth_type(self):
                     protocol.close()
             mcs._protocol_cache.clear()</code></pre>
 </details>
+<div class="desc"><p>A metaclass for Protocol that caches Protocol instances based on a server+username key.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>builtins.type</li>
@@ -1793,22 +948,6 @@ def get_auth_type(self):
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def clear_cache(mcs):
-    with mcs._protocol_cache_lock:
-        for key, (protocol, _) in mcs._protocol_cache.items():
-            if isinstance(protocol, Exception):
-                continue
-            service_endpoint = key[0]
-            log.debug(&#34;Service endpoint &#39;%s&#39;: Closing sessions&#34;, service_endpoint)
-            with protocol._session_pool_lock:
-                protocol.close()
-        mcs._protocol_cache.clear()</code></pre>
-</details>
 </dd>
 </dl>
 </dd>
@@ -1816,7 +955,6 @@ def clear_cache(mcs):
 <span>class <span class="ident">FailFast</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Fail immediately on server errors.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1835,6 +973,7 @@ def clear_cache(mcs):
     def back_off(self, seconds):
         raise ValueError(&#34;Cannot back off with fail-fast policy&#34;)</code></pre>
 </details>
+<div class="desc"><p>Fail immediately on server errors.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.protocol.RetryPolicy" href="#exchangelib.protocol.RetryPolicy">RetryPolicy</a></li>
@@ -1855,8 +994,6 @@ def clear_cache(mcs):
 <span>(</span><span>max_wait=3600)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Enables fault-tolerant error handling. Tells internal methods to do an exponential back off when requests start
-failing, and wait up to max_wait seconds before failing.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1927,6 +1064,8 @@ failing, and wait up to max_wait seconds before failing.</p></div>
                 raise ErrorServerBusy(e.args[0], back_off=retry_after)
             raise</code></pre>
 </details>
+<div class="desc"><p>Enables fault-tolerant error handling. Tells internal methods to do an exponential back off when requests start
+failing, and wait up to max_wait seconds before failing.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.protocol.RetryPolicy" href="#exchangelib.protocol.RetryPolicy">RetryPolicy</a></li>
@@ -1940,9 +1079,8 @@ failing, and wait up to max_wait seconds before failing.</p></div>
 </dl>
 <h3>Instance variables</h3>
 <dl>
-<dt id="exchangelib.protocol.FaultTolerance.back_off_until"><code class="name">var <span class="ident">back_off_until</span></code></dt>
+<dt id="exchangelib.protocol.FaultTolerance.back_off_until"><code class="name">prop <span class="ident">back_off_until</span></code></dt>
 <dd>
-<div class="desc"><p>Return the back off value as a datetime. Reset the current back off value if it has expired.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1960,6 +1098,7 @@ def back_off_until(self):
             return None
         return self._back_off_until</code></pre>
 </details>
+<div class="desc"><p>Return the back off value as a datetime. Reset the current back off value if it has expired.</p></div>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -1968,7 +1107,6 @@ def back_off_until(self):
 <span>def <span class="ident">raise_response_errors</span></span>(<span>self, response)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1983,6 +1121,7 @@ def back_off_until(self):
             raise ErrorServerBusy(e.args[0], back_off=retry_after)
         raise</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -2000,7 +1139,6 @@ def back_off_until(self):
 <span>(</span><span>pool_connections=10, pool_maxsize=10, max_retries=0, pool_block=False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>An HTTP adapter that ignores TLS validation errors. Use at own risk.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2019,6 +1157,7 @@ def back_off_until(self):
         # See: https://github.com/psf/requests/pull/6710
         return super().get_connection_with_tls_context(request=request, verify=False, proxies=proxies, cert=cert)</code></pre>
 </details>
+<div class="desc"><p>An HTTP adapter that ignores TLS validation errors. Use at own risk.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>requests.adapters.HTTPAdapter</li>
@@ -2030,15 +1169,6 @@ def back_off_until(self):
 <span>def <span class="ident">cert_verify</span></span>(<span>self, conn, url, verify, cert)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Verify a SSL certificate. This method should not be called from user
-code, and is only exposed for use when subclassing the
-:class:<code>HTTPAdapter &lt;requests.adapters.HTTPAdapter&gt;</code>.</p>
-<p>:param conn: The urllib3 connection object associated with the cert.
-:param url: The requested URL.
-:param verify: Either a boolean, in which case it controls whether we verify
-the server's TLS certificate, or a string, in which case it must be a path
-to a CA bundle to use
-:param cert: The SSL certificate to verify.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2048,12 +1178,20 @@ to a CA bundle to use
     # We&#39;re overriding a method, so we have to keep the signature
     super().cert_verify(conn=conn, url=url, verify=False, cert=cert)</code></pre>
 </details>
+<div class="desc"><p>Verify a SSL certificate. This method should not be called from user
+code, and is only exposed for use when subclassing the
+:class:<code>HTTPAdapter &lt;requests.adapters.HTTPAdapter&gt;</code>.</p>
+<p>:param conn: The urllib3 connection object associated with the cert.
+:param url: The requested URL.
+:param verify: Either a boolean, in which case it controls whether we verify
+the server's TLS certificate, or a string, in which case it must be a path
+to a CA bundle to use
+:param cert: The SSL certificate to verify.</p></div>
 </dd>
 <dt id="exchangelib.protocol.NoVerifyHTTPAdapter.get_connection_with_tls_context"><code class="name flex">
 <span>def <span class="ident">get_connection_with_tls_context</span></span>(<span>self, request, verify, proxies=None, cert=None)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2064,6 +1202,23 @@ to a CA bundle to use
     # See: https://github.com/psf/requests/pull/6710
     return super().get_connection_with_tls_context(request=request, verify=False, proxies=proxies, cert=cert)</code></pre>
 </details>
+<div class="desc"><p>Returns a urllib3 connection for the given request and TLS settings.
+This should not be called from user code, and is only exposed for use
+when subclassing the :class:<code>HTTPAdapter &lt;requests.adapters.HTTPAdapter&gt;</code>.</p>
+<p>:param request:
+The :class:<code>PreparedRequest &lt;PreparedRequest&gt;</code> object to be sent
+over the connection.
+:param verify:
+Either a boolean, in which case it controls whether we verify the
+server's TLS certificate, or a string, in which case it must be a
+path to a CA bundle to use.
+:param proxies:
+(optional) The proxies dictionary to apply to the request.
+:param cert:
+(optional) Any user-provided SSL certificate to be used for client
+authentication (a.k.a., mTLS).
+:rtype:
+urllib3.ConnectionPool</p></div>
 </dd>
 </dl>
 </dd>
@@ -2072,9 +1227,6 @@ to a CA bundle to use
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>A class to handle all the low-level communication with an Exchange server. Contains a session pool, knows how to
-negotiate the authentication type of the server, refresh credentials, etc. Also contains methods for calling EWS
-services that are not tied to an account.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2255,15 +1407,17 @@ EWS API version: {api_version}
 Build number: {build}
 EWS auth: {self.auth_type}&#34;&#34;&#34;</code></pre>
 </details>
+<div class="desc"><p>A class to handle all the low-level communication with an Exchange server. Contains a session pool, knows how to
+negotiate the authentication type of the server, refresh credentials, etc. Also contains methods for calling EWS
+services that are not tied to an account.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.protocol.BaseProtocol" href="#exchangelib.protocol.BaseProtocol">BaseProtocol</a></li>
 </ul>
 <h3>Instance variables</h3>
 <dl>
-<dt id="exchangelib.protocol.Protocol.version"><code class="name">var <span class="ident">version</span></code></dt>
+<dt id="exchangelib.protocol.Protocol.version"><code class="name">prop <span class="ident">version</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2279,6 +1433,7 @@ def version(self):
                 self.config.version = Version.guess(self, api_version_hint=self.api_version_hint)
     return self.config.version</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -2287,10 +1442,6 @@ def version(self):
 <span>def <span class="ident">convert_ids</span></span>(<span>self, ids, destination_format)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Convert item and folder IDs between multiple formats.</p>
-<p>:param ids: a list of AlternateId, AlternatePublicFolderId or AlternatePublicFolderItemId instances
-:param destination_format: A string</p>
-<p>:return: a generator of AlternateId, AlternatePublicFolderId or AlternatePublicFolderItemId instances</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2305,12 +1456,15 @@ def version(self):
     &#34;&#34;&#34;
     return ConvertId(protocol=self).call(items=ids, destination_format=destination_format)</code></pre>
 </details>
+<div class="desc"><p>Convert item and folder IDs between multiple formats.</p>
+<p>:param ids: a list of AlternateId, AlternatePublicFolderId or AlternatePublicFolderItemId instances
+:param destination_format: A string</p>
+<p>:return: a generator of AlternateId, AlternatePublicFolderId or AlternatePublicFolderItemId instances</p></div>
 </dd>
 <dt id="exchangelib.protocol.Protocol.dummy_xml"><code class="name flex">
 <span>def <span class="ident">dummy_xml</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2326,14 +1480,12 @@ def version(self):
         api_version=self.api_version_hint,
     )</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.protocol.Protocol.expand_dl"><code class="name flex">
 <span>def <span class="ident">expand_dl</span></span>(<span>self, distribution_list)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Expand distribution list into its members.</p>
-<p>:param distribution_list: SMTP address of the distribution list to expand, or a DLMailbox representing the list</p>
-<p>:return: List of Mailbox items that are members of the distribution list</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2349,21 +1501,14 @@ def version(self):
         distribution_list = DLMailbox(email_address=distribution_list, mailbox_type=&#34;PublicDL&#34;)
     return list(ExpandDL(protocol=self).call(distribution_list=distribution_list))</code></pre>
 </details>
+<div class="desc"><p>Expand distribution list into its members.</p>
+<p>:param distribution_list: SMTP address of the distribution list to expand, or a DLMailbox representing the list</p>
+<p>:return: List of Mailbox items that are members of the distribution list</p></div>
 </dd>
 <dt id="exchangelib.protocol.Protocol.get_free_busy_info"><code class="name flex">
-<span>def <span class="ident">get_free_busy_info</span></span>(<span>self, accounts, start, end, merged_free_busy_interval=30, requested_view='DetailedMerged')</span>
+<span>def <span class="ident">get_free_busy_info</span></span>(<span>self,<br>accounts,<br>start,<br>end,<br>merged_free_busy_interval=30,<br>requested_view='DetailedMerged')</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Return free/busy information for a list of accounts.</p>
-<p>:param accounts: A list of (account, attendee_type, exclude_conflicts) tuples, where account is either an
-Account object or a string, attendee_type is a MailboxData.attendee_type choice, and exclude_conflicts is a
-boolean.
-:param start: The start datetime of the request
-:param end: The end datetime of the request
-:param merged_free_busy_interval: The interval, in minutes, of merged free/busy information (Default value = 30)
-:param requested_view: The type of information returned. Possible values are defined in the
-FreeBusyViewOptions.requested_view choices. (Default value = 'DetailedMerged')</p>
-<p>:return: A generator of FreeBusyView objects</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2403,12 +1548,21 @@ FreeBusyViewOptions.requested_view choices. (Default value = 'DetailedMerged')</
         ),
     )</code></pre>
 </details>
+<div class="desc"><p>Return free/busy information for a list of accounts.</p>
+<p>:param accounts: A list of (account, attendee_type, exclude_conflicts) tuples, where account is either an
+Account object or a string, attendee_type is a MailboxData.attendee_type choice, and exclude_conflicts is a
+boolean.
+:param start: The start datetime of the request
+:param end: The end datetime of the request
+:param merged_free_busy_interval: The interval, in minutes, of merged free/busy information (Default value = 30)
+:param requested_view: The type of information returned. Possible values are defined in the
+FreeBusyViewOptions.requested_view choices. (Default value = 'DetailedMerged')</p>
+<p>:return: A generator of FreeBusyView objects</p></div>
 </dd>
 <dt id="exchangelib.protocol.Protocol.get_roomlists"><code class="name flex">
 <span>def <span class="ident">get_roomlists</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2416,12 +1570,12 @@ FreeBusyViewOptions.requested_view choices. (Default value = 'DetailedMerged')</
 <pre><code class="python">def get_roomlists(self):
     return GetRoomLists(protocol=self).call()</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.protocol.Protocol.get_rooms"><code class="name flex">
 <span>def <span class="ident">get_rooms</span></span>(<span>self, roomlist)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2429,17 +1583,12 @@ FreeBusyViewOptions.requested_view choices. (Default value = 'DetailedMerged')</
 <pre><code class="python">def get_rooms(self, roomlist):
     return GetRooms(protocol=self).call(room_list=RoomList(email_address=roomlist))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.protocol.Protocol.get_searchable_mailboxes"><code class="name flex">
 <span>def <span class="ident">get_searchable_mailboxes</span></span>(<span>self, search_filter=None, expand_group_membership=False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Call the GetSearchableMailboxes service to get mailboxes that can be searched.</p>
-<p>This method is only available to users who have been assigned the Discovery Management RBAC role. See
-<a href="https://docs.microsoft.com/en-us/exchange/permissions-exo/permissions-exo">https://docs.microsoft.com/en-us/exchange/permissions-exo/permissions-exo</a></p>
-<p>:param search_filter: If set, must be a single email alias (Default value = None)
-:param expand_group_membership: If True, returned distribution lists are expanded (Default value = False)</p>
-<p>:return: a list of SearchableMailbox, FailedMailbox or Exception instances</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2462,16 +1611,17 @@ FreeBusyViewOptions.requested_view choices. (Default value = 'DetailedMerged')</
         )
     )</code></pre>
 </details>
+<div class="desc"><p>Call the GetSearchableMailboxes service to get mailboxes that can be searched.</p>
+<p>This method is only available to users who have been assigned the Discovery Management RBAC role. See
+<a href="https://docs.microsoft.com/en-us/exchange/permissions-exo/permissions-exo">https://docs.microsoft.com/en-us/exchange/permissions-exo/permissions-exo</a></p>
+<p>:param search_filter: If set, must be a single email alias (Default value = None)
+:param expand_group_membership: If True, returned distribution lists are expanded (Default value = False)</p>
+<p>:return: a list of SearchableMailbox, FailedMailbox or Exception instances</p></div>
 </dd>
 <dt id="exchangelib.protocol.Protocol.get_timezones"><code class="name flex">
 <span>def <span class="ident">get_timezones</span></span>(<span>self, timezones=None, return_full_timezone_data=False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Get timezone definitions from the server.</p>
-<p>:param timezones: A list of EWSDateTime instances. If None, fetches all timezones from server
-(Default value = None)
-:param return_full_timezone_data: If true, also returns periods and transitions (Default value = False)</p>
-<p>:return: A generator of TimeZoneDefinition objects</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2489,18 +1639,16 @@ FreeBusyViewOptions.requested_view choices. (Default value = 'DetailedMerged')</
         timezones=timezones, return_full_timezone_data=return_full_timezone_data
     )</code></pre>
 </details>
+<div class="desc"><p>Get timezone definitions from the server.</p>
+<p>:param timezones: A list of EWSDateTime instances. If None, fetches all timezones from server
+(Default value = None)
+:param return_full_timezone_data: If true, also returns periods and transitions (Default value = False)</p>
+<p>:return: A generator of TimeZoneDefinition objects</p></div>
 </dd>
 <dt id="exchangelib.protocol.Protocol.resolve_names"><code class="name flex">
-<span>def <span class="ident">resolve_names</span></span>(<span>self, names, parent_folders=None, return_full_contact_data=False, search_scope=None, shape=None)</span>
+<span>def <span class="ident">resolve_names</span></span>(<span>self,<br>names,<br>parent_folders=None,<br>return_full_contact_data=False,<br>search_scope=None,<br>shape=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Resolve accounts on the server using partial account data, e.g. an email address or initials.</p>
-<p>:param names: A list of identifiers to query
-:param parent_folders: A list of contact folders to search in
-:param return_full_contact_data: If True, returns full contact data (Default value = False)
-:param search_scope: The scope to perform the search. Must be one of SEARCH_SCOPE_CHOICES (Default value = None)
-:param shape: (Default value = None)</p>
-<p>:return: A list of Mailbox items or, if return_full_contact_data is True, tuples of (Mailbox, Contact) items</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2526,6 +1674,13 @@ FreeBusyViewOptions.requested_view choices. (Default value = 'DetailedMerged')</
         )
     )</code></pre>
 </details>
+<div class="desc"><p>Resolve accounts on the server using partial account data, e.g. an email address or initials.</p>
+<p>:param names: A list of identifiers to query
+:param parent_folders: A list of contact folders to search in
+:param return_full_contact_data: If True, returns full contact data (Default value = False)
+:param search_scope: The scope to perform the search. Must be one of SEARCH_SCOPE_CHOICES (Default value = None)
+:param shape: (Default value = None)</p>
+<p>:return: A list of Mailbox items or, if return_full_contact_data is True, tuples of (Mailbox, Contact) items</p></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -2544,7 +1699,6 @@ FreeBusyViewOptions.requested_view choices. (Default value = 'DetailedMerged')</
 <span>class <span class="ident">RetryPolicy</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Stores retry logic used when faced with errors from the server.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2633,6 +1787,7 @@ FreeBusyViewOptions.requested_view choices. (Default value = 'DetailedMerged')</
             f&#34;content: {response.text}&#34;
         )</code></pre>
 </details>
+<div class="desc"><p>Stores retry logic used when faced with errors from the server.</p></div>
 <h3>Subclasses</h3>
 <ul class="hlist">
 <li><a title="exchangelib.protocol.FailFast" href="#exchangelib.protocol.FailFast">FailFast</a></li>
@@ -2640,9 +1795,8 @@ FreeBusyViewOptions.requested_view choices. (Default value = 'DetailedMerged')</
 </ul>
 <h3>Instance variables</h3>
 <dl>
-<dt id="exchangelib.protocol.RetryPolicy.back_off_until"><code class="name">var <span class="ident">back_off_until</span></code></dt>
+<dt id="exchangelib.protocol.RetryPolicy.back_off_until"><code class="name">prop <span class="ident">back_off_until</span></code></dt>
 <dd>
-<div class="desc"><p>Return a datetime to back off until</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2652,11 +1806,10 @@ FreeBusyViewOptions.requested_view choices. (Default value = 'DetailedMerged')</
 def back_off_until(self):
     &#34;&#34;&#34;Return a datetime to back off until&#34;&#34;&#34;</code></pre>
 </details>
+<div class="desc"><p>Return a datetime to back off until</p></div>
 </dd>
-<dt id="exchangelib.protocol.RetryPolicy.fail_fast"><code class="name">var <span class="ident">fail_fast</span></code></dt>
+<dt id="exchangelib.protocol.RetryPolicy.fail_fast"><code class="name">prop <span class="ident">fail_fast</span></code></dt>
 <dd>
-<div class="desc"><p>Used to choose the error handling policy. When True, a fault-tolerant policy is used. False, a fail-fast
-policy is used.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2667,6 +1820,8 @@ def fail_fast(self):
     &#34;&#34;&#34;Used to choose the error handling policy. When True, a fault-tolerant policy is used. False, a fail-fast
     policy is used.&#34;&#34;&#34;</code></pre>
 </details>
+<div class="desc"><p>Used to choose the error handling policy. When True, a fault-tolerant policy is used. False, a fail-fast
+policy is used.</p></div>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -2675,7 +1830,6 @@ def fail_fast(self):
 <span>def <span class="ident">back_off</span></span>(<span>self, seconds)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Set a new back off until value</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2684,12 +1838,12 @@ def fail_fast(self):
 def back_off(self, seconds):
     &#34;&#34;&#34;Set a new back off until value&#34;&#34;&#34;</code></pre>
 </details>
+<div class="desc"><p>Set a new back off until value</p></div>
 </dd>
 <dt id="exchangelib.protocol.RetryPolicy.raise_response_errors"><code class="name flex">
 <span>def <span class="ident">raise_response_errors</span></span>(<span>self, response)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2755,6 +1909,7 @@ def back_off(self, seconds):
         f&#34;content: {response.text}&#34;
     )</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 </dd>
@@ -2763,7 +1918,6 @@ def back_off(self, seconds):
 <span>(</span><span>pool_connections=10, pool_maxsize=10, max_retries=0, pool_block=False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>An HTTP adapter that implements Certificate Based Authentication (CBA).</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2777,6 +1931,7 @@ def back_off(self, seconds):
         kwargs[&#34;cert_file&#34;] = self.cert_file
         return super().init_poolmanager(*args, **kwargs)</code></pre>
 </details>
+<div class="desc"><p>An HTTP adapter that implements Certificate Based Authentication (CBA).</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>requests.adapters.HTTPAdapter</li>
@@ -2795,14 +1950,6 @@ def back_off(self, seconds):
 <span>def <span class="ident">init_poolmanager</span></span>(<span>self, *args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Initializes a urllib3 PoolManager.</p>
-<p>This method should not be called from user code, and is only
-exposed for use when subclassing the
-:class:<code>HTTPAdapter &lt;requests.adapters.HTTPAdapter&gt;</code>.</p>
-<p>:param connections: The number of urllib3 connection pools to cache.
-:param maxsize: The maximum number of connections to save in the pool.
-:param block: Block when no free connections are available.
-:param pool_kwargs: Extra keyword arguments used to initialize the Pool Manager.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2811,6 +1958,14 @@ exposed for use when subclassing the
     kwargs[&#34;cert_file&#34;] = self.cert_file
     return super().init_poolmanager(*args, **kwargs)</code></pre>
 </details>
+<div class="desc"><p>Initializes a urllib3 PoolManager.</p>
+<p>This method should not be called from user code, and is only
+exposed for use when subclassing the
+:class:<code>HTTPAdapter &lt;requests.adapters.HTTPAdapter&gt;</code>.</p>
+<p>:param connections: The number of urllib3 connection pools to cache.
+:param maxsize: The maximum number of connections to save in the pool.
+:param block: Block when no free connections are available.
+:param pool_kwargs: Extra keyword arguments used to initialize the Pool Manager.</p></div>
 </dd>
 </dl>
 </dd>
@@ -2818,7 +1973,6 @@ exposed for use when subclassing the
 </section>
 </article>
 <nav id="sidebar">
-<h1>Index</h1>
 <div class="toc">
 <ul></ul>
 </div>
@@ -2929,7 +2083,7 @@ exposed for use when subclassing the
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
 </footer>
 </body>
 </html>

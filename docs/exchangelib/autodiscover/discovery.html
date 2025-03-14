@@ -2,18 +2,32 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.10.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.5">
 <title>exchangelib.autodiscover.discovery API documentation</title>
-<meta name="description" content="" />
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
-<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
-<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
-<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
 </head>
 <body>
 <main>
@@ -22,500 +36,6 @@
 <h1 class="title">Module <code>exchangelib.autodiscover.discovery</code></h1>
 </header>
 <section id="section-intro">
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">import logging
-from urllib.parse import urlparse
-
-import dns.name
-import dns.resolver
-from cached_property import threaded_cached_property
-
-from ..configuration import Configuration
-from ..errors import AutoDiscoverCircularRedirect, AutoDiscoverFailed, RedirectError, TransportError
-from ..protocol import FailFast, Protocol
-from ..transport import get_unauthenticated_autodiscover_response
-from ..util import CONNECTION_ERRORS, get_domain, get_redirect_url
-from .cache import autodiscover_cache
-from .protocol import AutodiscoverProtocol
-
-log = logging.getLogger(__name__)
-
-DNS_LOOKUP_ERRORS = (
-    dns.name.EmptyLabel,
-    dns.resolver.LifetimeTimeout,
-    dns.resolver.NXDOMAIN,
-    dns.resolver.NoAnswer,
-    dns.resolver.NoNameservers,
-)
-
-
-class SrvRecord:
-    &#34;&#34;&#34;A container for autodiscover-related SRV records in DNS.&#34;&#34;&#34;
-
-    def __init__(self, priority, weight, port, srv):
-        self.priority = priority
-        self.weight = weight
-        self.port = port
-        self.srv = srv
-
-    def __hash__(self):
-        return hash((self.priority, self.weight, self.port, self.srv))
-
-    def __eq__(self, other):
-        return all(getattr(self, k) == getattr(other, k) for k in self.__dict__)
-
-
-def discover(email, credentials=None, auth_type=None, retry_policy=None):
-    ad_response, protocol = Autodiscovery(email=email, credentials=credentials).discover()
-    protocol.config.auth_typ = auth_type
-    protocol.config.retry_policy = retry_policy
-    return ad_response, protocol
-
-
-class Autodiscovery:
-    &#34;&#34;&#34;Autodiscover is a Microsoft protocol for automatically getting the endpoint of the Exchange server and other
-    connection-related settings holding the email address using only the email address, and username and password of the
-    user.
-
-    For a description of the protocol implemented, see &#34;Autodiscover for Exchange ActiveSync developers&#34;:
-
-    https://docs.microsoft.com/en-us/previous-versions/office/developer/exchange-server-interoperability-guidance/hh352638%28v%3dexchg.140%29
-
-    Descriptions of the steps from the article are provided in their respective methods in this class.
-
-    For a description of how to handle autodiscover error messages, see:
-
-    https://docs.microsoft.com/en-us/exchange/client-developer/exchange-web-services/handling-autodiscover-error-messages
-
-    A tip from the article:
-    The client can perform steps 1 through 4 in any order or in parallel to expedite the process, but it must wait for
-    responses to finish at each step before proceeding. Given that many organizations prefer to use the URL in step 2 to
-    set up the Autodiscover service, the client might try this step first.
-
-    Another possibly newer resource which has not yet been attempted is &#34;Outlook 2016 Implementation of Autodiscover&#34;:
-    https://support.microsoft.com/en-us/help/3211279/outlook-2016-implementation-of-autodiscover
-
-    WARNING: The autodiscover protocol is very complicated. If you have problems autodiscovering using this
-    implementation, start by doing an official test at https://testconnectivity.microsoft.com
-    &#34;&#34;&#34;
-
-    # When connecting to servers that may not be serving the correct endpoint, we should use a retry policy that does
-    # not leave us hanging for a long time on each step in the protocol.
-    INITIAL_RETRY_POLICY = FailFast()
-    MAX_REDIRECTS = 10  # Maximum number of URL redirects before we give up
-    DNS_RESOLVER_KWARGS = {}
-    DNS_RESOLVER_ATTRS = {
-        &#34;timeout&#34;: AutodiscoverProtocol.TIMEOUT / 2.5,  # Timeout for query to a single nameserver
-    }
-    DNS_RESOLVER_LIFETIME = AutodiscoverProtocol.TIMEOUT  # Total timeout for a query in case of multiple nameservers
-    URL_PATH = &#34;autodiscover/autodiscover.svc&#34;
-
-    def __init__(self, email, credentials=None):
-        &#34;&#34;&#34;
-
-        :param email: The email address to autodiscover
-        :param credentials: Credentials with authorization to make autodiscover lookups for this Account
-            (Default value = None)
-        &#34;&#34;&#34;
-        self.email = email
-        self.credentials = credentials
-        self._urls_visited = []  # Collects HTTP and Autodiscover redirects
-        self._redirect_count = 0
-        self._emails_visited = []  # Collects Autodiscover email redirects
-
-    def discover(self):
-        self._emails_visited.append(self.email.lower())
-
-        # Check the autodiscover cache to see if we already know the autodiscover service endpoint for this email
-        # domain. Use a lock to guard against multiple threads competing to cache information.
-        log.debug(&#34;Waiting for autodiscover_cache lock&#34;)
-        with autodiscover_cache:
-            log.debug(&#34;autodiscover_cache lock acquired&#34;)
-            cache_key = self._cache_key
-            domain = get_domain(self.email)
-            if cache_key in autodiscover_cache:
-                ad_protocol = autodiscover_cache[cache_key]
-                log.debug(&#34;Cache hit for key %s: %s&#34;, cache_key, ad_protocol.service_endpoint)
-                try:
-                    ad = self._quick(protocol=ad_protocol)
-                except AutoDiscoverFailed:
-                    # Autodiscover no longer works with this domain. Clear cache and try again after releasing the lock
-                    log.debug(&#34;AD request failure. Removing cache for key %s&#34;, cache_key)
-                    del autodiscover_cache[cache_key]
-                    ad = self._step_1(hostname=domain)
-            else:
-                # This will cache the result
-                log.debug(&#34;Cache miss for key %s&#34;, cache_key)
-                ad = self._step_1(hostname=domain)
-
-        log.debug(&#34;Released autodiscover_cache_lock&#34;)
-        if ad.redirect_address:
-            log.debug(&#34;Got a redirect address: %s&#34;, ad.redirect_address)
-            if ad.redirect_address.lower() in self._emails_visited:
-                raise AutoDiscoverCircularRedirect(&#34;We were redirected to an email address we have already seen&#34;)
-
-            # Start over, but with the new email address
-            self.email = ad.redirect_address
-            return self.discover()
-
-        # We successfully received a response. Clear the cache of seen emails etc.
-        self.clear()
-        return self._build_response(ad_response=ad)
-
-    def clear(self):
-        # This resets cached variables
-        self._urls_visited = []
-        self._redirect_count = 0
-        self._emails_visited = []
-
-    @property
-    def _cache_key(self):
-        # We may be using multiple different credentials and changing our minds on TLS verification. This key
-        # combination should be safe for caching.
-        domain = get_domain(self.email)
-        return domain, self.credentials
-
-    @threaded_cached_property
-    def resolver(self):
-        resolver = dns.resolver.Resolver(**self.DNS_RESOLVER_KWARGS)
-        for k, v in self.DNS_RESOLVER_ATTRS.items():
-            setattr(resolver, k, v)
-        return resolver
-
-    def _build_response(self, ad_response):
-        if not ad_response.autodiscover_smtp_address:
-            # Autodiscover does not always return an email address. In that case, the requesting email should be used
-            ad_response.autodiscover_smtp_address = self.email
-
-        protocol = Protocol(
-            config=Configuration(
-                service_endpoint=ad_response.ews_url,
-                credentials=self.credentials,
-                version=ad_response.version,
-                # TODO: Detect EWS service auth type somehow
-            )
-        )
-        return ad_response, protocol
-
-    def _quick(self, protocol):
-        try:
-            user_response = protocol.get_user_settings(user=self.email)
-        except TransportError as e:
-            raise AutoDiscoverFailed(f&#34;Response error: {e}&#34;)
-        return self._step_5(ad=user_response)
-
-    def _redirect_url_is_valid(self, url):
-        &#34;&#34;&#34;Three separate responses can be “Redirect responses”:
-        * An HTTP status code (301, 302) with a new URL
-        * An HTTP status code of 200, but with a payload XML containing a redirect to a different URL
-        * An HTTP status code of 200, but with a payload XML containing a different SMTP address as the target address
-
-        We only handle the HTTP 302 redirects here. We validate the URL received in the redirect response to ensure that
-        it does not redirect to non-SSL endpoints or SSL endpoints with invalid certificates, and that the redirect is
-        not circular. Finally, we should fail after 10 redirects.
-
-        :param url:
-        :return:
-        &#34;&#34;&#34;
-        if url.lower() in self._urls_visited:
-            log.warning(&#34;We have already tried this URL: %s&#34;, url)
-            return False
-
-        if self._redirect_count &gt;= self.MAX_REDIRECTS:
-            log.warning(&#34;We reached max redirects at URL: %s&#34;, url)
-            return False
-
-        # We require TLS endpoints
-        if not url.startswith(&#34;https://&#34;):
-            log.debug(&#34;Invalid scheme for URL: %s&#34;, url)
-            return False
-
-        # Quick test that the endpoint responds and that TLS handshake is OK
-        try:
-            self._get_unauthenticated_response(url, method=&#34;head&#34;)
-        except TransportError as e:
-            log.debug(&#34;Response error on redirect URL %s: %s&#34;, url, e)
-            return False
-
-        self._redirect_count += 1
-        return True
-
-    def _get_unauthenticated_response(self, url, method=&#34;post&#34;):
-        &#34;&#34;&#34;Get response from server using the given HTTP method
-
-        :param url:
-        :return:
-        &#34;&#34;&#34;
-        # We are connecting to untrusted servers here, so take necessary precautions.
-        self._ensure_valid_hostname(url)
-
-        protocol = AutodiscoverProtocol(
-            config=Configuration(
-                service_endpoint=url,
-                retry_policy=self.INITIAL_RETRY_POLICY,
-            )
-        )
-        return None, get_unauthenticated_autodiscover_response(protocol=protocol, method=method)
-
-    def _attempt_response(self, url):
-        &#34;&#34;&#34;Return an (is_valid_response, response) tuple.
-
-        :param url:
-        :return:
-        &#34;&#34;&#34;
-        self._urls_visited.append(url.lower())
-        log.debug(&#34;Attempting to get a valid response from %s&#34;, url)
-
-        try:
-            self._ensure_valid_hostname(url)
-        except TransportError:
-            return False, None
-
-        protocol = AutodiscoverProtocol(
-            config=Configuration(
-                service_endpoint=url,
-                credentials=self.credentials,
-                retry_policy=self.INITIAL_RETRY_POLICY,
-            )
-        )
-        try:
-            user_response = protocol.get_user_settings(user=self.email)
-        except RedirectError as e:
-            if self._redirect_url_is_valid(url=e.url):
-                # The protocol does not specify this explicitly, but by looking at how testconnectivity.microsoft.com
-                # works, it seems that we should follow this URL now and try to get a valid response.
-                return self._attempt_response(url=e.url)
-            log.debug(&#34;Invalid redirect URL: %s&#34;, e.url)
-            return False, None
-        except TransportError as e:
-            log.debug(&#34;Failed to get a response: %s&#34;, e)
-            return False, None
-        except CONNECTION_ERRORS as e:
-            log.debug(&#34;Failed to get a response: %s&#34;, e)
-            return False, None
-
-        # We got a valid response. Unless this is a URL redirect response, we cache the result
-        if not user_response.redirect_url:
-            cache_key = self._cache_key
-            log.debug(&#34;Adding cache entry for key %s: %s&#34;, cache_key, protocol.service_endpoint)
-            autodiscover_cache[cache_key] = protocol
-        return True, user_response
-
-    def _ensure_valid_hostname(self, url):
-        hostname = urlparse(url).netloc
-        log.debug(&#34;Checking if %s can be looked up in DNS&#34;, hostname)
-        try:
-            self.resolver.resolve(f&#34;{hostname}.&#34;, &#34;A&#34;, lifetime=self.DNS_RESOLVER_LIFETIME)
-        except DNS_LOOKUP_ERRORS as e:
-            log.debug(&#34;DNS A lookup failure: %s&#34;, e)
-            # &#39;requests&#39; is bad at reporting that a hostname cannot be resolved. Let&#39;s check this separately.
-            # Don&#39;t retry on DNS errors. They will most likely be persistent.
-            raise TransportError(f&#34;{hostname!r} has no DNS entry&#34;)
-
-    def _get_srv_records(self, hostname):
-        &#34;&#34;&#34;Send a DNS query for SRV entries for the hostname.
-
-        An SRV entry that has been formatted for autodiscovery will have the following format:
-
-            canonical name = mail.example.com.
-            service = 8 100 443 webmail.example.com.
-
-        The first three numbers in the service line are: priority, weight, port
-
-        :param hostname:
-        :return:
-        &#34;&#34;&#34;
-        log.debug(&#34;Attempting to get SRV records for %s&#34;, hostname)
-        records = []
-        try:
-            answers = self.resolver.resolve(f&#34;{hostname}.&#34;, &#34;SRV&#34;, lifetime=self.DNS_RESOLVER_LIFETIME)
-        except DNS_LOOKUP_ERRORS as e:
-            log.debug(&#34;DNS SRV lookup failure: %s&#34;, e)
-            return records
-        for rdata in answers:
-            try:
-                vals = rdata.to_text().strip().rstrip(&#34;.&#34;).split(&#34; &#34;)
-                # Raise ValueError if the first three are not ints, and IndexError if there are less than 4 values
-                priority, weight, port, srv = int(vals[0]), int(vals[1]), int(vals[2]), vals[3]
-                record = SrvRecord(priority=priority, weight=weight, port=port, srv=srv)
-                log.debug(&#34;Found SRV record %s &#34;, record)
-                records.append(record)
-            except (ValueError, IndexError):
-                log.debug(&#34;Incompatible SRV record for %s (%s)&#34;, hostname, rdata.to_text())
-        return records
-
-    def _step_1(self, hostname):
-        &#34;&#34;&#34;Perform step 1, where the client sends an Autodiscover request to
-        https://example.com/ and then does one of the following:
-            * If the Autodiscover attempt succeeds, the client proceeds to step 5.
-            * If the Autodiscover attempt fails, the client proceeds to step 2.
-
-        :param hostname:
-        :return:
-        &#34;&#34;&#34;
-        url = f&#34;https://{hostname}/{self.URL_PATH}&#34;
-        log.info(&#34;Step 1: Trying autodiscover on %r with email %r&#34;, url, self.email)
-        is_valid_response, ad = self._attempt_response(url=url)
-        if is_valid_response:
-            return self._step_5(ad=ad)
-        return self._step_2(hostname=hostname)
-
-    def _step_2(self, hostname):
-        &#34;&#34;&#34;Perform step 2, where the client sends an Autodiscover request to
-        https://autodiscover.example.com/ and then does one of the following:
-            * If the Autodiscover attempt succeeds, the client proceeds to step 5.
-            * If the Autodiscover attempt fails, the client proceeds to step 3.
-
-        :param hostname:
-        :return:
-        &#34;&#34;&#34;
-        url = f&#34;https://autodiscover.{hostname}/{self.URL_PATH}&#34;
-        log.info(&#34;Step 2: Trying autodiscover on %r with email %r&#34;, url, self.email)
-        is_valid_response, ad = self._attempt_response(url=url)
-        if is_valid_response:
-            return self._step_5(ad=ad)
-        return self._step_3(hostname=hostname)
-
-    def _step_3(self, hostname):
-        &#34;&#34;&#34;Perform step 3, where the client sends an unauthenticated GET method request to
-        http://autodiscover.example.com/ (Note that this is a non-HTTPS endpoint). The
-        client then does one of the following:
-            * If the GET request returns a 302 redirect response, it gets the redirection URL from the &#39;Location&#39; HTTP
-            header and validates it as described in the &#34;Redirect responses&#34; section. The client then does one of the
-            following:
-                * If the redirection URL is valid, the client tries the URL and then does one of the following:
-                    * If the attempt succeeds, the client proceeds to step 5.
-                    * If the attempt fails, the client proceeds to step 4.
-                * If the redirection URL is not valid, the client proceeds to step 4.
-            * If the GET request does not return a 302 redirect response, the client proceeds to step 4.
-
-        :param hostname:
-        :return:
-        &#34;&#34;&#34;
-        url = f&#34;http://autodiscover.{hostname}/{self.URL_PATH}&#34;
-        log.info(&#34;Step 3: Trying autodiscover on %r with email %r&#34;, url, self.email)
-        try:
-            _, r = self._get_unauthenticated_response(url=url, method=&#34;get&#34;)
-        except TransportError:
-            pass
-        else:
-            if r.status_code in (301, 302) and &#34;location&#34; in r.headers:
-                redirect_url = get_redirect_url(r)
-                if self._redirect_url_is_valid(url=redirect_url):
-                    is_valid_response, ad = self._attempt_response(url=redirect_url)
-                    if is_valid_response:
-                        return self._step_5(ad=ad)
-                    log.debug(&#34;Got invalid response&#34;)
-                    return self._step_4(hostname=hostname)
-                log.debug(&#34;Got invalid redirect URL&#34;)
-                return self._step_4(hostname=hostname)
-        log.debug(&#34;Got no redirect URL&#34;)
-        return self._step_4(hostname=hostname)
-
-    def _step_4(self, hostname):
-        &#34;&#34;&#34;Perform step 4, where the client performs a Domain Name System (DNS) query for an SRV record for
-        _autodiscover._tcp.example.com. The query might return multiple records. The client selects only records that
-        point to an SSL endpoint and that have the highest priority and weight. One of the following actions then
-        occurs:
-            * If no such records are returned, the client proceeds to step 6.
-            * If records are returned, the application randomly chooses a record in the list and validates the endpoint
-              that it points to by following the process described in the &#34;Redirect Response&#34; section. The client then
-              does one of the following:
-                * If the redirection URL is valid, the client tries the URL and then does one of the following:
-                    * If the attempt succeeds, the client proceeds to step 5.
-                    * If the attempt fails, the client proceeds to step 6.
-                * If the redirection URL is not valid, the client proceeds to step 6.
-
-        :param hostname:
-        :return:
-        &#34;&#34;&#34;
-        dns_hostname = f&#34;_autodiscover._tcp.{hostname}&#34;
-        log.info(&#34;Step 4: Trying autodiscover on %r with email %r&#34;, dns_hostname, self.email)
-        srv_records = self._get_srv_records(dns_hostname)
-        try:
-            srv_host = _select_srv_host(srv_records)
-        except ValueError:
-            srv_host = None
-        if not srv_host:
-            return self._step_6()
-        redirect_url = f&#34;https://{srv_host}/{self.URL_PATH}&#34;
-        if self._redirect_url_is_valid(url=redirect_url):
-            is_valid_response, ad = self._attempt_response(url=redirect_url)
-            if is_valid_response:
-                return self._step_5(ad=ad)
-            log.debug(&#34;Got invalid response&#34;)
-            return self._step_6()
-        log.debug(&#34;Got invalid redirect URL&#34;)
-        return self._step_6()
-
-    def _step_5(self, ad):
-        &#34;&#34;&#34;Perform step 5. When a valid Autodiscover request succeeds, the following sequence occurs:
-            * If the server responds with an HTTP 302 redirect, the client validates the redirection URL according to
-              the process defined in the &#34;Redirect responses&#34; and then does one of the following:
-                * If the redirection URL is valid, the client tries the URL and then does one of the following:
-                    * If the attempt succeeds, the client repeats step 5 from the beginning.
-                    * If the attempt fails, the client proceeds to step 6.
-                * If the redirection URL is not valid, the client proceeds to step 6.
-            * If the server responds with a valid Autodiscover response, the client does one of the following:
-                * If the value of the Action element is &#34;Redirect&#34;, the client gets the redirection email address from
-                  the Redirect element and then returns to step 1, using this new email address.
-                * If the value of the Action element is &#34;Settings&#34;, the client has successfully received the requested
-                  configuration settings for the specified user. The client does not need to proceed to step 6.
-
-        :param ad:
-        :return:
-        &#34;&#34;&#34;
-        log.info(&#34;Step 5: Checking response&#34;)
-        # This is not explicit in the protocol, but let&#39;s raise any errors here
-        ad.raise_errors()
-
-        if ad.redirect_url:
-            log.debug(&#34;Got a redirect URL: %s&#34;, ad.redirect_url)
-            # We are diverging a bit from the protocol here. We will never get an HTTP 302 since earlier steps already
-            # followed the redirects where possible. Instead, we handle redirect responses here.
-            if self._redirect_url_is_valid(url=ad.redirect_url):
-                is_valid_response, ad = self._attempt_response(url=ad.redirect_url)
-                if is_valid_response:
-                    return self._step_5(ad=ad)
-                log.debug(&#34;Got invalid response&#34;)
-                return self._step_6()
-            log.debug(&#34;Invalid redirect URL&#34;)
-            return self._step_6()
-        # This could be an email redirect. Let outer layer handle this
-        return ad
-
-    def _step_6(self):
-        &#34;&#34;&#34;Perform step 6. If the client cannot contact the Autodiscover service, the client should ask the user for
-        the Exchange server name and use it to construct an Exchange EWS URL. The client should try to use this URL for
-        future requests.
-        &#34;&#34;&#34;
-        raise AutoDiscoverFailed(
-            f&#34;All steps in the autodiscover protocol failed for email {self.email}. If you think this is an error, &#34;
-            f&#34;consider doing an official test at https://testconnectivity.microsoft.com&#34;
-        )
-
-
-def _select_srv_host(srv_records):
-    &#34;&#34;&#34;Select the record with the highest priority, that also supports TLS.
-
-    :param srv_records:
-    :return:
-    &#34;&#34;&#34;
-    best_record = None
-    for srv_record in srv_records:
-        if srv_record.port != 443:
-            log.debug(&#34;Skipping SRV record %r (no TLS)&#34;, srv_record)
-            continue
-        # Assume port 443 will serve TLS. If not, autodiscover will probably also be broken for others.
-        if best_record is None or best_record.priority &lt; srv_record.priority:
-            best_record = srv_record
-    if not best_record:
-        raise ValueError(&#34;No suitable records&#34;)
-    return best_record.srv</code></pre>
-</details>
 </section>
 <section>
 </section>
@@ -528,7 +48,6 @@ def _select_srv_host(srv_records):
 <span>def <span class="ident">discover</span></span>(<span>email, credentials=None, auth_type=None, retry_policy=None)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -539,6 +58,7 @@ def _select_srv_host(srv_records):
     protocol.config.retry_policy = retry_policy
     return ad_response, protocol</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 </section>
@@ -550,25 +70,6 @@ def _select_srv_host(srv_records):
 <span>(</span><span>email, credentials=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Autodiscover is a Microsoft protocol for automatically getting the endpoint of the Exchange server and other
-connection-related settings holding the email address using only the email address, and username and password of the
-user.</p>
-<p>For a description of the protocol implemented, see "Autodiscover for Exchange ActiveSync developers":</p>
-<p><a href="https://docs.microsoft.com/en-us/previous-versions/office/developer/exchange-server-interoperability-guidance/hh352638%28v%3dexchg.140%29">https://docs.microsoft.com/en-us/previous-versions/office/developer/exchange-server-interoperability-guidance/hh352638%28v%3dexchg.140%29</a></p>
-<p>Descriptions of the steps from the article are provided in their respective methods in this class.</p>
-<p>For a description of how to handle autodiscover error messages, see:</p>
-<p><a href="https://docs.microsoft.com/en-us/exchange/client-developer/exchange-web-services/handling-autodiscover-error-messages">https://docs.microsoft.com/en-us/exchange/client-developer/exchange-web-services/handling-autodiscover-error-messages</a></p>
-<p>A tip from the article:
-The client can perform steps 1 through 4 in any order or in parallel to expedite the process, but it must wait for
-responses to finish at each step before proceeding. Given that many organizations prefer to use the URL in step 2 to
-set up the Autodiscover service, the client might try this step first.</p>
-<p>Another possibly newer resource which has not yet been attempted is "Outlook 2016 Implementation of Autodiscover":
-<a href="https://support.microsoft.com/en-us/help/3211279/outlook-2016-implementation-of-autodiscover">https://support.microsoft.com/en-us/help/3211279/outlook-2016-implementation-of-autodiscover</a></p>
-<p>WARNING: The autodiscover protocol is very complicated. If you have problems autodiscovering using this
-implementation, start by doing an official test at <a href="https://testconnectivity.microsoft.com">https://testconnectivity.microsoft.com</a></p>
-<p>:param email: The email address to autodiscover
-:param credentials: Credentials with authorization to make autodiscover lookups for this Account
-(Default value = None)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -995,6 +496,25 @@ implementation, start by doing an official test at <a href="https://testconnecti
             f&#34;consider doing an official test at https://testconnectivity.microsoft.com&#34;
         )</code></pre>
 </details>
+<div class="desc"><p>Autodiscover is a Microsoft protocol for automatically getting the endpoint of the Exchange server and other
+connection-related settings holding the email address using only the email address, and username and password of the
+user.</p>
+<p>For a description of the protocol implemented, see "Autodiscover for Exchange ActiveSync developers":</p>
+<p><a href="https://docs.microsoft.com/en-us/previous-versions/office/developer/exchange-server-interoperability-guidance/hh352638%28v%3dexchg.140%29">https://docs.microsoft.com/en-us/previous-versions/office/developer/exchange-server-interoperability-guidance/hh352638%28v%3dexchg.140%29</a></p>
+<p>Descriptions of the steps from the article are provided in their respective methods in this class.</p>
+<p>For a description of how to handle autodiscover error messages, see:</p>
+<p><a href="https://docs.microsoft.com/en-us/exchange/client-developer/exchange-web-services/handling-autodiscover-error-messages">https://docs.microsoft.com/en-us/exchange/client-developer/exchange-web-services/handling-autodiscover-error-messages</a></p>
+<p>A tip from the article:
+The client can perform steps 1 through 4 in any order or in parallel to expedite the process, but it must wait for
+responses to finish at each step before proceeding. Given that many organizations prefer to use the URL in step 2 to
+set up the Autodiscover service, the client might try this step first.</p>
+<p>Another possibly newer resource which has not yet been attempted is "Outlook 2016 Implementation of Autodiscover":
+<a href="https://support.microsoft.com/en-us/help/3211279/outlook-2016-implementation-of-autodiscover">https://support.microsoft.com/en-us/help/3211279/outlook-2016-implementation-of-autodiscover</a></p>
+<p>WARNING: The autodiscover protocol is very complicated. If you have problems autodiscovering using this
+implementation, start by doing an official test at <a href="https://testconnectivity.microsoft.com">https://testconnectivity.microsoft.com</a></p>
+<p>:param email: The email address to autodiscover
+:param credentials: Credentials with authorization to make autodiscover lookups for this Account
+(Default value = None)</p></div>
 <h3>Class variables</h3>
 <dl>
 <dt id="exchangelib.autodiscover.discovery.Autodiscovery.DNS_RESOLVER_ATTRS"><code class="name">var <span class="ident">DNS_RESOLVER_ATTRS</span></code></dt>
@@ -1026,7 +546,6 @@ implementation, start by doing an official test at <a href="https://testconnecti
 <dl>
 <dt id="exchangelib.autodiscover.discovery.Autodiscovery.resolver"><code class="name">var <span class="ident">resolver</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1046,6 +565,7 @@ implementation, start by doing an official test at <a href="https://testconnecti
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -1054,7 +574,6 @@ implementation, start by doing an official test at <a href="https://testconnecti
 <span>def <span class="ident">clear</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1065,12 +584,12 @@ implementation, start by doing an official test at <a href="https://testconnecti
     self._redirect_count = 0
     self._emails_visited = []</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.autodiscover.discovery.Autodiscovery.discover"><code class="name flex">
 <span>def <span class="ident">discover</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1114,6 +633,7 @@ implementation, start by doing an official test at <a href="https://testconnecti
     self.clear()
     return self._build_response(ad_response=ad)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 </dd>
@@ -1122,7 +642,6 @@ implementation, start by doing an official test at <a href="https://testconnecti
 <span>(</span><span>priority, weight, port, srv)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>A container for autodiscover-related SRV records in DNS.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1142,12 +661,12 @@ implementation, start by doing an official test at <a href="https://testconnecti
     def __eq__(self, other):
         return all(getattr(self, k) == getattr(other, k) for k in self.__dict__)</code></pre>
 </details>
+<div class="desc"><p>A container for autodiscover-related SRV records in DNS.</p></div>
 </dd>
 </dl>
 </section>
 </article>
 <nav id="sidebar">
-<h1>Index</h1>
 <div class="toc">
 <ul></ul>
 </div>
@@ -1187,7 +706,7 @@ implementation, start by doing an official test at <a href="https://testconnecti
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
 </footer>
 </body>
 </html>

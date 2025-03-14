@@ -2,18 +2,32 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.10.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.5">
 <title>exchangelib.recurrence API documentation</title>
-<meta name="description" content="" />
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
-<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
-<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
-<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
 </head>
 <body>
 <main>
@@ -22,360 +36,6 @@
 <h1 class="title">Module <code>exchangelib.recurrence</code></h1>
 </header>
 <section id="section-intro">
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">import logging
-
-from .fields import (
-    MONTHS,
-    WEEK_NUMBERS,
-    WEEKDAY_NAMES,
-    WEEKDAYS,
-    DateOrDateTimeField,
-    DateTimeField,
-    EnumField,
-    EWSElementField,
-    IdElementField,
-    IntegerField,
-    WeekdaysField,
-)
-from .properties import EWSElement, EWSMeta, IdChangeKeyMixIn, ItemId
-
-log = logging.getLogger(__name__)
-
-
-def _month_to_str(month):
-    return MONTHS[month - 1] if isinstance(month, int) else month
-
-
-def _weekday_to_str(weekday):
-    return WEEKDAYS[weekday - 1] if isinstance(weekday, int) else weekday
-
-
-def _week_number_to_str(week_number):
-    return WEEK_NUMBERS[week_number - 1] if isinstance(week_number, int) else week_number
-
-
-class Pattern(EWSElement, metaclass=EWSMeta):
-    &#34;&#34;&#34;Base class for all classes implementing recurring pattern elements.&#34;&#34;&#34;
-
-
-class Regeneration(Pattern, metaclass=EWSMeta):
-    &#34;&#34;&#34;Base class for all classes implementing recurring regeneration elements.&#34;&#34;&#34;
-
-
-class AbsoluteYearlyPattern(Pattern):
-    &#34;&#34;&#34;MSDN:
-    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/absoluteyearlyrecurrence
-    &#34;&#34;&#34;
-
-    ELEMENT_NAME = &#34;AbsoluteYearlyRecurrence&#34;
-
-    # The day of month of an occurrence, in range 1 -&gt; 31. If a particular month has fewer days than the day_of_month
-    # value, the last day in the month is assumed
-    day_of_month = IntegerField(field_uri=&#34;DayOfMonth&#34;, min=1, max=31, is_required=True)
-    # The month of the year, from 1 to 12
-    month = EnumField(field_uri=&#34;Month&#34;, enum=MONTHS, is_required=True)
-
-    def __str__(self):
-        return f&#34;Occurs on day {self.day_of_month} of {_month_to_str(self.month)}&#34;
-
-
-class RelativeYearlyPattern(Pattern):
-    &#34;&#34;&#34;MSDN:
-    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/relativeyearlyrecurrence
-    &#34;&#34;&#34;
-
-    ELEMENT_NAME = &#34;RelativeYearlyRecurrence&#34;
-
-    # Valid ISO 8601 weekday, as a number in range 1 -&gt; 7 (1 being Monday). The value can also be one of the DAY
-    # (or 8), WEEK_DAY (or 9) or WEEKEND_DAY (or 10) consts which is interpreted as the first day, weekday, or weekend
-    # day of the year. Despite the field name in EWS, this is not a list.
-    weekday = EnumField(field_uri=&#34;DaysOfWeek&#34;, enum=WEEKDAYS, is_required=True)
-    # Week number of the month, in range 1 -&gt; 5. If 5 is specified, this assumes the last week of the month for
-    # months that have only 4 weeks
-    week_number = EnumField(field_uri=&#34;DayOfWeekIndex&#34;, enum=WEEK_NUMBERS, is_required=True)
-    # The month of the year, from 1 to 12
-    month = EnumField(field_uri=&#34;Month&#34;, enum=MONTHS, is_required=True)
-
-    def __str__(self):
-        return (
-            f&#34;Occurs on weekday {_weekday_to_str(self.weekday)} in the {_week_number_to_str(self.week_number)} &#34;
-            f&#34;week of {_month_to_str(self.month)}&#34;
-        )
-
-
-class AbsoluteMonthlyPattern(Pattern):
-    &#34;&#34;&#34;MSDN:
-    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/absolutemonthlyrecurrence
-    &#34;&#34;&#34;
-
-    ELEMENT_NAME = &#34;AbsoluteMonthlyRecurrence&#34;
-
-    # Interval, in months, in range 1 -&gt; 99
-    interval = IntegerField(field_uri=&#34;Interval&#34;, min=1, max=99, is_required=True)
-    # The day of month of an occurrence, in range 1 -&gt; 31. If a particular month has fewer days than the day_of_month
-    # value, the last day in the month is assumed
-    day_of_month = IntegerField(field_uri=&#34;DayOfMonth&#34;, min=1, max=31, is_required=True)
-
-    def __str__(self):
-        return f&#34;Occurs on day {self.day_of_month} of every {self.interval} month(s)&#34;
-
-
-class RelativeMonthlyPattern(Pattern):
-    &#34;&#34;&#34;MSDN:
-    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/relativemonthlyrecurrence
-    &#34;&#34;&#34;
-
-    ELEMENT_NAME = &#34;RelativeMonthlyRecurrence&#34;
-
-    # Interval, in months, in range 1 -&gt; 99
-    interval = IntegerField(field_uri=&#34;Interval&#34;, min=1, max=99, is_required=True)
-    # Valid ISO 8601 weekday, as a number in range 1 -&gt; 7 (1 being Monday). The value can also be one of the DAY
-    # (or 8), WEEK_DAY (or 9) or WEEKEND_DAY (or 10) consts which is interpreted as the first day, weekday, or weekend
-    # day of the month. Despite the field name in EWS, this is not a list.
-    weekday = EnumField(field_uri=&#34;DaysOfWeek&#34;, enum=WEEKDAYS, is_required=True)
-    # Week number of the month, in range 1 -&gt; 5. If 5 is specified, this assumes the last week of the month for
-    # months that have only 4 weeks.
-    week_number = EnumField(field_uri=&#34;DayOfWeekIndex&#34;, enum=WEEK_NUMBERS, is_required=True)
-
-    def __str__(self):
-        return (
-            f&#34;Occurs on weekday {_weekday_to_str(self.weekday)} in the {_week_number_to_str(self.week_number)} &#34;
-            f&#34;week of every {self.interval} month(s)&#34;
-        )
-
-
-class WeeklyPattern(Pattern):
-    &#34;&#34;&#34;MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/weeklyrecurrence&#34;&#34;&#34;
-
-    ELEMENT_NAME = &#34;WeeklyRecurrence&#34;
-
-    # Interval, in weeks, in range 1 -&gt; 99
-    interval = IntegerField(field_uri=&#34;Interval&#34;, min=1, max=99, is_required=True)
-    # List of valid ISO 8601 weekdays, as list of numbers in range 1 -&gt; 7 (1 being Monday)
-    weekdays = WeekdaysField(field_uri=&#34;DaysOfWeek&#34;, enum=WEEKDAY_NAMES, is_required=True)
-    # The first day of the week. Defaults to Monday
-    first_day_of_week = EnumField(field_uri=&#34;FirstDayOfWeek&#34;, enum=WEEKDAY_NAMES, default=1, is_required=True)
-
-    def __str__(self):
-        weekdays = [_weekday_to_str(i) for i in self.get_field_by_fieldname(&#34;weekdays&#34;).clean(self.weekdays)]
-        return (
-            f&#39;Occurs on weekdays {&#34;, &#34;.join(weekdays)} of every {self.interval} week(s) where the first day of &#39;
-            f&#34;the week is {_weekday_to_str(self.first_day_of_week)}&#34;
-        )
-
-
-class DailyPattern(Pattern):
-    &#34;&#34;&#34;MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/dailyrecurrence&#34;&#34;&#34;
-
-    ELEMENT_NAME = &#34;DailyRecurrence&#34;
-
-    # Interval, in days, in range 1 -&gt; 999
-    interval = IntegerField(field_uri=&#34;Interval&#34;, min=1, max=999, is_required=True)
-
-    def __str__(self):
-        return f&#34;Occurs every {self.interval} day(s)&#34;
-
-
-class YearlyRegeneration(Regeneration):
-    &#34;&#34;&#34;MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/yearlyregeneration&#34;&#34;&#34;
-
-    ELEMENT_NAME = &#34;YearlyRegeneration&#34;
-
-    # Interval, in years
-    interval = IntegerField(field_uri=&#34;Interval&#34;, min=1, is_required=True)
-
-    def __str__(self):
-        return f&#34;Regenerates every {self.interval} year(s)&#34;
-
-
-class MonthlyRegeneration(Regeneration):
-    &#34;&#34;&#34;MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/monthlyregeneration&#34;&#34;&#34;
-
-    ELEMENT_NAME = &#34;MonthlyRegeneration&#34;
-
-    # Interval, in months
-    interval = IntegerField(field_uri=&#34;Interval&#34;, min=1, is_required=True)
-
-    def __str__(self):
-        return f&#34;Regenerates every {self.interval} month(s)&#34;
-
-
-class WeeklyRegeneration(Regeneration):
-    &#34;&#34;&#34;MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/weeklyregeneration&#34;&#34;&#34;
-
-    ELEMENT_NAME = &#34;WeeklyRegeneration&#34;
-
-    # Interval, in weeks
-    interval = IntegerField(field_uri=&#34;Interval&#34;, min=1, is_required=True)
-
-    def __str__(self):
-        return f&#34;Regenerates every {self.interval} week(s)&#34;
-
-
-class DailyRegeneration(Regeneration):
-    &#34;&#34;&#34;MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/dailyregeneration&#34;&#34;&#34;
-
-    ELEMENT_NAME = &#34;DailyRegeneration&#34;
-
-    # Interval, in days
-    interval = IntegerField(field_uri=&#34;Interval&#34;, min=1, is_required=True)
-
-    def __str__(self):
-        return f&#34;Regenerates every {self.interval} day(s)&#34;
-
-
-class Boundary(EWSElement, metaclass=EWSMeta):
-    &#34;&#34;&#34;Base class for all classes implementing recurring boundary elements.&#34;&#34;&#34;
-
-
-class NoEndPattern(Boundary):
-    &#34;&#34;&#34;MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/noendrecurrence&#34;&#34;&#34;
-
-    ELEMENT_NAME = &#34;NoEndRecurrence&#34;
-
-    # Start date, as EWSDate or EWSDateTime
-    start = DateOrDateTimeField(field_uri=&#34;StartDate&#34;, is_required=True)
-
-    def __str__(self):
-        return f&#34;Starts on {self.start}&#34;
-
-
-class EndDatePattern(Boundary):
-    &#34;&#34;&#34;MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/enddaterecurrence&#34;&#34;&#34;
-
-    ELEMENT_NAME = &#34;EndDateRecurrence&#34;
-
-    # Start date, as EWSDate or EWSDateTime
-    start = DateOrDateTimeField(field_uri=&#34;StartDate&#34;, is_required=True)
-    # End date, as EWSDate
-    end = DateOrDateTimeField(field_uri=&#34;EndDate&#34;, is_required=True)
-
-    def __str__(self):
-        return f&#34;Starts on {self.start}, ends on {self.end}&#34;
-
-
-class NumberedPattern(Boundary):
-    &#34;&#34;&#34;MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/numberedrecurrence&#34;&#34;&#34;
-
-    ELEMENT_NAME = &#34;NumberedRecurrence&#34;
-
-    # Start date, as EWSDate or EWSDateTime
-    start = DateOrDateTimeField(field_uri=&#34;StartDate&#34;, is_required=True)
-    # The number of occurrences in this pattern, in range 1 -&gt; 999
-    number = IntegerField(field_uri=&#34;NumberOfOccurrences&#34;, min=1, max=999, is_required=True)
-
-    def __str__(self):
-        return f&#34;Starts on {self.start} and occurs {self.number} time(s)&#34;
-
-
-class Occurrence(IdChangeKeyMixIn):
-    &#34;&#34;&#34;MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/occurrence&#34;&#34;&#34;
-
-    ELEMENT_NAME = &#34;Occurrence&#34;
-    ID_ELEMENT_CLS = ItemId
-
-    _id = IdElementField(field_uri=&#34;ItemId&#34;, value_cls=ID_ELEMENT_CLS)
-    # The modified start time of the item, as EWSDateTime
-    start = DateTimeField(field_uri=&#34;Start&#34;)
-    # The modified end time of the item, as EWSDateTime
-    end = DateTimeField(field_uri=&#34;End&#34;)
-    # The original start time of the item, as EWSDateTime
-    original_start = DateTimeField(field_uri=&#34;OriginalStart&#34;)
-
-
-# Container elements:
-# &#39;ModifiedOccurrences&#39;
-# &#39;DeletedOccurrences&#39;
-
-
-class FirstOccurrence(Occurrence):
-    &#34;&#34;&#34;MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/firstoccurrence&#34;&#34;&#34;
-
-    ELEMENT_NAME = &#34;FirstOccurrence&#34;
-
-
-class LastOccurrence(Occurrence):
-    &#34;&#34;&#34;MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/lastoccurrence&#34;&#34;&#34;
-
-    ELEMENT_NAME = &#34;LastOccurrence&#34;
-
-
-class DeletedOccurrence(EWSElement):
-    &#34;&#34;&#34;MSDN: https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/deletedoccurrence&#34;&#34;&#34;
-
-    ELEMENT_NAME = &#34;DeletedOccurrence&#34;
-
-    # The modified start time of the item, as EWSDateTime
-    start = DateTimeField(field_uri=&#34;Start&#34;)
-
-
-PATTERN_CLASSES = (
-    AbsoluteYearlyPattern,
-    RelativeYearlyPattern,
-    AbsoluteMonthlyPattern,
-    RelativeMonthlyPattern,
-    WeeklyPattern,
-    DailyPattern,
-)
-REGENERATION_CLASSES = YearlyRegeneration, MonthlyRegeneration, WeeklyRegeneration, DailyRegeneration
-BOUNDARY_CLASSES = NoEndPattern, EndDatePattern, NumberedPattern
-
-
-class Recurrence(EWSElement):
-    &#34;&#34;&#34;MSDN:
-    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/recurrence-recurrencetype
-    &#34;&#34;&#34;
-
-    ELEMENT_NAME = &#34;Recurrence&#34;
-    PATTERN_CLASS_MAP = {cls.response_tag(): cls for cls in PATTERN_CLASSES}
-    BOUNDARY_CLASS_MAP = {cls.response_tag(): cls for cls in BOUNDARY_CLASSES}
-
-    pattern = EWSElementField(value_cls=Pattern)
-    boundary = EWSElementField(value_cls=Boundary)
-
-    def __init__(self, **kwargs):
-        # Allow specifying a start, end and/or number as a shortcut to creating a boundary
-        start = kwargs.pop(&#34;start&#34;, None)
-        end = kwargs.pop(&#34;end&#34;, None)
-        number = kwargs.pop(&#34;number&#34;, None)
-        if any([start, end, number]):
-            if &#34;boundary&#34; in kwargs:
-                raise ValueError(&#34;&#39;boundary&#39; is not allowed in combination with &#39;start&#39;, &#39;end&#39; or &#39;number&#39;&#34;)
-            if start and not end and not number:
-                kwargs[&#34;boundary&#34;] = NoEndPattern(start=start)
-            elif start and end and not number:
-                kwargs[&#34;boundary&#34;] = EndDatePattern(start=start, end=end)
-            elif start and number and not end:
-                kwargs[&#34;boundary&#34;] = NumberedPattern(start=start, number=number)
-            else:
-                raise ValueError(&#34;Unsupported &#39;start&#39;, &#39;end&#39;, &#39;number&#39; combination&#34;)
-        super().__init__(**kwargs)
-
-    @classmethod
-    def from_xml(cls, elem, account):
-        pattern, boundary = None, None
-        for child_elem in elem:
-            if child_elem.tag in cls.PATTERN_CLASS_MAP:
-                pattern = cls.PATTERN_CLASS_MAP[child_elem.tag].from_xml(elem=child_elem, account=account)
-            elif child_elem.tag in cls.BOUNDARY_CLASS_MAP:
-                boundary = cls.BOUNDARY_CLASS_MAP[child_elem.tag].from_xml(elem=child_elem, account=account)
-        return cls(pattern=pattern, boundary=boundary)
-
-    def __str__(self):
-        return f&#34;Pattern: {self.pattern}, Boundary: {self.boundary}&#34;
-
-
-class TaskRecurrence(Recurrence):
-    &#34;&#34;&#34;MSDN:
-    https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/recurrence-taskrecurrencetype
-    &#34;&#34;&#34;
-
-    PATTERN_CLASS_MAP = {cls.response_tag(): cls for cls in PATTERN_CLASSES + REGENERATION_CLASSES}</code></pre>
-</details>
 </section>
 <section>
 </section>
@@ -391,8 +51,6 @@ class TaskRecurrence(Recurrence):
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN:
-<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/absolutemonthlyrecurrence">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/absolutemonthlyrecurrence</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -413,6 +71,8 @@ class TaskRecurrence(Recurrence):
     def __str__(self):
         return f&#34;Occurs on day {self.day_of_month} of every {self.interval} month(s)&#34;</code></pre>
 </details>
+<div class="desc"><p>MSDN:
+<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/absolutemonthlyrecurrence">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/absolutemonthlyrecurrence</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.recurrence.Pattern" href="#exchangelib.recurrence.Pattern">Pattern</a></li>
@@ -457,8 +117,6 @@ class TaskRecurrence(Recurrence):
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN:
-<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/absoluteyearlyrecurrence">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/absoluteyearlyrecurrence</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -479,6 +137,8 @@ class TaskRecurrence(Recurrence):
     def __str__(self):
         return f&#34;Occurs on day {self.day_of_month} of {_month_to_str(self.month)}&#34;</code></pre>
 </details>
+<div class="desc"><p>MSDN:
+<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/absoluteyearlyrecurrence">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/absoluteyearlyrecurrence</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.recurrence.Pattern" href="#exchangelib.recurrence.Pattern">Pattern</a></li>
@@ -523,7 +183,6 @@ class TaskRecurrence(Recurrence):
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Base class for all classes implementing recurring boundary elements.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -531,6 +190,7 @@ class TaskRecurrence(Recurrence):
 <pre><code class="python">class Boundary(EWSElement, metaclass=EWSMeta):
     &#34;&#34;&#34;Base class for all classes implementing recurring boundary elements.&#34;&#34;&#34;</code></pre>
 </details>
+<div class="desc"><p>Base class for all classes implementing recurring boundary elements.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.properties.EWSElement" href="properties.html#exchangelib.properties.EWSElement">EWSElement</a></li>
@@ -558,7 +218,6 @@ class TaskRecurrence(Recurrence):
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/dailyrecurrence">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/dailyrecurrence</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -574,6 +233,7 @@ class TaskRecurrence(Recurrence):
     def __str__(self):
         return f&#34;Occurs every {self.interval} day(s)&#34;</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/dailyrecurrence">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/dailyrecurrence</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.recurrence.Pattern" href="#exchangelib.recurrence.Pattern">Pattern</a></li>
@@ -614,7 +274,6 @@ class TaskRecurrence(Recurrence):
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/dailyregeneration">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/dailyregeneration</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -630,6 +289,7 @@ class TaskRecurrence(Recurrence):
     def __str__(self):
         return f&#34;Regenerates every {self.interval} day(s)&#34;</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/dailyregeneration">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/dailyregeneration</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.recurrence.Regeneration" href="#exchangelib.recurrence.Regeneration">Regeneration</a></li>
@@ -671,7 +331,6 @@ class TaskRecurrence(Recurrence):
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/deletedoccurrence">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/deletedoccurrence</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -684,6 +343,7 @@ class TaskRecurrence(Recurrence):
     # The modified start time of the item, as EWSDateTime
     start = DateTimeField(field_uri=&#34;Start&#34;)</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/deletedoccurrence">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/deletedoccurrence</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.properties.EWSElement" href="properties.html#exchangelib.properties.EWSElement">EWSElement</a></li>
@@ -723,7 +383,6 @@ class TaskRecurrence(Recurrence):
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/enddaterecurrence">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/enddaterecurrence</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -741,6 +400,7 @@ class TaskRecurrence(Recurrence):
     def __str__(self):
         return f&#34;Starts on {self.start}, ends on {self.end}&#34;</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/enddaterecurrence">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/enddaterecurrence</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.recurrence.Boundary" href="#exchangelib.recurrence.Boundary">Boundary</a></li>
@@ -785,7 +445,6 @@ class TaskRecurrence(Recurrence):
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/firstoccurrence">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/firstoccurrence</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -795,6 +454,7 @@ class TaskRecurrence(Recurrence):
 
     ELEMENT_NAME = &#34;FirstOccurrence&#34;</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/firstoccurrence">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/firstoccurrence</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.recurrence.Occurrence" href="#exchangelib.recurrence.Occurrence">Occurrence</a></li>
@@ -826,7 +486,6 @@ class TaskRecurrence(Recurrence):
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/lastoccurrence">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/lastoccurrence</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -836,6 +495,7 @@ class TaskRecurrence(Recurrence):
 
     ELEMENT_NAME = &#34;LastOccurrence&#34;</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/lastoccurrence">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/lastoccurrence</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.recurrence.Occurrence" href="#exchangelib.recurrence.Occurrence">Occurrence</a></li>
@@ -867,7 +527,6 @@ class TaskRecurrence(Recurrence):
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/monthlyregeneration">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/monthlyregeneration</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -883,6 +542,7 @@ class TaskRecurrence(Recurrence):
     def __str__(self):
         return f&#34;Regenerates every {self.interval} month(s)&#34;</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/monthlyregeneration">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/monthlyregeneration</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.recurrence.Regeneration" href="#exchangelib.recurrence.Regeneration">Regeneration</a></li>
@@ -924,7 +584,6 @@ class TaskRecurrence(Recurrence):
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/noendrecurrence">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/noendrecurrence</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -940,6 +599,7 @@ class TaskRecurrence(Recurrence):
     def __str__(self):
         return f&#34;Starts on {self.start}&#34;</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/noendrecurrence">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/noendrecurrence</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.recurrence.Boundary" href="#exchangelib.recurrence.Boundary">Boundary</a></li>
@@ -980,7 +640,6 @@ class TaskRecurrence(Recurrence):
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/numberedrecurrence">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/numberedrecurrence</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -998,6 +657,7 @@ class TaskRecurrence(Recurrence):
     def __str__(self):
         return f&#34;Starts on {self.start} and occurs {self.number} time(s)&#34;</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/numberedrecurrence">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/numberedrecurrence</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.recurrence.Boundary" href="#exchangelib.recurrence.Boundary">Boundary</a></li>
@@ -1042,7 +702,6 @@ class TaskRecurrence(Recurrence):
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/occurrence">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/occurrence</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1061,6 +720,7 @@ class TaskRecurrence(Recurrence):
     # The original start time of the item, as EWSDateTime
     original_start = DateTimeField(field_uri=&#34;OriginalStart&#34;)</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/occurrence">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/occurrence</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.properties.IdChangeKeyMixIn" href="properties.html#exchangelib.properties.IdChangeKeyMixIn">IdChangeKeyMixIn</a></li>
@@ -1119,7 +779,6 @@ class TaskRecurrence(Recurrence):
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Base class for all classes implementing recurring pattern elements.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1127,6 +786,7 @@ class TaskRecurrence(Recurrence):
 <pre><code class="python">class Pattern(EWSElement, metaclass=EWSMeta):
     &#34;&#34;&#34;Base class for all classes implementing recurring pattern elements.&#34;&#34;&#34;</code></pre>
 </details>
+<div class="desc"><p>Base class for all classes implementing recurring pattern elements.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.properties.EWSElement" href="properties.html#exchangelib.properties.EWSElement">EWSElement</a></li>
@@ -1158,8 +818,6 @@ class TaskRecurrence(Recurrence):
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN:
-<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/recurrence-recurrencetype">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/recurrence-recurrencetype</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1207,6 +865,8 @@ class TaskRecurrence(Recurrence):
     def __str__(self):
         return f&#34;Pattern: {self.pattern}, Boundary: {self.boundary}&#34;</code></pre>
 </details>
+<div class="desc"><p>MSDN:
+<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/recurrence-recurrencetype">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/recurrence-recurrencetype</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.properties.EWSElement" href="properties.html#exchangelib.properties.EWSElement">EWSElement</a></li>
@@ -1241,20 +901,6 @@ class TaskRecurrence(Recurrence):
 </code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def from_xml(cls, elem, account):
-    pattern, boundary = None, None
-    for child_elem in elem:
-        if child_elem.tag in cls.PATTERN_CLASS_MAP:
-            pattern = cls.PATTERN_CLASS_MAP[child_elem.tag].from_xml(elem=child_elem, account=account)
-        elif child_elem.tag in cls.BOUNDARY_CLASS_MAP:
-            boundary = cls.BOUNDARY_CLASS_MAP[child_elem.tag].from_xml(elem=child_elem, account=account)
-    return cls(pattern=pattern, boundary=boundary)</code></pre>
-</details>
 </dd>
 </dl>
 <h3>Instance variables</h3>
@@ -1285,7 +931,6 @@ def from_xml(cls, elem, account):
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Base class for all classes implementing recurring regeneration elements.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1293,6 +938,7 @@ def from_xml(cls, elem, account):
 <pre><code class="python">class Regeneration(Pattern, metaclass=EWSMeta):
     &#34;&#34;&#34;Base class for all classes implementing recurring regeneration elements.&#34;&#34;&#34;</code></pre>
 </details>
+<div class="desc"><p>Base class for all classes implementing recurring regeneration elements.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.recurrence.Pattern" href="#exchangelib.recurrence.Pattern">Pattern</a></li>
@@ -1322,8 +968,6 @@ def from_xml(cls, elem, account):
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN:
-<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/relativemonthlyrecurrence">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/relativemonthlyrecurrence</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1351,6 +995,8 @@ def from_xml(cls, elem, account):
             f&#34;week of every {self.interval} month(s)&#34;
         )</code></pre>
 </details>
+<div class="desc"><p>MSDN:
+<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/relativemonthlyrecurrence">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/relativemonthlyrecurrence</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.recurrence.Pattern" href="#exchangelib.recurrence.Pattern">Pattern</a></li>
@@ -1399,8 +1045,6 @@ def from_xml(cls, elem, account):
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN:
-<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/relativeyearlyrecurrence">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/relativeyearlyrecurrence</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1428,6 +1072,8 @@ def from_xml(cls, elem, account):
             f&#34;week of {_month_to_str(self.month)}&#34;
         )</code></pre>
 </details>
+<div class="desc"><p>MSDN:
+<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/relativeyearlyrecurrence">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/relativeyearlyrecurrence</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.recurrence.Pattern" href="#exchangelib.recurrence.Pattern">Pattern</a></li>
@@ -1476,8 +1122,6 @@ def from_xml(cls, elem, account):
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN:
-<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/recurrence-taskrecurrencetype">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/recurrence-taskrecurrencetype</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1489,6 +1133,8 @@ def from_xml(cls, elem, account):
 
     PATTERN_CLASS_MAP = {cls.response_tag(): cls for cls in PATTERN_CLASSES + REGENERATION_CLASSES}</code></pre>
 </details>
+<div class="desc"><p>MSDN:
+<a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/recurrence-taskrecurrencetype">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/recurrence-taskrecurrencetype</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.recurrence.Recurrence" href="#exchangelib.recurrence.Recurrence">Recurrence</a></li>
@@ -1518,7 +1164,6 @@ def from_xml(cls, elem, account):
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/weeklyrecurrence">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/weeklyrecurrence</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1542,6 +1187,7 @@ def from_xml(cls, elem, account):
             f&#34;the week is {_weekday_to_str(self.first_day_of_week)}&#34;
         )</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/weeklyrecurrence">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/weeklyrecurrence</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.recurrence.Pattern" href="#exchangelib.recurrence.Pattern">Pattern</a></li>
@@ -1590,7 +1236,6 @@ def from_xml(cls, elem, account):
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/weeklyregeneration">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/weeklyregeneration</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1606,6 +1251,7 @@ def from_xml(cls, elem, account):
     def __str__(self):
         return f&#34;Regenerates every {self.interval} week(s)&#34;</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/weeklyregeneration">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/weeklyregeneration</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.recurrence.Regeneration" href="#exchangelib.recurrence.Regeneration">Regeneration</a></li>
@@ -1647,7 +1293,6 @@ def from_xml(cls, elem, account):
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/yearlyregeneration">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/yearlyregeneration</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1663,6 +1308,7 @@ def from_xml(cls, elem, account):
     def __str__(self):
         return f&#34;Regenerates every {self.interval} year(s)&#34;</code></pre>
 </details>
+<div class="desc"><p>MSDN: <a href="https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/yearlyregeneration">https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/yearlyregeneration</a></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.recurrence.Regeneration" href="#exchangelib.recurrence.Regeneration">Regeneration</a></li>
@@ -1703,7 +1349,6 @@ def from_xml(cls, elem, account):
 </section>
 </article>
 <nav id="sidebar">
-<h1>Index</h1>
 <div class="toc">
 <ul></ul>
 </div>
@@ -1893,7 +1538,7 @@ def from_xml(cls, elem, account):
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
 </footer>
 </body>
 </html>

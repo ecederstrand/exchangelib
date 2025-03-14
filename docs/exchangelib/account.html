@@ -2,18 +2,32 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.10.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.5">
 <title>exchangelib.account API documentation</title>
-<meta name="description" content="" />
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
-<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
-<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
-<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
 </head>
 <body>
 <main>
@@ -22,879 +36,6 @@
 <h1 class="title">Module <code>exchangelib.account</code></h1>
 </header>
 <section id="section-intro">
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">import locale as stdlib_locale
-from logging import getLogger
-
-from cached_property import threaded_cached_property
-
-from .autodiscover import Autodiscovery
-from .configuration import Configuration
-from .credentials import ACCESS_TYPES, DELEGATE, IMPERSONATION
-from .errors import InvalidEnumValue, InvalidTypeError, ResponseMessageError, UnknownTimeZone
-from .ewsdatetime import UTC, EWSTimeZone
-from .fields import FieldPath, TextField
-from .folders import (
-    AdminAuditLogs,
-    ArchiveDeletedItems,
-    ArchiveInbox,
-    ArchiveMsgFolderRoot,
-    ArchiveRecoverableItemsDeletions,
-    ArchiveRecoverableItemsPurges,
-    ArchiveRecoverableItemsRoot,
-    ArchiveRecoverableItemsVersions,
-    ArchiveRoot,
-    Calendar,
-    Conflicts,
-    Contacts,
-    ConversationHistory,
-    DeletedItems,
-    Directory,
-    Drafts,
-    Favorites,
-    Folder,
-    IMContactList,
-    Inbox,
-    Journal,
-    JunkEmail,
-    LocalFailures,
-    MsgFolderRoot,
-    MyContacts,
-    Notes,
-    Outbox,
-    PeopleConnect,
-    PublicFoldersRoot,
-    QuickContacts,
-    RecipientCache,
-    RecoverableItemsDeletions,
-    RecoverableItemsPurges,
-    RecoverableItemsRoot,
-    RecoverableItemsVersions,
-    Root,
-    SearchFolders,
-    SentItems,
-    ServerFailures,
-    SyncIssues,
-    Tasks,
-    ToDoSearch,
-    VoiceMail,
-)
-from .folders.collections import PullSubscription, PushSubscription, StreamingSubscription
-from .items import ALL_OCCURRENCES, AUTO_RESOLVE, HARD_DELETE, ID_ONLY, SAVE_ONLY, SEND_TO_NONE
-from .properties import EWSElement, Mailbox, Rule, SendingAs
-from .protocol import Protocol
-from .queryset import QuerySet
-from .services import (
-    ArchiveItem,
-    CopyItem,
-    CreateInboxRule,
-    CreateItem,
-    DeleteInboxRule,
-    DeleteItem,
-    ExportItems,
-    GetDelegate,
-    GetInboxRules,
-    GetItem,
-    GetMailTips,
-    GetPersona,
-    GetUserOofSettings,
-    MarkAsJunk,
-    MoveItem,
-    SendItem,
-    SetInboxRule,
-    SetUserOofSettings,
-    SubscribeToPull,
-    SubscribeToPush,
-    SubscribeToStreaming,
-    Unsubscribe,
-    UpdateItem,
-    UploadItems,
-)
-from .util import get_domain, peek
-
-log = getLogger(__name__)
-
-
-class Identity(EWSElement):
-    &#34;&#34;&#34;Contains information that uniquely identifies an account. Currently only used for SOAP impersonation headers.&#34;&#34;&#34;
-
-    ELEMENT_NAME = &#34;ConnectingSID&#34;
-
-    # We have multiple options for uniquely identifying the user. Here&#39;s a prioritized list in accordance with
-    # https://docs.microsoft.com/en-us/exchange/client-developer/web-service-reference/connectingsid
-    sid = TextField(field_uri=&#34;SID&#34;)
-    upn = TextField(field_uri=&#34;PrincipalName&#34;)
-    smtp_address = TextField(field_uri=&#34;SmtpAddress&#34;)  # The (non-)primary email address for the account
-    primary_smtp_address = TextField(field_uri=&#34;PrimarySmtpAddress&#34;)  # The primary email address for the account
-
-
-class Account:
-    &#34;&#34;&#34;Models an Exchange server user account.&#34;&#34;&#34;
-
-    def __init__(
-        self,
-        primary_smtp_address,
-        fullname=None,
-        access_type=None,
-        autodiscover=False,
-        credentials=None,
-        config=None,
-        locale=None,
-        default_timezone=None,
-    ):
-        &#34;&#34;&#34;
-
-        :param primary_smtp_address: The primary email address associated with the account on the Exchange server
-        :param fullname: The full name of the account. Optional. (Default value = None)
-        :param access_type: The access type granted to &#39;credentials&#39; for this account. Valid options are &#39;delegate&#39;
-            and &#39;impersonation&#39;. &#39;delegate&#39; is default if &#39;credentials&#39; is set. Otherwise, &#39;impersonation&#39; is default.
-        :param autodiscover: Whether to look up the EWS endpoint automatically using the autodiscover protocol.
-            (Default value = False)
-        :param credentials: A Credentials object containing valid credentials for this account. (Default value = None)
-        :param config: A Configuration object containing EWS endpoint information. Required if autodiscover is disabled
-            (Default value = None)
-        :param locale: The locale of the user, e.g. &#39;en_US&#39;. Defaults to the locale of the host, if available.
-        :param default_timezone: EWS may return some datetime values without timezone information. In this case, we will
-            assume values to be in the provided timezone. Defaults to the timezone of the host.
-        :return:
-        &#34;&#34;&#34;
-        if &#34;@&#34; not in primary_smtp_address:
-            raise ValueError(f&#34;primary_smtp_address {primary_smtp_address!r} is not an email address&#34;)
-        self.fullname = fullname
-        # Assume delegate access if individual credentials are provided. Else, assume service user with impersonation
-        self.access_type = access_type or (DELEGATE if credentials else IMPERSONATION)
-        if self.access_type not in ACCESS_TYPES:
-            raise InvalidEnumValue(&#34;access_type&#34;, self.access_type, ACCESS_TYPES)
-        try:
-            # get_locale() might not be able to determine the locale
-            self.locale = locale or stdlib_locale.getlocale()[0] or None
-        except ValueError as e:
-            # getlocale() may throw ValueError if it fails to parse the system locale
-            log.warning(&#34;Failed to get locale (%s)&#34;, e)
-            self.locale = None
-        if not isinstance(self.locale, (type(None), str)):
-            raise InvalidTypeError(&#34;locale&#34;, self.locale, str)
-        if default_timezone:
-            try:
-                self.default_timezone = EWSTimeZone.from_timezone(default_timezone)
-            except TypeError:
-                raise InvalidTypeError(&#34;default_timezone&#34;, default_timezone, EWSTimeZone)
-        else:
-            try:
-                self.default_timezone = EWSTimeZone.localzone()
-            except (ValueError, UnknownTimeZone) as e:
-                # There is no translation from local timezone name to Windows timezone name, or e failed to find the
-                # local timezone.
-                log.warning(&#34;%s. Fallback to UTC&#34;, e.args[0])
-                self.default_timezone = UTC
-        if not isinstance(config, (Configuration, type(None))):
-            raise InvalidTypeError(&#34;config&#34;, config, Configuration)
-        if autodiscover:
-            if config:
-                auth_type, retry_policy, version, max_connections = (
-                    config.auth_type,
-                    config.retry_policy,
-                    config.version,
-                    config.max_connections,
-                )
-                if not credentials:
-                    credentials = config.credentials
-            else:
-                auth_type, retry_policy, version, max_connections = None, None, None, None
-            self.ad_response, self.protocol = Autodiscovery(
-                email=primary_smtp_address, credentials=credentials
-            ).discover()
-            # Let&#39;s not use the auth_package hint from the AD response. It could be incorrect and we can just guess.
-            self.protocol.config.auth_type = auth_type
-            if retry_policy:
-                self.protocol.config.retry_policy = retry_policy
-            if version:
-                self.protocol.config.version = version
-            self.protocol.max_connections = max_connections
-            primary_smtp_address = self.ad_response.autodiscover_smtp_address
-        else:
-            if not config:
-                raise AttributeError(&#34;non-autodiscover requires a config&#34;)
-            self.ad_response = None
-            self.protocol = Protocol(config=config)
-
-        # Other ways of identifying the account can be added later
-        self.identity = Identity(primary_smtp_address=primary_smtp_address)
-
-        # For maintaining affinity in e.g. subscriptions
-        self.affinity_cookie = None
-
-        # We may need to override the default server version on a per-account basis because Microsoft may report one
-        # server version up-front but delegate account requests to an older backend server. Create a new instance to
-        # avoid changing the protocol version.
-        self.version = self.protocol.version.copy()
-        log.debug(&#34;Added account: %s&#34;, self)
-
-    @property
-    def primary_smtp_address(self):
-        return self.identity.primary_smtp_address
-
-    @threaded_cached_property
-    def admin_audit_logs(self):
-        return self.root.get_default_folder(AdminAuditLogs)
-
-    @threaded_cached_property
-    def archive_deleted_items(self):
-        return self.archive_root.get_default_folder(ArchiveDeletedItems)
-
-    @threaded_cached_property
-    def archive_inbox(self):
-        return self.archive_root.get_default_folder(ArchiveInbox)
-
-    @threaded_cached_property
-    def archive_msg_folder_root(self):
-        return self.archive_root.get_default_folder(ArchiveMsgFolderRoot)
-
-    @threaded_cached_property
-    def archive_recoverable_items_deletions(self):
-        return self.archive_root.get_default_folder(ArchiveRecoverableItemsDeletions)
-
-    @threaded_cached_property
-    def archive_recoverable_items_purges(self):
-        return self.archive_root.get_default_folder(ArchiveRecoverableItemsPurges)
-
-    @threaded_cached_property
-    def archive_recoverable_items_root(self):
-        return self.archive_root.get_default_folder(ArchiveRecoverableItemsRoot)
-
-    @threaded_cached_property
-    def archive_recoverable_items_versions(self):
-        return self.archive_root.get_default_folder(ArchiveRecoverableItemsVersions)
-
-    @threaded_cached_property
-    def archive_root(self):
-        return ArchiveRoot.get_distinguished(account=self)
-
-    @threaded_cached_property
-    def calendar(self):
-        # If the account contains a shared calendar from a different user, that calendar will be in the folder list.
-        # Attempt not to return one of those. An account may not always have a calendar called &#34;Calendar&#34;, but a
-        # Calendar folder with a localized name instead. Return that, if it&#39;s available, but always prefer any
-        # distinguished folder returned by the server.
-        return self.root.get_default_folder(Calendar)
-
-    @threaded_cached_property
-    def conflicts(self):
-        return self.root.get_default_folder(Conflicts)
-
-    @threaded_cached_property
-    def contacts(self):
-        return self.root.get_default_folder(Contacts)
-
-    @threaded_cached_property
-    def conversation_history(self):
-        return self.root.get_default_folder(ConversationHistory)
-
-    @threaded_cached_property
-    def directory(self):
-        return self.root.get_default_folder(Directory)
-
-    @threaded_cached_property
-    def drafts(self):
-        return self.root.get_default_folder(Drafts)
-
-    @threaded_cached_property
-    def favorites(self):
-        return self.root.get_default_folder(Favorites)
-
-    @threaded_cached_property
-    def im_contact_list(self):
-        return self.root.get_default_folder(IMContactList)
-
-    @threaded_cached_property
-    def inbox(self):
-        return self.root.get_default_folder(Inbox)
-
-    @threaded_cached_property
-    def journal(self):
-        return self.root.get_default_folder(Journal)
-
-    @threaded_cached_property
-    def junk(self):
-        return self.root.get_default_folder(JunkEmail)
-
-    @threaded_cached_property
-    def local_failures(self):
-        return self.root.get_default_folder(LocalFailures)
-
-    @threaded_cached_property
-    def msg_folder_root(self):
-        return self.root.get_default_folder(MsgFolderRoot)
-
-    @threaded_cached_property
-    def my_contacts(self):
-        return self.root.get_default_folder(MyContacts)
-
-    @threaded_cached_property
-    def notes(self):
-        return self.root.get_default_folder(Notes)
-
-    @threaded_cached_property
-    def outbox(self):
-        return self.root.get_default_folder(Outbox)
-
-    @threaded_cached_property
-    def people_connect(self):
-        return self.root.get_default_folder(PeopleConnect)
-
-    @threaded_cached_property
-    def public_folders_root(self):
-        return PublicFoldersRoot.get_distinguished(account=self)
-
-    @threaded_cached_property
-    def quick_contacts(self):
-        return self.root.get_default_folder(QuickContacts)
-
-    @threaded_cached_property
-    def recipient_cache(self):
-        return self.root.get_default_folder(RecipientCache)
-
-    @threaded_cached_property
-    def recoverable_items_deletions(self):
-        return self.root.get_default_folder(RecoverableItemsDeletions)
-
-    @threaded_cached_property
-    def recoverable_items_purges(self):
-        return self.root.get_default_folder(RecoverableItemsPurges)
-
-    @threaded_cached_property
-    def recoverable_items_root(self):
-        return self.root.get_default_folder(RecoverableItemsRoot)
-
-    @threaded_cached_property
-    def recoverable_items_versions(self):
-        return self.root.get_default_folder(RecoverableItemsVersions)
-
-    @threaded_cached_property
-    def root(self):
-        return Root.get_distinguished(account=self)
-
-    @threaded_cached_property
-    def search_folders(self):
-        return self.root.get_default_folder(SearchFolders)
-
-    @threaded_cached_property
-    def sent(self):
-        return self.root.get_default_folder(SentItems)
-
-    @threaded_cached_property
-    def server_failures(self):
-        return self.root.get_default_folder(ServerFailures)
-
-    @threaded_cached_property
-    def sync_issues(self):
-        return self.root.get_default_folder(SyncIssues)
-
-    @threaded_cached_property
-    def tasks(self):
-        return self.root.get_default_folder(Tasks)
-
-    @threaded_cached_property
-    def todo_search(self):
-        return self.root.get_default_folder(ToDoSearch)
-
-    @threaded_cached_property
-    def trash(self):
-        return self.root.get_default_folder(DeletedItems)
-
-    @threaded_cached_property
-    def voice_mail(self):
-        return self.root.get_default_folder(VoiceMail)
-
-    @property
-    def domain(self):
-        return get_domain(self.primary_smtp_address)
-
-    @property
-    def oof_settings(self):
-        # We don&#39;t want to cache this property because then we can&#39;t easily get updates. &#39;threaded_cached_property&#39;
-        # supports the &#39;del self.oof_settings&#39; syntax to invalidate the cache, but does not support custom setter
-        # methods. Having a non-cached service call here goes against the assumption that properties are cheap, but the
-        # alternative is to create get_oof_settings() and set_oof_settings(), and that&#39;s just too Java-ish for my taste.
-        return GetUserOofSettings(account=self).get(
-            mailbox=Mailbox(email_address=self.primary_smtp_address),
-        )
-
-    @oof_settings.setter
-    def oof_settings(self, value):
-        SetUserOofSettings(account=self).get(
-            oof_settings=value,
-            mailbox=Mailbox(email_address=self.primary_smtp_address),
-        )
-
-    def _consume_item_service(self, service_cls, items, chunk_size, kwargs):
-        if isinstance(items, QuerySet):
-            # We just want an iterator over the results
-            items = iter(items)
-        is_empty, items = peek(items)
-        if is_empty:
-            # We accept generators, so it&#39;s not always convenient for caller to know up-front if &#39;ids&#39; is empty. Allow
-            # empty &#39;ids&#39; and return early.
-            return
-        kwargs[&#34;items&#34;] = items
-        yield from service_cls(account=self, chunk_size=chunk_size).call(**kwargs)
-
-    def export(self, items, chunk_size=None):
-        &#34;&#34;&#34;Return export strings of the given items.
-
-        :param items: An iterable containing the Items we want to export
-        :param chunk_size: The number of items to send to the server in a single request (Default value = None)
-
-        :return: A list of strings, the exported representation of the object
-        &#34;&#34;&#34;
-        return list(self._consume_item_service(service_cls=ExportItems, items=items, chunk_size=chunk_size, kwargs={}))
-
-    def upload(self, data, chunk_size=None):
-        &#34;&#34;&#34;Upload objects retrieved from an export to the given folders.
-
-        :param data: An iterable of tuples containing the folder we want to upload the data to and the string outputs of
-            exports. If you want to update items instead of create, the data must be a tuple of
-            (ItemId, is_associated, data) values.
-        :param chunk_size: The number of items to send to the server in a single request (Default value = None)
-
-        :return: A list of tuples with the new ids and changekeys
-
-          Example:
-          account.upload([
-              (account.inbox, &#34;AABBCC...&#34;),
-              (account.inbox, (ItemId(&#39;AA&#39;, &#39;BB&#39;), False, &#34;XXYYZZ...&#34;)),
-              (account.inbox, ((&#39;CC&#39;, &#39;DD&#39;), None, &#34;XXYYZZ...&#34;)),
-              (account.calendar, &#34;ABCXYZ...&#34;),
-          ])
-          -&gt; [(&#34;idA&#34;, &#34;changekey&#34;), (&#34;idB&#34;, &#34;changekey&#34;), (&#34;idC&#34;, &#34;changekey&#34;)]
-        &#34;&#34;&#34;
-        items = ((f, (None, False, d) if isinstance(d, str) else d) for f, d in data)
-        return list(self._consume_item_service(service_cls=UploadItems, items=items, chunk_size=chunk_size, kwargs={}))
-
-    def bulk_create(
-        self, folder, items, message_disposition=SAVE_ONLY, send_meeting_invitations=SEND_TO_NONE, chunk_size=None
-    ):
-        &#34;&#34;&#34;Create new items in &#39;folder&#39;.
-
-        :param folder: the folder to create the items in
-        :param items: an iterable of Item objects
-        :param message_disposition: only applicable to Message items. Possible values are specified in
-            MESSAGE_DISPOSITION_CHOICES (Default value = SAVE_ONLY)
-        :param send_meeting_invitations: only applicable to CalendarItem items. Possible values are specified in
-            SEND_MEETING_INVITATIONS_CHOICES (Default value = SEND_TO_NONE)
-        :param chunk_size: The number of items to send to the server in a single request (Default value = None)
-
-        :return: a list of either BulkCreateResult or exception instances in the same order as the input. The returned
-          BulkCreateResult objects are normal Item objects except they only contain the &#39;id&#39; and &#39;changekey&#39;
-          of the created item, and the &#39;id&#39; of any attachments that were also created.
-        &#34;&#34;&#34;
-        if isinstance(items, QuerySet):
-            # bulk_create() on a queryset does not make sense because it returns items that have already been created
-            raise ValueError(&#34;Cannot bulk create items from a QuerySet&#34;)
-        log.debug(
-            &#34;Adding items for %s (folder %s, message_disposition: %s, send_meeting_invitations: %s)&#34;,
-            self,
-            folder,
-            message_disposition,
-            send_meeting_invitations,
-        )
-        return list(
-            self._consume_item_service(
-                service_cls=CreateItem,
-                items=items,
-                chunk_size=chunk_size,
-                kwargs=dict(
-                    folder=folder,
-                    message_disposition=message_disposition,
-                    send_meeting_invitations=send_meeting_invitations,
-                ),
-            )
-        )
-
-    def bulk_update(
-        self,
-        items,
-        conflict_resolution=AUTO_RESOLVE,
-        message_disposition=SAVE_ONLY,
-        send_meeting_invitations_or_cancellations=SEND_TO_NONE,
-        suppress_read_receipts=True,
-        chunk_size=None,
-    ):
-        &#34;&#34;&#34;Bulk update existing items.
-
-        :param items: a list of (Item, fieldnames) tuples, where &#39;Item&#39; is an Item object, and &#39;fieldnames&#39; is a list
-            containing the attributes on this Item object that we want to be updated.
-        :param conflict_resolution: Possible values are specified in CONFLICT_RESOLUTION_CHOICES
-            (Default value = AUTO_RESOLVE)
-        :param message_disposition: only applicable to Message items. Possible values are specified in
-            MESSAGE_DISPOSITION_CHOICES (Default value = SAVE_ONLY)
-        :param send_meeting_invitations_or_cancellations: only applicable to CalendarItem items. Possible values are
-            specified in SEND_MEETING_INVITATIONS_AND_CANCELLATIONS_CHOICES (Default value = SEND_TO_NONE)
-        :param suppress_read_receipts: nly supported from Exchange 2013. True or False (Default value = True)
-        :param chunk_size: The number of items to send to the server in a single request (Default value = None)
-
-        :return: a list of either (id, changekey) tuples or exception instances, in the same order as the input
-        &#34;&#34;&#34;
-        # bulk_update() on a queryset does not make sense because there would be no opportunity to alter the items. In
-        # fact, it could be dangerous if the queryset contains an &#39;.only()&#39;. This would wipe out certain fields
-        # entirely.
-        if isinstance(items, QuerySet):
-            raise ValueError(&#34;Cannot bulk update on a queryset&#34;)
-        log.debug(
-            &#34;Updating items for %s (conflict_resolution %s, message_disposition: %s, send_meeting_invitations: %s)&#34;,
-            self,
-            conflict_resolution,
-            message_disposition,
-            send_meeting_invitations_or_cancellations,
-        )
-        return list(
-            self._consume_item_service(
-                service_cls=UpdateItem,
-                items=items,
-                chunk_size=chunk_size,
-                kwargs=dict(
-                    conflict_resolution=conflict_resolution,
-                    message_disposition=message_disposition,
-                    send_meeting_invitations_or_cancellations=send_meeting_invitations_or_cancellations,
-                    suppress_read_receipts=suppress_read_receipts,
-                ),
-            )
-        )
-
-    def bulk_delete(
-        self,
-        ids,
-        delete_type=HARD_DELETE,
-        send_meeting_cancellations=SEND_TO_NONE,
-        affected_task_occurrences=ALL_OCCURRENCES,
-        suppress_read_receipts=True,
-        chunk_size=None,
-    ):
-        &#34;&#34;&#34;Bulk delete items.
-
-        :param ids: an iterable of either (id, changekey) tuples or Item objects.
-        :param delete_type: the type of delete to perform. Possible values are specified in DELETE_TYPE_CHOICES
-            (Default value = HARD_DELETE)
-        :param send_meeting_cancellations: only applicable to CalendarItem. Possible values are specified in
-            SEND_MEETING_CANCELLATIONS_CHOICES. (Default value = SEND_TO_NONE)
-        :param affected_task_occurrences: only applicable for recurring Task items. Possible values are specified in
-            AFFECTED_TASK_OCCURRENCES_CHOICES. (Default value = ALL_OCCURRENCES)
-        :param suppress_read_receipts: only supported from Exchange 2013. True or False. (Default value = True)
-        :param chunk_size: The number of items to send to the server in a single request (Default value = None)
-
-        :return: a list of either True or exception instances, in the same order as the input
-        &#34;&#34;&#34;
-        log.debug(
-            &#34;Deleting items for %s (delete_type: %s, send_meeting_invitations: %s, affected_task_occurrences: %s)&#34;,
-            self,
-            delete_type,
-            send_meeting_cancellations,
-            affected_task_occurrences,
-        )
-        return list(
-            self._consume_item_service(
-                service_cls=DeleteItem,
-                items=ids,
-                chunk_size=chunk_size,
-                kwargs=dict(
-                    delete_type=delete_type,
-                    send_meeting_cancellations=send_meeting_cancellations,
-                    affected_task_occurrences=affected_task_occurrences,
-                    suppress_read_receipts=suppress_read_receipts,
-                ),
-            )
-        )
-
-    def bulk_send(self, ids, save_copy=True, copy_to_folder=None, chunk_size=None):
-        &#34;&#34;&#34;Send existing draft messages. If requested, save a copy in &#39;copy_to_folder&#39;.
-
-        :param ids: an iterable of either (id, changekey) tuples or Item objects.
-        :param save_copy: If true, saves a copy of the message (Default value = True)
-        :param copy_to_folder: If requested, save a copy of the message in this folder. Default is the Sent folder
-        :param chunk_size: The number of items to send to the server in a single request (Default value = None)
-
-        :return: Status for each send operation, in the same order as the input
-        &#34;&#34;&#34;
-        if copy_to_folder and not save_copy:
-            raise AttributeError(&#34;&#39;save_copy&#39; must be True when &#39;copy_to_folder&#39; is set&#34;)
-        if save_copy and not copy_to_folder:
-            copy_to_folder = self.sent  # &#39;Sent&#39; is default EWS behaviour
-        return list(
-            self._consume_item_service(
-                service_cls=SendItem,
-                items=ids,
-                chunk_size=chunk_size,
-                kwargs=dict(
-                    saved_item_folder=copy_to_folder,
-                ),
-            )
-        )
-
-    def bulk_copy(self, ids, to_folder, chunk_size=None):
-        &#34;&#34;&#34;Copy items to another folder.
-
-        :param ids: an iterable of either (id, changekey) tuples or Item objects.
-        :param to_folder: The destination folder of the copy operation
-        :param chunk_size: The number of items to send to the server in a single request (Default value = None)
-
-        :return: Status for each send operation, in the same order as the input
-        &#34;&#34;&#34;
-        return list(
-            self._consume_item_service(
-                service_cls=CopyItem,
-                items=ids,
-                chunk_size=chunk_size,
-                kwargs=dict(
-                    to_folder=to_folder,
-                ),
-            )
-        )
-
-    def bulk_move(self, ids, to_folder, chunk_size=None):
-        &#34;&#34;&#34;Move items to another folder.
-
-        :param ids: an iterable of either (id, changekey) tuples or Item objects.
-        :param to_folder: The destination folder of the copy operation
-        :param chunk_size: The number of items to send to the server in a single request (Default value = None)
-
-        :return: The new IDs of the moved items, in the same order as the input. If &#39;to_folder&#39; is a public folder or a
-          folder in a different mailbox, an empty list is returned.
-        &#34;&#34;&#34;
-        return list(
-            self._consume_item_service(
-                service_cls=MoveItem,
-                items=ids,
-                chunk_size=chunk_size,
-                kwargs=dict(
-                    to_folder=to_folder,
-                ),
-            )
-        )
-
-    def bulk_archive(self, ids, to_folder, chunk_size=None):
-        &#34;&#34;&#34;Archive items to a folder in the archive mailbox. An archive mailbox must be enabled in order for this
-        to work.
-
-        :param ids: an iterable of either (id, changekey) tuples or Item objects.
-        :param to_folder: The destination folder of the archive operation
-        :param chunk_size: The number of items to send to the server in a single request (Default value = None)
-
-        :return: A list containing True or an exception instance in stable order of the requested items
-        &#34;&#34;&#34;
-        return list(
-            self._consume_item_service(
-                service_cls=ArchiveItem,
-                items=ids,
-                chunk_size=chunk_size,
-                kwargs=dict(
-                    to_folder=to_folder,
-                ),
-            )
-        )
-
-    def bulk_mark_as_junk(self, ids, is_junk, move_item, chunk_size=None):
-        &#34;&#34;&#34;Mark or un-mark message items as junk email and add or remove the sender from the blocked sender list.
-
-        :param ids: an iterable of either (id, changekey) tuples or Item objects.
-        :param is_junk: Whether the messages are junk or not
-        :param move_item: Whether to move the messages to the junk folder or not
-        :param chunk_size: The number of items to send to the server in a single request (Default value = None)
-
-        :return: A list containing the new IDs of the moved items, if items were moved, or True, or an exception
-          instance, in stable order of the requested items.
-        &#34;&#34;&#34;
-        return list(
-            self._consume_item_service(
-                service_cls=MarkAsJunk,
-                items=ids,
-                chunk_size=chunk_size,
-                kwargs=dict(
-                    is_junk=is_junk,
-                    move_item=move_item,
-                ),
-            )
-        )
-
-    def fetch(self, ids, folder=None, only_fields=None, chunk_size=None):
-        &#34;&#34;&#34;Fetch items by ID.
-
-        :param ids: an iterable of either (id, changekey) tuples or Item objects.
-        :param folder: used for validating &#39;only_fields&#39; (Default value = None)
-        :param only_fields: A list of string or FieldPath items specifying the fields to fetch. Default to all fields
-        :param chunk_size: The number of items to send to the server in a single request (Default value = None)
-
-        :return: A generator of Item objects, in the same order as the input
-        &#34;&#34;&#34;
-        validation_folder = folder or Folder(root=self.root)  # Default to a folder type that supports all item types
-        # &#39;ids&#39; could be an unevaluated QuerySet, e.g. if we ended up here via `fetch(ids=some_folder.filter(...))`. In
-        # that case, we want to use its iterator. Otherwise, peek() will start a count() which is wasteful because we
-        # need the item IDs immediately afterwards. iterator() will only do the bare minimum.
-        if only_fields is None:
-            # We didn&#39;t restrict list of field paths. Get all fields from the server, including extended properties.
-            additional_fields = {
-                FieldPath(field=f) for f in validation_folder.allowed_item_fields(version=self.version)
-            }
-        else:
-            for field in only_fields:
-                validation_folder.validate_item_field(field=field, version=self.version)
-            # Remove ItemId and ChangeKey. We get them unconditionally
-            additional_fields = {
-                f for f in validation_folder.normalize_fields(fields=only_fields) if not f.field.is_attribute
-            }
-        # Always use IdOnly here, because AllProperties doesn&#39;t actually get *all* properties
-        yield from self._consume_item_service(
-            service_cls=GetItem,
-            items=ids,
-            chunk_size=chunk_size,
-            kwargs=dict(
-                additional_fields=additional_fields,
-                shape=ID_ONLY,
-            ),
-        )
-
-    def fetch_personas(self, ids):
-        &#34;&#34;&#34;Fetch personas by ID.
-
-        :param ids: an iterable of either (id, changekey) tuples or Persona objects.
-        :return: A generator of Persona objects, in the same order as the input
-        &#34;&#34;&#34;
-        if isinstance(ids, QuerySet):
-            # We just want an iterator over the results
-            ids = iter(ids)
-        is_empty, ids = peek(ids)
-        if is_empty:
-            # We accept generators, so it&#39;s not always convenient for caller to know up-front if &#39;ids&#39; is empty. Allow
-            # empty &#39;ids&#39; and return early.
-            return
-        yield from GetPersona(account=self).call(personas=ids)
-
-    @property
-    def mail_tips(self):
-        &#34;&#34;&#34;See self.oof_settings about caching considerations.&#34;&#34;&#34;
-        return GetMailTips(protocol=self.protocol).get(
-            sending_as=SendingAs(email_address=self.primary_smtp_address),
-            recipients=[Mailbox(email_address=self.primary_smtp_address)],
-            mail_tips_requested=&#34;All&#34;,
-        )
-
-    @property
-    def delegates(self):
-        &#34;&#34;&#34;Return a list of DelegateUser objects representing the delegates that are set on this account.&#34;&#34;&#34;
-        return list(GetDelegate(account=self).call(user_ids=None, include_permissions=True))
-
-    @property
-    def rules(self):
-        &#34;&#34;&#34;Return a list of Rule objects representing the rules that are set on this account.&#34;&#34;&#34;
-        return list(GetInboxRules(account=self).call())
-
-    def create_rule(self, rule: Rule):
-        &#34;&#34;&#34;Create an Inbox rule.
-
-        :param rule: The rule to create. Must have at least &#39;display_name&#39; set.
-        :return: None if success, else raises an error.
-        &#34;&#34;&#34;
-        CreateInboxRule(account=self).get(rule=rule, remove_outlook_rule_blob=True)
-        # After creating the rule, query all rules,
-        # find the rule that was just created, and return its ID.
-        try:
-            rule.id = {i.display_name: i for i in GetInboxRules(account=self).call()}[rule.display_name].id
-        except KeyError:
-            raise ResponseMessageError(f&#34;Failed to create rule ({rule.display_name})!&#34;)
-
-    def set_rule(self, rule: Rule):
-        &#34;&#34;&#34;Modify an Inbox rule.
-
-        :param rule: The rule to set. Must have an ID.
-        :return: None if success, else raises an error.
-        &#34;&#34;&#34;
-        SetInboxRule(account=self).get(rule=rule)
-
-    def delete_rule(self, rule: Rule):
-        &#34;&#34;&#34;Delete an Inbox rule.
-
-        :param rule: The rule to delete. Must have an ID.
-        :return: None if success, else raises an error.
-        &#34;&#34;&#34;
-        if not rule.id:
-            raise ValueError(&#34;Rule must have an ID&#34;)
-        DeleteInboxRule(account=self).get(rule=rule)
-        rule.id = None
-
-    def subscribe_to_pull(self, event_types=None, watermark=None, timeout=60):
-        &#34;&#34;&#34;Create a pull subscription.
-
-        :param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPull.EVENT_TYPES
-        :param watermark: An event bookmark as returned by some sync services
-        :param timeout: Timeout of the subscription, in minutes. Timeout is reset when the server receives a
-        GetEvents request for this subscription.
-        :return: The subscription ID and a watermark
-        &#34;&#34;&#34;
-        if event_types is None:
-            event_types = SubscribeToPull.EVENT_TYPES
-        return SubscribeToPull(account=self).get(
-            folders=None,
-            event_types=event_types,
-            watermark=watermark,
-            timeout=timeout,
-        )
-
-    def subscribe_to_push(self, callback_url, event_types=None, watermark=None, status_frequency=1):
-        &#34;&#34;&#34;Create a push subscription.
-
-        :param callback_url: A client-defined URL that the server will call
-        :param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPush.EVENT_TYPES
-        :param watermark: An event bookmark as returned by some sync services
-        :param status_frequency: The frequency, in minutes, that the callback URL will be called with.
-        :return: The subscription ID and a watermark
-        &#34;&#34;&#34;
-        if event_types is None:
-            event_types = SubscribeToPush.EVENT_TYPES
-        return SubscribeToPush(account=self).get(
-            folders=None,
-            event_types=event_types,
-            watermark=watermark,
-            status_frequency=status_frequency,
-            url=callback_url,
-        )
-
-    def subscribe_to_streaming(self, event_types=None):
-        &#34;&#34;&#34;Create a streaming subscription.
-
-        :param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPush.EVENT_TYPES
-        :return: The subscription ID
-        &#34;&#34;&#34;
-        if event_types is None:
-            event_types = SubscribeToStreaming.EVENT_TYPES
-        return SubscribeToStreaming(account=self).get(folders=None, event_types=event_types)
-
-    def pull_subscription(self, **kwargs):
-        return PullSubscription(target=self, **kwargs)
-
-    def push_subscription(self, **kwargs):
-        return PushSubscription(target=self, **kwargs)
-
-    def streaming_subscription(self, **kwargs):
-        return StreamingSubscription(target=self, **kwargs)
-
-    def unsubscribe(self, subscription_id):
-        &#34;&#34;&#34;Unsubscribe. Only applies to pull and streaming notifications.
-
-        :param subscription_id: A subscription ID as acquired by .subscribe_to_[pull|streaming]()
-        :return: True
-
-        This method doesn&#39;t need the current collection instance, but it makes sense to keep the method along the other
-        sync methods.
-        &#34;&#34;&#34;
-        return Unsubscribe(account=self).get(subscription_id=subscription_id)
-
-    def __str__(self):
-        if self.fullname:
-            return f&#34;{self.primary_smtp_address} ({self.fullname})&#34;
-        return self.primary_smtp_address</code></pre>
-</details>
 </section>
 <section>
 </section>
@@ -907,23 +48,9 @@ class Account:
 <dl>
 <dt id="exchangelib.account.Account"><code class="flex name class">
 <span>class <span class="ident">Account</span></span>
-<span>(</span><span>primary_smtp_address, fullname=None, access_type=None, autodiscover=False, credentials=None, config=None, locale=None, default_timezone=None)</span>
+<span>(</span><span>primary_smtp_address,<br>fullname=None,<br>access_type=None,<br>autodiscover=False,<br>credentials=None,<br>config=None,<br>locale=None,<br>default_timezone=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Models an Exchange server user account.</p>
-<p>:param primary_smtp_address: The primary email address associated with the account on the Exchange server
-:param fullname: The full name of the account. Optional. (Default value = None)
-:param access_type: The access type granted to 'credentials' for this account. Valid options are 'delegate'
-and 'impersonation'. 'delegate' is default if 'credentials' is set. Otherwise, 'impersonation' is default.
-:param autodiscover: Whether to look up the EWS endpoint automatically using the autodiscover protocol.
-(Default value = False)
-:param credentials: A Credentials object containing valid credentials for this account. (Default value = None)
-:param config: A Configuration object containing EWS endpoint information. Required if autodiscover is disabled
-(Default value = None)
-:param locale: The locale of the user, e.g. 'en_US'. Defaults to the locale of the host, if available.
-:param default_timezone: EWS may return some datetime values without timezone information. In this case, we will
-assume values to be in the provided timezone. Defaults to the timezone of the host.
-:return:</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1024,15 +151,31 @@ assume values to be in the provided timezone. Defaults to the timezone of the ho
         # For maintaining affinity in e.g. subscriptions
         self.affinity_cookie = None
 
-        # We may need to override the default server version on a per-account basis because Microsoft may report one
-        # server version up-front but delegate account requests to an older backend server. Create a new instance to
-        # avoid changing the protocol version.
-        self.version = self.protocol.version.copy()
+        self._version = None
+        self._version_lock = Lock()
         log.debug(&#34;Added account: %s&#34;, self)
 
     @property
     def primary_smtp_address(self):
         return self.identity.primary_smtp_address
+
+    @property
+    def version(self):
+        # We may need to override the default server version on a per-account basis because Microsoft may report one
+        # server version up-front but delegate account requests to an older backend server. Create a new instance to
+        # avoid changing the protocol version instance.
+        if self._version:
+            return self._version
+        with self._version_lock:
+            if self._version:
+                return self._version
+            self._version = self.protocol.version.copy()
+            return self._version
+
+    @version.setter
+    def version(self, value):
+        with self._version_lock:
+            self._version = value
 
     @threaded_cached_property
     def admin_audit_logs(self):
@@ -1687,16 +830,40 @@ assume values to be in the provided timezone. Defaults to the timezone of the ho
         &#34;&#34;&#34;
         return Unsubscribe(account=self).get(subscription_id=subscription_id)
 
+    def __getstate__(self):
+        # The lock cannot be pickled
+        state = self.__dict__.copy()
+        del state[&#34;_version_lock&#34;]
+        return state
+
+    def __setstate__(self, state):
+        # Restore the lock
+        self.__dict__.update(state)
+        self._version_lock = Lock()
+
     def __str__(self):
         if self.fullname:
             return f&#34;{self.primary_smtp_address} ({self.fullname})&#34;
         return self.primary_smtp_address</code></pre>
 </details>
+<div class="desc"><p>Models an Exchange server user account.</p>
+<p>:param primary_smtp_address: The primary email address associated with the account on the Exchange server
+:param fullname: The full name of the account. Optional. (Default value = None)
+:param access_type: The access type granted to 'credentials' for this account. Valid options are 'delegate'
+and 'impersonation'. 'delegate' is default if 'credentials' is set. Otherwise, 'impersonation' is default.
+:param autodiscover: Whether to look up the EWS endpoint automatically using the autodiscover protocol.
+(Default value = False)
+:param credentials: A Credentials object containing valid credentials for this account. (Default value = None)
+:param config: A Configuration object containing EWS endpoint information. Required if autodiscover is disabled
+(Default value = None)
+:param locale: The locale of the user, e.g. 'en_US'. Defaults to the locale of the host, if available.
+:param default_timezone: EWS may return some datetime values without timezone information. In this case, we will
+assume values to be in the provided timezone. Defaults to the timezone of the host.
+:return:</p></div>
 <h3>Instance variables</h3>
 <dl>
 <dt id="exchangelib.account.Account.admin_audit_logs"><code class="name">var <span class="ident">admin_audit_logs</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1716,10 +883,10 @@ assume values to be in the provided timezone. Defaults to the timezone of the ho
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.archive_deleted_items"><code class="name">var <span class="ident">archive_deleted_items</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1739,10 +906,10 @@ assume values to be in the provided timezone. Defaults to the timezone of the ho
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.archive_inbox"><code class="name">var <span class="ident">archive_inbox</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1762,10 +929,10 @@ assume values to be in the provided timezone. Defaults to the timezone of the ho
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.archive_msg_folder_root"><code class="name">var <span class="ident">archive_msg_folder_root</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1785,10 +952,10 @@ assume values to be in the provided timezone. Defaults to the timezone of the ho
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.archive_recoverable_items_deletions"><code class="name">var <span class="ident">archive_recoverable_items_deletions</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1808,10 +975,10 @@ assume values to be in the provided timezone. Defaults to the timezone of the ho
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.archive_recoverable_items_purges"><code class="name">var <span class="ident">archive_recoverable_items_purges</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1831,10 +998,10 @@ assume values to be in the provided timezone. Defaults to the timezone of the ho
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.archive_recoverable_items_root"><code class="name">var <span class="ident">archive_recoverable_items_root</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1854,10 +1021,10 @@ assume values to be in the provided timezone. Defaults to the timezone of the ho
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.archive_recoverable_items_versions"><code class="name">var <span class="ident">archive_recoverable_items_versions</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1877,10 +1044,10 @@ assume values to be in the provided timezone. Defaults to the timezone of the ho
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.archive_root"><code class="name">var <span class="ident">archive_root</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1900,10 +1067,10 @@ assume values to be in the provided timezone. Defaults to the timezone of the ho
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.calendar"><code class="name">var <span class="ident">calendar</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1923,10 +1090,10 @@ assume values to be in the provided timezone. Defaults to the timezone of the ho
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.conflicts"><code class="name">var <span class="ident">conflicts</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1946,10 +1113,10 @@ assume values to be in the provided timezone. Defaults to the timezone of the ho
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.contacts"><code class="name">var <span class="ident">contacts</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1969,10 +1136,10 @@ assume values to be in the provided timezone. Defaults to the timezone of the ho
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.conversation_history"><code class="name">var <span class="ident">conversation_history</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1992,10 +1159,10 @@ assume values to be in the provided timezone. Defaults to the timezone of the ho
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
-<dt id="exchangelib.account.Account.delegates"><code class="name">var <span class="ident">delegates</span></code></dt>
+<dt id="exchangelib.account.Account.delegates"><code class="name">prop <span class="ident">delegates</span></code></dt>
 <dd>
-<div class="desc"><p>Return a list of DelegateUser objects representing the delegates that are set on this account.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2005,10 +1172,10 @@ def delegates(self):
     &#34;&#34;&#34;Return a list of DelegateUser objects representing the delegates that are set on this account.&#34;&#34;&#34;
     return list(GetDelegate(account=self).call(user_ids=None, include_permissions=True))</code></pre>
 </details>
+<div class="desc"><p>Return a list of DelegateUser objects representing the delegates that are set on this account.</p></div>
 </dd>
 <dt id="exchangelib.account.Account.directory"><code class="name">var <span class="ident">directory</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2028,10 +1195,10 @@ def delegates(self):
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
-</dd>
-<dt id="exchangelib.account.Account.domain"><code class="name">var <span class="ident">domain</span></code></dt>
-<dd>
 <div class="desc"></div>
+</dd>
+<dt id="exchangelib.account.Account.domain"><code class="name">prop <span class="ident">domain</span></code></dt>
+<dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2040,10 +1207,10 @@ def delegates(self):
 def domain(self):
     return get_domain(self.primary_smtp_address)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.drafts"><code class="name">var <span class="ident">drafts</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2063,10 +1230,10 @@ def domain(self):
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.favorites"><code class="name">var <span class="ident">favorites</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2086,10 +1253,10 @@ def domain(self):
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.im_contact_list"><code class="name">var <span class="ident">im_contact_list</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2109,10 +1276,10 @@ def domain(self):
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.inbox"><code class="name">var <span class="ident">inbox</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2132,10 +1299,10 @@ def domain(self):
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.journal"><code class="name">var <span class="ident">journal</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2155,10 +1322,10 @@ def domain(self):
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.junk"><code class="name">var <span class="ident">junk</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2178,10 +1345,10 @@ def domain(self):
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.local_failures"><code class="name">var <span class="ident">local_failures</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2201,10 +1368,10 @@ def domain(self):
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
-<dt id="exchangelib.account.Account.mail_tips"><code class="name">var <span class="ident">mail_tips</span></code></dt>
+<dt id="exchangelib.account.Account.mail_tips"><code class="name">prop <span class="ident">mail_tips</span></code></dt>
 <dd>
-<div class="desc"><p>See self.oof_settings about caching considerations.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2218,10 +1385,10 @@ def mail_tips(self):
         mail_tips_requested=&#34;All&#34;,
     )</code></pre>
 </details>
+<div class="desc"><p>See self.oof_settings about caching considerations.</p></div>
 </dd>
 <dt id="exchangelib.account.Account.msg_folder_root"><code class="name">var <span class="ident">msg_folder_root</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2241,10 +1408,10 @@ def mail_tips(self):
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.my_contacts"><code class="name">var <span class="ident">my_contacts</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2264,10 +1431,10 @@ def mail_tips(self):
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.notes"><code class="name">var <span class="ident">notes</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2287,10 +1454,10 @@ def mail_tips(self):
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
-</dd>
-<dt id="exchangelib.account.Account.oof_settings"><code class="name">var <span class="ident">oof_settings</span></code></dt>
-<dd>
 <div class="desc"></div>
+</dd>
+<dt id="exchangelib.account.Account.oof_settings"><code class="name">prop <span class="ident">oof_settings</span></code></dt>
+<dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2305,10 +1472,10 @@ def oof_settings(self):
         mailbox=Mailbox(email_address=self.primary_smtp_address),
     )</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.outbox"><code class="name">var <span class="ident">outbox</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2328,10 +1495,10 @@ def oof_settings(self):
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.people_connect"><code class="name">var <span class="ident">people_connect</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2351,10 +1518,10 @@ def oof_settings(self):
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
-</dd>
-<dt id="exchangelib.account.Account.primary_smtp_address"><code class="name">var <span class="ident">primary_smtp_address</span></code></dt>
-<dd>
 <div class="desc"></div>
+</dd>
+<dt id="exchangelib.account.Account.primary_smtp_address"><code class="name">prop <span class="ident">primary_smtp_address</span></code></dt>
+<dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2363,10 +1530,10 @@ def oof_settings(self):
 def primary_smtp_address(self):
     return self.identity.primary_smtp_address</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.public_folders_root"><code class="name">var <span class="ident">public_folders_root</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2386,10 +1553,10 @@ def primary_smtp_address(self):
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.quick_contacts"><code class="name">var <span class="ident">quick_contacts</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2409,10 +1576,10 @@ def primary_smtp_address(self):
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.recipient_cache"><code class="name">var <span class="ident">recipient_cache</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2432,10 +1599,10 @@ def primary_smtp_address(self):
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.recoverable_items_deletions"><code class="name">var <span class="ident">recoverable_items_deletions</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2455,10 +1622,10 @@ def primary_smtp_address(self):
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.recoverable_items_purges"><code class="name">var <span class="ident">recoverable_items_purges</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2478,10 +1645,10 @@ def primary_smtp_address(self):
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.recoverable_items_root"><code class="name">var <span class="ident">recoverable_items_root</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2501,10 +1668,10 @@ def primary_smtp_address(self):
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.recoverable_items_versions"><code class="name">var <span class="ident">recoverable_items_versions</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2524,10 +1691,10 @@ def primary_smtp_address(self):
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.root"><code class="name">var <span class="ident">root</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2547,10 +1714,10 @@ def primary_smtp_address(self):
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
-<dt id="exchangelib.account.Account.rules"><code class="name">var <span class="ident">rules</span></code></dt>
+<dt id="exchangelib.account.Account.rules"><code class="name">prop <span class="ident">rules</span></code></dt>
 <dd>
-<div class="desc"><p>Return a list of Rule objects representing the rules that are set on this account.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2560,10 +1727,10 @@ def rules(self):
     &#34;&#34;&#34;Return a list of Rule objects representing the rules that are set on this account.&#34;&#34;&#34;
     return list(GetInboxRules(account=self).call())</code></pre>
 </details>
+<div class="desc"><p>Return a list of Rule objects representing the rules that are set on this account.</p></div>
 </dd>
 <dt id="exchangelib.account.Account.search_folders"><code class="name">var <span class="ident">search_folders</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2583,10 +1750,10 @@ def rules(self):
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.sent"><code class="name">var <span class="ident">sent</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2606,10 +1773,10 @@ def rules(self):
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.server_failures"><code class="name">var <span class="ident">server_failures</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2629,10 +1796,10 @@ def rules(self):
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.sync_issues"><code class="name">var <span class="ident">sync_issues</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2652,10 +1819,10 @@ def rules(self):
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.tasks"><code class="name">var <span class="ident">tasks</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2675,10 +1842,10 @@ def rules(self):
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.todo_search"><code class="name">var <span class="ident">todo_search</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2698,10 +1865,10 @@ def rules(self):
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.trash"><code class="name">var <span class="ident">trash</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2721,10 +1888,31 @@ def rules(self):
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
+<div class="desc"></div>
+</dd>
+<dt id="exchangelib.account.Account.version"><code class="name">prop <span class="ident">version</span></code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def version(self):
+    # We may need to override the default server version on a per-account basis because Microsoft may report one
+    # server version up-front but delegate account requests to an older backend server. Create a new instance to
+    # avoid changing the protocol version instance.
+    if self._version:
+        return self._version
+    with self._version_lock:
+        if self._version:
+            return self._version
+        self._version = self.protocol.version.copy()
+        return self._version</code></pre>
+</details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.voice_mail"><code class="name">var <span class="ident">voice_mail</span></code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2744,6 +1932,7 @@ def rules(self):
             # if not, do the calculation and release the lock
             return obj_dict.setdefault(name, self.func(obj))</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -2752,12 +1941,6 @@ def rules(self):
 <span>def <span class="ident">bulk_archive</span></span>(<span>self, ids, to_folder, chunk_size=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Archive items to a folder in the archive mailbox. An archive mailbox must be enabled in order for this
-to work.</p>
-<p>:param ids: an iterable of either (id, changekey) tuples or Item objects.
-:param to_folder: The destination folder of the archive operation
-:param chunk_size: The number of items to send to the server in a single request (Default value = None)</p>
-<p>:return: A list containing True or an exception instance in stable order of the requested items</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2783,16 +1966,17 @@ to work.</p>
         )
     )</code></pre>
 </details>
+<div class="desc"><p>Archive items to a folder in the archive mailbox. An archive mailbox must be enabled in order for this
+to work.</p>
+<p>:param ids: an iterable of either (id, changekey) tuples or Item objects.
+:param to_folder: The destination folder of the archive operation
+:param chunk_size: The number of items to send to the server in a single request (Default value = None)</p>
+<p>:return: A list containing True or an exception instance in stable order of the requested items</p></div>
 </dd>
 <dt id="exchangelib.account.Account.bulk_copy"><code class="name flex">
 <span>def <span class="ident">bulk_copy</span></span>(<span>self, ids, to_folder, chunk_size=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Copy items to another folder.</p>
-<p>:param ids: an iterable of either (id, changekey) tuples or Item objects.
-:param to_folder: The destination folder of the copy operation
-:param chunk_size: The number of items to send to the server in a single request (Default value = None)</p>
-<p>:return: Status for each send operation, in the same order as the input</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2817,22 +2001,16 @@ to work.</p>
         )
     )</code></pre>
 </details>
+<div class="desc"><p>Copy items to another folder.</p>
+<p>:param ids: an iterable of either (id, changekey) tuples or Item objects.
+:param to_folder: The destination folder of the copy operation
+:param chunk_size: The number of items to send to the server in a single request (Default value = None)</p>
+<p>:return: Status for each send operation, in the same order as the input</p></div>
 </dd>
 <dt id="exchangelib.account.Account.bulk_create"><code class="name flex">
-<span>def <span class="ident">bulk_create</span></span>(<span>self, folder, items, message_disposition='SaveOnly', send_meeting_invitations='SendToNone', chunk_size=None)</span>
+<span>def <span class="ident">bulk_create</span></span>(<span>self,<br>folder,<br>items,<br>message_disposition='SaveOnly',<br>send_meeting_invitations='SendToNone',<br>chunk_size=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Create new items in 'folder'.</p>
-<p>:param folder: the folder to create the items in
-:param items: an iterable of Item objects
-:param message_disposition: only applicable to Message items. Possible values are specified in
-MESSAGE_DISPOSITION_CHOICES (Default value = SAVE_ONLY)
-:param send_meeting_invitations: only applicable to CalendarItem items. Possible values are specified in
-SEND_MEETING_INVITATIONS_CHOICES (Default value = SEND_TO_NONE)
-:param chunk_size: The number of items to send to the server in a single request (Default value = None)</p>
-<p>:return: a list of either BulkCreateResult or exception instances in the same order as the input. The returned
-BulkCreateResult objects are normal Item objects except they only contain the 'id' and 'changekey'
-of the created item, and the 'id' of any attachments that were also created.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2877,22 +2055,22 @@ of the created item, and the 'id' of any attachments that were also created.</p>
         )
     )</code></pre>
 </details>
+<div class="desc"><p>Create new items in 'folder'.</p>
+<p>:param folder: the folder to create the items in
+:param items: an iterable of Item objects
+:param message_disposition: only applicable to Message items. Possible values are specified in
+MESSAGE_DISPOSITION_CHOICES (Default value = SAVE_ONLY)
+:param send_meeting_invitations: only applicable to CalendarItem items. Possible values are specified in
+SEND_MEETING_INVITATIONS_CHOICES (Default value = SEND_TO_NONE)
+:param chunk_size: The number of items to send to the server in a single request (Default value = None)</p>
+<p>:return: a list of either BulkCreateResult or exception instances in the same order as the input. The returned
+BulkCreateResult objects are normal Item objects except they only contain the 'id' and 'changekey'
+of the created item, and the 'id' of any attachments that were also created.</p></div>
 </dd>
 <dt id="exchangelib.account.Account.bulk_delete"><code class="name flex">
-<span>def <span class="ident">bulk_delete</span></span>(<span>self, ids, delete_type='HardDelete', send_meeting_cancellations='SendToNone', affected_task_occurrences='AllOccurrences', suppress_read_receipts=True, chunk_size=None)</span>
+<span>def <span class="ident">bulk_delete</span></span>(<span>self,<br>ids,<br>delete_type='HardDelete',<br>send_meeting_cancellations='SendToNone',<br>affected_task_occurrences='AllOccurrences',<br>suppress_read_receipts=True,<br>chunk_size=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Bulk delete items.</p>
-<p>:param ids: an iterable of either (id, changekey) tuples or Item objects.
-:param delete_type: the type of delete to perform. Possible values are specified in DELETE_TYPE_CHOICES
-(Default value = HARD_DELETE)
-:param send_meeting_cancellations: only applicable to CalendarItem. Possible values are specified in
-SEND_MEETING_CANCELLATIONS_CHOICES. (Default value = SEND_TO_NONE)
-:param affected_task_occurrences: only applicable for recurring Task items. Possible values are specified in
-AFFECTED_TASK_OCCURRENCES_CHOICES. (Default value = ALL_OCCURRENCES)
-:param suppress_read_receipts: only supported from Exchange 2013. True or False. (Default value = True)
-:param chunk_size: The number of items to send to the server in a single request (Default value = None)</p>
-<p>:return: a list of either True or exception instances, in the same order as the input</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2941,18 +2119,22 @@ AFFECTED_TASK_OCCURRENCES_CHOICES. (Default value = ALL_OCCURRENCES)
         )
     )</code></pre>
 </details>
+<div class="desc"><p>Bulk delete items.</p>
+<p>:param ids: an iterable of either (id, changekey) tuples or Item objects.
+:param delete_type: the type of delete to perform. Possible values are specified in DELETE_TYPE_CHOICES
+(Default value = HARD_DELETE)
+:param send_meeting_cancellations: only applicable to CalendarItem. Possible values are specified in
+SEND_MEETING_CANCELLATIONS_CHOICES. (Default value = SEND_TO_NONE)
+:param affected_task_occurrences: only applicable for recurring Task items. Possible values are specified in
+AFFECTED_TASK_OCCURRENCES_CHOICES. (Default value = ALL_OCCURRENCES)
+:param suppress_read_receipts: only supported from Exchange 2013. True or False. (Default value = True)
+:param chunk_size: The number of items to send to the server in a single request (Default value = None)</p>
+<p>:return: a list of either True or exception instances, in the same order as the input</p></div>
 </dd>
 <dt id="exchangelib.account.Account.bulk_mark_as_junk"><code class="name flex">
 <span>def <span class="ident">bulk_mark_as_junk</span></span>(<span>self, ids, is_junk, move_item, chunk_size=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Mark or un-mark message items as junk email and add or remove the sender from the blocked sender list.</p>
-<p>:param ids: an iterable of either (id, changekey) tuples or Item objects.
-:param is_junk: Whether the messages are junk or not
-:param move_item: Whether to move the messages to the junk folder or not
-:param chunk_size: The number of items to send to the server in a single request (Default value = None)</p>
-<p>:return: A list containing the new IDs of the moved items, if items were moved, or True, or an exception
-instance, in stable order of the requested items.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2980,17 +2162,18 @@ instance, in stable order of the requested items.</p></div>
         )
     )</code></pre>
 </details>
+<div class="desc"><p>Mark or un-mark message items as junk email and add or remove the sender from the blocked sender list.</p>
+<p>:param ids: an iterable of either (id, changekey) tuples or Item objects.
+:param is_junk: Whether the messages are junk or not
+:param move_item: Whether to move the messages to the junk folder or not
+:param chunk_size: The number of items to send to the server in a single request (Default value = None)</p>
+<p>:return: A list containing the new IDs of the moved items, if items were moved, or True, or an exception
+instance, in stable order of the requested items.</p></div>
 </dd>
 <dt id="exchangelib.account.Account.bulk_move"><code class="name flex">
 <span>def <span class="ident">bulk_move</span></span>(<span>self, ids, to_folder, chunk_size=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Move items to another folder.</p>
-<p>:param ids: an iterable of either (id, changekey) tuples or Item objects.
-:param to_folder: The destination folder of the copy operation
-:param chunk_size: The number of items to send to the server in a single request (Default value = None)</p>
-<p>:return: The new IDs of the moved items, in the same order as the input. If 'to_folder' is a public folder or a
-folder in a different mailbox, an empty list is returned.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3016,17 +2199,17 @@ folder in a different mailbox, an empty list is returned.</p></div>
         )
     )</code></pre>
 </details>
+<div class="desc"><p>Move items to another folder.</p>
+<p>:param ids: an iterable of either (id, changekey) tuples or Item objects.
+:param to_folder: The destination folder of the copy operation
+:param chunk_size: The number of items to send to the server in a single request (Default value = None)</p>
+<p>:return: The new IDs of the moved items, in the same order as the input. If 'to_folder' is a public folder or a
+folder in a different mailbox, an empty list is returned.</p></div>
 </dd>
 <dt id="exchangelib.account.Account.bulk_send"><code class="name flex">
 <span>def <span class="ident">bulk_send</span></span>(<span>self, ids, save_copy=True, copy_to_folder=None, chunk_size=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Send existing draft messages. If requested, save a copy in 'copy_to_folder'.</p>
-<p>:param ids: an iterable of either (id, changekey) tuples or Item objects.
-:param save_copy: If true, saves a copy of the message (Default value = True)
-:param copy_to_folder: If requested, save a copy of the message in this folder. Default is the Sent folder
-:param chunk_size: The number of items to send to the server in a single request (Default value = None)</p>
-<p>:return: Status for each send operation, in the same order as the input</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3056,23 +2239,17 @@ folder in a different mailbox, an empty list is returned.</p></div>
         )
     )</code></pre>
 </details>
+<div class="desc"><p>Send existing draft messages. If requested, save a copy in 'copy_to_folder'.</p>
+<p>:param ids: an iterable of either (id, changekey) tuples or Item objects.
+:param save_copy: If true, saves a copy of the message (Default value = True)
+:param copy_to_folder: If requested, save a copy of the message in this folder. Default is the Sent folder
+:param chunk_size: The number of items to send to the server in a single request (Default value = None)</p>
+<p>:return: Status for each send operation, in the same order as the input</p></div>
 </dd>
 <dt id="exchangelib.account.Account.bulk_update"><code class="name flex">
-<span>def <span class="ident">bulk_update</span></span>(<span>self, items, conflict_resolution='AutoResolve', message_disposition='SaveOnly', send_meeting_invitations_or_cancellations='SendToNone', suppress_read_receipts=True, chunk_size=None)</span>
+<span>def <span class="ident">bulk_update</span></span>(<span>self,<br>items,<br>conflict_resolution='AutoResolve',<br>message_disposition='SaveOnly',<br>send_meeting_invitations_or_cancellations='SendToNone',<br>suppress_read_receipts=True,<br>chunk_size=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Bulk update existing items.</p>
-<p>:param items: a list of (Item, fieldnames) tuples, where 'Item' is an Item object, and 'fieldnames' is a list
-containing the attributes on this Item object that we want to be updated.
-:param conflict_resolution: Possible values are specified in CONFLICT_RESOLUTION_CHOICES
-(Default value = AUTO_RESOLVE)
-:param message_disposition: only applicable to Message items. Possible values are specified in
-MESSAGE_DISPOSITION_CHOICES (Default value = SAVE_ONLY)
-:param send_meeting_invitations_or_cancellations: only applicable to CalendarItem items. Possible values are
-specified in SEND_MEETING_INVITATIONS_AND_CANCELLATIONS_CHOICES (Default value = SEND_TO_NONE)
-:param suppress_read_receipts: nly supported from Exchange 2013. True or False (Default value = True)
-:param chunk_size: The number of items to send to the server in a single request (Default value = None)</p>
-<p>:return: a list of either (id, changekey) tuples or exception instances, in the same order as the input</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3127,14 +2304,23 @@ specified in SEND_MEETING_INVITATIONS_AND_CANCELLATIONS_CHOICES (Default value =
         )
     )</code></pre>
 </details>
+<div class="desc"><p>Bulk update existing items.</p>
+<p>:param items: a list of (Item, fieldnames) tuples, where 'Item' is an Item object, and 'fieldnames' is a list
+containing the attributes on this Item object that we want to be updated.
+:param conflict_resolution: Possible values are specified in CONFLICT_RESOLUTION_CHOICES
+(Default value = AUTO_RESOLVE)
+:param message_disposition: only applicable to Message items. Possible values are specified in
+MESSAGE_DISPOSITION_CHOICES (Default value = SAVE_ONLY)
+:param send_meeting_invitations_or_cancellations: only applicable to CalendarItem items. Possible values are
+specified in SEND_MEETING_INVITATIONS_AND_CANCELLATIONS_CHOICES (Default value = SEND_TO_NONE)
+:param suppress_read_receipts: nly supported from Exchange 2013. True or False (Default value = True)
+:param chunk_size: The number of items to send to the server in a single request (Default value = None)</p>
+<p>:return: a list of either (id, changekey) tuples or exception instances, in the same order as the input</p></div>
 </dd>
 <dt id="exchangelib.account.Account.create_rule"><code class="name flex">
-<span>def <span class="ident">create_rule</span></span>(<span>self, rule: <a title="exchangelib.properties.Rule" href="properties.html#exchangelib.properties.Rule">Rule</a>)</span>
+<span>def <span class="ident">create_rule</span></span>(<span>self,<br>rule: <a title="exchangelib.properties.Rule" href="properties.html#exchangelib.properties.Rule">Rule</a>)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Create an Inbox rule.</p>
-<p>:param rule: The rule to create. Must have at least 'display_name' set.
-:return: None if success, else raises an error.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3153,14 +2339,14 @@ specified in SEND_MEETING_INVITATIONS_AND_CANCELLATIONS_CHOICES (Default value =
     except KeyError:
         raise ResponseMessageError(f&#34;Failed to create rule ({rule.display_name})!&#34;)</code></pre>
 </details>
+<div class="desc"><p>Create an Inbox rule.</p>
+<p>:param rule: The rule to create. Must have at least 'display_name' set.
+:return: None if success, else raises an error.</p></div>
 </dd>
 <dt id="exchangelib.account.Account.delete_rule"><code class="name flex">
-<span>def <span class="ident">delete_rule</span></span>(<span>self, rule: <a title="exchangelib.properties.Rule" href="properties.html#exchangelib.properties.Rule">Rule</a>)</span>
+<span>def <span class="ident">delete_rule</span></span>(<span>self,<br>rule: <a title="exchangelib.properties.Rule" href="properties.html#exchangelib.properties.Rule">Rule</a>)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Delete an Inbox rule.</p>
-<p>:param rule: The rule to delete. Must have an ID.
-:return: None if success, else raises an error.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3176,15 +2362,14 @@ specified in SEND_MEETING_INVITATIONS_AND_CANCELLATIONS_CHOICES (Default value =
     DeleteInboxRule(account=self).get(rule=rule)
     rule.id = None</code></pre>
 </details>
+<div class="desc"><p>Delete an Inbox rule.</p>
+<p>:param rule: The rule to delete. Must have an ID.
+:return: None if success, else raises an error.</p></div>
 </dd>
 <dt id="exchangelib.account.Account.export"><code class="name flex">
 <span>def <span class="ident">export</span></span>(<span>self, items, chunk_size=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Return export strings of the given items.</p>
-<p>:param items: An iterable containing the Items we want to export
-:param chunk_size: The number of items to send to the server in a single request (Default value = None)</p>
-<p>:return: A list of strings, the exported representation of the object</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3199,17 +2384,15 @@ specified in SEND_MEETING_INVITATIONS_AND_CANCELLATIONS_CHOICES (Default value =
     &#34;&#34;&#34;
     return list(self._consume_item_service(service_cls=ExportItems, items=items, chunk_size=chunk_size, kwargs={}))</code></pre>
 </details>
+<div class="desc"><p>Return export strings of the given items.</p>
+<p>:param items: An iterable containing the Items we want to export
+:param chunk_size: The number of items to send to the server in a single request (Default value = None)</p>
+<p>:return: A list of strings, the exported representation of the object</p></div>
 </dd>
 <dt id="exchangelib.account.Account.fetch"><code class="name flex">
 <span>def <span class="ident">fetch</span></span>(<span>self, ids, folder=None, only_fields=None, chunk_size=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Fetch items by ID.</p>
-<p>:param ids: an iterable of either (id, changekey) tuples or Item objects.
-:param folder: used for validating 'only_fields' (Default value = None)
-:param only_fields: A list of string or FieldPath items specifying the fields to fetch. Default to all fields
-:param chunk_size: The number of items to send to the server in a single request (Default value = None)</p>
-<p>:return: A generator of Item objects, in the same order as the input</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3251,14 +2434,17 @@ specified in SEND_MEETING_INVITATIONS_AND_CANCELLATIONS_CHOICES (Default value =
         ),
     )</code></pre>
 </details>
+<div class="desc"><p>Fetch items by ID.</p>
+<p>:param ids: an iterable of either (id, changekey) tuples or Item objects.
+:param folder: used for validating 'only_fields' (Default value = None)
+:param only_fields: A list of string or FieldPath items specifying the fields to fetch. Default to all fields
+:param chunk_size: The number of items to send to the server in a single request (Default value = None)</p>
+<p>:return: A generator of Item objects, in the same order as the input</p></div>
 </dd>
 <dt id="exchangelib.account.Account.fetch_personas"><code class="name flex">
 <span>def <span class="ident">fetch_personas</span></span>(<span>self, ids)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Fetch personas by ID.</p>
-<p>:param ids: an iterable of either (id, changekey) tuples or Persona objects.
-:return: A generator of Persona objects, in the same order as the input</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3279,12 +2465,14 @@ specified in SEND_MEETING_INVITATIONS_AND_CANCELLATIONS_CHOICES (Default value =
         return
     yield from GetPersona(account=self).call(personas=ids)</code></pre>
 </details>
+<div class="desc"><p>Fetch personas by ID.</p>
+<p>:param ids: an iterable of either (id, changekey) tuples or Persona objects.
+:return: A generator of Persona objects, in the same order as the input</p></div>
 </dd>
 <dt id="exchangelib.account.Account.pull_subscription"><code class="name flex">
 <span>def <span class="ident">pull_subscription</span></span>(<span>self, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3292,12 +2480,12 @@ specified in SEND_MEETING_INVITATIONS_AND_CANCELLATIONS_CHOICES (Default value =
 <pre><code class="python">def pull_subscription(self, **kwargs):
     return PullSubscription(target=self, **kwargs)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.push_subscription"><code class="name flex">
 <span>def <span class="ident">push_subscription</span></span>(<span>self, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3305,14 +2493,12 @@ specified in SEND_MEETING_INVITATIONS_AND_CANCELLATIONS_CHOICES (Default value =
 <pre><code class="python">def push_subscription(self, **kwargs):
     return PushSubscription(target=self, **kwargs)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.set_rule"><code class="name flex">
-<span>def <span class="ident">set_rule</span></span>(<span>self, rule: <a title="exchangelib.properties.Rule" href="properties.html#exchangelib.properties.Rule">Rule</a>)</span>
+<span>def <span class="ident">set_rule</span></span>(<span>self,<br>rule: <a title="exchangelib.properties.Rule" href="properties.html#exchangelib.properties.Rule">Rule</a>)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Modify an Inbox rule.</p>
-<p>:param rule: The rule to set. Must have an ID.
-:return: None if success, else raises an error.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3325,12 +2511,14 @@ specified in SEND_MEETING_INVITATIONS_AND_CANCELLATIONS_CHOICES (Default value =
     &#34;&#34;&#34;
     SetInboxRule(account=self).get(rule=rule)</code></pre>
 </details>
+<div class="desc"><p>Modify an Inbox rule.</p>
+<p>:param rule: The rule to set. Must have an ID.
+:return: None if success, else raises an error.</p></div>
 </dd>
 <dt id="exchangelib.account.Account.streaming_subscription"><code class="name flex">
 <span>def <span class="ident">streaming_subscription</span></span>(<span>self, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3338,17 +2526,12 @@ specified in SEND_MEETING_INVITATIONS_AND_CANCELLATIONS_CHOICES (Default value =
 <pre><code class="python">def streaming_subscription(self, **kwargs):
     return StreamingSubscription(target=self, **kwargs)</code></pre>
 </details>
+<div class="desc"></div>
 </dd>
 <dt id="exchangelib.account.Account.subscribe_to_pull"><code class="name flex">
 <span>def <span class="ident">subscribe_to_pull</span></span>(<span>self, event_types=None, watermark=None, timeout=60)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Create a pull subscription.</p>
-<p>:param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPull.EVENT_TYPES
-:param watermark: An event bookmark as returned by some sync services
-:param timeout: Timeout of the subscription, in minutes. Timeout is reset when the server receives a
-GetEvents request for this subscription.
-:return: The subscription ID and a watermark</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3371,17 +2554,17 @@ GetEvents request for this subscription.
         timeout=timeout,
     )</code></pre>
 </details>
+<div class="desc"><p>Create a pull subscription.</p>
+<p>:param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPull.EVENT_TYPES
+:param watermark: An event bookmark as returned by some sync services
+:param timeout: Timeout of the subscription, in minutes. Timeout is reset when the server receives a
+GetEvents request for this subscription.
+:return: The subscription ID and a watermark</p></div>
 </dd>
 <dt id="exchangelib.account.Account.subscribe_to_push"><code class="name flex">
 <span>def <span class="ident">subscribe_to_push</span></span>(<span>self, callback_url, event_types=None, watermark=None, status_frequency=1)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Create a push subscription.</p>
-<p>:param callback_url: A client-defined URL that the server will call
-:param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPush.EVENT_TYPES
-:param watermark: An event bookmark as returned by some sync services
-:param status_frequency: The frequency, in minutes, that the callback URL will be called with.
-:return: The subscription ID and a watermark</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3405,14 +2588,17 @@ GetEvents request for this subscription.
         url=callback_url,
     )</code></pre>
 </details>
+<div class="desc"><p>Create a push subscription.</p>
+<p>:param callback_url: A client-defined URL that the server will call
+:param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPush.EVENT_TYPES
+:param watermark: An event bookmark as returned by some sync services
+:param status_frequency: The frequency, in minutes, that the callback URL will be called with.
+:return: The subscription ID and a watermark</p></div>
 </dd>
 <dt id="exchangelib.account.Account.subscribe_to_streaming"><code class="name flex">
 <span>def <span class="ident">subscribe_to_streaming</span></span>(<span>self, event_types=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Create a streaming subscription.</p>
-<p>:param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPush.EVENT_TYPES
-:return: The subscription ID</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3427,16 +2613,14 @@ GetEvents request for this subscription.
         event_types = SubscribeToStreaming.EVENT_TYPES
     return SubscribeToStreaming(account=self).get(folders=None, event_types=event_types)</code></pre>
 </details>
+<div class="desc"><p>Create a streaming subscription.</p>
+<p>:param event_types: List of event types to subscribe to. Possible values defined in SubscribeToPush.EVENT_TYPES
+:return: The subscription ID</p></div>
 </dd>
 <dt id="exchangelib.account.Account.unsubscribe"><code class="name flex">
 <span>def <span class="ident">unsubscribe</span></span>(<span>self, subscription_id)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Unsubscribe. Only applies to pull and streaming notifications.</p>
-<p>:param subscription_id: A subscription ID as acquired by .subscribe_to_<a href="">pull|streaming</a>
-:return: True</p>
-<p>This method doesn't need the current collection instance, but it makes sense to keep the method along the other
-sync methods.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3452,25 +2636,16 @@ sync methods.</p></div>
     &#34;&#34;&#34;
     return Unsubscribe(account=self).get(subscription_id=subscription_id)</code></pre>
 </details>
+<div class="desc"><p>Unsubscribe. Only applies to pull and streaming notifications.</p>
+<p>:param subscription_id: A subscription ID as acquired by .subscribe_to_<a href="">pull|streaming</a>
+:return: True</p>
+<p>This method doesn't need the current collection instance, but it makes sense to keep the method along the other
+sync methods.</p></div>
 </dd>
 <dt id="exchangelib.account.Account.upload"><code class="name flex">
 <span>def <span class="ident">upload</span></span>(<span>self, data, chunk_size=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Upload objects retrieved from an export to the given folders.</p>
-<p>:param data: An iterable of tuples containing the folder we want to upload the data to and the string outputs of
-exports. If you want to update items instead of create, the data must be a tuple of
-(ItemId, is_associated, data) values.
-:param chunk_size: The number of items to send to the server in a single request (Default value = None)</p>
-<p>:return: A list of tuples with the new ids and changekeys</p>
-<p>Example:
-account.upload([
-(account.inbox, "AABBCC&hellip;"),
-(account.inbox, (ItemId('AA', 'BB'), False, "XXYYZZ&hellip;")),
-(account.inbox, (('CC', 'DD'), None, "XXYYZZ&hellip;")),
-(account.calendar, "ABCXYZ&hellip;"),
-])
--&gt; [("idA", "changekey"), ("idB", "changekey"), ("idC", "changekey")]</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3497,6 +2672,20 @@ account.upload([
     items = ((f, (None, False, d) if isinstance(d, str) else d) for f, d in data)
     return list(self._consume_item_service(service_cls=UploadItems, items=items, chunk_size=chunk_size, kwargs={}))</code></pre>
 </details>
+<div class="desc"><p>Upload objects retrieved from an export to the given folders.</p>
+<p>:param data: An iterable of tuples containing the folder we want to upload the data to and the string outputs of
+exports. If you want to update items instead of create, the data must be a tuple of
+(ItemId, is_associated, data) values.
+:param chunk_size: The number of items to send to the server in a single request (Default value = None)</p>
+<p>:return: A list of tuples with the new ids and changekeys</p>
+<p>Example:
+account.upload([
+(account.inbox, "AABBCC&hellip;"),
+(account.inbox, (ItemId('AA', 'BB'), False, "XXYYZZ&hellip;")),
+(account.inbox, (('CC', 'DD'), None, "XXYYZZ&hellip;")),
+(account.calendar, "ABCXYZ&hellip;"),
+])
+-&gt; [("idA", "changekey"), ("idB", "changekey"), ("idC", "changekey")]</p></div>
 </dd>
 </dl>
 </dd>
@@ -3505,7 +2694,6 @@ account.upload([
 <span>(</span><span>**kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Contains information that uniquely identifies an account. Currently only used for SOAP impersonation headers.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3522,6 +2710,7 @@ account.upload([
     smtp_address = TextField(field_uri=&#34;SmtpAddress&#34;)  # The (non-)primary email address for the account
     primary_smtp_address = TextField(field_uri=&#34;PrimarySmtpAddress&#34;)  # The primary email address for the account</code></pre>
 </details>
+<div class="desc"><p>Contains information that uniquely identifies an account. Currently only used for SOAP impersonation headers.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="exchangelib.properties.EWSElement" href="properties.html#exchangelib.properties.EWSElement">EWSElement</a></li>
@@ -3572,7 +2761,6 @@ account.upload([
 </section>
 </article>
 <nav id="sidebar">
-<h1>Index</h1>
 <div class="toc">
 <ul></ul>
 </div>
@@ -3656,6 +2844,7 @@ account.upload([
 <li><code><a title="exchangelib.account.Account.trash" href="#exchangelib.account.Account.trash">trash</a></code></li>
 <li><code><a title="exchangelib.account.Account.unsubscribe" href="#exchangelib.account.Account.unsubscribe">unsubscribe</a></code></li>
 <li><code><a title="exchangelib.account.Account.upload" href="#exchangelib.account.Account.upload">upload</a></code></li>
+<li><code><a title="exchangelib.account.Account.version" href="#exchangelib.account.Account.version">version</a></code></li>
 <li><code><a title="exchangelib.account.Account.voice_mail" href="#exchangelib.account.Account.voice_mail">voice_mail</a></code></li>
 </ul>
 </li>
@@ -3676,7 +2865,7 @@ account.upload([
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
 </footer>
 </body>
 </html>
