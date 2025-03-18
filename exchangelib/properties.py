@@ -2162,7 +2162,7 @@ class WithinDateRange(EWSElement):
     """
 
     ELEMENT_NAME = "DateRange"
-    NAMESPACE = MNS
+    NAMESPACE = TNS
 
     start_date_time = DateTimeField(field_uri="StartDateTime", is_required=True)
     end_date_time = DateTimeField(field_uri="EndDateTime", is_required=True)
@@ -2174,7 +2174,7 @@ class WithinSizeRange(EWSElement):
     """
 
     ELEMENT_NAME = "SizeRange"
-    NAMESPACE = MNS
+    NAMESPACE = TNS
 
     minimum_size = IntegerField(field_uri="MinimumSize", is_required=True)
     maximum_size = IntegerField(field_uri="MaximumSize", is_required=True)
@@ -2194,7 +2194,7 @@ class Conditions(EWSElement):
     contains_subject_or_body_strings = CharListField(field_uri="ContainsSubjectOrBodyStrings")
     contains_subject_strings = CharListField(field_uri="ContainsSubjectStrings")
     flagged_for_action = FlaggedForActionField(field_uri="FlaggedForAction")
-    from_addresses = EWSElementField(value_cls=Mailbox, field_uri="FromAddresses")
+    from_addresses = AddressListField(field_uri="FromAddresses")
     from_connected_accounts = CharListField(field_uri="FromConnectedAccounts")
     has_attachments = BooleanField(field_uri="HasAttachments")
     importance = ImportanceField(field_uri="Importance")
@@ -2214,7 +2214,7 @@ class Conditions(EWSElement):
     not_sent_to_me = BooleanField(field_uri="NotSentToMe")
     sent_cc_me = BooleanField(field_uri="SentCcMe")
     sent_only_to_me = BooleanField(field_uri="SentOnlyToMe")
-    sent_to_addresses = EWSElementField(value_cls=Mailbox, field_uri="SentToAddresses")
+    sent_to_addresses = AddressListField(field_uri="SentToAddresses")
     sent_to_me = BooleanField(field_uri="SentToMe")
     sent_to_or_cc_me = BooleanField(field_uri="SentToOrCcMe")
     sensitivity = SensitivityField(field_uri="Sensitivity")
