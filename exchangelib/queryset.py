@@ -1,6 +1,7 @@
 import abc
 import logging
 from contextlib import suppress
+from copy import deepcopy
 from itertools import islice
 
 from .errors import DoesNotExist, ErrorItemNotFound, InvalidEnumValue, InvalidTypeError, MultipleObjectsReturned
@@ -90,11 +91,11 @@ class QuerySet(SearchableMixIn):
         # items = list(qs)
         # new_qs = qs.exclude(bar='baz')  # This should work, and should fetch from the server
         #
-        # Only mutable objects need to be copied. Folder should be the same object.
+        # Only mutable objects need to be deepcopied. Folder should be the same object
         new_qs = self.__class__(self.folder_collection, request_type=self.request_type)
-        new_qs.q = self.q
+        new_qs.q = deepcopy(self.q)
         new_qs.only_fields = self.only_fields
-        new_qs.order_fields = self.order_fields
+        new_qs.order_fields = None if self.order_fields is None else deepcopy(self.order_fields)
         new_qs.return_format = self.return_format
         new_qs.calendar_view = self.calendar_view
         new_qs.page_size = self.page_size
