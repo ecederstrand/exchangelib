@@ -5,8 +5,6 @@ from .common import TimedTestCase
 
 class BuildTest(TimedTestCase):
     def test_magic(self):
-        with self.assertRaises(ValueError):
-            Build(7, 0)
         self.assertEqual(str(Build(9, 8, 7, 6)), "9.8.7.6")
         hash(Build(9, 8, 7, 6))
 
