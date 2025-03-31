@@ -226,21 +226,7 @@ class EWSTimeZoneTest(TimedTestCase):
         self.assertEqual(
             set(sanitized) - set(EWSTimeZone.IANA_TO_MS_MAP),
             {
-                "America/Montreal",
-                "America/Nipigon",
-                "America/Pangnirtung",
-                "America/Rainy_River",
-                "America/Santa_Isabel",
-                "America/Thunder_Bay",
-                "America/Yellowknife",
-                "Australia/Currie",
-                "CST6CDT",
-                "EST5EDT",
-                "Europe/Uzhgorod",
-                "Europe/Zaporozhye",
-                "MST7MDT",
-                "PST8PDT",
-                "Pacific/Johnston",
+                "America/Coyhaique",
             },
         )
 
