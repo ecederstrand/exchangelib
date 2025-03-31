@@ -1,5 +1,4 @@
 import logging
-from copy import deepcopy
 
 from ..errors import ErrorFolderNotFound, ErrorItemNotFound, ErrorNoPublicFolderReplicaAvailable, InvalidTypeError
 from ..properties import FolderId, InvalidField
@@ -37,7 +36,7 @@ class FolderQuerySet:
     def _copy_self(self):
         """Chaining operations must make a copy of self before making any modifications."""
         new_qs = self._copy_cls()
-        new_qs.q = deepcopy(self.q)
+        new_qs.q = self.q
         new_qs.only_fields = self.only_fields
         new_qs._depth = self._depth
         return new_qs
