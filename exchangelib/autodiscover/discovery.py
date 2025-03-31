@@ -42,8 +42,10 @@ class SrvRecord:
 
 def discover(email, credentials=None, auth_type=None, retry_policy=None):
     ad_response, protocol = Autodiscovery(email=email, credentials=credentials).discover()
-    protocol.config.auth_typ = auth_type
-    protocol.config.retry_policy = retry_policy
+    if auth_type:
+        protocol.config.auth_type = auth_type
+    if retry_policy:
+        protocol.config.retry_policy = retry_policy
     return ad_response, protocol
 
 
