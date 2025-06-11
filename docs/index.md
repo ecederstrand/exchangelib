@@ -787,14 +787,10 @@ classes. Thes classes are all subclasses of `datetime.*` or `zoneinfo.ZoneInfo`
 so you should be able to use them as regular date objects.
 
 ```python
+import zoneinfo
 from datetime import datetime, timedelta
 import dateutil.tz
 import pytz
-
-try:
-    import zoneinfo
-except ImportError:
-    from backports import zoneinfo
 from exchangelib import EWSTimeZone, EWSDateTime, EWSDate, UTC, UTC_NOW
 
 # EWSTimeZone works just like zoneinfo.ZoneInfo()
@@ -971,11 +967,7 @@ an example of building a list of calendar items:
 
 ```python
 import datetime
-
-try:
-    import zoneinfo
-except ImportError:
-    from backports import zoneinfo
+import zoneinfo
 from exchangelib import Account, CalendarItem, Attendee, Mailbox
 from exchangelib.properties import DistinguishedFolderId
 
