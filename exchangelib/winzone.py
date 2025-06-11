@@ -133,6 +133,7 @@ CLDR_TO_MS_TIMEZONE_MAP = {
     "America/Coral_Harbour": ("SA Pacific Standard Time", "CA"),
     "America/Cordoba": ("Argentina Standard Time", "AR"),
     "America/Costa_Rica": ("Central America Standard Time", "CR"),
+    "America/Coyhaique": ("Magallanes Standard Time", "CL"),
     "America/Creston": ("US Mountain Standard Time", "CA"),
     "America/Cuiaba": ("Central Brazilian Standard Time", "001"),
     "America/Curacao": ("SA Western Standard Time", "CW"),
