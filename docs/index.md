@@ -44,7 +44,7 @@ Apart from this documentation, we also provide online
 * [Out of Facility (OOF)](#out-of-facility-oof)
 * [Mail tips](#mail-tips)
 * [Delegate information](#delegate-information)
-* [Inbox Rules](#inboxrules)
+* [Inbox Rules](#inbox-rules)
 * [Export and upload](#export-and-upload)
 * [Synchronization, subscriptions and notifications](#synchronization-subscriptions-and-notifications)
 * [Non-account services](#non-account-services)
