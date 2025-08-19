@@ -517,9 +517,9 @@ class FolderTest(EWSTest):
         for f in self.account.root.walk():
             with self.subTest(f=f):
                 if f.is_distinguished:
-                    self.assertIsNotNone(f.DISTINGUISHED_FOLDER_ID)
+                    self.assertIsNotNone(f.DISTINGUISHED_FOLDER_ID, f)
                 else:
-                    self.assertIsNone(f.DISTINGUISHED_FOLDER_ID)
+                    self.assertIsNone(f.DISTINGUISHED_FOLDER_ID, f)
             with self.subTest(f=f):
                 if isinstance(
                     f,
@@ -1011,7 +1011,7 @@ class FolderTest(EWSTest):
         for f in self.account.root.walk():
             with self.subTest(item=f):
                 if f.__class__ in NON_DELETABLE_FOLDERS + WELLKNOWN_FOLDERS_IN_ARCHIVE_ROOT + WELLKNOWN_FOLDERS_IN_ROOT:
-                    self.assertEqual(f.is_deletable, False)
+                    self.assertEqual(f.is_deletable, False, f)
                     try:
                         f.delete()
                     except (ErrorDeleteDistinguishedFolder, ErrorCannotDeleteObject, ErrorItemNotFound):

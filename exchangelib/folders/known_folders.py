@@ -620,6 +620,10 @@ class GraphAnalytics(NonDeletableFolder):
     CONTAINER_CLASS = "IPF.StoreItem.GraphAnalytics"
 
 
+class ImplicitContacts(NonDeletableFolder):
+    CONTAINER_CLASS = "IPF.Contact"
+
+
 class Location(NonDeletableFolder):
     pass
 
@@ -704,6 +708,10 @@ class SpoolerQueue(NonDeletableFolder):
     }
 
 
+class SubstrateContacts(NonDeletableFolder):
+    CONTAINER_CLASS = "IPF.Contact"
+
+
 class System(NonDeletableFolder):
     get_folder_allowed = False
 
@@ -741,6 +749,7 @@ NON_DELETABLE_FOLDERS = [
     Friends,
     GALContacts,
     GraphAnalytics,
+    ImplicitContacts,
     Location,
     MailboxAssociations,
     MyContactsExtended,
@@ -758,6 +767,7 @@ NON_DELETABLE_FOLDERS = [
     Signal,
     SmsAndChatsSync,
     SpoolerQueue,
+    SubstrateContacts,
     System,
     System1,
     Views,
