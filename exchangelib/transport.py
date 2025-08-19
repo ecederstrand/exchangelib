@@ -92,8 +92,10 @@ def get_service_authtype(protocol):
                     )
                     r.close()  # Release memory
                     break
-                except CONNECTION_ERRORS as e:
+                except TLS_ERRORS as e:
                     # Don't retry on TLS errors. They will most likely be persistent.
+                    raise TransportError(str(e))
+                except CONNECTION_ERRORS as e:
                     log.info("Connection error on URL %s.", service_endpoint)
                     if not retry_policy.fail_fast:
                         retry_policy.back_off(wait)
