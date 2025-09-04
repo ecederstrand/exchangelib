@@ -57,6 +57,7 @@ from exchangelib.folders import (
     GALContacts,
     GraphAnalytics,
     IMContactList,
+    ImplicitContacts,
     Inbox,
     Journal,
     JunkEmail,
@@ -86,6 +87,7 @@ from exchangelib.folders import (
     SingleFolderQuerySet,
     SkypeTeamsMessages,
     SmsAndChatsSync,
+    SubstrateContacts,
     SwssItems,
     SyncIssues,
     Tasks,
@@ -579,7 +581,7 @@ class FolderTest(EWSTest):
                     self.assertEqual(f.folder_class, "IPF.Contact.MOC.ImContactList")
                 elif isinstance(f, QuickContacts):
                     self.assertEqual(f.folder_class, "IPF.Contact.MOC.QuickContacts")
-                elif isinstance(f, (Contacts, ExternalContacts)):
+                elif isinstance(f, (Contacts, ExternalContacts, ImplicitContacts, SubstrateContacts)):
                     self.assertEqual(f.folder_class, "IPF.Contact")
                 elif isinstance(f, Birthdays):
                     self.assertEqual(f.folder_class, "IPF.Appointment.Birthday")
