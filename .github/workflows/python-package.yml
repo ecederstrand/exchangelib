@@ -29,10 +29,10 @@ jobs:
     needs: pre_job
     strategy:
       matrix:
-        python-version: ['3.9', '3.13']
+        python-version: ['3.10', '3.14']
         include:
         # Allow failure on Python dev - e.g. Cython install regularly fails
-          - python-version: "3.14-dev"
+          - python-version: "3.15-dev"
             allowed_failure: true
       max-parallel: 1
 
@@ -58,7 +58,7 @@ jobs:
 
     - name: Install cutting-edge Cython-based packages on Python dev versions
       continue-on-error: ${{ matrix.allowed_failure || false }}
-      if: matrix.python-version == '3.14-dev'
+      if: matrix.python-version == '3.15-dev'
       run: |
         sudo apt-get install libxml2-dev libxslt1-dev
         python -m pip install git+https://github.com/cython/cython.git
@@ -96,7 +96,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.13'
+        python-version: '3.14'
 
     - name: Unencrypt secret file
       env:

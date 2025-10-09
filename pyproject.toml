@@ -16,7 +16,7 @@ name = "exchangelib"
 dynamic = ["version"]
 description = "Client for Microsoft Exchange Web Services (EWS)"
 readme = {file = "README.md", content-type = "text/markdown"}
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 license = {text = "BSD-2-Clause"}
 keywords = [
     "autodiscover",
