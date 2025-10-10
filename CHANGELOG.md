@@ -5,6 +5,12 @@ HEAD
 ----
 
 
+5.6.0
+-----
+- Dropped support for Python 3.9 which is EOL per October 2025.
+- Added support for Python 3.14.
+
+
 5.5.1
 -----
 - `Account.version` is now lazy and merely creating an `Account` will not throw errors if the specified credentials
