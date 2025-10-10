@@ -30,10 +30,10 @@ jobs:
     strategy:
       matrix:
         python-version: ['3.10', '3.14']
-        include:
+        #include:
         # Allow failure on Python dev - e.g. Cython install regularly fails
-          - python-version: "3.15-dev"
-            allowed_failure: true
+        #  - python-version: "3.15-dev"
+        #    allowed_failure: true
       max-parallel: 1
 
     steps:
