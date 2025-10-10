@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<meta name="generator" content="pdoc3 0.11.5">
+<meta name="generator" content="pdoc3 0.11.6">
 <title>exchangelib.protocol API documentation</title>
 <meta name="description" content="A protocol is an endpoint for EWS service connections. It contains all necessary information to make HTTPS connections …">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
@@ -388,7 +388,7 @@ when creating an Account.</p>
 <dl>
 <dt id="exchangelib.protocol.BaseProtocol.CONNECTIONS_PER_SESSION"><code class="name">var <span class="ident">CONNECTIONS_PER_SESSION</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.protocol.BaseProtocol.HTTP_ADAPTER_CLS"><code class="name">var <span class="ident">HTTP_ADAPTER_CLS</span></code></dt>
 <dd>
@@ -421,23 +421,23 @@ s.mount('http://', a)</p>
 </dd>
 <dt id="exchangelib.protocol.BaseProtocol.MAX_SESSION_USAGE_COUNT"><code class="name">var <span class="ident">MAX_SESSION_USAGE_COUNT</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.protocol.BaseProtocol.RETRY_WAIT"><code class="name">var <span class="ident">RETRY_WAIT</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.protocol.BaseProtocol.SESSION_POOLSIZE"><code class="name">var <span class="ident">SESSION_POOLSIZE</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.protocol.BaseProtocol.TIMEOUT"><code class="name">var <span class="ident">TIMEOUT</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.protocol.BaseProtocol.USERAGENT"><code class="name">var <span class="ident">USERAGENT</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 </dl>
 <h3>Static methods</h3>
@@ -1074,7 +1074,7 @@ failing, and wait up to max_wait seconds before failing.</p></div>
 <dl>
 <dt id="exchangelib.protocol.FaultTolerance.DEFAULT_BACKOFF"><code class="name">var <span class="ident">DEFAULT_BACKOFF</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 </dl>
 <h3>Instance variables</h3>
@@ -1687,7 +1687,13 @@ FreeBusyViewOptions.requested_view choices. (Default value = 'DetailedMerged')</
 <ul class="hlist">
 <li><code><b><a title="exchangelib.protocol.BaseProtocol" href="#exchangelib.protocol.BaseProtocol">BaseProtocol</a></b></code>:
 <ul class="hlist">
+<li><code><a title="exchangelib.protocol.BaseProtocol.CONNECTIONS_PER_SESSION" href="#exchangelib.protocol.BaseProtocol.CONNECTIONS_PER_SESSION">CONNECTIONS_PER_SESSION</a></code></li>
 <li><code><a title="exchangelib.protocol.BaseProtocol.HTTP_ADAPTER_CLS" href="#exchangelib.protocol.BaseProtocol.HTTP_ADAPTER_CLS">HTTP_ADAPTER_CLS</a></code></li>
+<li><code><a title="exchangelib.protocol.BaseProtocol.MAX_SESSION_USAGE_COUNT" href="#exchangelib.protocol.BaseProtocol.MAX_SESSION_USAGE_COUNT">MAX_SESSION_USAGE_COUNT</a></code></li>
+<li><code><a title="exchangelib.protocol.BaseProtocol.RETRY_WAIT" href="#exchangelib.protocol.BaseProtocol.RETRY_WAIT">RETRY_WAIT</a></code></li>
+<li><code><a title="exchangelib.protocol.BaseProtocol.SESSION_POOLSIZE" href="#exchangelib.protocol.BaseProtocol.SESSION_POOLSIZE">SESSION_POOLSIZE</a></code></li>
+<li><code><a title="exchangelib.protocol.BaseProtocol.TIMEOUT" href="#exchangelib.protocol.BaseProtocol.TIMEOUT">TIMEOUT</a></code></li>
+<li><code><a title="exchangelib.protocol.BaseProtocol.USERAGENT" href="#exchangelib.protocol.BaseProtocol.USERAGENT">USERAGENT</a></code></li>
 <li><code><a title="exchangelib.protocol.BaseProtocol.decrease_poolsize" href="#exchangelib.protocol.BaseProtocol.decrease_poolsize">decrease_poolsize</a></code></li>
 <li><code><a title="exchangelib.protocol.BaseProtocol.get_auth_type" href="#exchangelib.protocol.BaseProtocol.get_auth_type">get_auth_type</a></code></li>
 <li><code><a title="exchangelib.protocol.BaseProtocol.increase_poolsize" href="#exchangelib.protocol.BaseProtocol.increase_poolsize">increase_poolsize</a></code></li>
@@ -1941,7 +1947,7 @@ def back_off(self, seconds):
 <dl>
 <dt id="exchangelib.protocol.TLSClientAuth.cert_file"><code class="name">var <span class="ident">cert_file</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -2083,7 +2089,7 @@ exposed for use when subclassing the
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
 </footer>
 </body>
 </html>

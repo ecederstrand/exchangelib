@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<meta name="generator" content="pdoc3 0.11.5">
+<meta name="generator" content="pdoc3 0.11.6">
 <title>exchangelib.services.common API documentation</title>
 <meta name="description" content="">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
@@ -269,18 +269,27 @@ el.replaceWith(d);
 <dl>
 <dt id="exchangelib.services.common.EWSAccountService.prefer_affinity"><code class="name">var <span class="ident">prefer_affinity</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.services.common.EWSService" href="#exchangelib.services.common.EWSService">EWSService</a></b></code>:
 <ul class="hlist">
+<li><code><a title="exchangelib.services.common.EWSService.CHUNK_SIZE" href="#exchangelib.services.common.EWSService.CHUNK_SIZE">CHUNK_SIZE</a></code></li>
+<li><code><a title="exchangelib.services.common.EWSService.ERRORS_TO_CATCH_IN_RESPONSE" href="#exchangelib.services.common.EWSService.ERRORS_TO_CATCH_IN_RESPONSE">ERRORS_TO_CATCH_IN_RESPONSE</a></code></li>
 <li><code><a title="exchangelib.services.common.EWSService.NO_VALID_SERVER_VERSIONS" href="#exchangelib.services.common.EWSService.NO_VALID_SERVER_VERSIONS">NO_VALID_SERVER_VERSIONS</a></code></li>
+<li><code><a title="exchangelib.services.common.EWSService.NS_MAP" href="#exchangelib.services.common.EWSService.NS_MAP">NS_MAP</a></code></li>
+<li><code><a title="exchangelib.services.common.EWSService.SERVICE_NAME" href="#exchangelib.services.common.EWSService.SERVICE_NAME">SERVICE_NAME</a></code></li>
 <li><code><a title="exchangelib.services.common.EWSService.WARNINGS_TO_CATCH_IN_RESPONSE" href="#exchangelib.services.common.EWSService.WARNINGS_TO_CATCH_IN_RESPONSE">WARNINGS_TO_CATCH_IN_RESPONSE</a></code></li>
+<li><code><a title="exchangelib.services.common.EWSService.WARNINGS_TO_IGNORE_IN_RESPONSE" href="#exchangelib.services.common.EWSService.WARNINGS_TO_IGNORE_IN_RESPONSE">WARNINGS_TO_IGNORE_IN_RESPONSE</a></code></li>
+<li><code><a title="exchangelib.services.common.EWSService.deprecated_from" href="../version.html#exchangelib.version.SupportedVersionClassMixIn.deprecated_from">deprecated_from</a></code></li>
+<li><code><a title="exchangelib.services.common.EWSService.element_container_name" href="#exchangelib.services.common.EWSService.element_container_name">element_container_name</a></code></li>
 <li><code><a title="exchangelib.services.common.EWSService.get" href="#exchangelib.services.common.EWSService.get">get</a></code></li>
 <li><code><a title="exchangelib.services.common.EWSService.parse" href="#exchangelib.services.common.EWSService.parse">parse</a></code></li>
+<li><code><a title="exchangelib.services.common.EWSService.returns_elements" href="#exchangelib.services.common.EWSService.returns_elements">returns_elements</a></code></li>
 <li><code><a title="exchangelib.services.common.EWSService.supported_api_versions" href="#exchangelib.services.common.EWSService.supported_api_versions">supported_api_versions</a></code></li>
+<li><code><a title="exchangelib.services.common.EWSService.supported_from" href="../version.html#exchangelib.version.SupportedVersionClassMixIn.supported_from">supported_from</a></code></li>
 <li><code><a title="exchangelib.services.common.EWSService.wrap" href="#exchangelib.services.common.EWSService.wrap">wrap</a></code></li>
 </ul>
 </li>
@@ -469,22 +478,32 @@ el.replaceWith(d);
 <dl>
 <dt id="exchangelib.services.common.EWSPagingService.PAGE_SIZE"><code class="name">var <span class="ident">PAGE_SIZE</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.services.common.EWSPagingService.paging_container_name"><code class="name">var <span class="ident">paging_container_name</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.services.common.EWSAccountService" href="#exchangelib.services.common.EWSAccountService">EWSAccountService</a></b></code>:
 <ul class="hlist">
+<li><code><a title="exchangelib.services.common.EWSAccountService.CHUNK_SIZE" href="#exchangelib.services.common.EWSService.CHUNK_SIZE">CHUNK_SIZE</a></code></li>
+<li><code><a title="exchangelib.services.common.EWSAccountService.ERRORS_TO_CATCH_IN_RESPONSE" href="#exchangelib.services.common.EWSService.ERRORS_TO_CATCH_IN_RESPONSE">ERRORS_TO_CATCH_IN_RESPONSE</a></code></li>
 <li><code><a title="exchangelib.services.common.EWSAccountService.NO_VALID_SERVER_VERSIONS" href="#exchangelib.services.common.EWSService.NO_VALID_SERVER_VERSIONS">NO_VALID_SERVER_VERSIONS</a></code></li>
+<li><code><a title="exchangelib.services.common.EWSAccountService.NS_MAP" href="#exchangelib.services.common.EWSService.NS_MAP">NS_MAP</a></code></li>
+<li><code><a title="exchangelib.services.common.EWSAccountService.SERVICE_NAME" href="#exchangelib.services.common.EWSService.SERVICE_NAME">SERVICE_NAME</a></code></li>
 <li><code><a title="exchangelib.services.common.EWSAccountService.WARNINGS_TO_CATCH_IN_RESPONSE" href="#exchangelib.services.common.EWSService.WARNINGS_TO_CATCH_IN_RESPONSE">WARNINGS_TO_CATCH_IN_RESPONSE</a></code></li>
+<li><code><a title="exchangelib.services.common.EWSAccountService.WARNINGS_TO_IGNORE_IN_RESPONSE" href="#exchangelib.services.common.EWSService.WARNINGS_TO_IGNORE_IN_RESPONSE">WARNINGS_TO_IGNORE_IN_RESPONSE</a></code></li>
+<li><code><a title="exchangelib.services.common.EWSAccountService.deprecated_from" href="../version.html#exchangelib.version.SupportedVersionClassMixIn.deprecated_from">deprecated_from</a></code></li>
+<li><code><a title="exchangelib.services.common.EWSAccountService.element_container_name" href="#exchangelib.services.common.EWSService.element_container_name">element_container_name</a></code></li>
 <li><code><a title="exchangelib.services.common.EWSAccountService.get" href="#exchangelib.services.common.EWSService.get">get</a></code></li>
 <li><code><a title="exchangelib.services.common.EWSAccountService.parse" href="#exchangelib.services.common.EWSService.parse">parse</a></code></li>
+<li><code><a title="exchangelib.services.common.EWSAccountService.prefer_affinity" href="#exchangelib.services.common.EWSAccountService.prefer_affinity">prefer_affinity</a></code></li>
+<li><code><a title="exchangelib.services.common.EWSAccountService.returns_elements" href="#exchangelib.services.common.EWSService.returns_elements">returns_elements</a></code></li>
 <li><code><a title="exchangelib.services.common.EWSAccountService.supported_api_versions" href="#exchangelib.services.common.EWSService.supported_api_versions">supported_api_versions</a></code></li>
+<li><code><a title="exchangelib.services.common.EWSAccountService.supported_from" href="../version.html#exchangelib.version.SupportedVersionClassMixIn.supported_from">supported_from</a></code></li>
 <li><code><a title="exchangelib.services.common.EWSAccountService.wrap" href="#exchangelib.services.common.EWSService.wrap">wrap</a></code></li>
 </ul>
 </li>
@@ -1165,11 +1184,11 @@ el.replaceWith(d);
 <dl>
 <dt id="exchangelib.services.common.EWSService.CHUNK_SIZE"><code class="name">var <span class="ident">CHUNK_SIZE</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.services.common.EWSService.ERRORS_TO_CATCH_IN_RESPONSE"><code class="name">var <span class="ident">ERRORS_TO_CATCH_IN_RESPONSE</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.services.common.EWSService.NO_VALID_SERVER_VERSIONS"><code class="name">var <span class="ident">NO_VALID_SERVER_VERSIONS</span></code></dt>
 <dd>
@@ -1177,11 +1196,11 @@ el.replaceWith(d);
 </dd>
 <dt id="exchangelib.services.common.EWSService.NS_MAP"><code class="name">var <span class="ident">NS_MAP</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.services.common.EWSService.SERVICE_NAME"><code class="name">var <span class="ident">SERVICE_NAME</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.services.common.EWSService.WARNINGS_TO_CATCH_IN_RESPONSE"><code class="name">var <span class="ident">WARNINGS_TO_CATCH_IN_RESPONSE</span></code></dt>
 <dd>
@@ -1189,15 +1208,15 @@ el.replaceWith(d);
 </dd>
 <dt id="exchangelib.services.common.EWSService.WARNINGS_TO_IGNORE_IN_RESPONSE"><code class="name">var <span class="ident">WARNINGS_TO_IGNORE_IN_RESPONSE</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.services.common.EWSService.element_container_name"><code class="name">var <span class="ident">element_container_name</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.services.common.EWSService.returns_elements"><code class="name">var <span class="ident">returns_elements</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 </dl>
 <h3>Static methods</h3>
@@ -1342,6 +1361,15 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 :param api_version:</p></div>
 </dd>
 </dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="exchangelib.version.SupportedVersionClassMixIn" href="../version.html#exchangelib.version.SupportedVersionClassMixIn">SupportedVersionClassMixIn</a></b></code>:
+<ul class="hlist">
+<li><code><a title="exchangelib.version.SupportedVersionClassMixIn.deprecated_from" href="../version.html#exchangelib.version.SupportedVersionClassMixIn.deprecated_from">deprecated_from</a></code></li>
+<li><code><a title="exchangelib.version.SupportedVersionClassMixIn.supported_from" href="../version.html#exchangelib.version.SupportedVersionClassMixIn.supported_from">supported_from</a></code></li>
+</ul>
+</li>
+</ul>
 </dd>
 </dl>
 </section>
@@ -1406,7 +1434,7 @@ ExchangeImpersonation allows to act as the user we want to impersonate.</p>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
 </footer>
 </body>
 </html>

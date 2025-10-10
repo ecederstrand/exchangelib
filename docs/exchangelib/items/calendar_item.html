@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<meta name="generator" content="pdoc3 0.11.5">
+<meta name="generator" content="pdoc3 0.11.6">
 <title>exchangelib.items.calendar_item API documentation</title>
 <meta name="description" content="">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
@@ -155,23 +155,36 @@ we use folder.account.</p></div>
 <li><a title="exchangelib.properties.IdChangeKeyMixIn" href="../properties.html#exchangelib.properties.IdChangeKeyMixIn">IdChangeKeyMixIn</a></li>
 <li><a title="exchangelib.properties.EWSElement" href="../properties.html#exchangelib.properties.EWSElement">EWSElement</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.items.calendar_item.AcceptItem.ELEMENT_NAME"><code class="name">var <span class="ident">ELEMENT_NAME</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem">BaseMeetingReplyItem</a></b></code>:
 <ul class="hlist">
-<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.ID_ELEMENT_CLS" href="base.html#exchangelib.items.base.BaseItem.ID_ELEMENT_CLS">ID_ELEMENT_CLS</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.ELEMENT_NAME" href="../properties.html#exchangelib.properties.EWSElement.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.FIELDS" href="../properties.html#exchangelib.properties.EWSElement.FIELDS">FIELDS</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.ID_ELEMENT_CLS" href="../properties.html#exchangelib.properties.IdChangeKeyMixIn.ID_ELEMENT_CLS">ID_ELEMENT_CLS</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.INSERT_AFTER_FIELD" href="base.html#exchangelib.items.base.RegisterMixIn.INSERT_AFTER_FIELD">INSERT_AFTER_FIELD</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.NAMESPACE" href="../properties.html#exchangelib.properties.EWSElement.NAMESPACE">NAMESPACE</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.add_field" href="../properties.html#exchangelib.properties.EWSElement.add_field">add_field</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.attachments" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.attachments">attachments</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.bcc_recipients" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.bcc_recipients">bcc_recipients</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.body" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.body">body</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.cc_recipients" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.cc_recipients">cc_recipients</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.deregister" href="base.html#exchangelib.items.base.RegisterMixIn.deregister">deregister</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.headers" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.headers">headers</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.is_delivery_receipt_requested" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.is_delivery_receipt_requested">is_delivery_receipt_requested</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.is_read_receipt_requested" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.is_read_receipt_requested">is_read_receipt_requested</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.item_class" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.item_class">item_class</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.proposed_end" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.proposed_end">proposed_end</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.proposed_start" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.proposed_start">proposed_start</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.received_by" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.received_by">received_by</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.received_representing" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.received_representing">received_representing</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.reference_item_id" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.reference_item_id">reference_item_id</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.register" href="base.html#exchangelib.items.base.RegisterMixIn.register">register</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.remove_field" href="../properties.html#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.sender" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.sender">sender</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.sensitivity" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.sensitivity">sensitivity</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.supported_fields" href="../properties.html#exchangelib.properties.EWSElement.supported_fields">supported_fields</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.to_recipients" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.to_recipients">to_recipients</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.validate_field" href="../properties.html#exchangelib.properties.EWSElement.validate_field">validate_field</a></code></li>
 </ul>
 </li>
@@ -251,123 +264,160 @@ we use folder.account.</p></div>
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="exchangelib.items.calendar_item.BaseMeetingItem.FIELDS"><code class="name">var <span class="ident">FIELDS</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
 <dt id="exchangelib.items.calendar_item.BaseMeetingItem.effective_rights_idx"><code class="name">var <span class="ident">effective_rights_idx</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.BaseMeetingItem.received_representing_idx"><code class="name">var <span class="ident">received_representing_idx</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.BaseMeetingItem.sender_idx"><code class="name">var <span class="ident">sender_idx</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 </dl>
 <h3>Instance variables</h3>
 <dl>
 <dt id="exchangelib.items.calendar_item.BaseMeetingItem.associated_calendar_item_id"><code class="name">var <span class="ident">associated_calendar_item_id</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.BaseMeetingItem.author"><code class="name">var <span class="ident">author</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.BaseMeetingItem.bcc_recipients"><code class="name">var <span class="ident">bcc_recipients</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.BaseMeetingItem.cc_recipients"><code class="name">var <span class="ident">cc_recipients</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.BaseMeetingItem.conversation_index"><code class="name">var <span class="ident">conversation_index</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.BaseMeetingItem.conversation_topic"><code class="name">var <span class="ident">conversation_topic</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.BaseMeetingItem.has_been_processed"><code class="name">var <span class="ident">has_been_processed</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.BaseMeetingItem.is_delegated"><code class="name">var <span class="ident">is_delegated</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.BaseMeetingItem.is_delivery_receipt_requested"><code class="name">var <span class="ident">is_delivery_receipt_requested</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.BaseMeetingItem.is_out_of_date"><code class="name">var <span class="ident">is_out_of_date</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.BaseMeetingItem.is_read"><code class="name">var <span class="ident">is_read</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.BaseMeetingItem.is_read_receipt_requested"><code class="name">var <span class="ident">is_read_receipt_requested</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.BaseMeetingItem.is_response_requested"><code class="name">var <span class="ident">is_response_requested</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.BaseMeetingItem.message_id"><code class="name">var <span class="ident">message_id</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.BaseMeetingItem.received_by"><code class="name">var <span class="ident">received_by</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.BaseMeetingItem.received_representing"><code class="name">var <span class="ident">received_representing</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.BaseMeetingItem.references"><code class="name">var <span class="ident">references</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.BaseMeetingItem.reply_to"><code class="name">var <span class="ident">reply_to</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.BaseMeetingItem.response_type"><code class="name">var <span class="ident">response_type</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.BaseMeetingItem.sender"><code class="name">var <span class="ident">sender</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.BaseMeetingItem.to_recipients"><code class="name">var <span class="ident">to_recipients</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.items.item.Item" href="item.html#exchangelib.items.item.Item">Item</a></b></code>:
 <ul class="hlist">
-<li><code><a title="exchangelib.items.item.Item.ID_ELEMENT_CLS" href="base.html#exchangelib.items.base.BaseItem.ID_ELEMENT_CLS">ID_ELEMENT_CLS</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.ELEMENT_NAME" href="../properties.html#exchangelib.properties.EWSElement.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.FIELDS" href="../properties.html#exchangelib.properties.EWSElement.FIELDS">FIELDS</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.ID_ELEMENT_CLS" href="../properties.html#exchangelib.properties.IdChangeKeyMixIn.ID_ELEMENT_CLS">ID_ELEMENT_CLS</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.INSERT_AFTER_FIELD" href="base.html#exchangelib.items.base.RegisterMixIn.INSERT_AFTER_FIELD">INSERT_AFTER_FIELD</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.NAMESPACE" href="../properties.html#exchangelib.properties.EWSElement.NAMESPACE">NAMESPACE</a></code></li>
 <li><code><a title="exchangelib.items.item.Item.add_field" href="../properties.html#exchangelib.properties.EWSElement.add_field">add_field</a></code></li>
 <li><code><a title="exchangelib.items.item.Item.attach" href="item.html#exchangelib.items.item.Item.attach">attach</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.attachments" href="item.html#exchangelib.items.item.Item.attachments">attachments</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.body" href="item.html#exchangelib.items.item.Item.body">body</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.categories" href="item.html#exchangelib.items.item.Item.categories">categories</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.conversation_id" href="item.html#exchangelib.items.item.Item.conversation_id">conversation_id</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.culture" href="item.html#exchangelib.items.item.Item.culture">culture</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.datetime_created" href="item.html#exchangelib.items.item.Item.datetime_created">datetime_created</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.datetime_received" href="item.html#exchangelib.items.item.Item.datetime_received">datetime_received</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.datetime_sent" href="item.html#exchangelib.items.item.Item.datetime_sent">datetime_sent</a></code></li>
 <li><code><a title="exchangelib.items.item.Item.deregister" href="base.html#exchangelib.items.base.RegisterMixIn.deregister">deregister</a></code></li>
 <li><code><a title="exchangelib.items.item.Item.detach" href="item.html#exchangelib.items.item.Item.detach">detach</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.display_cc" href="item.html#exchangelib.items.item.Item.display_cc">display_cc</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.display_to" href="item.html#exchangelib.items.item.Item.display_to">display_to</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.effective_rights" href="item.html#exchangelib.items.item.Item.effective_rights">effective_rights</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.has_attachments" href="item.html#exchangelib.items.item.Item.has_attachments">has_attachments</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.headers" href="item.html#exchangelib.items.item.Item.headers">headers</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.importance" href="item.html#exchangelib.items.item.Item.importance">importance</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.in_reply_to" href="item.html#exchangelib.items.item.Item.in_reply_to">in_reply_to</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.is_associated" href="item.html#exchangelib.items.item.Item.is_associated">is_associated</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.is_draft" href="item.html#exchangelib.items.item.Item.is_draft">is_draft</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.is_from_me" href="item.html#exchangelib.items.item.Item.is_from_me">is_from_me</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.is_resend" href="item.html#exchangelib.items.item.Item.is_resend">is_resend</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.is_submitted" href="item.html#exchangelib.items.item.Item.is_submitted">is_submitted</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.is_unmodified" href="item.html#exchangelib.items.item.Item.is_unmodified">is_unmodified</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.item_class" href="item.html#exchangelib.items.item.Item.item_class">item_class</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.last_modified_name" href="item.html#exchangelib.items.item.Item.last_modified_name">last_modified_name</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.last_modified_time" href="item.html#exchangelib.items.item.Item.last_modified_time">last_modified_time</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.mime_content" href="item.html#exchangelib.items.item.Item.mime_content">mime_content</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.parent_folder_id" href="item.html#exchangelib.items.item.Item.parent_folder_id">parent_folder_id</a></code></li>
 <li><code><a title="exchangelib.items.item.Item.register" href="base.html#exchangelib.items.base.RegisterMixIn.register">register</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.reminder_due_by" href="item.html#exchangelib.items.item.Item.reminder_due_by">reminder_due_by</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.reminder_is_set" href="item.html#exchangelib.items.item.Item.reminder_is_set">reminder_is_set</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.reminder_minutes_before_start" href="item.html#exchangelib.items.item.Item.reminder_minutes_before_start">reminder_minutes_before_start</a></code></li>
 <li><code><a title="exchangelib.items.item.Item.remove_field" href="../properties.html#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.response_objects" href="item.html#exchangelib.items.item.Item.response_objects">response_objects</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.sensitivity" href="item.html#exchangelib.items.item.Item.sensitivity">sensitivity</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.size" href="item.html#exchangelib.items.item.Item.size">size</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.subject" href="item.html#exchangelib.items.item.Item.subject">subject</a></code></li>
 <li><code><a title="exchangelib.items.item.Item.supported_fields" href="../properties.html#exchangelib.properties.EWSElement.supported_fields">supported_fields</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.text_body" href="item.html#exchangelib.items.item.Item.text_body">text_body</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.unique_body" href="item.html#exchangelib.items.item.Item.unique_body">unique_body</a></code></li>
 <li><code><a title="exchangelib.items.item.Item.validate_field" href="../properties.html#exchangelib.properties.EWSElement.validate_field">validate_field</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.web_client_edit_form_query_string" href="item.html#exchangelib.items.item.Item.web_client_edit_form_query_string">web_client_edit_form_query_string</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.web_client_read_form_query_string" href="item.html#exchangelib.items.item.Item.web_client_read_form_query_string">web_client_read_form_query_string</a></code></li>
 </ul>
 </li>
 </ul>
@@ -448,78 +498,71 @@ we use folder.account.</p></div>
 <li><a title="exchangelib.items.calendar_item.DeclineItem" href="#exchangelib.items.calendar_item.DeclineItem">DeclineItem</a></li>
 <li><a title="exchangelib.items.calendar_item.TentativelyAcceptItem" href="#exchangelib.items.calendar_item.TentativelyAcceptItem">TentativelyAcceptItem</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.items.calendar_item.BaseMeetingReplyItem.FIELDS"><code class="name">var <span class="ident">FIELDS</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 <h3>Instance variables</h3>
 <dl>
 <dt id="exchangelib.items.calendar_item.BaseMeetingReplyItem.attachments"><code class="name">var <span class="ident">attachments</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.BaseMeetingReplyItem.bcc_recipients"><code class="name">var <span class="ident">bcc_recipients</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.BaseMeetingReplyItem.body"><code class="name">var <span class="ident">body</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.BaseMeetingReplyItem.cc_recipients"><code class="name">var <span class="ident">cc_recipients</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.BaseMeetingReplyItem.headers"><code class="name">var <span class="ident">headers</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.BaseMeetingReplyItem.is_delivery_receipt_requested"><code class="name">var <span class="ident">is_delivery_receipt_requested</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.BaseMeetingReplyItem.is_read_receipt_requested"><code class="name">var <span class="ident">is_read_receipt_requested</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.BaseMeetingReplyItem.item_class"><code class="name">var <span class="ident">item_class</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.BaseMeetingReplyItem.proposed_end"><code class="name">var <span class="ident">proposed_end</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.BaseMeetingReplyItem.proposed_start"><code class="name">var <span class="ident">proposed_start</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.BaseMeetingReplyItem.received_by"><code class="name">var <span class="ident">received_by</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.BaseMeetingReplyItem.received_representing"><code class="name">var <span class="ident">received_representing</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.BaseMeetingReplyItem.reference_item_id"><code class="name">var <span class="ident">reference_item_id</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.BaseMeetingReplyItem.sender"><code class="name">var <span class="ident">sender</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.BaseMeetingReplyItem.sensitivity"><code class="name">var <span class="ident">sensitivity</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.BaseMeetingReplyItem.to_recipients"><code class="name">var <span class="ident">to_recipients</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -560,7 +603,11 @@ def send(self, message_disposition=SEND_AND_SAVE_COPY):
 <ul class="hlist">
 <li><code><b><a title="exchangelib.items.base.BaseItem" href="base.html#exchangelib.items.base.BaseItem">BaseItem</a></b></code>:
 <ul class="hlist">
-<li><code><a title="exchangelib.items.base.BaseItem.ID_ELEMENT_CLS" href="base.html#exchangelib.items.base.BaseItem.ID_ELEMENT_CLS">ID_ELEMENT_CLS</a></code></li>
+<li><code><a title="exchangelib.items.base.BaseItem.ELEMENT_NAME" href="../properties.html#exchangelib.properties.EWSElement.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
+<li><code><a title="exchangelib.items.base.BaseItem.FIELDS" href="../properties.html#exchangelib.properties.EWSElement.FIELDS">FIELDS</a></code></li>
+<li><code><a title="exchangelib.items.base.BaseItem.ID_ELEMENT_CLS" href="../properties.html#exchangelib.properties.IdChangeKeyMixIn.ID_ELEMENT_CLS">ID_ELEMENT_CLS</a></code></li>
+<li><code><a title="exchangelib.items.base.BaseItem.INSERT_AFTER_FIELD" href="base.html#exchangelib.items.base.RegisterMixIn.INSERT_AFTER_FIELD">INSERT_AFTER_FIELD</a></code></li>
+<li><code><a title="exchangelib.items.base.BaseItem.NAMESPACE" href="../properties.html#exchangelib.properties.EWSElement.NAMESPACE">NAMESPACE</a></code></li>
 <li><code><a title="exchangelib.items.base.BaseItem.add_field" href="../properties.html#exchangelib.properties.EWSElement.add_field">add_field</a></code></li>
 <li><code><a title="exchangelib.items.base.BaseItem.deregister" href="base.html#exchangelib.items.base.RegisterMixIn.deregister">deregister</a></code></li>
 <li><code><a title="exchangelib.items.base.BaseItem.register" href="base.html#exchangelib.items.base.RegisterMixIn.register">register</a></code></li>
@@ -812,17 +859,6 @@ we use folder.account.</p></div>
 <li><a title="exchangelib.properties.EWSElement" href="../properties.html#exchangelib.properties.EWSElement">EWSElement</a></li>
 <li><a title="exchangelib.items.calendar_item.AcceptDeclineMixIn" href="#exchangelib.items.calendar_item.AcceptDeclineMixIn">AcceptDeclineMixIn</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.items.calendar_item.CalendarItem.ELEMENT_NAME"><code class="name">var <span class="ident">ELEMENT_NAME</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="exchangelib.items.calendar_item.CalendarItem.FIELDS"><code class="name">var <span class="ident">FIELDS</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 <h3>Static methods</h3>
 <dl>
 <dt id="exchangelib.items.calendar_item.CalendarItem.from_xml"><code class="name flex">
@@ -842,155 +878,155 @@ we use folder.account.</p></div>
 <dl>
 <dt id="exchangelib.items.calendar_item.CalendarItem.adjacent_meeting_count"><code class="name">var <span class="ident">adjacent_meeting_count</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.adjacent_meetings"><code class="name">var <span class="ident">adjacent_meetings</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.allow_new_time_proposal"><code class="name">var <span class="ident">allow_new_time_proposal</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.appointment_reply_time"><code class="name">var <span class="ident">appointment_reply_time</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.appointment_sequence_number"><code class="name">var <span class="ident">appointment_sequence_number</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.appointment_state"><code class="name">var <span class="ident">appointment_state</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.conference_type"><code class="name">var <span class="ident">conference_type</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.conflicting_meeting_count"><code class="name">var <span class="ident">conflicting_meeting_count</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.conflicting_meetings"><code class="name">var <span class="ident">conflicting_meetings</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.deleted_occurrences"><code class="name">var <span class="ident">deleted_occurrences</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.duration"><code class="name">var <span class="ident">duration</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.end"><code class="name">var <span class="ident">end</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.first_occurrence"><code class="name">var <span class="ident">first_occurrence</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.is_all_day"><code class="name">var <span class="ident">is_all_day</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.is_cancelled"><code class="name">var <span class="ident">is_cancelled</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.is_meeting"><code class="name">var <span class="ident">is_meeting</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.is_online_meeting"><code class="name">var <span class="ident">is_online_meeting</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.is_recurring"><code class="name">var <span class="ident">is_recurring</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.is_response_requested"><code class="name">var <span class="ident">is_response_requested</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.last_occurrence"><code class="name">var <span class="ident">last_occurrence</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.legacy_free_busy_status"><code class="name">var <span class="ident">legacy_free_busy_status</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.location"><code class="name">var <span class="ident">location</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.meeting_request_was_sent"><code class="name">var <span class="ident">meeting_request_was_sent</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.meeting_workspace_url"><code class="name">var <span class="ident">meeting_workspace_url</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.modified_occurrences"><code class="name">var <span class="ident">modified_occurrences</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.my_response_type"><code class="name">var <span class="ident">my_response_type</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.net_show_url"><code class="name">var <span class="ident">net_show_url</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.optional_attendees"><code class="name">var <span class="ident">optional_attendees</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.organizer"><code class="name">var <span class="ident">organizer</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.original_start"><code class="name">var <span class="ident">original_start</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.recurrence"><code class="name">var <span class="ident">recurrence</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.recurrence_id"><code class="name">var <span class="ident">recurrence_id</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.required_attendees"><code class="name">var <span class="ident">required_attendees</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.resources"><code class="name">var <span class="ident">resources</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.start"><code class="name">var <span class="ident">start</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.type"><code class="name">var <span class="ident">type</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.uid"><code class="name">var <span class="ident">uid</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.CalendarItem.when"><code class="name">var <span class="ident">when</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -1199,15 +1235,56 @@ Call refresh() on the item to do so.</p>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.items.item.Item" href="item.html#exchangelib.items.item.Item">Item</a></b></code>:
 <ul class="hlist">
-<li><code><a title="exchangelib.items.item.Item.ID_ELEMENT_CLS" href="base.html#exchangelib.items.base.BaseItem.ID_ELEMENT_CLS">ID_ELEMENT_CLS</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.ELEMENT_NAME" href="../properties.html#exchangelib.properties.EWSElement.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.FIELDS" href="../properties.html#exchangelib.properties.EWSElement.FIELDS">FIELDS</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.ID_ELEMENT_CLS" href="../properties.html#exchangelib.properties.IdChangeKeyMixIn.ID_ELEMENT_CLS">ID_ELEMENT_CLS</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.INSERT_AFTER_FIELD" href="base.html#exchangelib.items.base.RegisterMixIn.INSERT_AFTER_FIELD">INSERT_AFTER_FIELD</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.NAMESPACE" href="../properties.html#exchangelib.properties.EWSElement.NAMESPACE">NAMESPACE</a></code></li>
 <li><code><a title="exchangelib.items.item.Item.add_field" href="../properties.html#exchangelib.properties.EWSElement.add_field">add_field</a></code></li>
 <li><code><a title="exchangelib.items.item.Item.attach" href="item.html#exchangelib.items.item.Item.attach">attach</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.attachments" href="item.html#exchangelib.items.item.Item.attachments">attachments</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.body" href="item.html#exchangelib.items.item.Item.body">body</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.categories" href="item.html#exchangelib.items.item.Item.categories">categories</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.conversation_id" href="item.html#exchangelib.items.item.Item.conversation_id">conversation_id</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.culture" href="item.html#exchangelib.items.item.Item.culture">culture</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.datetime_created" href="item.html#exchangelib.items.item.Item.datetime_created">datetime_created</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.datetime_received" href="item.html#exchangelib.items.item.Item.datetime_received">datetime_received</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.datetime_sent" href="item.html#exchangelib.items.item.Item.datetime_sent">datetime_sent</a></code></li>
 <li><code><a title="exchangelib.items.item.Item.deregister" href="base.html#exchangelib.items.base.RegisterMixIn.deregister">deregister</a></code></li>
 <li><code><a title="exchangelib.items.item.Item.detach" href="item.html#exchangelib.items.item.Item.detach">detach</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.display_cc" href="item.html#exchangelib.items.item.Item.display_cc">display_cc</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.display_to" href="item.html#exchangelib.items.item.Item.display_to">display_to</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.effective_rights" href="item.html#exchangelib.items.item.Item.effective_rights">effective_rights</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.has_attachments" href="item.html#exchangelib.items.item.Item.has_attachments">has_attachments</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.headers" href="item.html#exchangelib.items.item.Item.headers">headers</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.importance" href="item.html#exchangelib.items.item.Item.importance">importance</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.in_reply_to" href="item.html#exchangelib.items.item.Item.in_reply_to">in_reply_to</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.is_associated" href="item.html#exchangelib.items.item.Item.is_associated">is_associated</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.is_draft" href="item.html#exchangelib.items.item.Item.is_draft">is_draft</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.is_from_me" href="item.html#exchangelib.items.item.Item.is_from_me">is_from_me</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.is_resend" href="item.html#exchangelib.items.item.Item.is_resend">is_resend</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.is_submitted" href="item.html#exchangelib.items.item.Item.is_submitted">is_submitted</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.is_unmodified" href="item.html#exchangelib.items.item.Item.is_unmodified">is_unmodified</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.item_class" href="item.html#exchangelib.items.item.Item.item_class">item_class</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.last_modified_name" href="item.html#exchangelib.items.item.Item.last_modified_name">last_modified_name</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.last_modified_time" href="item.html#exchangelib.items.item.Item.last_modified_time">last_modified_time</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.mime_content" href="item.html#exchangelib.items.item.Item.mime_content">mime_content</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.parent_folder_id" href="item.html#exchangelib.items.item.Item.parent_folder_id">parent_folder_id</a></code></li>
 <li><code><a title="exchangelib.items.item.Item.register" href="base.html#exchangelib.items.base.RegisterMixIn.register">register</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.reminder_due_by" href="item.html#exchangelib.items.item.Item.reminder_due_by">reminder_due_by</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.reminder_is_set" href="item.html#exchangelib.items.item.Item.reminder_is_set">reminder_is_set</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.reminder_minutes_before_start" href="item.html#exchangelib.items.item.Item.reminder_minutes_before_start">reminder_minutes_before_start</a></code></li>
 <li><code><a title="exchangelib.items.item.Item.remove_field" href="../properties.html#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.response_objects" href="item.html#exchangelib.items.item.Item.response_objects">response_objects</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.sensitivity" href="item.html#exchangelib.items.item.Item.sensitivity">sensitivity</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.size" href="item.html#exchangelib.items.item.Item.size">size</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.subject" href="item.html#exchangelib.items.item.Item.subject">subject</a></code></li>
 <li><code><a title="exchangelib.items.item.Item.supported_fields" href="../properties.html#exchangelib.properties.EWSElement.supported_fields">supported_fields</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.text_body" href="item.html#exchangelib.items.item.Item.text_body">text_body</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.unique_body" href="item.html#exchangelib.items.item.Item.unique_body">unique_body</a></code></li>
 <li><code><a title="exchangelib.items.item.Item.validate_field" href="../properties.html#exchangelib.properties.EWSElement.validate_field">validate_field</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.web_client_edit_form_query_string" href="item.html#exchangelib.items.item.Item.web_client_edit_form_query_string">web_client_edit_form_query_string</a></code></li>
+<li><code><a title="exchangelib.items.item.Item.web_client_read_form_query_string" href="item.html#exchangelib.items.item.Item.web_client_read_form_query_string">web_client_read_form_query_string</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1236,27 +1313,34 @@ Call refresh() on the item to do so.</p>
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="exchangelib.items.calendar_item.CancelCalendarItem.ELEMENT_NAME"><code class="name">var <span class="ident">ELEMENT_NAME</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="exchangelib.items.calendar_item.CancelCalendarItem.FIELDS"><code class="name">var <span class="ident">FIELDS</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
 <dt id="exchangelib.items.calendar_item.CancelCalendarItem.author_idx"><code class="name">var <span class="ident">author_idx</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.items.base.BaseReplyItem" href="base.html#exchangelib.items.base.BaseReplyItem">BaseReplyItem</a></b></code>:
 <ul class="hlist">
+<li><code><a title="exchangelib.items.base.BaseReplyItem.ELEMENT_NAME" href="../properties.html#exchangelib.properties.EWSElement.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
+<li><code><a title="exchangelib.items.base.BaseReplyItem.FIELDS" href="../properties.html#exchangelib.properties.EWSElement.FIELDS">FIELDS</a></code></li>
+<li><code><a title="exchangelib.items.base.BaseReplyItem.NAMESPACE" href="../properties.html#exchangelib.properties.EWSElement.NAMESPACE">NAMESPACE</a></code></li>
 <li><code><a title="exchangelib.items.base.BaseReplyItem.add_field" href="../properties.html#exchangelib.properties.EWSElement.add_field">add_field</a></code></li>
+<li><code><a title="exchangelib.items.base.BaseReplyItem.author" href="base.html#exchangelib.items.base.BaseReplyItem.author">author</a></code></li>
+<li><code><a title="exchangelib.items.base.BaseReplyItem.bcc_recipients" href="base.html#exchangelib.items.base.BaseReplyItem.bcc_recipients">bcc_recipients</a></code></li>
+<li><code><a title="exchangelib.items.base.BaseReplyItem.body" href="base.html#exchangelib.items.base.BaseReplyItem.body">body</a></code></li>
+<li><code><a title="exchangelib.items.base.BaseReplyItem.cc_recipients" href="base.html#exchangelib.items.base.BaseReplyItem.cc_recipients">cc_recipients</a></code></li>
+<li><code><a title="exchangelib.items.base.BaseReplyItem.is_delivery_receipt_requested" href="base.html#exchangelib.items.base.BaseReplyItem.is_delivery_receipt_requested">is_delivery_receipt_requested</a></code></li>
+<li><code><a title="exchangelib.items.base.BaseReplyItem.is_read_receipt_requested" href="base.html#exchangelib.items.base.BaseReplyItem.is_read_receipt_requested">is_read_receipt_requested</a></code></li>
+<li><code><a title="exchangelib.items.base.BaseReplyItem.new_body" href="base.html#exchangelib.items.base.BaseReplyItem.new_body">new_body</a></code></li>
+<li><code><a title="exchangelib.items.base.BaseReplyItem.received_by" href="base.html#exchangelib.items.base.BaseReplyItem.received_by">received_by</a></code></li>
+<li><code><a title="exchangelib.items.base.BaseReplyItem.received_representing" href="base.html#exchangelib.items.base.BaseReplyItem.received_representing">received_representing</a></code></li>
+<li><code><a title="exchangelib.items.base.BaseReplyItem.reference_item_id" href="base.html#exchangelib.items.base.BaseReplyItem.reference_item_id">reference_item_id</a></code></li>
 <li><code><a title="exchangelib.items.base.BaseReplyItem.remove_field" href="../properties.html#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
 <li><code><a title="exchangelib.items.base.BaseReplyItem.save" href="base.html#exchangelib.items.base.BaseReplyItem.save">save</a></code></li>
+<li><code><a title="exchangelib.items.base.BaseReplyItem.subject" href="base.html#exchangelib.items.base.BaseReplyItem.subject">subject</a></code></li>
 <li><code><a title="exchangelib.items.base.BaseReplyItem.supported_fields" href="../properties.html#exchangelib.properties.EWSElement.supported_fields">supported_fields</a></code></li>
+<li><code><a title="exchangelib.items.base.BaseReplyItem.to_recipients" href="base.html#exchangelib.items.base.BaseReplyItem.to_recipients">to_recipients</a></code></li>
 <li><code><a title="exchangelib.items.base.BaseReplyItem.validate_field" href="../properties.html#exchangelib.properties.EWSElement.validate_field">validate_field</a></code></li>
 </ul>
 </li>
@@ -1290,23 +1374,36 @@ we use folder.account.</p></div>
 <li><a title="exchangelib.properties.IdChangeKeyMixIn" href="../properties.html#exchangelib.properties.IdChangeKeyMixIn">IdChangeKeyMixIn</a></li>
 <li><a title="exchangelib.properties.EWSElement" href="../properties.html#exchangelib.properties.EWSElement">EWSElement</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.items.calendar_item.DeclineItem.ELEMENT_NAME"><code class="name">var <span class="ident">ELEMENT_NAME</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem">BaseMeetingReplyItem</a></b></code>:
 <ul class="hlist">
-<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.ID_ELEMENT_CLS" href="base.html#exchangelib.items.base.BaseItem.ID_ELEMENT_CLS">ID_ELEMENT_CLS</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.ELEMENT_NAME" href="../properties.html#exchangelib.properties.EWSElement.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.FIELDS" href="../properties.html#exchangelib.properties.EWSElement.FIELDS">FIELDS</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.ID_ELEMENT_CLS" href="../properties.html#exchangelib.properties.IdChangeKeyMixIn.ID_ELEMENT_CLS">ID_ELEMENT_CLS</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.INSERT_AFTER_FIELD" href="base.html#exchangelib.items.base.RegisterMixIn.INSERT_AFTER_FIELD">INSERT_AFTER_FIELD</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.NAMESPACE" href="../properties.html#exchangelib.properties.EWSElement.NAMESPACE">NAMESPACE</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.add_field" href="../properties.html#exchangelib.properties.EWSElement.add_field">add_field</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.attachments" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.attachments">attachments</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.bcc_recipients" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.bcc_recipients">bcc_recipients</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.body" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.body">body</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.cc_recipients" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.cc_recipients">cc_recipients</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.deregister" href="base.html#exchangelib.items.base.RegisterMixIn.deregister">deregister</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.headers" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.headers">headers</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.is_delivery_receipt_requested" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.is_delivery_receipt_requested">is_delivery_receipt_requested</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.is_read_receipt_requested" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.is_read_receipt_requested">is_read_receipt_requested</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.item_class" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.item_class">item_class</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.proposed_end" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.proposed_end">proposed_end</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.proposed_start" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.proposed_start">proposed_start</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.received_by" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.received_by">received_by</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.received_representing" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.received_representing">received_representing</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.reference_item_id" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.reference_item_id">reference_item_id</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.register" href="base.html#exchangelib.items.base.RegisterMixIn.register">register</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.remove_field" href="../properties.html#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.sender" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.sender">sender</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.sensitivity" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.sensitivity">sensitivity</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.supported_fields" href="../properties.html#exchangelib.properties.EWSElement.supported_fields">supported_fields</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.to_recipients" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.to_recipients">to_recipients</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.validate_field" href="../properties.html#exchangelib.properties.EWSElement.validate_field">validate_field</a></code></li>
 </ul>
 </li>
@@ -1341,26 +1438,84 @@ we use folder.account.</p></div>
 <li><a title="exchangelib.properties.IdChangeKeyMixIn" href="../properties.html#exchangelib.properties.IdChangeKeyMixIn">IdChangeKeyMixIn</a></li>
 <li><a title="exchangelib.properties.EWSElement" href="../properties.html#exchangelib.properties.EWSElement">EWSElement</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.items.calendar_item.MeetingCancellation.ELEMENT_NAME"><code class="name">var <span class="ident">ELEMENT_NAME</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.items.calendar_item.BaseMeetingItem" href="#exchangelib.items.calendar_item.BaseMeetingItem">BaseMeetingItem</a></b></code>:
 <ul class="hlist">
-<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.ID_ELEMENT_CLS" href="base.html#exchangelib.items.base.BaseItem.ID_ELEMENT_CLS">ID_ELEMENT_CLS</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.ELEMENT_NAME" href="../properties.html#exchangelib.properties.EWSElement.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.FIELDS" href="../properties.html#exchangelib.properties.EWSElement.FIELDS">FIELDS</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.ID_ELEMENT_CLS" href="../properties.html#exchangelib.properties.IdChangeKeyMixIn.ID_ELEMENT_CLS">ID_ELEMENT_CLS</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.INSERT_AFTER_FIELD" href="base.html#exchangelib.items.base.RegisterMixIn.INSERT_AFTER_FIELD">INSERT_AFTER_FIELD</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.NAMESPACE" href="../properties.html#exchangelib.properties.EWSElement.NAMESPACE">NAMESPACE</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.add_field" href="../properties.html#exchangelib.properties.EWSElement.add_field">add_field</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.associated_calendar_item_id" href="#exchangelib.items.calendar_item.BaseMeetingItem.associated_calendar_item_id">associated_calendar_item_id</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.attach" href="item.html#exchangelib.items.item.Item.attach">attach</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.attachments" href="item.html#exchangelib.items.item.Item.attachments">attachments</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.author" href="#exchangelib.items.calendar_item.BaseMeetingItem.author">author</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.bcc_recipients" href="#exchangelib.items.calendar_item.BaseMeetingItem.bcc_recipients">bcc_recipients</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.body" href="item.html#exchangelib.items.item.Item.body">body</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.categories" href="item.html#exchangelib.items.item.Item.categories">categories</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.cc_recipients" href="#exchangelib.items.calendar_item.BaseMeetingItem.cc_recipients">cc_recipients</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.conversation_id" href="item.html#exchangelib.items.item.Item.conversation_id">conversation_id</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.conversation_index" href="#exchangelib.items.calendar_item.BaseMeetingItem.conversation_index">conversation_index</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.conversation_topic" href="#exchangelib.items.calendar_item.BaseMeetingItem.conversation_topic">conversation_topic</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.culture" href="item.html#exchangelib.items.item.Item.culture">culture</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.datetime_created" href="item.html#exchangelib.items.item.Item.datetime_created">datetime_created</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.datetime_received" href="item.html#exchangelib.items.item.Item.datetime_received">datetime_received</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.datetime_sent" href="item.html#exchangelib.items.item.Item.datetime_sent">datetime_sent</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.deregister" href="base.html#exchangelib.items.base.RegisterMixIn.deregister">deregister</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.detach" href="item.html#exchangelib.items.item.Item.detach">detach</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.display_cc" href="item.html#exchangelib.items.item.Item.display_cc">display_cc</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.display_to" href="item.html#exchangelib.items.item.Item.display_to">display_to</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.effective_rights" href="item.html#exchangelib.items.item.Item.effective_rights">effective_rights</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.effective_rights_idx" href="#exchangelib.items.calendar_item.BaseMeetingItem.effective_rights_idx">effective_rights_idx</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.has_attachments" href="item.html#exchangelib.items.item.Item.has_attachments">has_attachments</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.has_been_processed" href="#exchangelib.items.calendar_item.BaseMeetingItem.has_been_processed">has_been_processed</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.headers" href="item.html#exchangelib.items.item.Item.headers">headers</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.importance" href="item.html#exchangelib.items.item.Item.importance">importance</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.in_reply_to" href="item.html#exchangelib.items.item.Item.in_reply_to">in_reply_to</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_associated" href="item.html#exchangelib.items.item.Item.is_associated">is_associated</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_delegated" href="#exchangelib.items.calendar_item.BaseMeetingItem.is_delegated">is_delegated</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_delivery_receipt_requested" href="#exchangelib.items.calendar_item.BaseMeetingItem.is_delivery_receipt_requested">is_delivery_receipt_requested</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_draft" href="item.html#exchangelib.items.item.Item.is_draft">is_draft</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_from_me" href="item.html#exchangelib.items.item.Item.is_from_me">is_from_me</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_out_of_date" href="#exchangelib.items.calendar_item.BaseMeetingItem.is_out_of_date">is_out_of_date</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_read" href="#exchangelib.items.calendar_item.BaseMeetingItem.is_read">is_read</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_read_receipt_requested" href="#exchangelib.items.calendar_item.BaseMeetingItem.is_read_receipt_requested">is_read_receipt_requested</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_resend" href="item.html#exchangelib.items.item.Item.is_resend">is_resend</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_response_requested" href="#exchangelib.items.calendar_item.BaseMeetingItem.is_response_requested">is_response_requested</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_submitted" href="item.html#exchangelib.items.item.Item.is_submitted">is_submitted</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_unmodified" href="item.html#exchangelib.items.item.Item.is_unmodified">is_unmodified</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.item_class" href="item.html#exchangelib.items.item.Item.item_class">item_class</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.last_modified_name" href="item.html#exchangelib.items.item.Item.last_modified_name">last_modified_name</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.last_modified_time" href="item.html#exchangelib.items.item.Item.last_modified_time">last_modified_time</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.message_id" href="#exchangelib.items.calendar_item.BaseMeetingItem.message_id">message_id</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.mime_content" href="item.html#exchangelib.items.item.Item.mime_content">mime_content</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.parent_folder_id" href="item.html#exchangelib.items.item.Item.parent_folder_id">parent_folder_id</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.received_by" href="#exchangelib.items.calendar_item.BaseMeetingItem.received_by">received_by</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.received_representing" href="#exchangelib.items.calendar_item.BaseMeetingItem.received_representing">received_representing</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.received_representing_idx" href="#exchangelib.items.calendar_item.BaseMeetingItem.received_representing_idx">received_representing_idx</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.references" href="#exchangelib.items.calendar_item.BaseMeetingItem.references">references</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.register" href="base.html#exchangelib.items.base.RegisterMixIn.register">register</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.reminder_due_by" href="item.html#exchangelib.items.item.Item.reminder_due_by">reminder_due_by</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.reminder_is_set" href="item.html#exchangelib.items.item.Item.reminder_is_set">reminder_is_set</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.reminder_minutes_before_start" href="item.html#exchangelib.items.item.Item.reminder_minutes_before_start">reminder_minutes_before_start</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.remove_field" href="../properties.html#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.reply_to" href="#exchangelib.items.calendar_item.BaseMeetingItem.reply_to">reply_to</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.response_objects" href="item.html#exchangelib.items.item.Item.response_objects">response_objects</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.response_type" href="#exchangelib.items.calendar_item.BaseMeetingItem.response_type">response_type</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.sender" href="#exchangelib.items.calendar_item.BaseMeetingItem.sender">sender</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.sender_idx" href="#exchangelib.items.calendar_item.BaseMeetingItem.sender_idx">sender_idx</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.sensitivity" href="item.html#exchangelib.items.item.Item.sensitivity">sensitivity</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.size" href="item.html#exchangelib.items.item.Item.size">size</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.subject" href="item.html#exchangelib.items.item.Item.subject">subject</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.supported_fields" href="../properties.html#exchangelib.properties.EWSElement.supported_fields">supported_fields</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.text_body" href="item.html#exchangelib.items.item.Item.text_body">text_body</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.to_recipients" href="#exchangelib.items.calendar_item.BaseMeetingItem.to_recipients">to_recipients</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.unique_body" href="item.html#exchangelib.items.item.Item.unique_body">unique_body</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.validate_field" href="../properties.html#exchangelib.properties.EWSElement.validate_field">validate_field</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.web_client_edit_form_query_string" href="item.html#exchangelib.items.item.Item.web_client_edit_form_query_string">web_client_edit_form_query_string</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.web_client_read_form_query_string" href="item.html#exchangelib.items.item.Item.web_client_read_form_query_string">web_client_read_form_query_string</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1394,26 +1549,84 @@ we use folder.account.</p></div>
 <li><a title="exchangelib.properties.IdChangeKeyMixIn" href="../properties.html#exchangelib.properties.IdChangeKeyMixIn">IdChangeKeyMixIn</a></li>
 <li><a title="exchangelib.properties.EWSElement" href="../properties.html#exchangelib.properties.EWSElement">EWSElement</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.items.calendar_item.MeetingMessage.ELEMENT_NAME"><code class="name">var <span class="ident">ELEMENT_NAME</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.items.calendar_item.BaseMeetingItem" href="#exchangelib.items.calendar_item.BaseMeetingItem">BaseMeetingItem</a></b></code>:
 <ul class="hlist">
-<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.ID_ELEMENT_CLS" href="base.html#exchangelib.items.base.BaseItem.ID_ELEMENT_CLS">ID_ELEMENT_CLS</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.ELEMENT_NAME" href="../properties.html#exchangelib.properties.EWSElement.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.FIELDS" href="../properties.html#exchangelib.properties.EWSElement.FIELDS">FIELDS</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.ID_ELEMENT_CLS" href="../properties.html#exchangelib.properties.IdChangeKeyMixIn.ID_ELEMENT_CLS">ID_ELEMENT_CLS</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.INSERT_AFTER_FIELD" href="base.html#exchangelib.items.base.RegisterMixIn.INSERT_AFTER_FIELD">INSERT_AFTER_FIELD</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.NAMESPACE" href="../properties.html#exchangelib.properties.EWSElement.NAMESPACE">NAMESPACE</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.add_field" href="../properties.html#exchangelib.properties.EWSElement.add_field">add_field</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.associated_calendar_item_id" href="#exchangelib.items.calendar_item.BaseMeetingItem.associated_calendar_item_id">associated_calendar_item_id</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.attach" href="item.html#exchangelib.items.item.Item.attach">attach</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.attachments" href="item.html#exchangelib.items.item.Item.attachments">attachments</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.author" href="#exchangelib.items.calendar_item.BaseMeetingItem.author">author</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.bcc_recipients" href="#exchangelib.items.calendar_item.BaseMeetingItem.bcc_recipients">bcc_recipients</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.body" href="item.html#exchangelib.items.item.Item.body">body</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.categories" href="item.html#exchangelib.items.item.Item.categories">categories</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.cc_recipients" href="#exchangelib.items.calendar_item.BaseMeetingItem.cc_recipients">cc_recipients</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.conversation_id" href="item.html#exchangelib.items.item.Item.conversation_id">conversation_id</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.conversation_index" href="#exchangelib.items.calendar_item.BaseMeetingItem.conversation_index">conversation_index</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.conversation_topic" href="#exchangelib.items.calendar_item.BaseMeetingItem.conversation_topic">conversation_topic</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.culture" href="item.html#exchangelib.items.item.Item.culture">culture</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.datetime_created" href="item.html#exchangelib.items.item.Item.datetime_created">datetime_created</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.datetime_received" href="item.html#exchangelib.items.item.Item.datetime_received">datetime_received</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.datetime_sent" href="item.html#exchangelib.items.item.Item.datetime_sent">datetime_sent</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.deregister" href="base.html#exchangelib.items.base.RegisterMixIn.deregister">deregister</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.detach" href="item.html#exchangelib.items.item.Item.detach">detach</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.display_cc" href="item.html#exchangelib.items.item.Item.display_cc">display_cc</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.display_to" href="item.html#exchangelib.items.item.Item.display_to">display_to</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.effective_rights" href="item.html#exchangelib.items.item.Item.effective_rights">effective_rights</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.effective_rights_idx" href="#exchangelib.items.calendar_item.BaseMeetingItem.effective_rights_idx">effective_rights_idx</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.has_attachments" href="item.html#exchangelib.items.item.Item.has_attachments">has_attachments</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.has_been_processed" href="#exchangelib.items.calendar_item.BaseMeetingItem.has_been_processed">has_been_processed</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.headers" href="item.html#exchangelib.items.item.Item.headers">headers</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.importance" href="item.html#exchangelib.items.item.Item.importance">importance</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.in_reply_to" href="item.html#exchangelib.items.item.Item.in_reply_to">in_reply_to</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_associated" href="item.html#exchangelib.items.item.Item.is_associated">is_associated</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_delegated" href="#exchangelib.items.calendar_item.BaseMeetingItem.is_delegated">is_delegated</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_delivery_receipt_requested" href="#exchangelib.items.calendar_item.BaseMeetingItem.is_delivery_receipt_requested">is_delivery_receipt_requested</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_draft" href="item.html#exchangelib.items.item.Item.is_draft">is_draft</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_from_me" href="item.html#exchangelib.items.item.Item.is_from_me">is_from_me</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_out_of_date" href="#exchangelib.items.calendar_item.BaseMeetingItem.is_out_of_date">is_out_of_date</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_read" href="#exchangelib.items.calendar_item.BaseMeetingItem.is_read">is_read</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_read_receipt_requested" href="#exchangelib.items.calendar_item.BaseMeetingItem.is_read_receipt_requested">is_read_receipt_requested</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_resend" href="item.html#exchangelib.items.item.Item.is_resend">is_resend</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_response_requested" href="#exchangelib.items.calendar_item.BaseMeetingItem.is_response_requested">is_response_requested</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_submitted" href="item.html#exchangelib.items.item.Item.is_submitted">is_submitted</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_unmodified" href="item.html#exchangelib.items.item.Item.is_unmodified">is_unmodified</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.item_class" href="item.html#exchangelib.items.item.Item.item_class">item_class</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.last_modified_name" href="item.html#exchangelib.items.item.Item.last_modified_name">last_modified_name</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.last_modified_time" href="item.html#exchangelib.items.item.Item.last_modified_time">last_modified_time</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.message_id" href="#exchangelib.items.calendar_item.BaseMeetingItem.message_id">message_id</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.mime_content" href="item.html#exchangelib.items.item.Item.mime_content">mime_content</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.parent_folder_id" href="item.html#exchangelib.items.item.Item.parent_folder_id">parent_folder_id</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.received_by" href="#exchangelib.items.calendar_item.BaseMeetingItem.received_by">received_by</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.received_representing" href="#exchangelib.items.calendar_item.BaseMeetingItem.received_representing">received_representing</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.received_representing_idx" href="#exchangelib.items.calendar_item.BaseMeetingItem.received_representing_idx">received_representing_idx</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.references" href="#exchangelib.items.calendar_item.BaseMeetingItem.references">references</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.register" href="base.html#exchangelib.items.base.RegisterMixIn.register">register</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.reminder_due_by" href="item.html#exchangelib.items.item.Item.reminder_due_by">reminder_due_by</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.reminder_is_set" href="item.html#exchangelib.items.item.Item.reminder_is_set">reminder_is_set</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.reminder_minutes_before_start" href="item.html#exchangelib.items.item.Item.reminder_minutes_before_start">reminder_minutes_before_start</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.remove_field" href="../properties.html#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.reply_to" href="#exchangelib.items.calendar_item.BaseMeetingItem.reply_to">reply_to</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.response_objects" href="item.html#exchangelib.items.item.Item.response_objects">response_objects</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.response_type" href="#exchangelib.items.calendar_item.BaseMeetingItem.response_type">response_type</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.sender" href="#exchangelib.items.calendar_item.BaseMeetingItem.sender">sender</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.sender_idx" href="#exchangelib.items.calendar_item.BaseMeetingItem.sender_idx">sender_idx</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.sensitivity" href="item.html#exchangelib.items.item.Item.sensitivity">sensitivity</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.size" href="item.html#exchangelib.items.item.Item.size">size</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.subject" href="item.html#exchangelib.items.item.Item.subject">subject</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.supported_fields" href="../properties.html#exchangelib.properties.EWSElement.supported_fields">supported_fields</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.text_body" href="item.html#exchangelib.items.item.Item.text_body">text_body</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.to_recipients" href="#exchangelib.items.calendar_item.BaseMeetingItem.to_recipients">to_recipients</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.unique_body" href="item.html#exchangelib.items.item.Item.unique_body">unique_body</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.validate_field" href="../properties.html#exchangelib.properties.EWSElement.validate_field">validate_field</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.web_client_edit_form_query_string" href="item.html#exchangelib.items.item.Item.web_client_edit_form_query_string">web_client_edit_form_query_string</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.web_client_read_form_query_string" href="item.html#exchangelib.items.item.Item.web_client_read_form_query_string">web_client_read_form_query_string</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1479,187 +1692,244 @@ we use folder.account.</p></div>
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="exchangelib.items.calendar_item.MeetingRequest.ELEMENT_NAME"><code class="name">var <span class="ident">ELEMENT_NAME</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="exchangelib.items.calendar_item.MeetingRequest.FIELDS"><code class="name">var <span class="ident">FIELDS</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
 <dt id="exchangelib.items.calendar_item.MeetingRequest.is_response_requested_idx"><code class="name">var <span class="ident">is_response_requested_idx</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.MeetingRequest.start_idx"><code class="name">var <span class="ident">start_idx</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 </dl>
 <h3>Instance variables</h3>
 <dl>
 <dt id="exchangelib.items.calendar_item.MeetingRequest.adjacent_meeting_count"><code class="name">var <span class="ident">adjacent_meeting_count</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.MeetingRequest.adjacent_meetings"><code class="name">var <span class="ident">adjacent_meetings</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.MeetingRequest.allow_new_time_proposal"><code class="name">var <span class="ident">allow_new_time_proposal</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.MeetingRequest.appointment_reply_time"><code class="name">var <span class="ident">appointment_reply_time</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.MeetingRequest.appointment_sequence_number"><code class="name">var <span class="ident">appointment_sequence_number</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.MeetingRequest.appointment_state"><code class="name">var <span class="ident">appointment_state</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.MeetingRequest.conference_type"><code class="name">var <span class="ident">conference_type</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.MeetingRequest.conflicting_meeting_count"><code class="name">var <span class="ident">conflicting_meeting_count</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.MeetingRequest.conflicting_meetings"><code class="name">var <span class="ident">conflicting_meetings</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.MeetingRequest.deleted_occurrences"><code class="name">var <span class="ident">deleted_occurrences</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.MeetingRequest.duration"><code class="name">var <span class="ident">duration</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.MeetingRequest.end"><code class="name">var <span class="ident">end</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.MeetingRequest.first_occurrence"><code class="name">var <span class="ident">first_occurrence</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.MeetingRequest.intended_free_busy_status"><code class="name">var <span class="ident">intended_free_busy_status</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.MeetingRequest.is_all_day"><code class="name">var <span class="ident">is_all_day</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.MeetingRequest.is_cancelled"><code class="name">var <span class="ident">is_cancelled</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.MeetingRequest.is_meeting"><code class="name">var <span class="ident">is_meeting</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.MeetingRequest.is_online_meeting"><code class="name">var <span class="ident">is_online_meeting</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.MeetingRequest.is_recurring"><code class="name">var <span class="ident">is_recurring</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.MeetingRequest.last_occurrence"><code class="name">var <span class="ident">last_occurrence</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.MeetingRequest.legacy_free_busy_status"><code class="name">var <span class="ident">legacy_free_busy_status</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.MeetingRequest.location"><code class="name">var <span class="ident">location</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.MeetingRequest.meeting_request_type"><code class="name">var <span class="ident">meeting_request_type</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.MeetingRequest.meeting_request_was_sent"><code class="name">var <span class="ident">meeting_request_was_sent</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.MeetingRequest.meeting_workspace_url"><code class="name">var <span class="ident">meeting_workspace_url</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.MeetingRequest.modified_occurrences"><code class="name">var <span class="ident">modified_occurrences</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.MeetingRequest.my_response_type"><code class="name">var <span class="ident">my_response_type</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.MeetingRequest.net_show_url"><code class="name">var <span class="ident">net_show_url</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.MeetingRequest.optional_attendees"><code class="name">var <span class="ident">optional_attendees</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.MeetingRequest.organizer"><code class="name">var <span class="ident">organizer</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.MeetingRequest.original_start"><code class="name">var <span class="ident">original_start</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.MeetingRequest.recurrence"><code class="name">var <span class="ident">recurrence</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.MeetingRequest.required_attendees"><code class="name">var <span class="ident">required_attendees</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.MeetingRequest.resources"><code class="name">var <span class="ident">resources</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.MeetingRequest.start"><code class="name">var <span class="ident">start</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.MeetingRequest.type"><code class="name">var <span class="ident">type</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.MeetingRequest.when"><code class="name">var <span class="ident">when</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.items.calendar_item.BaseMeetingItem" href="#exchangelib.items.calendar_item.BaseMeetingItem">BaseMeetingItem</a></b></code>:
 <ul class="hlist">
-<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.ID_ELEMENT_CLS" href="base.html#exchangelib.items.base.BaseItem.ID_ELEMENT_CLS">ID_ELEMENT_CLS</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.ELEMENT_NAME" href="../properties.html#exchangelib.properties.EWSElement.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.FIELDS" href="../properties.html#exchangelib.properties.EWSElement.FIELDS">FIELDS</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.ID_ELEMENT_CLS" href="../properties.html#exchangelib.properties.IdChangeKeyMixIn.ID_ELEMENT_CLS">ID_ELEMENT_CLS</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.INSERT_AFTER_FIELD" href="base.html#exchangelib.items.base.RegisterMixIn.INSERT_AFTER_FIELD">INSERT_AFTER_FIELD</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.NAMESPACE" href="../properties.html#exchangelib.properties.EWSElement.NAMESPACE">NAMESPACE</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.add_field" href="../properties.html#exchangelib.properties.EWSElement.add_field">add_field</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.associated_calendar_item_id" href="#exchangelib.items.calendar_item.BaseMeetingItem.associated_calendar_item_id">associated_calendar_item_id</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.attach" href="item.html#exchangelib.items.item.Item.attach">attach</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.attachments" href="item.html#exchangelib.items.item.Item.attachments">attachments</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.author" href="#exchangelib.items.calendar_item.BaseMeetingItem.author">author</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.bcc_recipients" href="#exchangelib.items.calendar_item.BaseMeetingItem.bcc_recipients">bcc_recipients</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.body" href="item.html#exchangelib.items.item.Item.body">body</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.categories" href="item.html#exchangelib.items.item.Item.categories">categories</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.cc_recipients" href="#exchangelib.items.calendar_item.BaseMeetingItem.cc_recipients">cc_recipients</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.conversation_id" href="item.html#exchangelib.items.item.Item.conversation_id">conversation_id</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.conversation_index" href="#exchangelib.items.calendar_item.BaseMeetingItem.conversation_index">conversation_index</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.conversation_topic" href="#exchangelib.items.calendar_item.BaseMeetingItem.conversation_topic">conversation_topic</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.culture" href="item.html#exchangelib.items.item.Item.culture">culture</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.datetime_created" href="item.html#exchangelib.items.item.Item.datetime_created">datetime_created</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.datetime_received" href="item.html#exchangelib.items.item.Item.datetime_received">datetime_received</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.datetime_sent" href="item.html#exchangelib.items.item.Item.datetime_sent">datetime_sent</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.deregister" href="base.html#exchangelib.items.base.RegisterMixIn.deregister">deregister</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.detach" href="item.html#exchangelib.items.item.Item.detach">detach</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.display_cc" href="item.html#exchangelib.items.item.Item.display_cc">display_cc</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.display_to" href="item.html#exchangelib.items.item.Item.display_to">display_to</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.effective_rights" href="item.html#exchangelib.items.item.Item.effective_rights">effective_rights</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.effective_rights_idx" href="#exchangelib.items.calendar_item.BaseMeetingItem.effective_rights_idx">effective_rights_idx</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.has_attachments" href="item.html#exchangelib.items.item.Item.has_attachments">has_attachments</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.has_been_processed" href="#exchangelib.items.calendar_item.BaseMeetingItem.has_been_processed">has_been_processed</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.headers" href="item.html#exchangelib.items.item.Item.headers">headers</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.importance" href="item.html#exchangelib.items.item.Item.importance">importance</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.in_reply_to" href="item.html#exchangelib.items.item.Item.in_reply_to">in_reply_to</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_associated" href="item.html#exchangelib.items.item.Item.is_associated">is_associated</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_delegated" href="#exchangelib.items.calendar_item.BaseMeetingItem.is_delegated">is_delegated</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_delivery_receipt_requested" href="#exchangelib.items.calendar_item.BaseMeetingItem.is_delivery_receipt_requested">is_delivery_receipt_requested</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_draft" href="item.html#exchangelib.items.item.Item.is_draft">is_draft</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_from_me" href="item.html#exchangelib.items.item.Item.is_from_me">is_from_me</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_out_of_date" href="#exchangelib.items.calendar_item.BaseMeetingItem.is_out_of_date">is_out_of_date</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_read" href="#exchangelib.items.calendar_item.BaseMeetingItem.is_read">is_read</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_read_receipt_requested" href="#exchangelib.items.calendar_item.BaseMeetingItem.is_read_receipt_requested">is_read_receipt_requested</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_resend" href="item.html#exchangelib.items.item.Item.is_resend">is_resend</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_response_requested" href="#exchangelib.items.calendar_item.BaseMeetingItem.is_response_requested">is_response_requested</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_submitted" href="item.html#exchangelib.items.item.Item.is_submitted">is_submitted</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_unmodified" href="item.html#exchangelib.items.item.Item.is_unmodified">is_unmodified</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.item_class" href="item.html#exchangelib.items.item.Item.item_class">item_class</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.last_modified_name" href="item.html#exchangelib.items.item.Item.last_modified_name">last_modified_name</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.last_modified_time" href="item.html#exchangelib.items.item.Item.last_modified_time">last_modified_time</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.message_id" href="#exchangelib.items.calendar_item.BaseMeetingItem.message_id">message_id</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.mime_content" href="item.html#exchangelib.items.item.Item.mime_content">mime_content</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.parent_folder_id" href="item.html#exchangelib.items.item.Item.parent_folder_id">parent_folder_id</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.received_by" href="#exchangelib.items.calendar_item.BaseMeetingItem.received_by">received_by</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.received_representing" href="#exchangelib.items.calendar_item.BaseMeetingItem.received_representing">received_representing</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.received_representing_idx" href="#exchangelib.items.calendar_item.BaseMeetingItem.received_representing_idx">received_representing_idx</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.references" href="#exchangelib.items.calendar_item.BaseMeetingItem.references">references</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.register" href="base.html#exchangelib.items.base.RegisterMixIn.register">register</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.reminder_due_by" href="item.html#exchangelib.items.item.Item.reminder_due_by">reminder_due_by</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.reminder_is_set" href="item.html#exchangelib.items.item.Item.reminder_is_set">reminder_is_set</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.reminder_minutes_before_start" href="item.html#exchangelib.items.item.Item.reminder_minutes_before_start">reminder_minutes_before_start</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.remove_field" href="../properties.html#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.reply_to" href="#exchangelib.items.calendar_item.BaseMeetingItem.reply_to">reply_to</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.response_objects" href="item.html#exchangelib.items.item.Item.response_objects">response_objects</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.response_type" href="#exchangelib.items.calendar_item.BaseMeetingItem.response_type">response_type</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.sender" href="#exchangelib.items.calendar_item.BaseMeetingItem.sender">sender</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.sender_idx" href="#exchangelib.items.calendar_item.BaseMeetingItem.sender_idx">sender_idx</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.sensitivity" href="item.html#exchangelib.items.item.Item.sensitivity">sensitivity</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.size" href="item.html#exchangelib.items.item.Item.size">size</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.subject" href="item.html#exchangelib.items.item.Item.subject">subject</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.supported_fields" href="../properties.html#exchangelib.properties.EWSElement.supported_fields">supported_fields</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.text_body" href="item.html#exchangelib.items.item.Item.text_body">text_body</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.to_recipients" href="#exchangelib.items.calendar_item.BaseMeetingItem.to_recipients">to_recipients</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.unique_body" href="item.html#exchangelib.items.item.Item.unique_body">unique_body</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.validate_field" href="../properties.html#exchangelib.properties.EWSElement.validate_field">validate_field</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.web_client_edit_form_query_string" href="item.html#exchangelib.items.item.Item.web_client_edit_form_query_string">web_client_edit_form_query_string</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.web_client_read_form_query_string" href="item.html#exchangelib.items.item.Item.web_client_read_form_query_string">web_client_read_form_query_string</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1696,41 +1966,95 @@ we use folder.account.</p></div>
 <li><a title="exchangelib.properties.IdChangeKeyMixIn" href="../properties.html#exchangelib.properties.IdChangeKeyMixIn">IdChangeKeyMixIn</a></li>
 <li><a title="exchangelib.properties.EWSElement" href="../properties.html#exchangelib.properties.EWSElement">EWSElement</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.items.calendar_item.MeetingResponse.ELEMENT_NAME"><code class="name">var <span class="ident">ELEMENT_NAME</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="exchangelib.items.calendar_item.MeetingResponse.FIELDS"><code class="name">var <span class="ident">FIELDS</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 <h3>Instance variables</h3>
 <dl>
 <dt id="exchangelib.items.calendar_item.MeetingResponse.proposed_end"><code class="name">var <span class="ident">proposed_end</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.items.calendar_item.MeetingResponse.proposed_start"><code class="name">var <span class="ident">proposed_start</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.items.calendar_item.BaseMeetingItem" href="#exchangelib.items.calendar_item.BaseMeetingItem">BaseMeetingItem</a></b></code>:
 <ul class="hlist">
-<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.ID_ELEMENT_CLS" href="base.html#exchangelib.items.base.BaseItem.ID_ELEMENT_CLS">ID_ELEMENT_CLS</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.ELEMENT_NAME" href="../properties.html#exchangelib.properties.EWSElement.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.FIELDS" href="../properties.html#exchangelib.properties.EWSElement.FIELDS">FIELDS</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.ID_ELEMENT_CLS" href="../properties.html#exchangelib.properties.IdChangeKeyMixIn.ID_ELEMENT_CLS">ID_ELEMENT_CLS</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.INSERT_AFTER_FIELD" href="base.html#exchangelib.items.base.RegisterMixIn.INSERT_AFTER_FIELD">INSERT_AFTER_FIELD</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.NAMESPACE" href="../properties.html#exchangelib.properties.EWSElement.NAMESPACE">NAMESPACE</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.add_field" href="../properties.html#exchangelib.properties.EWSElement.add_field">add_field</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.associated_calendar_item_id" href="#exchangelib.items.calendar_item.BaseMeetingItem.associated_calendar_item_id">associated_calendar_item_id</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.attach" href="item.html#exchangelib.items.item.Item.attach">attach</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.attachments" href="item.html#exchangelib.items.item.Item.attachments">attachments</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.author" href="#exchangelib.items.calendar_item.BaseMeetingItem.author">author</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.bcc_recipients" href="#exchangelib.items.calendar_item.BaseMeetingItem.bcc_recipients">bcc_recipients</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.body" href="item.html#exchangelib.items.item.Item.body">body</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.categories" href="item.html#exchangelib.items.item.Item.categories">categories</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.cc_recipients" href="#exchangelib.items.calendar_item.BaseMeetingItem.cc_recipients">cc_recipients</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.conversation_id" href="item.html#exchangelib.items.item.Item.conversation_id">conversation_id</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.conversation_index" href="#exchangelib.items.calendar_item.BaseMeetingItem.conversation_index">conversation_index</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.conversation_topic" href="#exchangelib.items.calendar_item.BaseMeetingItem.conversation_topic">conversation_topic</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.culture" href="item.html#exchangelib.items.item.Item.culture">culture</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.datetime_created" href="item.html#exchangelib.items.item.Item.datetime_created">datetime_created</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.datetime_received" href="item.html#exchangelib.items.item.Item.datetime_received">datetime_received</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.datetime_sent" href="item.html#exchangelib.items.item.Item.datetime_sent">datetime_sent</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.deregister" href="base.html#exchangelib.items.base.RegisterMixIn.deregister">deregister</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.detach" href="item.html#exchangelib.items.item.Item.detach">detach</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.display_cc" href="item.html#exchangelib.items.item.Item.display_cc">display_cc</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.display_to" href="item.html#exchangelib.items.item.Item.display_to">display_to</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.effective_rights" href="item.html#exchangelib.items.item.Item.effective_rights">effective_rights</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.effective_rights_idx" href="#exchangelib.items.calendar_item.BaseMeetingItem.effective_rights_idx">effective_rights_idx</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.has_attachments" href="item.html#exchangelib.items.item.Item.has_attachments">has_attachments</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.has_been_processed" href="#exchangelib.items.calendar_item.BaseMeetingItem.has_been_processed">has_been_processed</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.headers" href="item.html#exchangelib.items.item.Item.headers">headers</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.importance" href="item.html#exchangelib.items.item.Item.importance">importance</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.in_reply_to" href="item.html#exchangelib.items.item.Item.in_reply_to">in_reply_to</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_associated" href="item.html#exchangelib.items.item.Item.is_associated">is_associated</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_delegated" href="#exchangelib.items.calendar_item.BaseMeetingItem.is_delegated">is_delegated</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_delivery_receipt_requested" href="#exchangelib.items.calendar_item.BaseMeetingItem.is_delivery_receipt_requested">is_delivery_receipt_requested</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_draft" href="item.html#exchangelib.items.item.Item.is_draft">is_draft</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_from_me" href="item.html#exchangelib.items.item.Item.is_from_me">is_from_me</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_out_of_date" href="#exchangelib.items.calendar_item.BaseMeetingItem.is_out_of_date">is_out_of_date</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_read" href="#exchangelib.items.calendar_item.BaseMeetingItem.is_read">is_read</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_read_receipt_requested" href="#exchangelib.items.calendar_item.BaseMeetingItem.is_read_receipt_requested">is_read_receipt_requested</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_resend" href="item.html#exchangelib.items.item.Item.is_resend">is_resend</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_response_requested" href="#exchangelib.items.calendar_item.BaseMeetingItem.is_response_requested">is_response_requested</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_submitted" href="item.html#exchangelib.items.item.Item.is_submitted">is_submitted</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.is_unmodified" href="item.html#exchangelib.items.item.Item.is_unmodified">is_unmodified</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.item_class" href="item.html#exchangelib.items.item.Item.item_class">item_class</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.last_modified_name" href="item.html#exchangelib.items.item.Item.last_modified_name">last_modified_name</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.last_modified_time" href="item.html#exchangelib.items.item.Item.last_modified_time">last_modified_time</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.message_id" href="#exchangelib.items.calendar_item.BaseMeetingItem.message_id">message_id</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.mime_content" href="item.html#exchangelib.items.item.Item.mime_content">mime_content</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.parent_folder_id" href="item.html#exchangelib.items.item.Item.parent_folder_id">parent_folder_id</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.received_by" href="#exchangelib.items.calendar_item.BaseMeetingItem.received_by">received_by</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.received_representing" href="#exchangelib.items.calendar_item.BaseMeetingItem.received_representing">received_representing</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.received_representing_idx" href="#exchangelib.items.calendar_item.BaseMeetingItem.received_representing_idx">received_representing_idx</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.references" href="#exchangelib.items.calendar_item.BaseMeetingItem.references">references</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.register" href="base.html#exchangelib.items.base.RegisterMixIn.register">register</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.reminder_due_by" href="item.html#exchangelib.items.item.Item.reminder_due_by">reminder_due_by</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.reminder_is_set" href="item.html#exchangelib.items.item.Item.reminder_is_set">reminder_is_set</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.reminder_minutes_before_start" href="item.html#exchangelib.items.item.Item.reminder_minutes_before_start">reminder_minutes_before_start</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.remove_field" href="../properties.html#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.reply_to" href="#exchangelib.items.calendar_item.BaseMeetingItem.reply_to">reply_to</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.response_objects" href="item.html#exchangelib.items.item.Item.response_objects">response_objects</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.response_type" href="#exchangelib.items.calendar_item.BaseMeetingItem.response_type">response_type</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.sender" href="#exchangelib.items.calendar_item.BaseMeetingItem.sender">sender</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.sender_idx" href="#exchangelib.items.calendar_item.BaseMeetingItem.sender_idx">sender_idx</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.sensitivity" href="item.html#exchangelib.items.item.Item.sensitivity">sensitivity</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.size" href="item.html#exchangelib.items.item.Item.size">size</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.subject" href="item.html#exchangelib.items.item.Item.subject">subject</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.supported_fields" href="../properties.html#exchangelib.properties.EWSElement.supported_fields">supported_fields</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.text_body" href="item.html#exchangelib.items.item.Item.text_body">text_body</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.to_recipients" href="#exchangelib.items.calendar_item.BaseMeetingItem.to_recipients">to_recipients</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.unique_body" href="item.html#exchangelib.items.item.Item.unique_body">unique_body</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.validate_field" href="../properties.html#exchangelib.properties.EWSElement.validate_field">validate_field</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.web_client_edit_form_query_string" href="item.html#exchangelib.items.item.Item.web_client_edit_form_query_string">web_client_edit_form_query_string</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.web_client_read_form_query_string" href="item.html#exchangelib.items.item.Item.web_client_read_form_query_string">web_client_read_form_query_string</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1763,23 +2087,36 @@ we use folder.account.</p></div>
 <li><a title="exchangelib.properties.IdChangeKeyMixIn" href="../properties.html#exchangelib.properties.IdChangeKeyMixIn">IdChangeKeyMixIn</a></li>
 <li><a title="exchangelib.properties.EWSElement" href="../properties.html#exchangelib.properties.EWSElement">EWSElement</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.items.calendar_item.TentativelyAcceptItem.ELEMENT_NAME"><code class="name">var <span class="ident">ELEMENT_NAME</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem">BaseMeetingReplyItem</a></b></code>:
 <ul class="hlist">
-<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.ID_ELEMENT_CLS" href="base.html#exchangelib.items.base.BaseItem.ID_ELEMENT_CLS">ID_ELEMENT_CLS</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.ELEMENT_NAME" href="../properties.html#exchangelib.properties.EWSElement.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.FIELDS" href="../properties.html#exchangelib.properties.EWSElement.FIELDS">FIELDS</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.ID_ELEMENT_CLS" href="../properties.html#exchangelib.properties.IdChangeKeyMixIn.ID_ELEMENT_CLS">ID_ELEMENT_CLS</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.INSERT_AFTER_FIELD" href="base.html#exchangelib.items.base.RegisterMixIn.INSERT_AFTER_FIELD">INSERT_AFTER_FIELD</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.NAMESPACE" href="../properties.html#exchangelib.properties.EWSElement.NAMESPACE">NAMESPACE</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.add_field" href="../properties.html#exchangelib.properties.EWSElement.add_field">add_field</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.attachments" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.attachments">attachments</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.bcc_recipients" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.bcc_recipients">bcc_recipients</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.body" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.body">body</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.cc_recipients" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.cc_recipients">cc_recipients</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.deregister" href="base.html#exchangelib.items.base.RegisterMixIn.deregister">deregister</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.headers" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.headers">headers</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.is_delivery_receipt_requested" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.is_delivery_receipt_requested">is_delivery_receipt_requested</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.is_read_receipt_requested" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.is_read_receipt_requested">is_read_receipt_requested</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.item_class" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.item_class">item_class</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.proposed_end" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.proposed_end">proposed_end</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.proposed_start" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.proposed_start">proposed_start</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.received_by" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.received_by">received_by</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.received_representing" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.received_representing">received_representing</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.reference_item_id" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.reference_item_id">reference_item_id</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.register" href="base.html#exchangelib.items.base.RegisterMixIn.register">register</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.remove_field" href="../properties.html#exchangelib.properties.EWSElement.remove_field">remove_field</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.sender" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.sender">sender</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.sensitivity" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.sensitivity">sensitivity</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.supported_fields" href="../properties.html#exchangelib.properties.EWSElement.supported_fields">supported_fields</a></code></li>
+<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.to_recipients" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.to_recipients">to_recipients</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.validate_field" href="../properties.html#exchangelib.properties.EWSElement.validate_field">validate_field</a></code></li>
 </ul>
 </li>
@@ -1810,14 +2147,10 @@ we use folder.account.</p></div>
 </li>
 <li>
 <h4><code><a title="exchangelib.items.calendar_item.AcceptItem" href="#exchangelib.items.calendar_item.AcceptItem">AcceptItem</a></code></h4>
-<ul class="">
-<li><code><a title="exchangelib.items.calendar_item.AcceptItem.ELEMENT_NAME" href="#exchangelib.items.calendar_item.AcceptItem.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
-</ul>
 </li>
 <li>
 <h4><code><a title="exchangelib.items.calendar_item.BaseMeetingItem" href="#exchangelib.items.calendar_item.BaseMeetingItem">BaseMeetingItem</a></code></h4>
 <ul class="">
-<li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.FIELDS" href="#exchangelib.items.calendar_item.BaseMeetingItem.FIELDS">FIELDS</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.associated_calendar_item_id" href="#exchangelib.items.calendar_item.BaseMeetingItem.associated_calendar_item_id">associated_calendar_item_id</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.author" href="#exchangelib.items.calendar_item.BaseMeetingItem.author">author</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingItem.bcc_recipients" href="#exchangelib.items.calendar_item.BaseMeetingItem.bcc_recipients">bcc_recipients</a></code></li>
@@ -1847,7 +2180,6 @@ we use folder.account.</p></div>
 <li>
 <h4><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem">BaseMeetingReplyItem</a></code></h4>
 <ul class="">
-<li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.FIELDS" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.FIELDS">FIELDS</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.attachments" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.attachments">attachments</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.bcc_recipients" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.bcc_recipients">bcc_recipients</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.BaseMeetingReplyItem.body" href="#exchangelib.items.calendar_item.BaseMeetingReplyItem.body">body</a></code></li>
@@ -1870,8 +2202,6 @@ we use folder.account.</p></div>
 <li>
 <h4><code><a title="exchangelib.items.calendar_item.CalendarItem" href="#exchangelib.items.calendar_item.CalendarItem">CalendarItem</a></code></h4>
 <ul class="">
-<li><code><a title="exchangelib.items.calendar_item.CalendarItem.ELEMENT_NAME" href="#exchangelib.items.calendar_item.CalendarItem.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
-<li><code><a title="exchangelib.items.calendar_item.CalendarItem.FIELDS" href="#exchangelib.items.calendar_item.CalendarItem.FIELDS">FIELDS</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.CalendarItem.adjacent_meeting_count" href="#exchangelib.items.calendar_item.CalendarItem.adjacent_meeting_count">adjacent_meeting_count</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.CalendarItem.adjacent_meetings" href="#exchangelib.items.calendar_item.CalendarItem.adjacent_meetings">adjacent_meetings</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.CalendarItem.allow_new_time_proposal" href="#exchangelib.items.calendar_item.CalendarItem.allow_new_time_proposal">allow_new_time_proposal</a></code></li>
@@ -1925,34 +2255,21 @@ we use folder.account.</p></div>
 <li>
 <h4><code><a title="exchangelib.items.calendar_item.CancelCalendarItem" href="#exchangelib.items.calendar_item.CancelCalendarItem">CancelCalendarItem</a></code></h4>
 <ul class="">
-<li><code><a title="exchangelib.items.calendar_item.CancelCalendarItem.ELEMENT_NAME" href="#exchangelib.items.calendar_item.CancelCalendarItem.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
-<li><code><a title="exchangelib.items.calendar_item.CancelCalendarItem.FIELDS" href="#exchangelib.items.calendar_item.CancelCalendarItem.FIELDS">FIELDS</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.CancelCalendarItem.author_idx" href="#exchangelib.items.calendar_item.CancelCalendarItem.author_idx">author_idx</a></code></li>
 </ul>
 </li>
 <li>
 <h4><code><a title="exchangelib.items.calendar_item.DeclineItem" href="#exchangelib.items.calendar_item.DeclineItem">DeclineItem</a></code></h4>
-<ul class="">
-<li><code><a title="exchangelib.items.calendar_item.DeclineItem.ELEMENT_NAME" href="#exchangelib.items.calendar_item.DeclineItem.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
-</ul>
 </li>
 <li>
 <h4><code><a title="exchangelib.items.calendar_item.MeetingCancellation" href="#exchangelib.items.calendar_item.MeetingCancellation">MeetingCancellation</a></code></h4>
-<ul class="">
-<li><code><a title="exchangelib.items.calendar_item.MeetingCancellation.ELEMENT_NAME" href="#exchangelib.items.calendar_item.MeetingCancellation.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
-</ul>
 </li>
 <li>
 <h4><code><a title="exchangelib.items.calendar_item.MeetingMessage" href="#exchangelib.items.calendar_item.MeetingMessage">MeetingMessage</a></code></h4>
-<ul class="">
-<li><code><a title="exchangelib.items.calendar_item.MeetingMessage.ELEMENT_NAME" href="#exchangelib.items.calendar_item.MeetingMessage.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
-</ul>
 </li>
 <li>
 <h4><code><a title="exchangelib.items.calendar_item.MeetingRequest" href="#exchangelib.items.calendar_item.MeetingRequest">MeetingRequest</a></code></h4>
 <ul class="">
-<li><code><a title="exchangelib.items.calendar_item.MeetingRequest.ELEMENT_NAME" href="#exchangelib.items.calendar_item.MeetingRequest.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
-<li><code><a title="exchangelib.items.calendar_item.MeetingRequest.FIELDS" href="#exchangelib.items.calendar_item.MeetingRequest.FIELDS">FIELDS</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.MeetingRequest.adjacent_meeting_count" href="#exchangelib.items.calendar_item.MeetingRequest.adjacent_meeting_count">adjacent_meeting_count</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.MeetingRequest.adjacent_meetings" href="#exchangelib.items.calendar_item.MeetingRequest.adjacent_meetings">adjacent_meetings</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.MeetingRequest.allow_new_time_proposal" href="#exchangelib.items.calendar_item.MeetingRequest.allow_new_time_proposal">allow_new_time_proposal</a></code></li>
@@ -1997,17 +2314,12 @@ we use folder.account.</p></div>
 <li>
 <h4><code><a title="exchangelib.items.calendar_item.MeetingResponse" href="#exchangelib.items.calendar_item.MeetingResponse">MeetingResponse</a></code></h4>
 <ul class="">
-<li><code><a title="exchangelib.items.calendar_item.MeetingResponse.ELEMENT_NAME" href="#exchangelib.items.calendar_item.MeetingResponse.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
-<li><code><a title="exchangelib.items.calendar_item.MeetingResponse.FIELDS" href="#exchangelib.items.calendar_item.MeetingResponse.FIELDS">FIELDS</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.MeetingResponse.proposed_end" href="#exchangelib.items.calendar_item.MeetingResponse.proposed_end">proposed_end</a></code></li>
 <li><code><a title="exchangelib.items.calendar_item.MeetingResponse.proposed_start" href="#exchangelib.items.calendar_item.MeetingResponse.proposed_start">proposed_start</a></code></li>
 </ul>
 </li>
 <li>
 <h4><code><a title="exchangelib.items.calendar_item.TentativelyAcceptItem" href="#exchangelib.items.calendar_item.TentativelyAcceptItem">TentativelyAcceptItem</a></code></h4>
-<ul class="">
-<li><code><a title="exchangelib.items.calendar_item.TentativelyAcceptItem.ELEMENT_NAME" href="#exchangelib.items.calendar_item.TentativelyAcceptItem.ELEMENT_NAME">ELEMENT_NAME</a></code></li>
-</ul>
 </li>
 </ul>
 </li>
@@ -2015,7 +2327,7 @@ we use folder.account.</p></div>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
 </footer>
 </body>
 </html>

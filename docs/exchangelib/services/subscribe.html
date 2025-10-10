@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<meta name="generator" content="pdoc3 0.11.5">
+<meta name="generator" content="pdoc3 0.11.6">
 <title>exchangelib.services.subscribe API documentation</title>
 <meta name="description" content="The &#39;Subscribe&#39; service has three different modes - pull, push and streaming - with different signatures. Implement
 as three distinct classes.">
@@ -122,26 +122,32 @@ as three distinct classes.</p>
 <dl>
 <dt id="exchangelib.services.subscribe.Subscribe.EVENT_TYPES"><code class="name">var <span class="ident">EVENT_TYPES</span></code></dt>
 <dd>
-<div class="desc"></div>
-</dd>
-<dt id="exchangelib.services.subscribe.Subscribe.SERVICE_NAME"><code class="name">var <span class="ident">SERVICE_NAME</span></code></dt>
-<dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.services.subscribe.Subscribe.subscription_request_elem_tag"><code class="name">var <span class="ident">subscription_request_elem_tag</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.services.common.EWSAccountService" href="common.html#exchangelib.services.common.EWSAccountService">EWSAccountService</a></b></code>:
 <ul class="hlist">
+<li><code><a title="exchangelib.services.common.EWSAccountService.CHUNK_SIZE" href="common.html#exchangelib.services.common.EWSService.CHUNK_SIZE">CHUNK_SIZE</a></code></li>
+<li><code><a title="exchangelib.services.common.EWSAccountService.ERRORS_TO_CATCH_IN_RESPONSE" href="common.html#exchangelib.services.common.EWSService.ERRORS_TO_CATCH_IN_RESPONSE">ERRORS_TO_CATCH_IN_RESPONSE</a></code></li>
 <li><code><a title="exchangelib.services.common.EWSAccountService.NO_VALID_SERVER_VERSIONS" href="common.html#exchangelib.services.common.EWSService.NO_VALID_SERVER_VERSIONS">NO_VALID_SERVER_VERSIONS</a></code></li>
+<li><code><a title="exchangelib.services.common.EWSAccountService.NS_MAP" href="common.html#exchangelib.services.common.EWSService.NS_MAP">NS_MAP</a></code></li>
+<li><code><a title="exchangelib.services.common.EWSAccountService.SERVICE_NAME" href="common.html#exchangelib.services.common.EWSService.SERVICE_NAME">SERVICE_NAME</a></code></li>
 <li><code><a title="exchangelib.services.common.EWSAccountService.WARNINGS_TO_CATCH_IN_RESPONSE" href="common.html#exchangelib.services.common.EWSService.WARNINGS_TO_CATCH_IN_RESPONSE">WARNINGS_TO_CATCH_IN_RESPONSE</a></code></li>
+<li><code><a title="exchangelib.services.common.EWSAccountService.WARNINGS_TO_IGNORE_IN_RESPONSE" href="common.html#exchangelib.services.common.EWSService.WARNINGS_TO_IGNORE_IN_RESPONSE">WARNINGS_TO_IGNORE_IN_RESPONSE</a></code></li>
+<li><code><a title="exchangelib.services.common.EWSAccountService.deprecated_from" href="../version.html#exchangelib.version.SupportedVersionClassMixIn.deprecated_from">deprecated_from</a></code></li>
+<li><code><a title="exchangelib.services.common.EWSAccountService.element_container_name" href="common.html#exchangelib.services.common.EWSService.element_container_name">element_container_name</a></code></li>
 <li><code><a title="exchangelib.services.common.EWSAccountService.get" href="common.html#exchangelib.services.common.EWSService.get">get</a></code></li>
 <li><code><a title="exchangelib.services.common.EWSAccountService.parse" href="common.html#exchangelib.services.common.EWSService.parse">parse</a></code></li>
+<li><code><a title="exchangelib.services.common.EWSAccountService.prefer_affinity" href="common.html#exchangelib.services.common.EWSAccountService.prefer_affinity">prefer_affinity</a></code></li>
+<li><code><a title="exchangelib.services.common.EWSAccountService.returns_elements" href="common.html#exchangelib.services.common.EWSService.returns_elements">returns_elements</a></code></li>
 <li><code><a title="exchangelib.services.common.EWSAccountService.supported_api_versions" href="common.html#exchangelib.services.common.EWSService.supported_api_versions">supported_api_versions</a></code></li>
+<li><code><a title="exchangelib.services.common.EWSAccountService.supported_from" href="../version.html#exchangelib.version.SupportedVersionClassMixIn.supported_from">supported_from</a></code></li>
 <li><code><a title="exchangelib.services.common.EWSAccountService.wrap" href="common.html#exchangelib.services.common.EWSService.wrap">wrap</a></code></li>
 </ul>
 </li>
@@ -188,17 +194,6 @@ as three distinct classes.</p>
 <li><a title="exchangelib.services.common.EWSService" href="common.html#exchangelib.services.common.EWSService">EWSService</a></li>
 <li><a title="exchangelib.version.SupportedVersionClassMixIn" href="../version.html#exchangelib.version.SupportedVersionClassMixIn">SupportedVersionClassMixIn</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.services.subscribe.SubscribeToPull.prefer_affinity"><code class="name">var <span class="ident">prefer_affinity</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="exchangelib.services.subscribe.SubscribeToPull.subscription_request_elem_tag"><code class="name">var <span class="ident">subscription_request_elem_tag</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 <h3>Methods</h3>
 <dl>
 <dt id="exchangelib.services.subscribe.SubscribeToPull.call"><code class="name flex">
@@ -244,11 +239,23 @@ as three distinct classes.</p>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.services.subscribe.Subscribe" href="#exchangelib.services.subscribe.Subscribe">Subscribe</a></b></code>:
 <ul class="hlist">
+<li><code><a title="exchangelib.services.subscribe.Subscribe.CHUNK_SIZE" href="common.html#exchangelib.services.common.EWSService.CHUNK_SIZE">CHUNK_SIZE</a></code></li>
+<li><code><a title="exchangelib.services.subscribe.Subscribe.ERRORS_TO_CATCH_IN_RESPONSE" href="common.html#exchangelib.services.common.EWSService.ERRORS_TO_CATCH_IN_RESPONSE">ERRORS_TO_CATCH_IN_RESPONSE</a></code></li>
+<li><code><a title="exchangelib.services.subscribe.Subscribe.EVENT_TYPES" href="#exchangelib.services.subscribe.Subscribe.EVENT_TYPES">EVENT_TYPES</a></code></li>
 <li><code><a title="exchangelib.services.subscribe.Subscribe.NO_VALID_SERVER_VERSIONS" href="common.html#exchangelib.services.common.EWSService.NO_VALID_SERVER_VERSIONS">NO_VALID_SERVER_VERSIONS</a></code></li>
+<li><code><a title="exchangelib.services.subscribe.Subscribe.NS_MAP" href="common.html#exchangelib.services.common.EWSService.NS_MAP">NS_MAP</a></code></li>
+<li><code><a title="exchangelib.services.subscribe.Subscribe.SERVICE_NAME" href="common.html#exchangelib.services.common.EWSService.SERVICE_NAME">SERVICE_NAME</a></code></li>
 <li><code><a title="exchangelib.services.subscribe.Subscribe.WARNINGS_TO_CATCH_IN_RESPONSE" href="common.html#exchangelib.services.common.EWSService.WARNINGS_TO_CATCH_IN_RESPONSE">WARNINGS_TO_CATCH_IN_RESPONSE</a></code></li>
+<li><code><a title="exchangelib.services.subscribe.Subscribe.WARNINGS_TO_IGNORE_IN_RESPONSE" href="common.html#exchangelib.services.common.EWSService.WARNINGS_TO_IGNORE_IN_RESPONSE">WARNINGS_TO_IGNORE_IN_RESPONSE</a></code></li>
+<li><code><a title="exchangelib.services.subscribe.Subscribe.deprecated_from" href="../version.html#exchangelib.version.SupportedVersionClassMixIn.deprecated_from">deprecated_from</a></code></li>
+<li><code><a title="exchangelib.services.subscribe.Subscribe.element_container_name" href="common.html#exchangelib.services.common.EWSService.element_container_name">element_container_name</a></code></li>
 <li><code><a title="exchangelib.services.subscribe.Subscribe.get" href="common.html#exchangelib.services.common.EWSService.get">get</a></code></li>
 <li><code><a title="exchangelib.services.subscribe.Subscribe.parse" href="common.html#exchangelib.services.common.EWSService.parse">parse</a></code></li>
+<li><code><a title="exchangelib.services.subscribe.Subscribe.prefer_affinity" href="common.html#exchangelib.services.common.EWSAccountService.prefer_affinity">prefer_affinity</a></code></li>
+<li><code><a title="exchangelib.services.subscribe.Subscribe.returns_elements" href="common.html#exchangelib.services.common.EWSService.returns_elements">returns_elements</a></code></li>
+<li><code><a title="exchangelib.services.subscribe.Subscribe.subscription_request_elem_tag" href="#exchangelib.services.subscribe.Subscribe.subscription_request_elem_tag">subscription_request_elem_tag</a></code></li>
 <li><code><a title="exchangelib.services.subscribe.Subscribe.supported_api_versions" href="common.html#exchangelib.services.common.EWSService.supported_api_versions">supported_api_versions</a></code></li>
+<li><code><a title="exchangelib.services.subscribe.Subscribe.supported_from" href="../version.html#exchangelib.version.SupportedVersionClassMixIn.supported_from">supported_from</a></code></li>
 <li><code><a title="exchangelib.services.subscribe.Subscribe.wrap" href="common.html#exchangelib.services.common.EWSService.wrap">wrap</a></code></li>
 </ul>
 </li>
@@ -296,13 +303,6 @@ as three distinct classes.</p>
 <li><a title="exchangelib.services.common.EWSService" href="common.html#exchangelib.services.common.EWSService">EWSService</a></li>
 <li><a title="exchangelib.version.SupportedVersionClassMixIn" href="../version.html#exchangelib.version.SupportedVersionClassMixIn">SupportedVersionClassMixIn</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.services.subscribe.SubscribeToPush.subscription_request_elem_tag"><code class="name">var <span class="ident">subscription_request_elem_tag</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 <h3>Methods</h3>
 <dl>
 <dt id="exchangelib.services.subscribe.SubscribeToPush.call"><code class="name flex">
@@ -350,11 +350,23 @@ as three distinct classes.</p>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.services.subscribe.Subscribe" href="#exchangelib.services.subscribe.Subscribe">Subscribe</a></b></code>:
 <ul class="hlist">
+<li><code><a title="exchangelib.services.subscribe.Subscribe.CHUNK_SIZE" href="common.html#exchangelib.services.common.EWSService.CHUNK_SIZE">CHUNK_SIZE</a></code></li>
+<li><code><a title="exchangelib.services.subscribe.Subscribe.ERRORS_TO_CATCH_IN_RESPONSE" href="common.html#exchangelib.services.common.EWSService.ERRORS_TO_CATCH_IN_RESPONSE">ERRORS_TO_CATCH_IN_RESPONSE</a></code></li>
+<li><code><a title="exchangelib.services.subscribe.Subscribe.EVENT_TYPES" href="#exchangelib.services.subscribe.Subscribe.EVENT_TYPES">EVENT_TYPES</a></code></li>
 <li><code><a title="exchangelib.services.subscribe.Subscribe.NO_VALID_SERVER_VERSIONS" href="common.html#exchangelib.services.common.EWSService.NO_VALID_SERVER_VERSIONS">NO_VALID_SERVER_VERSIONS</a></code></li>
+<li><code><a title="exchangelib.services.subscribe.Subscribe.NS_MAP" href="common.html#exchangelib.services.common.EWSService.NS_MAP">NS_MAP</a></code></li>
+<li><code><a title="exchangelib.services.subscribe.Subscribe.SERVICE_NAME" href="common.html#exchangelib.services.common.EWSService.SERVICE_NAME">SERVICE_NAME</a></code></li>
 <li><code><a title="exchangelib.services.subscribe.Subscribe.WARNINGS_TO_CATCH_IN_RESPONSE" href="common.html#exchangelib.services.common.EWSService.WARNINGS_TO_CATCH_IN_RESPONSE">WARNINGS_TO_CATCH_IN_RESPONSE</a></code></li>
+<li><code><a title="exchangelib.services.subscribe.Subscribe.WARNINGS_TO_IGNORE_IN_RESPONSE" href="common.html#exchangelib.services.common.EWSService.WARNINGS_TO_IGNORE_IN_RESPONSE">WARNINGS_TO_IGNORE_IN_RESPONSE</a></code></li>
+<li><code><a title="exchangelib.services.subscribe.Subscribe.deprecated_from" href="../version.html#exchangelib.version.SupportedVersionClassMixIn.deprecated_from">deprecated_from</a></code></li>
+<li><code><a title="exchangelib.services.subscribe.Subscribe.element_container_name" href="common.html#exchangelib.services.common.EWSService.element_container_name">element_container_name</a></code></li>
 <li><code><a title="exchangelib.services.subscribe.Subscribe.get" href="common.html#exchangelib.services.common.EWSService.get">get</a></code></li>
 <li><code><a title="exchangelib.services.subscribe.Subscribe.parse" href="common.html#exchangelib.services.common.EWSService.parse">parse</a></code></li>
+<li><code><a title="exchangelib.services.subscribe.Subscribe.prefer_affinity" href="common.html#exchangelib.services.common.EWSAccountService.prefer_affinity">prefer_affinity</a></code></li>
+<li><code><a title="exchangelib.services.subscribe.Subscribe.returns_elements" href="common.html#exchangelib.services.common.EWSService.returns_elements">returns_elements</a></code></li>
+<li><code><a title="exchangelib.services.subscribe.Subscribe.subscription_request_elem_tag" href="#exchangelib.services.subscribe.Subscribe.subscription_request_elem_tag">subscription_request_elem_tag</a></code></li>
 <li><code><a title="exchangelib.services.subscribe.Subscribe.supported_api_versions" href="common.html#exchangelib.services.common.EWSService.supported_api_versions">supported_api_versions</a></code></li>
+<li><code><a title="exchangelib.services.subscribe.Subscribe.supported_from" href="../version.html#exchangelib.version.SupportedVersionClassMixIn.supported_from">supported_from</a></code></li>
 <li><code><a title="exchangelib.services.subscribe.Subscribe.wrap" href="common.html#exchangelib.services.common.EWSService.wrap">wrap</a></code></li>
 </ul>
 </li>
@@ -398,17 +410,6 @@ as three distinct classes.</p>
 <li><a title="exchangelib.services.common.EWSService" href="common.html#exchangelib.services.common.EWSService">EWSService</a></li>
 <li><a title="exchangelib.version.SupportedVersionClassMixIn" href="../version.html#exchangelib.version.SupportedVersionClassMixIn">SupportedVersionClassMixIn</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.services.subscribe.SubscribeToStreaming.prefer_affinity"><code class="name">var <span class="ident">prefer_affinity</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="exchangelib.services.subscribe.SubscribeToStreaming.subscription_request_elem_tag"><code class="name">var <span class="ident">subscription_request_elem_tag</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 <h3>Methods</h3>
 <dl>
 <dt id="exchangelib.services.subscribe.SubscribeToStreaming.call"><code class="name flex">
@@ -444,11 +445,23 @@ as three distinct classes.</p>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.services.subscribe.Subscribe" href="#exchangelib.services.subscribe.Subscribe">Subscribe</a></b></code>:
 <ul class="hlist">
+<li><code><a title="exchangelib.services.subscribe.Subscribe.CHUNK_SIZE" href="common.html#exchangelib.services.common.EWSService.CHUNK_SIZE">CHUNK_SIZE</a></code></li>
+<li><code><a title="exchangelib.services.subscribe.Subscribe.ERRORS_TO_CATCH_IN_RESPONSE" href="common.html#exchangelib.services.common.EWSService.ERRORS_TO_CATCH_IN_RESPONSE">ERRORS_TO_CATCH_IN_RESPONSE</a></code></li>
+<li><code><a title="exchangelib.services.subscribe.Subscribe.EVENT_TYPES" href="#exchangelib.services.subscribe.Subscribe.EVENT_TYPES">EVENT_TYPES</a></code></li>
 <li><code><a title="exchangelib.services.subscribe.Subscribe.NO_VALID_SERVER_VERSIONS" href="common.html#exchangelib.services.common.EWSService.NO_VALID_SERVER_VERSIONS">NO_VALID_SERVER_VERSIONS</a></code></li>
+<li><code><a title="exchangelib.services.subscribe.Subscribe.NS_MAP" href="common.html#exchangelib.services.common.EWSService.NS_MAP">NS_MAP</a></code></li>
+<li><code><a title="exchangelib.services.subscribe.Subscribe.SERVICE_NAME" href="common.html#exchangelib.services.common.EWSService.SERVICE_NAME">SERVICE_NAME</a></code></li>
 <li><code><a title="exchangelib.services.subscribe.Subscribe.WARNINGS_TO_CATCH_IN_RESPONSE" href="common.html#exchangelib.services.common.EWSService.WARNINGS_TO_CATCH_IN_RESPONSE">WARNINGS_TO_CATCH_IN_RESPONSE</a></code></li>
+<li><code><a title="exchangelib.services.subscribe.Subscribe.WARNINGS_TO_IGNORE_IN_RESPONSE" href="common.html#exchangelib.services.common.EWSService.WARNINGS_TO_IGNORE_IN_RESPONSE">WARNINGS_TO_IGNORE_IN_RESPONSE</a></code></li>
+<li><code><a title="exchangelib.services.subscribe.Subscribe.deprecated_from" href="../version.html#exchangelib.version.SupportedVersionClassMixIn.deprecated_from">deprecated_from</a></code></li>
+<li><code><a title="exchangelib.services.subscribe.Subscribe.element_container_name" href="common.html#exchangelib.services.common.EWSService.element_container_name">element_container_name</a></code></li>
 <li><code><a title="exchangelib.services.subscribe.Subscribe.get" href="common.html#exchangelib.services.common.EWSService.get">get</a></code></li>
 <li><code><a title="exchangelib.services.subscribe.Subscribe.parse" href="common.html#exchangelib.services.common.EWSService.parse">parse</a></code></li>
+<li><code><a title="exchangelib.services.subscribe.Subscribe.prefer_affinity" href="common.html#exchangelib.services.common.EWSAccountService.prefer_affinity">prefer_affinity</a></code></li>
+<li><code><a title="exchangelib.services.subscribe.Subscribe.returns_elements" href="common.html#exchangelib.services.common.EWSService.returns_elements">returns_elements</a></code></li>
+<li><code><a title="exchangelib.services.subscribe.Subscribe.subscription_request_elem_tag" href="#exchangelib.services.subscribe.Subscribe.subscription_request_elem_tag">subscription_request_elem_tag</a></code></li>
 <li><code><a title="exchangelib.services.subscribe.Subscribe.supported_api_versions" href="common.html#exchangelib.services.common.EWSService.supported_api_versions">supported_api_versions</a></code></li>
+<li><code><a title="exchangelib.services.subscribe.Subscribe.supported_from" href="../version.html#exchangelib.version.SupportedVersionClassMixIn.supported_from">supported_from</a></code></li>
 <li><code><a title="exchangelib.services.subscribe.Subscribe.wrap" href="common.html#exchangelib.services.common.EWSService.wrap">wrap</a></code></li>
 </ul>
 </li>
@@ -473,7 +486,6 @@ as three distinct classes.</p>
 <h4><code><a title="exchangelib.services.subscribe.Subscribe" href="#exchangelib.services.subscribe.Subscribe">Subscribe</a></code></h4>
 <ul class="">
 <li><code><a title="exchangelib.services.subscribe.Subscribe.EVENT_TYPES" href="#exchangelib.services.subscribe.Subscribe.EVENT_TYPES">EVENT_TYPES</a></code></li>
-<li><code><a title="exchangelib.services.subscribe.Subscribe.SERVICE_NAME" href="#exchangelib.services.subscribe.Subscribe.SERVICE_NAME">SERVICE_NAME</a></code></li>
 <li><code><a title="exchangelib.services.subscribe.Subscribe.subscription_request_elem_tag" href="#exchangelib.services.subscribe.Subscribe.subscription_request_elem_tag">subscription_request_elem_tag</a></code></li>
 </ul>
 </li>
@@ -482,8 +494,6 @@ as three distinct classes.</p>
 <ul class="">
 <li><code><a title="exchangelib.services.subscribe.SubscribeToPull.call" href="#exchangelib.services.subscribe.SubscribeToPull.call">call</a></code></li>
 <li><code><a title="exchangelib.services.subscribe.SubscribeToPull.get_payload" href="#exchangelib.services.subscribe.SubscribeToPull.get_payload">get_payload</a></code></li>
-<li><code><a title="exchangelib.services.subscribe.SubscribeToPull.prefer_affinity" href="#exchangelib.services.subscribe.SubscribeToPull.prefer_affinity">prefer_affinity</a></code></li>
-<li><code><a title="exchangelib.services.subscribe.SubscribeToPull.subscription_request_elem_tag" href="#exchangelib.services.subscribe.SubscribeToPull.subscription_request_elem_tag">subscription_request_elem_tag</a></code></li>
 </ul>
 </li>
 <li>
@@ -491,7 +501,6 @@ as three distinct classes.</p>
 <ul class="">
 <li><code><a title="exchangelib.services.subscribe.SubscribeToPush.call" href="#exchangelib.services.subscribe.SubscribeToPush.call">call</a></code></li>
 <li><code><a title="exchangelib.services.subscribe.SubscribeToPush.get_payload" href="#exchangelib.services.subscribe.SubscribeToPush.get_payload">get_payload</a></code></li>
-<li><code><a title="exchangelib.services.subscribe.SubscribeToPush.subscription_request_elem_tag" href="#exchangelib.services.subscribe.SubscribeToPush.subscription_request_elem_tag">subscription_request_elem_tag</a></code></li>
 </ul>
 </li>
 <li>
@@ -499,8 +508,6 @@ as three distinct classes.</p>
 <ul class="">
 <li><code><a title="exchangelib.services.subscribe.SubscribeToStreaming.call" href="#exchangelib.services.subscribe.SubscribeToStreaming.call">call</a></code></li>
 <li><code><a title="exchangelib.services.subscribe.SubscribeToStreaming.get_payload" href="#exchangelib.services.subscribe.SubscribeToStreaming.get_payload">get_payload</a></code></li>
-<li><code><a title="exchangelib.services.subscribe.SubscribeToStreaming.prefer_affinity" href="#exchangelib.services.subscribe.SubscribeToStreaming.prefer_affinity">prefer_affinity</a></code></li>
-<li><code><a title="exchangelib.services.subscribe.SubscribeToStreaming.subscription_request_elem_tag" href="#exchangelib.services.subscribe.SubscribeToStreaming.subscription_request_elem_tag">subscription_request_elem_tag</a></code></li>
 </ul>
 </li>
 </ul>
@@ -509,7 +516,7 @@ as three distinct classes.</p>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
 </footer>
 </body>
 </html>

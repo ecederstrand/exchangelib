@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<meta name="generator" content="pdoc3 0.11.5">
+<meta name="generator" content="pdoc3 0.11.6">
 <title>exchangelib.fields API documentation</title>
 <meta name="description" content="">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
@@ -203,7 +203,10 @@ label and SubField object.</p></div>
 <li><code><b><a title="exchangelib.fields.EWSElementListField" href="#exchangelib.fields.EWSElementListField">EWSElementListField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.EWSElementListField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementListField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementListField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.EWSElementListField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementListField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -249,23 +252,23 @@ label and SubField object.</p></div>
 <dl>
 <dt id="exchangelib.fields.AppointmentStateField.CANCELLED"><code class="name">var <span class="ident">CANCELLED</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.fields.AppointmentStateField.MEETING"><code class="name">var <span class="ident">MEETING</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.fields.AppointmentStateField.NONE"><code class="name">var <span class="ident">NONE</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.fields.AppointmentStateField.RECEIVED"><code class="name">var <span class="ident">RECEIVED</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.fields.AppointmentStateField.STATES"><code class="name">var <span class="ident">STATES</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -273,8 +276,10 @@ label and SubField object.</p></div>
 <li><code><b><a title="exchangelib.fields.IntegerField" href="#exchangelib.fields.IntegerField">IntegerField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.IntegerField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.IntegerField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.IntegerField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.IntegerField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
-<li><code><a title="exchangelib.fields.IntegerField.value_cls" href="#exchangelib.fields.IntegerField.value_cls">value_cls</a></code></li>
+<li><code><a title="exchangelib.fields.IntegerField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -308,19 +313,15 @@ label and SubField object.</p></div>
 <li><a title="exchangelib.fields.Field" href="#exchangelib.fields.Field">Field</a></li>
 <li><a title="exchangelib.version.SupportedVersionInstanceMixIn" href="version.html#exchangelib.version.SupportedVersionInstanceMixIn">SupportedVersionInstanceMixIn</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.fields.AssociatedCalendarItemIdField.is_complex"><code class="name">var <span class="ident">is_complex</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.fields.EWSElementField" href="#exchangelib.fields.EWSElementField">EWSElementField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.EWSElementField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.EWSElementField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -371,7 +372,10 @@ label and SubField object.</p></div>
 <li><code><b><a title="exchangelib.fields.EWSElementListField" href="#exchangelib.fields.EWSElementListField">EWSElementListField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.EWSElementListField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementListField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementListField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.EWSElementListField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementListField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -439,7 +443,10 @@ label and SubField object.</p></div>
 <li><code><b><a title="exchangelib.fields.EWSElementListField" href="#exchangelib.fields.EWSElementListField">EWSElementListField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.EWSElementListField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementListField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementListField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.EWSElementListField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementListField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -475,32 +482,15 @@ label and SubField object.</p></div>
 <ul class="hlist">
 <li><a title="exchangelib.fields.MimeContentField" href="#exchangelib.fields.MimeContentField">MimeContentField</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.fields.Base64Field.is_complex"><code class="name">var <span class="ident">is_complex</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="exchangelib.fields.Base64Field.value_cls"><code class="name">var <span class="ident">value_cls</span></code></dt>
-<dd>
-<div class="desc"><p>bytes(iterable_of_ints) -&gt; bytes
-bytes(string, encoding[, errors]) -&gt; bytes
-bytes(bytes_or_buffer) -&gt; immutable copy of bytes_or_buffer
-bytes(int) -&gt; bytes object of size given by the parameter initialized with null bytes
-bytes() -&gt; empty bytes object</p>
-<p>Construct an immutable array of bytes from:
-- an iterable yielding integers in range(256)
-- a text string encoded using the specified encoding
-- any object implementing the buffer API.
-- an integer</p></div>
-</dd>
-</dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.fields.FieldURIField" href="#exchangelib.fields.FieldURIField">FieldURIField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.FieldURIField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.FieldURIField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.FieldURIField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.FieldURIField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.FieldURIField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -555,13 +545,6 @@ bytes() -&gt; empty bytes object</p>
 <li><a title="exchangelib.fields.MailboxField" href="#exchangelib.fields.MailboxField">MailboxField</a></li>
 <li><a title="exchangelib.fields.RecipientAddressField" href="#exchangelib.fields.RecipientAddressField">RecipientAddressField</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.fields.BaseEmailField.is_complex"><code class="name">var <span class="ident">is_complex</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 <h3>Methods</h3>
 <dl>
 <dt id="exchangelib.fields.BaseEmailField.clean"><code class="name flex">
@@ -585,7 +568,10 @@ bytes() -&gt; empty bytes object</p>
 <li><code><b><a title="exchangelib.fields.EWSElementField" href="#exchangelib.fields.EWSElementField">EWSElementField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.EWSElementField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.EWSElementField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -616,19 +602,15 @@ bytes() -&gt; empty bytes object</p>
 <li><a title="exchangelib.fields.Field" href="#exchangelib.fields.Field">Field</a></li>
 <li><a title="exchangelib.version.SupportedVersionInstanceMixIn" href="version.html#exchangelib.version.SupportedVersionInstanceMixIn">SupportedVersionInstanceMixIn</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.fields.BodyContentAttributedValueField.is_complex"><code class="name">var <span class="ident">is_complex</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.fields.EWSElementField" href="#exchangelib.fields.EWSElementField">EWSElementField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.EWSElementField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.EWSElementField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -707,8 +689,10 @@ bytes() -&gt; empty bytes object</p>
 <li><code><b><a title="exchangelib.fields.TextField" href="#exchangelib.fields.TextField">TextField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.TextField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.TextField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.TextField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.TextField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
-<li><code><a title="exchangelib.fields.TextField.value_cls" href="#exchangelib.fields.TextField.value_cls">value_cls</a></code></li>
+<li><code><a title="exchangelib.fields.TextField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -734,22 +718,15 @@ bytes() -&gt; empty bytes object</p>
 <li><a title="exchangelib.fields.Field" href="#exchangelib.fields.Field">Field</a></li>
 <li><a title="exchangelib.version.SupportedVersionInstanceMixIn" href="version.html#exchangelib.version.SupportedVersionInstanceMixIn">SupportedVersionInstanceMixIn</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.fields.BooleanField.value_cls"><code class="name">var <span class="ident">value_cls</span></code></dt>
-<dd>
-<div class="desc"><p>bool(x) -&gt; bool</p>
-<p>Returns True when the argument x is true, False otherwise.
-The builtins True and False are the only two instances of the class bool.
-The class bool is a subclass of the class int, and cannot be subclassed.</p></div>
-</dd>
-</dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.fields.FieldURIField" href="#exchangelib.fields.FieldURIField">FieldURIField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.FieldURIField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.FieldURIField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.FieldURIField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.FieldURIField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.FieldURIField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -796,13 +773,6 @@ The class bool is a subclass of the class int, and cannot be subclassed.</p></di
 <li><a title="exchangelib.fields.EmailAddressField" href="#exchangelib.fields.EmailAddressField">EmailAddressField</a></li>
 <li><a title="exchangelib.fields.IdField" href="#exchangelib.fields.IdField">IdField</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.fields.CharField.is_complex"><code class="name">var <span class="ident">is_complex</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 <h3>Methods</h3>
 <dl>
 <dt id="exchangelib.fields.CharField.clean"><code class="name flex">
@@ -827,8 +797,10 @@ The class bool is a subclass of the class int, and cannot be subclassed.</p></di
 <li><code><b><a title="exchangelib.fields.TextField" href="#exchangelib.fields.TextField">TextField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.TextField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.TextField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.TextField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.TextField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
-<li><code><a title="exchangelib.fields.TextField.value_cls" href="#exchangelib.fields.TextField.value_cls">value_cls</a></code></li>
+<li><code><a title="exchangelib.fields.TextField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -899,8 +871,10 @@ The class bool is a subclass of the class int, and cannot be subclassed.</p></di
 <li><code><b><a title="exchangelib.fields.TextListField" href="#exchangelib.fields.TextListField">TextListField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.TextListField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.TextListField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.TextListField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.TextListField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
-<li><code><a title="exchangelib.fields.TextListField.value_cls" href="#exchangelib.fields.TextField.value_cls">value_cls</a></code></li>
+<li><code><a title="exchangelib.fields.TextListField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1033,8 +1007,10 @@ The class bool is a subclass of the class int, and cannot be subclassed.</p></di
 <li><code><b><a title="exchangelib.fields.CharField" href="#exchangelib.fields.CharField">CharField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.CharField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.CharField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.CharField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.CharField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
-<li><code><a title="exchangelib.fields.CharField.value_cls" href="#exchangelib.fields.TextField.value_cls">value_cls</a></code></li>
+<li><code><a title="exchangelib.fields.CharField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1065,8 +1041,10 @@ The class bool is a subclass of the class int, and cannot be subclassed.</p></di
 <li><code><b><a title="exchangelib.fields.CharField" href="#exchangelib.fields.CharField">CharField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.CharField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.CharField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.CharField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.CharField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
-<li><code><a title="exchangelib.fields.CharField.value_cls" href="#exchangelib.fields.TextField.value_cls">value_cls</a></code></li>
+<li><code><a title="exchangelib.fields.CharField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1102,13 +1080,6 @@ The class bool is a subclass of the class int, and cannot be subclassed.</p></di
 <ul class="hlist">
 <li><a title="exchangelib.fields.DateTimeBackedDateField" href="#exchangelib.fields.DateTimeBackedDateField">DateTimeBackedDateField</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.fields.DateField.value_cls"><code class="name">var <span class="ident">value_cls</span></code></dt>
-<dd>
-<div class="desc"><p>Extends the normal date implementation to satisfy EWS.</p></div>
-</dd>
-</dl>
 <h3>Methods</h3>
 <dl>
 <dt id="exchangelib.fields.DateField.clean"><code class="name flex">
@@ -1133,7 +1104,10 @@ The class bool is a subclass of the class int, and cannot be subclassed.</p></di
 <li><code><b><a title="exchangelib.fields.FieldURIField" href="#exchangelib.fields.FieldURIField">FieldURIField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.FieldURIField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.FieldURIField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.FieldURIField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.FieldURIField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.FieldURIField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1215,8 +1189,10 @@ the recurring item is a task or a calendar item.</p>
 <li><code><b><a title="exchangelib.fields.DateTimeField" href="#exchangelib.fields.DateTimeField">DateTimeField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.DateTimeField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.DateTimeField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.DateTimeField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.DateTimeField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
-<li><code><a title="exchangelib.fields.DateTimeField.value_cls" href="#exchangelib.fields.DateTimeField.value_cls">value_cls</a></code></li>
+<li><code><a title="exchangelib.fields.DateTimeField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1292,8 +1268,10 @@ the recurring item is a task or a calendar item.</p>
 <li><code><b><a title="exchangelib.fields.DateField" href="#exchangelib.fields.DateField">DateField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.DateField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.DateField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.DateField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.DateField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
-<li><code><a title="exchangelib.fields.DateField.value_cls" href="#exchangelib.fields.DateField.value_cls">value_cls</a></code></li>
+<li><code><a title="exchangelib.fields.DateField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1357,13 +1335,6 @@ the recurring item is a task or a calendar item.</p>
 <ul class="hlist">
 <li><a title="exchangelib.fields.DateOrDateTimeField" href="#exchangelib.fields.DateOrDateTimeField">DateOrDateTimeField</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.fields.DateTimeField.value_cls"><code class="name">var <span class="ident">value_cls</span></code></dt>
-<dd>
-<div class="desc"><p>Extends the normal datetime implementation to satisfy EWS.</p></div>
-</dd>
-</dl>
 <h3>Methods</h3>
 <dl>
 <dt id="exchangelib.fields.DateTimeField.clean"><code class="name flex">
@@ -1390,7 +1361,10 @@ the recurring item is a task or a calendar item.</p>
 <li><code><b><a title="exchangelib.fields.FieldURIField" href="#exchangelib.fields.FieldURIField">FieldURIField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.FieldURIField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.FieldURIField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.FieldURIField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.FieldURIField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.FieldURIField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1422,8 +1396,10 @@ the recurring item is a task or a calendar item.</p>
 <li><code><b><a title="exchangelib.fields.IntegerField" href="#exchangelib.fields.IntegerField">IntegerField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.IntegerField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.IntegerField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.IntegerField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.IntegerField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
-<li><code><a title="exchangelib.fields.IntegerField.value_cls" href="#exchangelib.fields.IntegerField.value_cls">value_cls</a></code></li>
+<li><code><a title="exchangelib.fields.IntegerField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1480,23 +1456,6 @@ may additionally be a label for searching, filtering and limiting fields. In tha
 <li><a title="exchangelib.fields.Field" href="#exchangelib.fields.Field">Field</a></li>
 <li><a title="exchangelib.version.SupportedVersionInstanceMixIn" href="version.html#exchangelib.version.SupportedVersionInstanceMixIn">SupportedVersionInstanceMixIn</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.fields.DictionaryField.value_cls"><code class="name">var <span class="ident">value_cls</span></code></dt>
-<dd>
-<div class="desc"><p>dict() -&gt; new empty dictionary
-dict(mapping) -&gt; new dictionary initialized from a mapping object's
-(key, value) pairs
-dict(iterable) -&gt; new dictionary initialized as if via:
-d = {}
-for k, v in iterable:
-d[k] = v
-dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs
-in the keyword argument list.
-For example:
-dict(one=1, two=2)</p></div>
-</dd>
-</dl>
 <h3>Methods</h3>
 <dl>
 <dt id="exchangelib.fields.DictionaryField.clean"><code class="name flex">
@@ -1527,7 +1486,10 @@ dict(one=1, two=2)</p></div>
 <li><code><b><a title="exchangelib.fields.FieldURIField" href="#exchangelib.fields.FieldURIField">FieldURIField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.FieldURIField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.FieldURIField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.FieldURIField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.FieldURIField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.FieldURIField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1606,31 +1568,15 @@ dict(one=1, two=2)</p></div>
 <li><a title="exchangelib.fields.ReferenceItemIdField" href="#exchangelib.fields.ReferenceItemIdField">ReferenceItemIdField</a></li>
 <li><a title="exchangelib.fields.TaskRecurrenceField" href="#exchangelib.fields.TaskRecurrenceField">TaskRecurrenceField</a></li>
 </ul>
-<h3>Instance variables</h3>
-<dl>
-<dt id="exchangelib.fields.EWSElementField.value_cls"><code class="name">prop <span class="ident">value_cls</span></code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def value_cls(self):
-    if isinstance(self._value_cls, str):
-        # Support &#39;value_cls&#39; as string to allow self-referencing classes. The class must be importable from the
-        # top-level module.
-        self._value_cls = getattr(import_module(self.__module__.split(&#34;.&#34;)[0]), self._value_cls)
-    return self._value_cls</code></pre>
-</details>
-<div class="desc"></div>
-</dd>
-</dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.fields.FieldURIField" href="#exchangelib.fields.FieldURIField">FieldURIField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.FieldURIField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.FieldURIField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.FieldURIField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.FieldURIField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.FieldURIField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1672,23 +1618,15 @@ def value_cls(self):
 <li><a title="exchangelib.fields.StringAttributedValueField" href="#exchangelib.fields.StringAttributedValueField">StringAttributedValueField</a></li>
 <li><a title="exchangelib.fields.TransitionListField" href="#exchangelib.fields.TransitionListField">TransitionListField</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.fields.EWSElementListField.is_complex"><code class="name">var <span class="ident">is_complex</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="exchangelib.fields.EWSElementListField.is_list"><code class="name">var <span class="ident">is_list</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.fields.EWSElementField" href="#exchangelib.fields.EWSElementField">EWSElementField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.EWSElementField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.EWSElementField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1722,7 +1660,10 @@ def value_cls(self):
 <li><code><b><a title="exchangelib.fields.EWSElementField" href="#exchangelib.fields.EWSElementField">EWSElementField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.EWSElementField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.EWSElementField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1757,7 +1698,10 @@ def value_cls(self):
 <li><code><b><a title="exchangelib.fields.EWSElementListField" href="#exchangelib.fields.EWSElementListField">EWSElementListField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.EWSElementListField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementListField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementListField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.EWSElementListField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementListField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1788,8 +1732,10 @@ def value_cls(self):
 <li><code><b><a title="exchangelib.fields.CharField" href="#exchangelib.fields.CharField">CharField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.CharField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.CharField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.CharField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.CharField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
-<li><code><a title="exchangelib.fields.CharField.value_cls" href="#exchangelib.fields.TextField.value_cls">value_cls</a></code></li>
+<li><code><a title="exchangelib.fields.CharField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1822,19 +1768,16 @@ def value_cls(self):
 <li><a title="exchangelib.fields.Field" href="#exchangelib.fields.Field">Field</a></li>
 <li><a title="exchangelib.version.SupportedVersionInstanceMixIn" href="version.html#exchangelib.version.SupportedVersionInstanceMixIn">SupportedVersionInstanceMixIn</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.fields.EmailAddressesField.PARENT_ELEMENT_NAME"><code class="name">var <span class="ident">PARENT_ELEMENT_NAME</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.fields.SingleFieldIndexedField" href="#exchangelib.fields.SingleFieldIndexedField">SingleFieldIndexedField</a></b></code>:
 <ul class="hlist">
+<li><code><a title="exchangelib.fields.SingleFieldIndexedField.PARENT_ELEMENT_NAME" href="#exchangelib.fields.IndexedField.PARENT_ELEMENT_NAME">PARENT_ELEMENT_NAME</a></code></li>
 <li><code><a title="exchangelib.fields.SingleFieldIndexedField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.SingleFieldIndexedField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.SingleFieldIndexedField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.SingleFieldIndexedField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.SingleFieldIndexedField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1869,7 +1812,10 @@ def value_cls(self):
 <li><code><b><a title="exchangelib.fields.BaseEmailField" href="#exchangelib.fields.BaseEmailField">BaseEmailField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.BaseEmailField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.BaseEmailField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.BaseEmailField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.BaseEmailField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.BaseEmailField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1903,8 +1849,11 @@ def value_cls(self):
 <li><code><b><a title="exchangelib.fields.SubField" href="#exchangelib.fields.SubField">SubField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.SubField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.SubField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.SubField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
+<li><code><a title="exchangelib.fields.SubField.namespace" href="#exchangelib.fields.SubField.namespace">namespace</a></code></li>
 <li><code><a title="exchangelib.fields.SubField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
-<li><code><a title="exchangelib.fields.SubField.value_cls" href="#exchangelib.fields.SubField.value_cls">value_cls</a></code></li>
+<li><code><a title="exchangelib.fields.SubField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1942,8 +1891,10 @@ def value_cls(self):
 <li><code><b><a title="exchangelib.fields.EnumField" href="#exchangelib.fields.EnumField">EnumField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.EnumField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EnumField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.EnumField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.EnumField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
-<li><code><a title="exchangelib.fields.EnumField.value_cls" href="#exchangelib.fields.IntegerField.value_cls">value_cls</a></code></li>
+<li><code><a title="exchangelib.fields.EnumField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -2081,8 +2032,10 @@ stored internally as integers but output in XML as strings.</p></div>
 <li><code><b><a title="exchangelib.fields.IntegerField" href="#exchangelib.fields.IntegerField">IntegerField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.IntegerField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.IntegerField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.IntegerField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.IntegerField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
-<li><code><a title="exchangelib.fields.IntegerField.value_cls" href="#exchangelib.fields.IntegerField.value_cls">value_cls</a></code></li>
+<li><code><a title="exchangelib.fields.IntegerField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -2114,20 +2067,15 @@ stored internally as integers but output in XML as strings.</p></div>
 <ul class="hlist">
 <li><a title="exchangelib.fields.WeekdaysField" href="#exchangelib.fields.WeekdaysField">WeekdaysField</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.fields.EnumListField.is_list"><code class="name">var <span class="ident">is_list</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.fields.EnumField" href="#exchangelib.fields.EnumField">EnumField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.EnumField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EnumField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.EnumField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.EnumField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
-<li><code><a title="exchangelib.fields.EnumField.value_cls" href="#exchangelib.fields.IntegerField.value_cls">value_cls</a></code></li>
+<li><code><a title="exchangelib.fields.EnumField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -2202,13 +2150,6 @@ stored internally as integers but output in XML as strings.</p></div>
 <ul class="hlist">
 <li><a title="exchangelib.fields.ExtendedPropertyListField" href="#exchangelib.fields.ExtendedPropertyListField">ExtendedPropertyListField</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.fields.ExtendedPropertyField.is_complex"><code class="name">var <span class="ident">is_complex</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 <h3>Methods</h3>
 <dl>
 <dt id="exchangelib.fields.ExtendedPropertyField.clean"><code class="name flex">
@@ -2263,7 +2204,10 @@ stored internally as integers but output in XML as strings.</p></div>
 <li><code><b><a title="exchangelib.fields.Field" href="#exchangelib.fields.Field">Field</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.Field.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.Field.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.Field.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.Field.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.Field.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -2287,19 +2231,15 @@ stored internally as integers but output in XML as strings.</p></div>
 <li><a title="exchangelib.fields.Field" href="#exchangelib.fields.Field">Field</a></li>
 <li><a title="exchangelib.version.SupportedVersionInstanceMixIn" href="version.html#exchangelib.version.SupportedVersionInstanceMixIn">SupportedVersionInstanceMixIn</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.fields.ExtendedPropertyListField.is_list"><code class="name">var <span class="ident">is_list</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.fields.ExtendedPropertyField" href="#exchangelib.fields.ExtendedPropertyField">ExtendedPropertyField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.ExtendedPropertyField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.ExtendedPropertyField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.ExtendedPropertyField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.ExtendedPropertyField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.ExtendedPropertyField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -2414,15 +2354,15 @@ stored internally as integers but output in XML as strings.</p></div>
 <dl>
 <dt id="exchangelib.fields.Field.is_complex"><code class="name">var <span class="ident">is_complex</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.fields.Field.is_list"><code class="name">var <span class="ident">is_list</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.fields.Field.value_cls"><code class="name">var <span class="ident">value_cls</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -2920,7 +2860,10 @@ may additionally be a label for searching, filtering and limiting fields. In tha
 <li><code><b><a title="exchangelib.fields.Field" href="#exchangelib.fields.Field">Field</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.Field.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.Field.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.Field.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.Field.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.Field.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -2962,8 +2905,10 @@ or exception to apply.</p></div>
 <li><code><b><a title="exchangelib.fields.ChoiceField" href="#exchangelib.fields.ChoiceField">ChoiceField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.ChoiceField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.ChoiceField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.ChoiceField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.ChoiceField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
-<li><code><a title="exchangelib.fields.ChoiceField.value_cls" href="#exchangelib.fields.TextField.value_cls">value_cls</a></code></li>
+<li><code><a title="exchangelib.fields.ChoiceField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -3029,7 +2974,10 @@ or exception to apply.</p></div>
 <li><code><b><a title="exchangelib.fields.EWSElementField" href="#exchangelib.fields.EWSElementField">EWSElementField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.EWSElementField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.EWSElementField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -3065,8 +3013,10 @@ or exception to apply.</p></div>
 <li><code><b><a title="exchangelib.fields.ChoiceField" href="#exchangelib.fields.ChoiceField">ChoiceField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.ChoiceField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.ChoiceField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.ChoiceField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.ChoiceField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
-<li><code><a title="exchangelib.fields.ChoiceField.value_cls" href="#exchangelib.fields.TextField.value_cls">value_cls</a></code></li>
+<li><code><a title="exchangelib.fields.ChoiceField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -3134,19 +3084,15 @@ or exception to apply.</p></div>
 <li><a title="exchangelib.fields.Field" href="#exchangelib.fields.Field">Field</a></li>
 <li><a title="exchangelib.version.SupportedVersionInstanceMixIn" href="version.html#exchangelib.version.SupportedVersionInstanceMixIn">SupportedVersionInstanceMixIn</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.fields.GenericEventListField.is_list"><code class="name">var <span class="ident">is_list</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.fields.EWSElementField" href="#exchangelib.fields.EWSElementField">EWSElementField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.EWSElementField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.EWSElementField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -3179,7 +3125,10 @@ or exception to apply.</p></div>
 <li><code><b><a title="exchangelib.fields.EWSElementField" href="#exchangelib.fields.EWSElementField">EWSElementField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.EWSElementField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.EWSElementField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -3221,8 +3170,10 @@ but we can assume 512 bytes in practice. See
 <li><code><b><a title="exchangelib.fields.CharField" href="#exchangelib.fields.CharField">CharField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.CharField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.CharField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.CharField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.CharField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
-<li><code><a title="exchangelib.fields.CharField.value_cls" href="#exchangelib.fields.TextField.value_cls">value_cls</a></code></li>
+<li><code><a title="exchangelib.fields.CharField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -3255,19 +3206,16 @@ but we can assume 512 bytes in practice. See
 <li><a title="exchangelib.fields.Field" href="#exchangelib.fields.Field">Field</a></li>
 <li><a title="exchangelib.version.SupportedVersionInstanceMixIn" href="version.html#exchangelib.version.SupportedVersionInstanceMixIn">SupportedVersionInstanceMixIn</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.fields.ImAddressField.PARENT_ELEMENT_NAME"><code class="name">var <span class="ident">PARENT_ELEMENT_NAME</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.fields.SingleFieldIndexedField" href="#exchangelib.fields.SingleFieldIndexedField">SingleFieldIndexedField</a></b></code>:
 <ul class="hlist">
+<li><code><a title="exchangelib.fields.SingleFieldIndexedField.PARENT_ELEMENT_NAME" href="#exchangelib.fields.IndexedField.PARENT_ELEMENT_NAME">PARENT_ELEMENT_NAME</a></code></li>
 <li><code><a title="exchangelib.fields.SingleFieldIndexedField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.SingleFieldIndexedField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.SingleFieldIndexedField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.SingleFieldIndexedField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.SingleFieldIndexedField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -3309,8 +3257,10 @@ in the current folder.</p></div>
 <li><code><b><a title="exchangelib.fields.ChoiceField" href="#exchangelib.fields.ChoiceField">ChoiceField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.ChoiceField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.ChoiceField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.ChoiceField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.ChoiceField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
-<li><code><a title="exchangelib.fields.ChoiceField.value_cls" href="#exchangelib.fields.TextField.value_cls">value_cls</a></code></li>
+<li><code><a title="exchangelib.fields.ChoiceField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -3366,15 +3316,7 @@ in the current folder.</p></div>
 <dl>
 <dt id="exchangelib.fields.IndexedField.PARENT_ELEMENT_NAME"><code class="name">var <span class="ident">PARENT_ELEMENT_NAME</span></code></dt>
 <dd>
-<div class="desc"></div>
-</dd>
-<dt id="exchangelib.fields.IndexedField.is_complex"><code class="name">var <span class="ident">is_complex</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="exchangelib.fields.IndexedField.is_list"><code class="name">var <span class="ident">is_list</span></code></dt>
-<dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -3398,7 +3340,10 @@ in the current folder.</p></div>
 <li><code><b><a title="exchangelib.fields.EWSElementField" href="#exchangelib.fields.EWSElementField">EWSElementField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.EWSElementField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.EWSElementField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -3451,30 +3396,6 @@ in the current folder.</p></div>
 <li><a title="exchangelib.fields.DecimalField" href="#exchangelib.fields.DecimalField">DecimalField</a></li>
 <li><a title="exchangelib.fields.EnumField" href="#exchangelib.fields.EnumField">EnumField</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.fields.IntegerField.value_cls"><code class="name">var <span class="ident">value_cls</span></code></dt>
-<dd>
-<div class="desc"><p>int([x]) -&gt; integer
-int(x, base=10) -&gt; integer</p>
-<p>Convert a number or string to an integer, or return 0 if no arguments
-are given.
-If x is a number, return x.<strong>int</strong>().
-For floating point
-numbers, this truncates towards zero.</p>
-<p>If x is not a number or if base is given, then x must be a string,
-bytes, or bytearray instance representing an integer literal in the
-given base.
-The literal can be preceded by '+' or '-' and be surrounded
-by whitespace.
-The base defaults to 10.
-Valid bases are 0 and 2-36.
-Base 0 means to interpret the base from the string as an integer literal.</p>
-<pre><code class="language-python-repl">&gt;&gt;&gt; int('0b100', base=0)
-4
-</code></pre></div>
-</dd>
-</dl>
 <h3>Methods</h3>
 <dl>
 <dt id="exchangelib.fields.IntegerField.clean"><code class="name flex">
@@ -3503,7 +3424,10 @@ Base 0 means to interpret the base from the string as an integer literal.</p>
 <li><code><b><a title="exchangelib.fields.FieldURIField" href="#exchangelib.fields.FieldURIField">FieldURIField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.FieldURIField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.FieldURIField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.FieldURIField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.FieldURIField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.FieldURIField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -3606,29 +3530,15 @@ may additionally be a label for searching, filtering and limiting fields. In tha
 <li><a title="exchangelib.fields.Field" href="#exchangelib.fields.Field">Field</a></li>
 <li><a title="exchangelib.version.SupportedVersionInstanceMixIn" href="version.html#exchangelib.version.SupportedVersionInstanceMixIn">SupportedVersionInstanceMixIn</a></li>
 </ul>
-<h3>Instance variables</h3>
-<dl>
-<dt id="exchangelib.fields.ItemField.value_cls"><code class="name">prop <span class="ident">value_cls</span></code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def value_cls(self):
-    from .items import Item
-
-    return Item</code></pre>
-</details>
-<div class="desc"></div>
-</dd>
-</dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.fields.FieldURIField" href="#exchangelib.fields.FieldURIField">FieldURIField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.FieldURIField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.FieldURIField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.FieldURIField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.FieldURIField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.FieldURIField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -3667,8 +3577,10 @@ def value_cls(self):
 <li><code><b><a title="exchangelib.fields.ChoiceField" href="#exchangelib.fields.ChoiceField">ChoiceField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.ChoiceField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.ChoiceField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.ChoiceField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.ChoiceField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
-<li><code><a title="exchangelib.fields.ChoiceField.value_cls" href="#exchangelib.fields.TextField.value_cls">value_cls</a></code></li>
+<li><code><a title="exchangelib.fields.ChoiceField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -3703,7 +3615,10 @@ def value_cls(self):
 <li><code><b><a title="exchangelib.fields.BaseEmailField" href="#exchangelib.fields.BaseEmailField">BaseEmailField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.BaseEmailField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.BaseEmailField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.BaseEmailField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.BaseEmailField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.BaseEmailField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -3761,7 +3676,10 @@ def value_cls(self):
 <li><code><b><a title="exchangelib.fields.EWSElementListField" href="#exchangelib.fields.EWSElementListField">EWSElementListField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.EWSElementListField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementListField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementListField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.EWSElementListField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementListField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -3823,7 +3741,10 @@ def value_cls(self):
 <li><code><b><a title="exchangelib.fields.EWSElementListField" href="#exchangelib.fields.EWSElementListField">EWSElementListField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.EWSElementListField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementListField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementListField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.EWSElementListField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementListField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -3869,7 +3790,7 @@ def value_cls(self):
 <dl>
 <dt id="exchangelib.fields.MessageField.INNER_ELEMENT_NAME"><code class="name">var <span class="ident">INNER_ELEMENT_NAME</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -3877,8 +3798,10 @@ def value_cls(self):
 <li><code><b><a title="exchangelib.fields.TextField" href="#exchangelib.fields.TextField">TextField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.TextField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.TextField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.TextField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.TextField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
-<li><code><a title="exchangelib.fields.TextField.value_cls" href="#exchangelib.fields.TextField.value_cls">value_cls</a></code></li>
+<li><code><a title="exchangelib.fields.TextField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -3913,7 +3836,10 @@ def value_cls(self):
 <li><code><b><a title="exchangelib.fields.EWSElementListField" href="#exchangelib.fields.EWSElementListField">EWSElementListField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.EWSElementListField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementListField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementListField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.EWSElementListField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementListField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -3948,8 +3874,10 @@ because the decoded data could be in some other encoding, specified in the "Cont
 <li><code><b><a title="exchangelib.fields.Base64Field" href="#exchangelib.fields.Base64Field">Base64Field</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.Base64Field.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.Base64Field.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.Base64Field.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.Base64Field.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
-<li><code><a title="exchangelib.fields.Base64Field.value_cls" href="#exchangelib.fields.Base64Field.value_cls">value_cls</a></code></li>
+<li><code><a title="exchangelib.fields.Base64Field.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -4052,8 +3980,11 @@ because the decoded data could be in some other encoding, specified in the "Cont
 <li><code><b><a title="exchangelib.fields.SubField" href="#exchangelib.fields.SubField">SubField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.SubField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.SubField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.SubField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
+<li><code><a title="exchangelib.fields.SubField.namespace" href="#exchangelib.fields.SubField.namespace">namespace</a></code></li>
 <li><code><a title="exchangelib.fields.SubField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
-<li><code><a title="exchangelib.fields.SubField.value_cls" href="#exchangelib.fields.SubField.value_cls">value_cls</a></code></li>
+<li><code><a title="exchangelib.fields.SubField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -4082,19 +4013,15 @@ because the decoded data could be in some other encoding, specified in the "Cont
 <ul class="hlist">
 <li><a title="exchangelib.fields.OccurrenceListField" href="#exchangelib.fields.OccurrenceListField">OccurrenceListField</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.fields.OccurrenceField.is_complex"><code class="name">var <span class="ident">is_complex</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.fields.EWSElementField" href="#exchangelib.fields.EWSElementField">EWSElementField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.EWSElementField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.EWSElementField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -4120,19 +4047,15 @@ because the decoded data could be in some other encoding, specified in the "Cont
 <li><a title="exchangelib.fields.Field" href="#exchangelib.fields.Field">Field</a></li>
 <li><a title="exchangelib.version.SupportedVersionInstanceMixIn" href="version.html#exchangelib.version.SupportedVersionInstanceMixIn">SupportedVersionInstanceMixIn</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.fields.OccurrenceListField.is_list"><code class="name">var <span class="ident">is_list</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.fields.OccurrenceField" href="#exchangelib.fields.OccurrenceField">OccurrenceField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.OccurrenceField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.OccurrenceField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.OccurrenceField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.OccurrenceField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.OccurrenceField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -4166,19 +4089,15 @@ because the decoded data could be in some other encoding, specified in the "Cont
 <li><a title="exchangelib.fields.Field" href="#exchangelib.fields.Field">Field</a></li>
 <li><a title="exchangelib.version.SupportedVersionInstanceMixIn" href="version.html#exchangelib.version.SupportedVersionInstanceMixIn">SupportedVersionInstanceMixIn</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.fields.PermissionSetField.is_complex"><code class="name">var <span class="ident">is_complex</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.fields.EWSElementField" href="#exchangelib.fields.EWSElementField">EWSElementField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.EWSElementField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.EWSElementField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -4209,19 +4128,15 @@ because the decoded data could be in some other encoding, specified in the "Cont
 <li><a title="exchangelib.fields.Field" href="#exchangelib.fields.Field">Field</a></li>
 <li><a title="exchangelib.version.SupportedVersionInstanceMixIn" href="version.html#exchangelib.version.SupportedVersionInstanceMixIn">SupportedVersionInstanceMixIn</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.fields.PersonaPhoneNumberField.is_complex"><code class="name">var <span class="ident">is_complex</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.fields.EWSElementField" href="#exchangelib.fields.EWSElementField">EWSElementField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.EWSElementField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.EWSElementField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -4256,7 +4171,10 @@ because the decoded data could be in some other encoding, specified in the "Cont
 <li><code><b><a title="exchangelib.fields.EWSElementListField" href="#exchangelib.fields.EWSElementListField">EWSElementListField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.EWSElementListField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementListField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementListField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.EWSElementListField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementListField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -4289,19 +4207,16 @@ because the decoded data could be in some other encoding, specified in the "Cont
 <li><a title="exchangelib.fields.Field" href="#exchangelib.fields.Field">Field</a></li>
 <li><a title="exchangelib.version.SupportedVersionInstanceMixIn" href="version.html#exchangelib.version.SupportedVersionInstanceMixIn">SupportedVersionInstanceMixIn</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.fields.PhoneNumberField.PARENT_ELEMENT_NAME"><code class="name">var <span class="ident">PARENT_ELEMENT_NAME</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.fields.SingleFieldIndexedField" href="#exchangelib.fields.SingleFieldIndexedField">SingleFieldIndexedField</a></b></code>:
 <ul class="hlist">
+<li><code><a title="exchangelib.fields.SingleFieldIndexedField.PARENT_ELEMENT_NAME" href="#exchangelib.fields.IndexedField.PARENT_ELEMENT_NAME">PARENT_ELEMENT_NAME</a></code></li>
 <li><code><a title="exchangelib.fields.SingleFieldIndexedField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.SingleFieldIndexedField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.SingleFieldIndexedField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.SingleFieldIndexedField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.SingleFieldIndexedField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -4336,27 +4251,16 @@ because the decoded data could be in some other encoding, specified in the "Cont
 <li><a title="exchangelib.fields.Field" href="#exchangelib.fields.Field">Field</a></li>
 <li><a title="exchangelib.version.SupportedVersionInstanceMixIn" href="version.html#exchangelib.version.SupportedVersionInstanceMixIn">SupportedVersionInstanceMixIn</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.fields.PhysicalAddressField.PARENT_ELEMENT_NAME"><code class="name">var <span class="ident">PARENT_ELEMENT_NAME</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="exchangelib.fields.PhysicalAddressField.is_complex"><code class="name">var <span class="ident">is_complex</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="exchangelib.fields.PhysicalAddressField.is_list"><code class="name">var <span class="ident">is_list</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.fields.IndexedField" href="#exchangelib.fields.IndexedField">IndexedField</a></b></code>:
 <ul class="hlist">
+<li><code><a title="exchangelib.fields.IndexedField.PARENT_ELEMENT_NAME" href="#exchangelib.fields.IndexedField.PARENT_ELEMENT_NAME">PARENT_ELEMENT_NAME</a></code></li>
 <li><code><a title="exchangelib.fields.IndexedField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.IndexedField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.IndexedField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.IndexedField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.IndexedField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -4391,7 +4295,10 @@ because the decoded data could be in some other encoding, specified in the "Cont
 <li><code><b><a title="exchangelib.fields.EWSElementListField" href="#exchangelib.fields.EWSElementListField">EWSElementListField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.EWSElementListField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementListField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementListField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.EWSElementListField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementListField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -4426,7 +4333,10 @@ because the decoded data could be in some other encoding, specified in the "Cont
 <li><code><b><a title="exchangelib.fields.BaseEmailField" href="#exchangelib.fields.BaseEmailField">BaseEmailField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.BaseEmailField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.BaseEmailField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.BaseEmailField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.BaseEmailField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.BaseEmailField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -4460,19 +4370,15 @@ because the decoded data could be in some other encoding, specified in the "Cont
 <li><a title="exchangelib.fields.Field" href="#exchangelib.fields.Field">Field</a></li>
 <li><a title="exchangelib.version.SupportedVersionInstanceMixIn" href="version.html#exchangelib.version.SupportedVersionInstanceMixIn">SupportedVersionInstanceMixIn</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.fields.RecurrenceField.is_complex"><code class="name">var <span class="ident">is_complex</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.fields.EWSElementField" href="#exchangelib.fields.EWSElementField">EWSElementField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.EWSElementField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.EWSElementField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -4506,19 +4412,15 @@ because the decoded data could be in some other encoding, specified in the "Cont
 <li><a title="exchangelib.fields.Field" href="#exchangelib.fields.Field">Field</a></li>
 <li><a title="exchangelib.version.SupportedVersionInstanceMixIn" href="version.html#exchangelib.version.SupportedVersionInstanceMixIn">SupportedVersionInstanceMixIn</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.fields.ReferenceItemIdField.is_complex"><code class="name">var <span class="ident">is_complex</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.fields.EWSElementField" href="#exchangelib.fields.EWSElementField">EWSElementField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.EWSElementField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.EWSElementField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -4553,8 +4455,10 @@ because the decoded data could be in some other encoding, specified in the "Cont
 <li><code><b><a title="exchangelib.fields.ChoiceField" href="#exchangelib.fields.ChoiceField">ChoiceField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.ChoiceField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.ChoiceField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.ChoiceField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.ChoiceField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
-<li><code><a title="exchangelib.fields.ChoiceField.value_cls" href="#exchangelib.fields.TextField.value_cls">value_cls</a></code></li>
+<li><code><a title="exchangelib.fields.ChoiceField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -4590,8 +4494,10 @@ because the decoded data could be in some other encoding, specified in the "Cont
 <li><code><b><a title="exchangelib.fields.ChoiceField" href="#exchangelib.fields.ChoiceField">ChoiceField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.ChoiceField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.ChoiceField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.ChoiceField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.ChoiceField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
-<li><code><a title="exchangelib.fields.ChoiceField.value_cls" href="#exchangelib.fields.TextField.value_cls">value_cls</a></code></li>
+<li><code><a title="exchangelib.fields.ChoiceField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -4678,8 +4584,12 @@ because the decoded data could be in some other encoding, specified in the "Cont
 <ul class="hlist">
 <li><code><b><a title="exchangelib.fields.IndexedField" href="#exchangelib.fields.IndexedField">IndexedField</a></b></code>:
 <ul class="hlist">
+<li><code><a title="exchangelib.fields.IndexedField.PARENT_ELEMENT_NAME" href="#exchangelib.fields.IndexedField.PARENT_ELEMENT_NAME">PARENT_ELEMENT_NAME</a></code></li>
 <li><code><a title="exchangelib.fields.IndexedField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.IndexedField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.IndexedField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.IndexedField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.IndexedField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -4714,7 +4624,10 @@ because the decoded data could be in some other encoding, specified in the "Cont
 <li><code><b><a title="exchangelib.fields.EWSElementListField" href="#exchangelib.fields.EWSElementListField">EWSElementListField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.EWSElementListField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementListField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementListField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.EWSElementListField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementListField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -4770,19 +4683,7 @@ because the decoded data could be in some other encoding, specified in the "Cont
 <dl>
 <dt id="exchangelib.fields.SubField.namespace"><code class="name">var <span class="ident">namespace</span></code></dt>
 <dd>
-<div class="desc"></div>
-</dd>
-<dt id="exchangelib.fields.SubField.value_cls"><code class="name">var <span class="ident">value_cls</span></code></dt>
-<dd>
-<div class="desc"><p>str(object='') -&gt; str
-str(bytes_or_buffer[, encoding[, errors]]) -&gt; str</p>
-<p>Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.<strong>str</strong>() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.</p></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 </dl>
 <h3>Static methods</h3>
@@ -4828,7 +4729,10 @@ def field_uri_xml(field_uri, label):
 <li><code><b><a title="exchangelib.fields.Field" href="#exchangelib.fields.Field">Field</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.Field.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.Field.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.Field.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.Field.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.Field.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -4862,19 +4766,15 @@ def field_uri_xml(field_uri, label):
 <li><a title="exchangelib.fields.Field" href="#exchangelib.fields.Field">Field</a></li>
 <li><a title="exchangelib.version.SupportedVersionInstanceMixIn" href="version.html#exchangelib.version.SupportedVersionInstanceMixIn">SupportedVersionInstanceMixIn</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.fields.TaskRecurrenceField.is_complex"><code class="name">var <span class="ident">is_complex</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.fields.EWSElementField" href="#exchangelib.fields.EWSElementField">EWSElementField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.EWSElementField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.EWSElementField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -4909,31 +4809,15 @@ def field_uri_xml(field_uri, label):
 <li><a title="exchangelib.fields.TextListField" href="#exchangelib.fields.TextListField">TextListField</a></li>
 <li><a title="exchangelib.fields.URIField" href="#exchangelib.fields.URIField">URIField</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.fields.TextField.is_complex"><code class="name">var <span class="ident">is_complex</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="exchangelib.fields.TextField.value_cls"><code class="name">var <span class="ident">value_cls</span></code></dt>
-<dd>
-<div class="desc"><p>str(object='') -&gt; str
-str(bytes_or_buffer[, encoding[, errors]]) -&gt; str</p>
-<p>Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.<strong>str</strong>() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.</p></div>
-</dd>
-</dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.fields.FieldURIField" href="#exchangelib.fields.FieldURIField">FieldURIField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.FieldURIField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.FieldURIField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.FieldURIField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.FieldURIField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.FieldURIField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -4986,13 +4870,6 @@ errors defaults to 'strict'.</p></div>
 <ul class="hlist">
 <li><a title="exchangelib.fields.CharListField" href="#exchangelib.fields.CharListField">CharListField</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.fields.TextListField.is_list"><code class="name">var <span class="ident">is_list</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 <h3>Methods</h3>
 <dl>
 <dt id="exchangelib.fields.TextListField.list_elem_request_tag"><code class="name flex">
@@ -5027,8 +4904,10 @@ errors defaults to 'strict'.</p></div>
 <li><code><b><a title="exchangelib.fields.TextField" href="#exchangelib.fields.TextField">TextField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.TextField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.TextField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.TextField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.TextField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
-<li><code><a title="exchangelib.fields.TextField.value_cls" href="#exchangelib.fields.TextField.value_cls">value_cls</a></code></li>
+<li><code><a title="exchangelib.fields.TextField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -5066,16 +4945,6 @@ errors defaults to 'strict'.</p></div>
 <li><a title="exchangelib.fields.Field" href="#exchangelib.fields.Field">Field</a></li>
 <li><a title="exchangelib.version.SupportedVersionInstanceMixIn" href="version.html#exchangelib.version.SupportedVersionInstanceMixIn">SupportedVersionInstanceMixIn</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.fields.TimeDeltaField.value_cls"><code class="name">var <span class="ident">value_cls</span></code></dt>
-<dd>
-<div class="desc"><p>Difference between two datetime values.</p>
-<p>timedelta(days=0, seconds=0, microseconds=0, milliseconds=0, minutes=0, hours=0, weeks=0)</p>
-<p>All arguments are optional and default to 0.
-Arguments may be integers or floats, and may be positive or negative.</p></div>
-</dd>
-</dl>
 <h3>Methods</h3>
 <dl>
 <dt id="exchangelib.fields.TimeDeltaField.clean"><code class="name flex">
@@ -5101,7 +4970,10 @@ Arguments may be integers or floats, and may be positive or negative.</p></div>
 <li><code><b><a title="exchangelib.fields.FieldURIField" href="#exchangelib.fields.FieldURIField">FieldURIField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.FieldURIField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.FieldURIField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.FieldURIField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.FieldURIField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.FieldURIField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -5138,21 +5010,15 @@ Arguments may be integers or floats, and may be positive or negative.</p></div>
 <li><a title="exchangelib.fields.Field" href="#exchangelib.fields.Field">Field</a></li>
 <li><a title="exchangelib.version.SupportedVersionInstanceMixIn" href="version.html#exchangelib.version.SupportedVersionInstanceMixIn">SupportedVersionInstanceMixIn</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.fields.TimeField.value_cls"><code class="name">var <span class="ident">value_cls</span></code></dt>
-<dd>
-<div class="desc"><p>time([hour[, minute[, second[, microsecond[, tzinfo]]]]]) &ndash;&gt; a time object</p>
-<p>All arguments are optional. tzinfo may be None, or an instance of
-a tzinfo subclass. The remaining arguments may be ints.</p></div>
-</dd>
-</dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="exchangelib.fields.FieldURIField" href="#exchangelib.fields.FieldURIField">FieldURIField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.FieldURIField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.FieldURIField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.FieldURIField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.FieldURIField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.FieldURIField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -5212,14 +5078,6 @@ MS_TIMEZONE_TO_IANA_MAP[{tz_id!r}] = &#34;Some_Region/Some_Location&#34;
 <li><a title="exchangelib.fields.Field" href="#exchangelib.fields.Field">Field</a></li>
 <li><a title="exchangelib.version.SupportedVersionInstanceMixIn" href="version.html#exchangelib.version.SupportedVersionInstanceMixIn">SupportedVersionInstanceMixIn</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.fields.TimeZoneField.value_cls"><code class="name">var <span class="ident">value_cls</span></code></dt>
-<dd>
-<div class="desc"><p>Represents a time zone as expected by the EWS TimezoneContext / TimezoneDefinition XML element, and returned by
-services.GetServerTimeZones.</p></div>
-</dd>
-</dl>
 <h3>Methods</h3>
 <dl>
 <dt id="exchangelib.fields.TimeZoneField.clean"><code class="name flex">
@@ -5244,7 +5102,10 @@ services.GetServerTimeZones.</p></div>
 <li><code><b><a title="exchangelib.fields.FieldURIField" href="#exchangelib.fields.FieldURIField">FieldURIField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.FieldURIField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.FieldURIField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.FieldURIField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.FieldURIField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.FieldURIField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -5287,7 +5148,10 @@ services.GetServerTimeZones.</p></div>
 <li><code><b><a title="exchangelib.fields.EWSElementListField" href="#exchangelib.fields.EWSElementListField">EWSElementListField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.EWSElementListField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementListField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementListField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.EWSElementListField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EWSElementListField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -5395,11 +5259,11 @@ services.GetServerTimeZones.</p></div>
 <dl>
 <dt id="exchangelib.fields.TypeValueField.TYPES_MAP"><code class="name">var <span class="ident">TYPES_MAP</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 <dt id="exchangelib.fields.TypeValueField.TYPES_MAP_REVERSED"><code class="name">var <span class="ident">TYPES_MAP_REVERSED</span></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
 </dl>
 <h3>Static methods</h3>
@@ -5442,7 +5306,10 @@ services.GetServerTimeZones.</p></div>
 <li><code><b><a title="exchangelib.fields.FieldURIField" href="#exchangelib.fields.FieldURIField">FieldURIField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.FieldURIField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.FieldURIField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.FieldURIField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.FieldURIField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
+<li><code><a title="exchangelib.fields.FieldURIField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -5475,8 +5342,10 @@ If we want a URI validator, see <a href="https://stackoverflow.com/questions/144
 <li><code><b><a title="exchangelib.fields.TextField" href="#exchangelib.fields.TextField">TextField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.TextField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.TextField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.TextField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.TextField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
-<li><code><a title="exchangelib.fields.TextField.value_cls" href="#exchangelib.fields.TextField.value_cls">value_cls</a></code></li>
+<li><code><a title="exchangelib.fields.TextField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -5525,8 +5394,10 @@ If we want a URI validator, see <a href="https://stackoverflow.com/questions/144
 <li><code><b><a title="exchangelib.fields.CharListField" href="#exchangelib.fields.CharListField">CharListField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.CharListField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.CharListField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.CharListField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.CharListField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
-<li><code><a title="exchangelib.fields.CharListField.value_cls" href="#exchangelib.fields.TextField.value_cls">value_cls</a></code></li>
+<li><code><a title="exchangelib.fields.CharListField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -5581,8 +5452,10 @@ If we want a URI validator, see <a href="https://stackoverflow.com/questions/144
 <li><code><b><a title="exchangelib.fields.EnumListField" href="#exchangelib.fields.EnumListField">EnumListField</a></b></code>:
 <ul class="hlist">
 <li><code><a title="exchangelib.fields.EnumListField.from_xml" href="#exchangelib.fields.Field.from_xml">from_xml</a></code></li>
+<li><code><a title="exchangelib.fields.EnumListField.is_complex" href="#exchangelib.fields.Field.is_complex">is_complex</a></code></li>
+<li><code><a title="exchangelib.fields.EnumListField.is_list" href="#exchangelib.fields.Field.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.EnumListField.to_xml" href="#exchangelib.fields.Field.to_xml">to_xml</a></code></li>
-<li><code><a title="exchangelib.fields.EnumListField.value_cls" href="#exchangelib.fields.IntegerField.value_cls">value_cls</a></code></li>
+<li><code><a title="exchangelib.fields.EnumListField.value_cls" href="#exchangelib.fields.Field.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 </ul>
@@ -5626,9 +5499,6 @@ If we want a URI validator, see <a href="https://stackoverflow.com/questions/144
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.AssociatedCalendarItemIdField" href="#exchangelib.fields.AssociatedCalendarItemIdField">AssociatedCalendarItemIdField</a></code></h4>
-<ul class="">
-<li><code><a title="exchangelib.fields.AssociatedCalendarItemIdField.is_complex" href="#exchangelib.fields.AssociatedCalendarItemIdField.is_complex">is_complex</a></code></li>
-</ul>
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.AttachmentField" href="#exchangelib.fields.AttachmentField">AttachmentField</a></code></h4>
@@ -5641,23 +5511,15 @@ If we want a URI validator, see <a href="https://stackoverflow.com/questions/144
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.Base64Field" href="#exchangelib.fields.Base64Field">Base64Field</a></code></h4>
-<ul class="">
-<li><code><a title="exchangelib.fields.Base64Field.is_complex" href="#exchangelib.fields.Base64Field.is_complex">is_complex</a></code></li>
-<li><code><a title="exchangelib.fields.Base64Field.value_cls" href="#exchangelib.fields.Base64Field.value_cls">value_cls</a></code></li>
-</ul>
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.BaseEmailField" href="#exchangelib.fields.BaseEmailField">BaseEmailField</a></code></h4>
 <ul class="">
 <li><code><a title="exchangelib.fields.BaseEmailField.clean" href="#exchangelib.fields.BaseEmailField.clean">clean</a></code></li>
-<li><code><a title="exchangelib.fields.BaseEmailField.is_complex" href="#exchangelib.fields.BaseEmailField.is_complex">is_complex</a></code></li>
 </ul>
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.BodyContentAttributedValueField" href="#exchangelib.fields.BodyContentAttributedValueField">BodyContentAttributedValueField</a></code></h4>
-<ul class="">
-<li><code><a title="exchangelib.fields.BodyContentAttributedValueField.is_complex" href="#exchangelib.fields.BodyContentAttributedValueField.is_complex">is_complex</a></code></li>
-</ul>
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.BodyField" href="#exchangelib.fields.BodyField">BodyField</a></code></h4>
@@ -5667,15 +5529,11 @@ If we want a URI validator, see <a href="https://stackoverflow.com/questions/144
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.BooleanField" href="#exchangelib.fields.BooleanField">BooleanField</a></code></h4>
-<ul class="">
-<li><code><a title="exchangelib.fields.BooleanField.value_cls" href="#exchangelib.fields.BooleanField.value_cls">value_cls</a></code></li>
-</ul>
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.CharField" href="#exchangelib.fields.CharField">CharField</a></code></h4>
 <ul class="">
 <li><code><a title="exchangelib.fields.CharField.clean" href="#exchangelib.fields.CharField.clean">clean</a></code></li>
-<li><code><a title="exchangelib.fields.CharField.is_complex" href="#exchangelib.fields.CharField.is_complex">is_complex</a></code></li>
 </ul>
 </li>
 <li>
@@ -5701,7 +5559,6 @@ If we want a URI validator, see <a href="https://stackoverflow.com/questions/144
 <h4><code><a title="exchangelib.fields.DateField" href="#exchangelib.fields.DateField">DateField</a></code></h4>
 <ul class="">
 <li><code><a title="exchangelib.fields.DateField.clean" href="#exchangelib.fields.DateField.clean">clean</a></code></li>
-<li><code><a title="exchangelib.fields.DateField.value_cls" href="#exchangelib.fields.DateField.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 <li>
@@ -5720,7 +5577,6 @@ If we want a URI validator, see <a href="https://stackoverflow.com/questions/144
 <h4><code><a title="exchangelib.fields.DateTimeField" href="#exchangelib.fields.DateTimeField">DateTimeField</a></code></h4>
 <ul class="">
 <li><code><a title="exchangelib.fields.DateTimeField.clean" href="#exchangelib.fields.DateTimeField.clean">clean</a></code></li>
-<li><code><a title="exchangelib.fields.DateTimeField.value_cls" href="#exchangelib.fields.DateTimeField.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 <li>
@@ -5730,21 +5586,13 @@ If we want a URI validator, see <a href="https://stackoverflow.com/questions/144
 <h4><code><a title="exchangelib.fields.DictionaryField" href="#exchangelib.fields.DictionaryField">DictionaryField</a></code></h4>
 <ul class="">
 <li><code><a title="exchangelib.fields.DictionaryField.clean" href="#exchangelib.fields.DictionaryField.clean">clean</a></code></li>
-<li><code><a title="exchangelib.fields.DictionaryField.value_cls" href="#exchangelib.fields.DictionaryField.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.EWSElementField" href="#exchangelib.fields.EWSElementField">EWSElementField</a></code></h4>
-<ul class="">
-<li><code><a title="exchangelib.fields.EWSElementField.value_cls" href="#exchangelib.fields.EWSElementField.value_cls">value_cls</a></code></li>
-</ul>
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.EWSElementListField" href="#exchangelib.fields.EWSElementListField">EWSElementListField</a></code></h4>
-<ul class="">
-<li><code><a title="exchangelib.fields.EWSElementListField.is_complex" href="#exchangelib.fields.EWSElementListField.is_complex">is_complex</a></code></li>
-<li><code><a title="exchangelib.fields.EWSElementListField.is_list" href="#exchangelib.fields.EWSElementListField.is_list">is_list</a></code></li>
-</ul>
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.EffectiveRightsField" href="#exchangelib.fields.EffectiveRightsField">EffectiveRightsField</a></code></h4>
@@ -5757,9 +5605,6 @@ If we want a URI validator, see <a href="https://stackoverflow.com/questions/144
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.EmailAddressesField" href="#exchangelib.fields.EmailAddressesField">EmailAddressesField</a></code></h4>
-<ul class="">
-<li><code><a title="exchangelib.fields.EmailAddressesField.PARENT_ELEMENT_NAME" href="#exchangelib.fields.EmailAddressesField.PARENT_ELEMENT_NAME">PARENT_ELEMENT_NAME</a></code></li>
-</ul>
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.EmailField" href="#exchangelib.fields.EmailField">EmailField</a></code></h4>
@@ -5779,23 +5624,16 @@ If we want a URI validator, see <a href="https://stackoverflow.com/questions/144
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.EnumListField" href="#exchangelib.fields.EnumListField">EnumListField</a></code></h4>
-<ul class="">
-<li><code><a title="exchangelib.fields.EnumListField.is_list" href="#exchangelib.fields.EnumListField.is_list">is_list</a></code></li>
-</ul>
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.ExtendedPropertyField" href="#exchangelib.fields.ExtendedPropertyField">ExtendedPropertyField</a></code></h4>
 <ul class="">
 <li><code><a title="exchangelib.fields.ExtendedPropertyField.clean" href="#exchangelib.fields.ExtendedPropertyField.clean">clean</a></code></li>
 <li><code><a title="exchangelib.fields.ExtendedPropertyField.field_uri_xml" href="#exchangelib.fields.ExtendedPropertyField.field_uri_xml">field_uri_xml</a></code></li>
-<li><code><a title="exchangelib.fields.ExtendedPropertyField.is_complex" href="#exchangelib.fields.ExtendedPropertyField.is_complex">is_complex</a></code></li>
 </ul>
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.ExtendedPropertyListField" href="#exchangelib.fields.ExtendedPropertyListField">ExtendedPropertyListField</a></code></h4>
-<ul class="">
-<li><code><a title="exchangelib.fields.ExtendedPropertyListField.is_list" href="#exchangelib.fields.ExtendedPropertyListField.is_list">is_list</a></code></li>
-</ul>
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.Field" href="#exchangelib.fields.Field">Field</a></code></h4>
@@ -5848,9 +5686,6 @@ If we want a URI validator, see <a href="https://stackoverflow.com/questions/144
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.GenericEventListField" href="#exchangelib.fields.GenericEventListField">GenericEventListField</a></code></h4>
-<ul class="">
-<li><code><a title="exchangelib.fields.GenericEventListField.is_list" href="#exchangelib.fields.GenericEventListField.is_list">is_list</a></code></li>
-</ul>
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.IdElementField" href="#exchangelib.fields.IdElementField">IdElementField</a></code></h4>
@@ -5860,9 +5695,6 @@ If we want a URI validator, see <a href="https://stackoverflow.com/questions/144
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.ImAddressField" href="#exchangelib.fields.ImAddressField">ImAddressField</a></code></h4>
-<ul class="">
-<li><code><a title="exchangelib.fields.ImAddressField.PARENT_ELEMENT_NAME" href="#exchangelib.fields.ImAddressField.PARENT_ELEMENT_NAME">PARENT_ELEMENT_NAME</a></code></li>
-</ul>
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.ImportanceField" href="#exchangelib.fields.ImportanceField">ImportanceField</a></code></h4>
@@ -5871,8 +5703,6 @@ If we want a URI validator, see <a href="https://stackoverflow.com/questions/144
 <h4><code><a title="exchangelib.fields.IndexedField" href="#exchangelib.fields.IndexedField">IndexedField</a></code></h4>
 <ul class="">
 <li><code><a title="exchangelib.fields.IndexedField.PARENT_ELEMENT_NAME" href="#exchangelib.fields.IndexedField.PARENT_ELEMENT_NAME">PARENT_ELEMENT_NAME</a></code></li>
-<li><code><a title="exchangelib.fields.IndexedField.is_complex" href="#exchangelib.fields.IndexedField.is_complex">is_complex</a></code></li>
-<li><code><a title="exchangelib.fields.IndexedField.is_list" href="#exchangelib.fields.IndexedField.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.IndexedField.response_tag" href="#exchangelib.fields.IndexedField.response_tag">response_tag</a></code></li>
 </ul>
 </li>
@@ -5880,7 +5710,6 @@ If we want a URI validator, see <a href="https://stackoverflow.com/questions/144
 <h4><code><a title="exchangelib.fields.IntegerField" href="#exchangelib.fields.IntegerField">IntegerField</a></code></h4>
 <ul class="">
 <li><code><a title="exchangelib.fields.IntegerField.clean" href="#exchangelib.fields.IntegerField.clean">clean</a></code></li>
-<li><code><a title="exchangelib.fields.IntegerField.value_cls" href="#exchangelib.fields.IntegerField.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 <li>
@@ -5894,9 +5723,6 @@ If we want a URI validator, see <a href="https://stackoverflow.com/questions/144
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.ItemField" href="#exchangelib.fields.ItemField">ItemField</a></code></h4>
-<ul class="">
-<li><code><a title="exchangelib.fields.ItemField.value_cls" href="#exchangelib.fields.ItemField.value_cls">value_cls</a></code></li>
-</ul>
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.LabelField" href="#exchangelib.fields.LabelField">LabelField</a></code></h4>
@@ -5938,44 +5764,24 @@ If we want a URI validator, see <a href="https://stackoverflow.com/questions/144
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.OccurrenceField" href="#exchangelib.fields.OccurrenceField">OccurrenceField</a></code></h4>
-<ul class="">
-<li><code><a title="exchangelib.fields.OccurrenceField.is_complex" href="#exchangelib.fields.OccurrenceField.is_complex">is_complex</a></code></li>
-</ul>
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.OccurrenceListField" href="#exchangelib.fields.OccurrenceListField">OccurrenceListField</a></code></h4>
-<ul class="">
-<li><code><a title="exchangelib.fields.OccurrenceListField.is_list" href="#exchangelib.fields.OccurrenceListField.is_list">is_list</a></code></li>
-</ul>
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.PermissionSetField" href="#exchangelib.fields.PermissionSetField">PermissionSetField</a></code></h4>
-<ul class="">
-<li><code><a title="exchangelib.fields.PermissionSetField.is_complex" href="#exchangelib.fields.PermissionSetField.is_complex">is_complex</a></code></li>
-</ul>
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.PersonaPhoneNumberField" href="#exchangelib.fields.PersonaPhoneNumberField">PersonaPhoneNumberField</a></code></h4>
-<ul class="">
-<li><code><a title="exchangelib.fields.PersonaPhoneNumberField.is_complex" href="#exchangelib.fields.PersonaPhoneNumberField.is_complex">is_complex</a></code></li>
-</ul>
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.PhoneNumberAttributedValueField" href="#exchangelib.fields.PhoneNumberAttributedValueField">PhoneNumberAttributedValueField</a></code></h4>
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.PhoneNumberField" href="#exchangelib.fields.PhoneNumberField">PhoneNumberField</a></code></h4>
-<ul class="">
-<li><code><a title="exchangelib.fields.PhoneNumberField.PARENT_ELEMENT_NAME" href="#exchangelib.fields.PhoneNumberField.PARENT_ELEMENT_NAME">PARENT_ELEMENT_NAME</a></code></li>
-</ul>
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.PhysicalAddressField" href="#exchangelib.fields.PhysicalAddressField">PhysicalAddressField</a></code></h4>
-<ul class="">
-<li><code><a title="exchangelib.fields.PhysicalAddressField.PARENT_ELEMENT_NAME" href="#exchangelib.fields.PhysicalAddressField.PARENT_ELEMENT_NAME">PARENT_ELEMENT_NAME</a></code></li>
-<li><code><a title="exchangelib.fields.PhysicalAddressField.is_complex" href="#exchangelib.fields.PhysicalAddressField.is_complex">is_complex</a></code></li>
-<li><code><a title="exchangelib.fields.PhysicalAddressField.is_list" href="#exchangelib.fields.PhysicalAddressField.is_list">is_list</a></code></li>
-</ul>
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.PostalAddressAttributedValueField" href="#exchangelib.fields.PostalAddressAttributedValueField">PostalAddressAttributedValueField</a></code></h4>
@@ -5985,15 +5791,9 @@ If we want a URI validator, see <a href="https://stackoverflow.com/questions/144
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.RecurrenceField" href="#exchangelib.fields.RecurrenceField">RecurrenceField</a></code></h4>
-<ul class="">
-<li><code><a title="exchangelib.fields.RecurrenceField.is_complex" href="#exchangelib.fields.RecurrenceField.is_complex">is_complex</a></code></li>
-</ul>
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.ReferenceItemIdField" href="#exchangelib.fields.ReferenceItemIdField">ReferenceItemIdField</a></code></h4>
-<ul class="">
-<li><code><a title="exchangelib.fields.ReferenceItemIdField.is_complex" href="#exchangelib.fields.ReferenceItemIdField.is_complex">is_complex</a></code></li>
-</ul>
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.RoutingTypeField" href="#exchangelib.fields.RoutingTypeField">RoutingTypeField</a></code></h4>
@@ -6016,26 +5816,17 @@ If we want a URI validator, see <a href="https://stackoverflow.com/questions/144
 <li><code><a title="exchangelib.fields.SubField.clean" href="#exchangelib.fields.SubField.clean">clean</a></code></li>
 <li><code><a title="exchangelib.fields.SubField.field_uri_xml" href="#exchangelib.fields.SubField.field_uri_xml">field_uri_xml</a></code></li>
 <li><code><a title="exchangelib.fields.SubField.namespace" href="#exchangelib.fields.SubField.namespace">namespace</a></code></li>
-<li><code><a title="exchangelib.fields.SubField.value_cls" href="#exchangelib.fields.SubField.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.TaskRecurrenceField" href="#exchangelib.fields.TaskRecurrenceField">TaskRecurrenceField</a></code></h4>
-<ul class="">
-<li><code><a title="exchangelib.fields.TaskRecurrenceField.is_complex" href="#exchangelib.fields.TaskRecurrenceField.is_complex">is_complex</a></code></li>
-</ul>
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.TextField" href="#exchangelib.fields.TextField">TextField</a></code></h4>
-<ul class="">
-<li><code><a title="exchangelib.fields.TextField.is_complex" href="#exchangelib.fields.TextField.is_complex">is_complex</a></code></li>
-<li><code><a title="exchangelib.fields.TextField.value_cls" href="#exchangelib.fields.TextField.value_cls">value_cls</a></code></li>
-</ul>
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.TextListField" href="#exchangelib.fields.TextListField">TextListField</a></code></h4>
 <ul class="">
-<li><code><a title="exchangelib.fields.TextListField.is_list" href="#exchangelib.fields.TextListField.is_list">is_list</a></code></li>
 <li><code><a title="exchangelib.fields.TextListField.list_elem_request_tag" href="#exchangelib.fields.TextListField.list_elem_request_tag">list_elem_request_tag</a></code></li>
 <li><code><a title="exchangelib.fields.TextListField.list_elem_response_tag" href="#exchangelib.fields.TextListField.list_elem_response_tag">list_elem_response_tag</a></code></li>
 </ul>
@@ -6044,20 +5835,15 @@ If we want a URI validator, see <a href="https://stackoverflow.com/questions/144
 <h4><code><a title="exchangelib.fields.TimeDeltaField" href="#exchangelib.fields.TimeDeltaField">TimeDeltaField</a></code></h4>
 <ul class="">
 <li><code><a title="exchangelib.fields.TimeDeltaField.clean" href="#exchangelib.fields.TimeDeltaField.clean">clean</a></code></li>
-<li><code><a title="exchangelib.fields.TimeDeltaField.value_cls" href="#exchangelib.fields.TimeDeltaField.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.TimeField" href="#exchangelib.fields.TimeField">TimeField</a></code></h4>
-<ul class="">
-<li><code><a title="exchangelib.fields.TimeField.value_cls" href="#exchangelib.fields.TimeField.value_cls">value_cls</a></code></li>
-</ul>
 </li>
 <li>
 <h4><code><a title="exchangelib.fields.TimeZoneField" href="#exchangelib.fields.TimeZoneField">TimeZoneField</a></code></h4>
 <ul class="">
 <li><code><a title="exchangelib.fields.TimeZoneField.clean" href="#exchangelib.fields.TimeZoneField.clean">clean</a></code></li>
-<li><code><a title="exchangelib.fields.TimeZoneField.value_cls" href="#exchangelib.fields.TimeZoneField.value_cls">value_cls</a></code></li>
 </ul>
 </li>
 <li>
@@ -6094,7 +5880,7 @@ If we want a URI validator, see <a href="https://stackoverflow.com/questions/144
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
 </footer>
 </body>
 </html>

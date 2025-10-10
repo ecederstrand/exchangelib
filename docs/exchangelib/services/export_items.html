@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<meta name="generator" content="pdoc3 0.11.5">
+<meta name="generator" content="pdoc3 0.11.6">
 <title>exchangelib.services.export_items API documentation</title>
 <meta name="description" content="">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
@@ -85,21 +85,6 @@ el.replaceWith(d);
 <li><a title="exchangelib.services.common.EWSService" href="common.html#exchangelib.services.common.EWSService">EWSService</a></li>
 <li><a title="exchangelib.version.SupportedVersionClassMixIn" href="../version.html#exchangelib.version.SupportedVersionClassMixIn">SupportedVersionClassMixIn</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="exchangelib.services.export_items.ExportItems.ERRORS_TO_CATCH_IN_RESPONSE"><code class="name">var <span class="ident">ERRORS_TO_CATCH_IN_RESPONSE</span></code></dt>
-<dd>
-<div class="desc"><p>Global error type within this module.</p></div>
-</dd>
-<dt id="exchangelib.services.export_items.ExportItems.SERVICE_NAME"><code class="name">var <span class="ident">SERVICE_NAME</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="exchangelib.services.export_items.ExportItems.element_container_name"><code class="name">var <span class="ident">element_container_name</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 <h3>Methods</h3>
 <dl>
 <dt id="exchangelib.services.export_items.ExportItems.call"><code class="name flex">
@@ -135,11 +120,21 @@ el.replaceWith(d);
 <ul class="hlist">
 <li><code><b><a title="exchangelib.services.common.EWSAccountService" href="common.html#exchangelib.services.common.EWSAccountService">EWSAccountService</a></b></code>:
 <ul class="hlist">
+<li><code><a title="exchangelib.services.common.EWSAccountService.CHUNK_SIZE" href="common.html#exchangelib.services.common.EWSService.CHUNK_SIZE">CHUNK_SIZE</a></code></li>
+<li><code><a title="exchangelib.services.common.EWSAccountService.ERRORS_TO_CATCH_IN_RESPONSE" href="common.html#exchangelib.services.common.EWSService.ERRORS_TO_CATCH_IN_RESPONSE">ERRORS_TO_CATCH_IN_RESPONSE</a></code></li>
 <li><code><a title="exchangelib.services.common.EWSAccountService.NO_VALID_SERVER_VERSIONS" href="common.html#exchangelib.services.common.EWSService.NO_VALID_SERVER_VERSIONS">NO_VALID_SERVER_VERSIONS</a></code></li>
+<li><code><a title="exchangelib.services.common.EWSAccountService.NS_MAP" href="common.html#exchangelib.services.common.EWSService.NS_MAP">NS_MAP</a></code></li>
+<li><code><a title="exchangelib.services.common.EWSAccountService.SERVICE_NAME" href="common.html#exchangelib.services.common.EWSService.SERVICE_NAME">SERVICE_NAME</a></code></li>
 <li><code><a title="exchangelib.services.common.EWSAccountService.WARNINGS_TO_CATCH_IN_RESPONSE" href="common.html#exchangelib.services.common.EWSService.WARNINGS_TO_CATCH_IN_RESPONSE">WARNINGS_TO_CATCH_IN_RESPONSE</a></code></li>
+<li><code><a title="exchangelib.services.common.EWSAccountService.WARNINGS_TO_IGNORE_IN_RESPONSE" href="common.html#exchangelib.services.common.EWSService.WARNINGS_TO_IGNORE_IN_RESPONSE">WARNINGS_TO_IGNORE_IN_RESPONSE</a></code></li>
+<li><code><a title="exchangelib.services.common.EWSAccountService.deprecated_from" href="../version.html#exchangelib.version.SupportedVersionClassMixIn.deprecated_from">deprecated_from</a></code></li>
+<li><code><a title="exchangelib.services.common.EWSAccountService.element_container_name" href="common.html#exchangelib.services.common.EWSService.element_container_name">element_container_name</a></code></li>
 <li><code><a title="exchangelib.services.common.EWSAccountService.get" href="common.html#exchangelib.services.common.EWSService.get">get</a></code></li>
 <li><code><a title="exchangelib.services.common.EWSAccountService.parse" href="common.html#exchangelib.services.common.EWSService.parse">parse</a></code></li>
+<li><code><a title="exchangelib.services.common.EWSAccountService.prefer_affinity" href="common.html#exchangelib.services.common.EWSAccountService.prefer_affinity">prefer_affinity</a></code></li>
+<li><code><a title="exchangelib.services.common.EWSAccountService.returns_elements" href="common.html#exchangelib.services.common.EWSService.returns_elements">returns_elements</a></code></li>
 <li><code><a title="exchangelib.services.common.EWSAccountService.supported_api_versions" href="common.html#exchangelib.services.common.EWSService.supported_api_versions">supported_api_versions</a></code></li>
+<li><code><a title="exchangelib.services.common.EWSAccountService.supported_from" href="../version.html#exchangelib.version.SupportedVersionClassMixIn.supported_from">supported_from</a></code></li>
 <li><code><a title="exchangelib.services.common.EWSAccountService.wrap" href="common.html#exchangelib.services.common.EWSService.wrap">wrap</a></code></li>
 </ul>
 </li>
@@ -163,10 +158,7 @@ el.replaceWith(d);
 <li>
 <h4><code><a title="exchangelib.services.export_items.ExportItems" href="#exchangelib.services.export_items.ExportItems">ExportItems</a></code></h4>
 <ul class="">
-<li><code><a title="exchangelib.services.export_items.ExportItems.ERRORS_TO_CATCH_IN_RESPONSE" href="#exchangelib.services.export_items.ExportItems.ERRORS_TO_CATCH_IN_RESPONSE">ERRORS_TO_CATCH_IN_RESPONSE</a></code></li>
-<li><code><a title="exchangelib.services.export_items.ExportItems.SERVICE_NAME" href="#exchangelib.services.export_items.ExportItems.SERVICE_NAME">SERVICE_NAME</a></code></li>
 <li><code><a title="exchangelib.services.export_items.ExportItems.call" href="#exchangelib.services.export_items.ExportItems.call">call</a></code></li>
-<li><code><a title="exchangelib.services.export_items.ExportItems.element_container_name" href="#exchangelib.services.export_items.ExportItems.element_container_name">element_container_name</a></code></li>
 <li><code><a title="exchangelib.services.export_items.ExportItems.get_payload" href="#exchangelib.services.export_items.ExportItems.get_payload">get_payload</a></code></li>
 </ul>
 </li>
@@ -176,7 +168,7 @@ el.replaceWith(d);
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
 </footer>
 </body>
 </html>
