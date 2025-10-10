@@ -39,7 +39,10 @@ class EWSDateTimeTest(TimedTestCase):
         self.assertEqual(dt.tzinfo.ms_id, tz.ms_id)
         self.assertEqual(dt.tzinfo.ms_name, tz.ms_name)
         self.assertEqual(str(dt), "2000-01-02 03:04:05.678901+05:00")
-        self.assertEqual(repr(dt), "EWSDateTime(2000, 1, 2, 3, 4, 5, 678901, tzinfo=EWSTimeZone(key='Etc/GMT-5'))")
+        self.assertEqual(
+            repr(dt).replace("exchangelib.ewsdatetime.EWSTimeZone", "EWSTimeZone"),
+            "EWSDateTime(2000, 1, 2, 3, 4, 5, 678901, tzinfo=EWSTimeZone(key='Etc/GMT-5'))",
+        )
 
         # Test a DST timezone
         tz = EWSTimeZone("Europe/Copenhagen")
@@ -50,7 +53,8 @@ class EWSDateTimeTest(TimedTestCase):
         self.assertEqual(dt.tzinfo.ms_name, tz.ms_name)
         self.assertEqual(str(dt), "2000-01-02 03:04:05.678901+01:00")
         self.assertEqual(
-            repr(dt), "EWSDateTime(2000, 1, 2, 3, 4, 5, 678901, tzinfo=EWSTimeZone(key='Europe/Copenhagen'))"
+            repr(dt).replace("exchangelib.ewsdatetime.EWSTimeZone", "EWSTimeZone"),
+            "EWSDateTime(2000, 1, 2, 3, 4, 5, 678901, tzinfo=EWSTimeZone(key='Europe/Copenhagen'))",
         )
 
         # Test from_string
