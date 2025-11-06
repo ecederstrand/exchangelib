@@ -499,8 +499,8 @@ class Protocol(BaseProtocol, metaclass=CachingProtocol):
         :param accounts: A list of (account, attendee_type, exclude_conflicts) tuples, where account is either an
           Account object or a string, attendee_type is a MailboxData.attendee_type choice, and exclude_conflicts is a
           boolean.
-        :param start: The start datetime of the request
-        :param end: The end datetime of the request
+        :param start: The start datetime of the request. Must be timezone-aware.
+        :param end: The end datetime of the request. Must be timezone-aware.
         :param merged_free_busy_interval: The interval, in minutes, of merged free/busy information (Default value = 30)
         :param requested_view: The type of information returned. Possible values are defined in the
           FreeBusyViewOptions.requested_view choices. (Default value = 'DetailedMerged')
@@ -509,6 +509,10 @@ class Protocol(BaseProtocol, metaclass=CachingProtocol):
         """
         from .account import Account
 
+        if not start.tzinfo:
+            raise ValueError(f"'start' value {start!r} must be timezone-aware")
+        if not end.tzinfo:
+            raise ValueError(f"'end' value {end!r} must be timezone-aware")
         tz_definition = list(self.get_timezones(timezones=[start.tzinfo], return_full_timezone_data=True))[0]
         return GetUserAvailability(self).call(
             tzinfo=start.tzinfo,
