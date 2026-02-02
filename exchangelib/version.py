@@ -110,6 +110,7 @@ EXCHANGE_2015 = Build(15, 20)
 EXCHANGE_2015_SP1 = Build(15, 20)
 EXCHANGE_2016 = Build(15, 1)
 EXCHANGE_2019 = Build(15, 2)
+EXCHANGE_SE = Build(15, 2, 2562)  # SE RTM is Exchange 2019 CU16 "re-branded"
 EXCHANGE_O365 = Build(15, 20)
 
 # Legend for VERSIONS:
@@ -125,6 +126,7 @@ EXCHANGE_O365 = Build(15, 20)
 # The list is sorted from newest to oldest build
 VERSIONS = (
     (EXCHANGE_O365, "Exchange2016", "Microsoft Exchange Server Office365"),  # Not mentioned in list of build numbers
+    (EXCHANGE_SE, "Exchange2016", "Microsoft Exchange Server SE"),
     (EXCHANGE_2019, "Exchange2016", "Microsoft Exchange Server 2019"),
     (EXCHANGE_2016, "Exchange2016", "Microsoft Exchange Server 2016"),
     (EXCHANGE_2015_SP1, "Exchange2015_SP1", "Microsoft Exchange Server 2015 SP1"),
