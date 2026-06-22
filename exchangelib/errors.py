@@ -1702,7 +1702,6 @@ ERRORS_REQUIRING_REAUTODISCOVER = (
     ErrorInvalidIdReturnedByResolveNames,
     ErrorInvalidNetworkServiceContext,
     ErrorMailboxMoveInProgress,
-    ErrorMailboxMoveInProgress,
     ErrorMailboxStoreUnavailable,
     ErrorNameResolutionNoMailbox,
     ErrorNameResolutionNoResults,
